@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle;
+namespace NumoBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class AppBundle extends Bundle
+class NumoBundle extends Bundle
 {
 }
