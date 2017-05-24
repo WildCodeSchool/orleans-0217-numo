@@ -25,6 +25,13 @@
 
             <div class="nav navbar-nav navbar-right">
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <p>{{ app.user.username }}</p>
+                    <a href="/app_dev.php/logout" class="btn btn-default">Deconnexion</a>
+                {% else %}
+                    <a href="/app_dev.php/login" class="btn btn-default">Connexion</a>
+                    <a href="/app_dev.php/register" class="btn btn-default">S'inscrire</a>
+                {%endif%}
             </div>
         </div><!-- /.navbar-collapse -->
     </nav>
