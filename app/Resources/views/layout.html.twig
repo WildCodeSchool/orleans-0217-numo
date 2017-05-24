@@ -2,34 +2,59 @@
 
 
 {% block header %}
-    <nav class="navbar navbar-default" role="navigation">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Logo</a>
-        </div>
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Association</a></li>
-                <li><a href="#">Agenda</a></li>
-                <li><a href="#">Membres</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
 
-            <div class="nav navbar-nav navbar-right">
-                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">LOGO</a>
             </div>
-        </div><!-- /.navbar-collapse -->
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a class="page-scroll" href="#about">Association</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="#services">Agenda</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="#portfolio">Membres</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="#contact">Contact</a>
+                        </li>
+                        <li>
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </li>
+                        <li>
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                <span class="glyphicon glyphicon-cog navbar-right" aria-hidden="true"></span>
+                                <p>{{ app.user.username }}</p>
+                                <a href="/app_dev.php/logout" class="btn btn-default navbar-right">Deconnexion</a>
+                            {% else %}
+                                <a href="/app_dev.php/login" class="btn btn-default">Connexion</a>
+                        </li>
+                        <li>
+                                <a href="/app_dev.php/register" class="btn btn-default inscription">S'inscrire</a>
+                            {%endif%}
+                        </li>
+                    </ul>
+                </div>
+        </div>
+        <!-- /.container-fluid -->
     </nav>
+
+{% endblock %}
+{% block body %}
 {% endblock %}
 {% block footer %}
+    <footer>
             <div class="footer-bottom text-center visible-xs visible-sm">
             </div>
             <div class="footer-last text-center">
@@ -51,4 +76,5 @@
                     </div>
                 </div>
             </div>
+    </footer>
 {% endblock %}
