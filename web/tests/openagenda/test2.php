@@ -35,7 +35,7 @@ else {
     echo 'description : '.$evt->description.'<br />';
     echo 'updatedAt : '.$evt->updatedAt.'<br />';
     echo '<hr>';
-
+var_dump($evt);
 
 }
 
@@ -51,7 +51,7 @@ if (isset($_GET['uid'])) {
     if (!$data->success) echo 'Message = '.$data->message.'<br />';
     else {
 
-//    var_dump($data);
+    var_dump($data);
 
         $evt = $data->data;
         echo '<hr>';
