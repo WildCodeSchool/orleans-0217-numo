@@ -29,9 +29,45 @@ class AppParam
     private $address;
 
     /**
+     * @return string
+     */
+    public function getPublicKey(): string
+    {
+        return $this->publicKey;
+    }
+
+    /**
+     * @param string $publicKey
+     * @return AppParam
+     */
+    public function setPublicKey(string $publicKey): AppParam
+    {
+        $this->publicKey = $publicKey;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecretKey(): string
+    {
+        return $this->secretKey;
+    }
+
+    /**
+     * @param string $secretKey
+     * @return AppParam
+     */
+    public function setSecretKey(string $secretKey): AppParam
+    {
+        $this->secretKey = $secretKey;
+        return $this;
+    }
+
+    /**
      * @var string
      *
-     * @ORM\Column(name="phone", type="string", length=255)
+     * @ORM\Column(name="phone", type="string", length=15)
      */
     private $phone;
 
@@ -48,6 +84,20 @@ class AppParam
      * @ORM\Column(name="webUrl", type="string", length=255)
      */
     private $webUrl;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="publicKey", type="string", length=255)
+     */
+    private $publicKey;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="secretKey", type="string", length=255)
+     */
+    private $secretKey;
 
     /**
      * @var string
@@ -91,255 +141,205 @@ class AppParam
      */
     private $smtpPassword;
 
-
     /**
-     * Get id
-     *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * Set address
-     *
-     * @param string $address
-     *
+     * @param int $id
      * @return AppParam
      */
-    public function setAddress($address)
+    public function setId(int $id): AppParam
     {
-        $this->address = $address;
-
+        $this->id = $id;
         return $this;
     }
 
     /**
-     * Get address
-     *
      * @return string
      */
-    public function getAddress()
+    public function getAddress(): string
     {
         return $this->address;
     }
 
     /**
-     * Set phone
-     *
-     * @param string $phone
-     *
+     * @param string $address
      * @return AppParam
      */
-    public function setPhone($phone)
+    public function setAddress(string $address): AppParam
     {
-        $this->phone = $phone;
-
+        $this->address = $address;
         return $this;
     }
 
     /**
-     * Get phone
-     *
      * @return string
      */
-    public function getPhone()
+    public function getPhone(): string
     {
         return $this->phone;
     }
 
     /**
-     * Set imageUrl
-     *
-     * @param string $imageUrl
-     *
+     * @param string $phone
      * @return AppParam
      */
-    public function setImageUrl($imageUrl)
+    public function setPhone(string $phone): AppParam
     {
-        $this->imageUrl = $imageUrl;
-
+        $this->phone = $phone;
         return $this;
     }
 
     /**
-     * Get imageUrl
-     *
      * @return string
      */
-    public function getImageUrl()
+    public function getImageUrl(): string
     {
         return $this->imageUrl;
     }
 
     /**
-     * Set webUrl
-     *
-     * @param string $webUrl
-     *
+     * @param string $imageUrl
      * @return AppParam
      */
-    public function setWebUrl($webUrl)
+    public function setImageUrl(string $imageUrl): AppParam
     {
-        $this->webUrl = $webUrl;
-
+        $this->imageUrl = $imageUrl;
         return $this;
     }
 
     /**
-     * Get webUrl
-     *
      * @return string
      */
-    public function getWebUrl()
+    public function getWebUrl(): string
     {
         return $this->webUrl;
     }
 
     /**
-     * Set agendaName
-     *
-     * @param string $agendaName
-     *
+     * @param string $webUrl
      * @return AppParam
      */
-    public function setAgendaName($agendaName)
+    public function setWebUrl(string $webUrl): AppParam
     {
-        $this->agendaName = $agendaName;
-
+        $this->webUrl = $webUrl;
         return $this;
     }
 
     /**
-     * Get agendaName
-     *
      * @return string
      */
-    public function getAgendaName()
+    public function getAgendaName(): string
     {
         return $this->agendaName;
     }
 
     /**
-     * Set contactEmail
-     *
-     * @param string $contactEmail
-     *
+     * @param string $agendaName
      * @return AppParam
      */
-    public function setContactEmail($contactEmail)
+    public function setAgendaName(string $agendaName): AppParam
     {
-        $this->contactEmail = $contactEmail;
-
+        $this->agendaName = $agendaName;
         return $this;
     }
 
     /**
-     * Get contactEmail
-     *
      * @return string
      */
-    public function getContactEmail()
+    public function getContactEmail(): string
     {
         return $this->contactEmail;
     }
 
     /**
-     * Set adminEmail
-     *
-     * @param string $adminEmail
-     *
+     * @param string $contactEmail
      * @return AppParam
      */
-    public function setAdminEmail($adminEmail)
+    public function setContactEmail(string $contactEmail): AppParam
     {
-        $this->adminEmail = $adminEmail;
-
+        $this->contactEmail = $contactEmail;
         return $this;
     }
 
     /**
-     * Get adminEmail
-     *
      * @return string
      */
-    public function getAdminEmail()
+    public function getAdminEmail(): string
     {
         return $this->adminEmail;
     }
 
     /**
-     * Set smtpServer
-     *
-     * @param string $smtpServer
-     *
+     * @param string $adminEmail
      * @return AppParam
      */
-    public function setSmtpServer($smtpServer)
+    public function setAdminEmail(string $adminEmail): AppParam
     {
-        $this->smtpServer = $smtpServer;
-
+        $this->adminEmail = $adminEmail;
         return $this;
     }
 
     /**
-     * Get smtpServer
-     *
      * @return string
      */
-    public function getSmtpServer()
+    public function getSmtpServer(): string
     {
         return $this->smtpServer;
     }
 
     /**
-     * Set smtpEmail
-     *
-     * @param string $smtpEmail
-     *
+     * @param string $smtpServer
      * @return AppParam
      */
-    public function setSmtpEmail($smtpEmail)
+    public function setSmtpServer(string $smtpServer): AppParam
     {
-        $this->smtpEmail = $smtpEmail;
-
+        $this->smtpServer = $smtpServer;
         return $this;
     }
 
     /**
-     * Get smtpEmail
-     *
      * @return string
      */
-    public function getSmtpEmail()
+    public function getSmtpEmail(): string
     {
         return $this->smtpEmail;
     }
 
     /**
-     * Set smtpPassword
-     *
-     * @param string $smtpPassword
-     *
+     * @param string $smtpEmail
      * @return AppParam
      */
-    public function setSmtpPassword($smtpPassword)
+    public function setSmtpEmail(string $smtpEmail): AppParam
     {
-        $this->smtpPassword = $smtpPassword;
-
+        $this->smtpEmail = $smtpEmail;
         return $this;
     }
 
     /**
-     * Get smtpPassword
-     *
      * @return string
      */
-    public function getSmtpPassword()
+    public function getSmtpPassword(): string
     {
         return $this->smtpPassword;
     }
+
+    /**
+     * @param string $smtpPassword
+     * @return AppParam
+     */
+    public function setSmtpPassword(string $smtpPassword): AppParam
+    {
+        $this->smtpPassword = $smtpPassword;
+        return $this;
+    }
+
+
+
 }
 

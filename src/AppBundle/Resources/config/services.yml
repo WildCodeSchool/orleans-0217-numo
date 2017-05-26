@@ -1,0 +1,14 @@
+# --- src/Resources/config/services.yml ---
+
+services:
+    app.curl:
+        class: AppBundle\OpenAgendaApi\Curl
+
+    app.getfilecontents:
+        class: AppBundle\OpenAgendaApi\GetContents
+
+    app.apiagenda:
+        class: AppBundle\OpenAgendaApi\OpenAgendaApi
+        arguments:
+            - "@app.curl"
+            - "@app.getfilecontents"
