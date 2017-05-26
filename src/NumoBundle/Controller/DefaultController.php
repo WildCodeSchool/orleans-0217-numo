@@ -8,10 +8,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/index")
      */
     public function indexAction()
     {
-        return $this->render('NumoBundle:Default:index.html.twig');
+        return $this->render('NumoBundle:Site:pageContact.html.twig');
     }
 }
