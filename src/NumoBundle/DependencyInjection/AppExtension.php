@@ -1,21 +1,14 @@
 <?php
 
-// --- src/ApBundle/DependencyInjection/AppExtension.php ---
+// --- src/NumoBundle/DependencyInjection/AppExtension.php ---
 
-namespace AppBundle\DependencyInjection;
+namespace NumoBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Sensio\Bundle\FrameworkExtraBundle\DependencyInjection\Configuration;
-/*
- * Symfony\Bundle\WebProfilerBundle\DependencyInjection\Configuration
- * Symfony\Bundle\DebugBundle\DependencyInjection\Configuration
- * Symfony\Bundle\FrameworkBundle\DependencyInjection\Configuration
- * Sensio\Bundle\FrameworkExtraBundle\DependencyInjection\Configuration
- *
- */
 
 Class AppExtension extends Extension
 {

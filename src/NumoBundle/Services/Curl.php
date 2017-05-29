@@ -1,8 +1,8 @@
 <?php
 
-// --- src/AppBundle/OpenAgendaApi/Curl.php ---
+// --- src/NumoBundle/Services/Curl.php ---
 
-namespace AppBundle\OpenAgendaApi;
+namespace NumoBundle\Services;
 
 
 class Curl

@@ -21,7 +21,7 @@ class AgendaController extends Controller
 {
 
     /**
-     * @Route("/list", name="event_list")
+     * @Route("/list", name="agenda_list")
      */
     public function listAction()
     {
@@ -49,7 +49,7 @@ class AgendaController extends Controller
     }
 
     /**
-     * @Route("/view/{uid}", name="event_view")
+     * @Route("/view/{uid}", name="agenda_view")
      */
     public function viewAction($uid)
     {
@@ -72,7 +72,7 @@ class AgendaController extends Controller
     }
 
     /**
-     * @Route("/add", name="event_add")
+     * @Route("/add", name="agenda_add")
      */
     public function addAction(Request $request)
     {
@@ -139,7 +139,7 @@ var_dump($event);die();
     }
 
     /**
-     * @Route("/edit/{$id}", name="event_edit")
+     * @Route("/edit/{$id}", name="agenda_edit")
      */
     public function editAction($id)
     {
@@ -153,7 +153,7 @@ var_dump($event);die();
     }
 
     /**
-     * @Route("/delete/{$id}", name="event_delete")
+     * @Route("/delete/{$id}", name="agenda_delete")
      */
     public function deleteAction($id)
     {

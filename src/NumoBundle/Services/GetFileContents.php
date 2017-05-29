@@ -1,11 +1,10 @@
 <?php
 
-// --- src/AppBundle/OpenAgendaApi/GetContents.php ---
+// --- src/NumoBundle/Services/GetFileContents.php ---
 
-namespace AppBundle\OpenAgendaApi;
+namespace NumoBundle\Services;
 
-
-class GetContents
+class GetFileContents
 {
     private $url;
     private $httpCode = 0;
