@@ -165,23 +165,23 @@ if ($coord->status == 'OK') {
             // --- ecriture event ---------------------------------------------------------
             $eventData = [
 //                'lang' => 'fr',
-                'title' => ['fr' => 'Tango Connection - Festival d\'Ile de France'],
-                'description' => ['fr' => 'Tango au Bataclan'],
-                'freeText' => ['fr' => 'Cet événement fait partie du Festival d\'Ile De France'],
-                'tags' => ['fr' => 'tango, festival ile de france, le bataclan'],
+                'title' => ['fr' => 'La dance des canards V2'],
+                'description' => ['fr' => 'blablabla et plus'],
+                'freeText' => ['fr' => 'Cet événement fait partie des tests de l\'API'],
+                'tags' => ['fr' => 'test, api, canard'],
                 'image' => '',
-                'publish' => true,
+                'publish' => 0,
                 'locations' => [
                     [
                         'uid' => $location_uid,
                         'dates' => [
                             [
-                                'date' => '2017-05-20',
+                                'date' => '2017-06-01',
                                 'timeStart' => '18:00',
                                 'timeEnd' => '20:00',
                             ],
                             [
-                                'date' => '2017-05-22',
+                                'date' => '2017-06-02',
                                 'timeStart' => '19:00',
                                 'timeEnd' => '21:00',
                             ],

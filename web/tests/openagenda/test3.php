@@ -40,7 +40,7 @@ function affiche($tab, $texte, $info='*-*-*-*', $option=null) {
 $params = [
     'offset' => 0,                                // fonctionne
     'limit' => 5,                                 // fonctionne
-//    'what' => 'ateliers',                           // accent plante, ne fonctionne pas
+//    'what' => 'confirmer',                           // accent plante, ne fonctionne pas
 //    'when' => '24/05/2017',                         // ou plage '01/05/2017-01/06/2017' - ne fonctionne pas
 //    'page' => 1,                                  // ne fonctionne pas
     'lang' => 'fr',                                 // fonctionne

@@ -1,0 +1,24 @@
+{# --- app/Resources/views/agenda/eventView.html.twig --- #}
+
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-xs-12 text-center">
+        <a href="{{ path('event_list') }}" class="btn btn-default" type="button">Retour à la liste</a>
+    </div>
+
+    {% if error == '' %}
+
+
+
+    {% else %}
+
+        <div class="col-xs-12 erreur text-center">
+            {{ error }}
+        </div>
+
+    {% endif %}
+
+</div>
+{% endblock %}

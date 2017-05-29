@@ -4,23 +4,51 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Event
 {
 
     private $uid;
-    private $agenda_slug;
     private $link;
     private $updatedAt;
     private $spacetimeinfo;
     private $image;
     private $imageThumb;
+
+    /**
+     * @var
+     * @Assert\NotBlank(message="Le nom doit être renseigné.")
+     * @Assert\Length(
+     *      max = 100,
+     *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
+     */
     private $title;
+
+    /**
+     * @var
+     * @Assert\NotBlank(message="Une description minimum doit être indiquée.")
+     */
     private $description;
-    private $freeText;
-    private $tags;
-    private $locations = [];
-    private $thirdParties = [];
+    private $freeText = '';
+    private $tags = '';
+
+
+
+
+
+
+
+
+
+
+    private $locations;
+
+    public function __construct()
+    {
+        $this->locations = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -32,29 +60,11 @@ class Event
 
     /**
      * @param mixed $uid
-     * @return Agenda
+     * @return Event
      */
     public function setUid($uid)
     {
         $this->uid = $uid;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAgendaSlug()
-    {
-        return $this->agenda_slug;
-    }
-
-    /**
-     * @param mixed $agenda_slug
-     * @return Agenda
-     */
-    public function setAgendaSlug($agenda_slug)
-    {
-        $this->agenda_slug = $agenda_slug;
         return $this;
     }
 
@@ -68,7 +78,7 @@ class Event
 
     /**
      * @param mixed $link
-     * @return Agenda
+     * @return Event
      */
     public function setLink($link)
     {
@@ -86,7 +96,7 @@ class Event
 
     /**
      * @param mixed $updatedAt
-     * @return Agenda
+     * @return Event
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -104,7 +114,7 @@ class Event
 
     /**
      * @param mixed $spacetimeinfo
-     * @return Agenda
+     * @return Event
      */
     public function setSpacetimeinfo($spacetimeinfo)
     {
@@ -122,7 +132,7 @@ class Event
 
     /**
      * @param mixed $image
-     * @return Agenda
+     * @return Event
      */
     public function setImage($image)
     {
@@ -140,7 +150,7 @@ class Event
 
     /**
      * @param mixed $imageThumb
-     * @return Agenda
+     * @return Event
      */
     public function setImageThumb($imageThumb)
     {
@@ -158,7 +168,7 @@ class Event
 
     /**
      * @param mixed $title
-     * @return Agenda
+     * @return Event
      */
     public function setTitle($title)
     {
@@ -176,7 +186,7 @@ class Event
 
     /**
      * @param mixed $description
-     * @return Agenda
+     * @return Event
      */
     public function setDescription($description)
     {
@@ -194,7 +204,7 @@ class Event
 
     /**
      * @param mixed $freeText
-     * @return Agenda
+     * @return Event
      */
     public function setFreeText($freeText)
     {
@@ -212,7 +222,7 @@ class Event
 
     /**
      * @param mixed $tags
-     * @return Agenda
+     * @return Event
      */
     public function setTags($tags)
     {
@@ -221,7 +231,7 @@ class Event
     }
 
     /**
-     * @return array
+     * @return mixed
      */
     public function getLocations()
     {
@@ -229,8 +239,8 @@ class Event
     }
 
     /**
-     * @param array $locations
-     * @return Agenda
+     * @param mixed $locations
+     * @return Event
      */
     public function setLocations($locations)
     {
@@ -238,30 +248,4 @@ class Event
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getThirdParties()
-    {
-        return $this->thirdParties;
-    }
-
-    /**
-     * @param array $thirdParties
-     * @return Agenda
-     */
-    public function setThirdParties($thirdParties)
-    {
-        $this->thirdParties = $thirdParties;
-        return $this;
-    }
-
-    public function hydrate(array $values)
-    {
-
-    }
 }
-
-
-
-

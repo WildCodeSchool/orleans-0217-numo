@@ -1,37 +1,32 @@
-{# --- app/Resources/views/agenda/eventList.html.twig --- #}
+{# --- app/Resources/views/agenda/eventView.html.twig --- #}
 
 {% extends 'layout.html.twig' %}
 
 {% block body %}
 <div class="row">
     <div class="col-xs-12 text-center">
-        <p><a href="{{ path('event_add') }}" class="btn btn-primary" role="button">Créer un nouvel évènement</a></p>
+        <a href="{{ path('event_list') }}" class="btn btn-default" type="button">Retour à la liste</a>
     </div>
 
     {% if error == '' %}
 
-        {% for event in events %}
             <div class="col-sm-6 col-md-3">
                 <div class="thumbnail">
-                    <a href="{{ path('event_view', {'uid': event.uid }) }}">
-                        <img class="thumbnail" src="{{ event.image }}" alt="{{ event.title.fr }}" />
-                    </a>
+                    <img class="thumbnail" src="{{ event.image }}" alt="{{ event.title.fr }}" />
                     <div class="caption">
-                        <a href="{{ path('event_view', {'uid': event.uid }) }}">
-                            <h3>{{ event.title.fr }} {{ event.uid }}</h3>
-                        </a>
+                        <h3>{{ event.title.fr }}</h3>
                         <p>{{ event.description.fr }}</p>
                         {% set eventUrl = 'https://openagenda.com/' ~ agendaSlug ~ '/events/' ~ event.link|split('/')|last %}
                         <p><a href="{{ eventUrl }}" class="btn btn-primary" role="button" target="_blanc">Voir sur Open Agenda</a></p>
                     </div>
                 </div>
             </div>
-        {% endfor %}
+
 
     {% else %}
 
         <div class="col-xs-12 erreur text-center">
-            {{ erreur }}
+            {{ error }}
         </div>
 
     {% endif %}
