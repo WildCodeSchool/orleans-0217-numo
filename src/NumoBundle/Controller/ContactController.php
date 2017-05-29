@@ -29,13 +29,14 @@ class ContactController extends DefaultController
 
             $commentaire = \Swift_Message::newInstance()
                 ->setSubject($contact->getSujet())
-                ->setFrom('numo.teamwild@gmail.com')
-                ->setTo($contact ->getEmail())
+                ->setTo('duri.teamwild@gmail.com')
+                ->setFrom($contact ->getEmail())
                 ->setBody($contact->getCommentaire());
 
             $this->get('mailer')->send($commentaire);
             return $this-> redirectToRoute('contact');
         }
+        var_dump($contact);
 //        $nom = $request->request->get('nom'); $_POST['"
 //        $email = $request->request->get('email');
 //        $sujet = $request->request->get('sujet');
