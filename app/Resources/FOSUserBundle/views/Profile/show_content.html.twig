@@ -1,0 +1,34 @@
+{% extends 'layout.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block body %}
+
+    <div class="fos_user_user_show">
+        <p>{{ 'Username'|trans }}: {{ user.username }}</p>
+        <p>{{ 'Email'|trans }}: {{ user.email }}</p>
+        <p>Image:</p>
+        <p>Nom:</p>
+        <p>Prenom:</p>
+        <p>Introduction:</p>
+        {% if is_granted('ROLE_ADHERENT') %}
+            <p>Présentation:</p>
+            <p>Telephone:</p>
+            <p>Adresse:</p>
+            <p>Site web:</p>
+            <p>Reseaux sociaux:</p>
+        {% endif %}
+    </div>
+
+    <a href="/app_dev.php/profile/edit" class="btn btn-default">Editer</a>
+    <a href="/app_dev.php/change-password" class="btn btn-default">Modifier le mot de passe</a>
+
+    {% if not is_granted('ROLE_ADHERENT') %}
+        <a href="" class="btn btn-default">Devenir Adhérent</a>
+    {% endif %}
+
+{% endblock %}
+
+
+
+
