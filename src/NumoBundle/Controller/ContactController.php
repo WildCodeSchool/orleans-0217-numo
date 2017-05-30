@@ -36,7 +36,6 @@ class ContactController extends DefaultController
             $this->get('mailer')->send($commentaire);
             return $this-> redirectToRoute('contact');
         }
-        var_dump($contact);
 //        $nom = $request->request->get('nom'); $_POST['"
 //        $email = $request->request->get('email');
 //        $sujet = $request->request->get('sujet');
