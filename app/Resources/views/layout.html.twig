@@ -12,6 +12,7 @@
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
                 <a class="navbar-brand page-scroll" href="#page-top">LOGO</a>
+
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -34,6 +35,7 @@
                         </li>
                         <li>
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                <span class="glyphicon glyphicon-bell navbar-right" aria-hidden="true"></span>
                                 <span class="glyphicon glyphicon-cog navbar-right" aria-hidden="true"></span>
                                 <p>{{ app.user.username }}</p>
                                 <a href="/app_dev.php/logout" class="btn btn-default navbar-right">Deconnexion</a>
@@ -42,8 +44,8 @@
                         </li>
                         <li>
                                 <a href="/app_dev.php/register" class="btn btn-default inscription">S'inscrire</a>
-                            {%endif%}
                         </li>
+                            {%endif%}
                     </ul>
                 </div>
         </div>
@@ -53,6 +55,8 @@
 {% endblock %}
 {% block body %}
 {% endblock %}
+
+
 {% block footer %}
     <footer>
             <div class="footer-bottom text-center visible-xs visible-sm">
