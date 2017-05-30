@@ -12,6 +12,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('NumoBundle:Site:pageContact.html.twig');
+
+        return $this->render('NumoBundle:Site:index.html.twig');
     }
 }
