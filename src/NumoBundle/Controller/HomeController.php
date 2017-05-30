@@ -16,10 +16,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class HomeController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/home")
      */
     public function indexAction()
     {
-        return $this->render('NumoBundle:Site:home.html.twig');
+        return $this->render('NumoBundle:Site:index.html.twig');
     }
 }
