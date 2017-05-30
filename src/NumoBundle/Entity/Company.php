@@ -5,12 +5,12 @@ namespace NumoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * compagny
+ * company
  *
- * @ORM\Table(name="compagny")
- * @ORM\Entity(repositoryClass="NumoBundle\Repository\compagnyRepository")
+ * @ORM\Table(name="company")
+ * @ORM\Entity(repositoryClass="NumoBundle\Repository\companyRepository")
  */
-class compagny
+class Company
 {
     /**
      * @var int
@@ -79,7 +79,7 @@ class compagny
      *
      * @param string $contactEmail
      *
-     * @return compagny
+     * @return company
      */
     public function setContactEmail($contactEmail)
     {
@@ -103,7 +103,7 @@ class compagny
      *
      * @param string $city
      *
-     * @return compagny
+     * @return company
      */
     public function setCity($city)
     {
@@ -127,7 +127,7 @@ class compagny
      *
      * @param string $postalCode
      *
-     * @return compagny
+     * @return company
      */
     public function setPostalCode($postalCode)
     {
@@ -151,7 +151,7 @@ class compagny
      *
      * @param string $adress
      *
-     * @return compagny
+     * @return company
      */
     public function setAdress($adress)
     {
@@ -175,7 +175,7 @@ class compagny
      *
      * @param string $phone
      *
-     * @return compagny
+     * @return company
      */
     public function setPhone($phone)
     {
@@ -199,7 +199,7 @@ class compagny
      *
      * @param string $imageUrl
      *
-     * @return compagny
+     * @return company
      */
     public function setImageUrl($imageUrl)
     {

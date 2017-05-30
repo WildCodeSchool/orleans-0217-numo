@@ -5,12 +5,12 @@ namespace NumoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * pageContent
+ * PageContent
  *
  * @ORM\Table(name="page_content")
- * @ORM\Entity(repositoryClass="NumoBundle\Repository\pageContentRepository")
+ * @ORM\Entity(repositoryClass="NumoBundle\Repository\PageContentRepository")
  */
-class pageContent
+class PageContent
 {
     /**
      * @var int
@@ -58,7 +58,7 @@ class pageContent
      *
      * @param string $title
      *
-     * @return pageContent
+     * @return PageContent
      */
     public function setTitle($title)
     {
@@ -82,7 +82,7 @@ class pageContent
      *
      * @param string $content
      *
-     * @return pageContent
+     * @return PageContent
      */
     public function setContent($content)
     {
@@ -106,7 +106,7 @@ class pageContent
      *
      * @param \DateTime $lastModif
      *
-     * @return pageContent
+     * @return PageContent
      */
     public function setLastModif($lastModif)
     {

@@ -89,3 +89,12 @@ easy_admin:
     entities:
         User:
             class: NumoBundle\Entity\User
+            #list:
+                #fields:
+                    #- name
+                    #- firstname
+        Company:
+            class: NumoBundle\Entity\Company
+
+        PageContent:
+            class: NumoBundle\Entity\PageContent
