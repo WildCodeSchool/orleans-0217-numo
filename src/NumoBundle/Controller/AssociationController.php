@@ -15,4 +15,5 @@ class AssociationController extends Controller
 
         return $this->render('NumoBundle:Site:compagny.html.twig');
     }
+
 }

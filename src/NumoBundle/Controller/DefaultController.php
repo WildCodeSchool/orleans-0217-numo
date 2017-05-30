@@ -14,5 +14,6 @@ class DefaultController extends Controller
     {
 
         return $this->render('NumoBundle:Site:index.html.twig');
+
     }
 }
