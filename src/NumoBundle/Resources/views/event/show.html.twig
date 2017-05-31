@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Event</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ event.id }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ event.status }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ event.image }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ event.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ event.description }}</td>
+            </tr>
+            <tr>
+                <th>Freetext</th>
+                <td>{{ event.freeText }}</td>
+            </tr>
+            <tr>
+                <th>Tags</th>
+                <td>{{ event.tags }}</td>
+            </tr>
+            <tr>
+                <th>Placename</th>
+                <td>{{ event.placename }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ event.address }}</td>
+            </tr>
+            <tr>
+                <th>Latitude</th>
+                <td>{{ event.latitude }}</td>
+            </tr>
+            <tr>
+                <th>Longitude</th>
+                <td>{{ event.longitude }}</td>
+            </tr>
+            <tr>
+                <th>Ticketlink</th>
+                <td>{{ event.ticketLink }}</td>
+            </tr>
+            <tr>
+                <th>Pricinginfo</th>
+                <td>{{ event.pricingInfo }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('event_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('event_edit', { 'id': event.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
