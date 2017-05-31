@@ -8,6 +8,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
+    images_membres_directory: '%kernel.root_dir%/web/img/membres'
 
 framework:
     translator: ~
@@ -79,6 +80,9 @@ fos_user:
     registration:
         form:
             type: NumoBundle\Form\RegistrationType
+    profile:
+        form:
+            type: NumoBundle\Form\ProfileType
 
 twig:
     form:

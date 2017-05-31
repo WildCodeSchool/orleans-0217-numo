@@ -7,10 +7,10 @@
     <div class="fos_user_user_show">
         <p>{{ 'Username'|trans }}: {{ user.username }}</p>
         <p>{{ 'Email'|trans }}: {{ user.email }}</p>
-        <p>Image:</p>
-        <p>Nom:</p>
-        <p>Prenom:</p>
-        <p>Introduction:</p>
+        <p>Image:</p> <img src="{{ user.imageUrl }}">
+        <p>Nom: {{ user.name }}</p>
+        <p>Prenom: {{ user.firstname }}</p>
+        <p>Introduction: {{ user.description }}</p>
         {% if is_granted('ROLE_ADHERENT') %}
             <p>Présentation:</p>
             <p>Telephone:</p>
@@ -21,6 +21,7 @@
     </div>
 
     <a href="/app_dev.php/profile/edit" class="btn btn-default">Editer</a>
+    {#<a href="{{ path }}" class="btn btn-default">Editer</a>#}
     <a href="/app_dev.php/change-password" class="btn btn-default">Modifier le mot de passe</a>
 
     {% if not is_granted('ROLE_ADHERENT') %}
