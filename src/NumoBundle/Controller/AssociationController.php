@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class AssociationController extends Controller
 {
     /**
-     * @Route("/presentation")
+     * @Route("/association", name="association")
      */
     public function indexAction()
     {
