@@ -12,8 +12,8 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-
         return $this->render('NumoBundle:Site:index.html.twig');
-
     }
+
+
 }

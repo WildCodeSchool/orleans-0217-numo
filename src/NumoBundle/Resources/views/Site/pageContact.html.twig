@@ -5,7 +5,7 @@
 
     <div class="container-fluid">
         <div class="col-lg-offset-2 col-lg-5">
-            <h3>Laissez votre commentaire <hr></h3>
+            <h2>Laissez votre commentaire <hr></h2>
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <input type="submit" value="Envoyer"/>
@@ -18,21 +18,12 @@
 
 
         <div class="col-lg-offset-1 col-lg-2">
-            <h3>Coordonnées <hr></h3>
-            <p>NUM'O (Siège social)
-               Lab'o Orléans</p>
-            <ol><ul>Tél : 02 XX XX XX XX </ul>
-                <ul>Email : contact@pnum'o.org</ul>
-            </ol>
+            <h2>Coordonnées <hr></h2>
 
-            <h3>NUM'O</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Quisque varius lorem nec dolor mattis venenatis.
-                Quisque sit amet volutpat nibh. Nulla cursus, metus
-                id consequat elementum, diam dolor ullamcorper lectus,
-                at commodo ante neque eget ligula. Donec consequat tortor
-                ut orci bibendum, vel euismod purus lobortis.
-              </p>
+            <p>{{ company.phone }}</p>
+            <p>{{ company.city }} {{ company.postalCode }}</p>
+            <p>{{ company.adress }}</p>
+            <p>{{ company.contactEmail }}</p>
         </div>
     </div>
 

@@ -263,5 +263,12 @@ body {
 }
 
 footer {
-    padding-top: 250px;
+    padding-top: 200px;
 }
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+

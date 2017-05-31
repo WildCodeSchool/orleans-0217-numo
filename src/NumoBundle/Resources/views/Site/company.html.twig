@@ -1,0 +1,28 @@
+{% extends 'layout.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-offset-2 col-lg-5">
+                <h2>{{ contents.title }} <hr> </h2>
+                <p>{{ contents.content }}</p>
+            </div>
+
+            <div class="col-lg-offset-1 col-lg-2">
+                <h2>Coordonné <hr> </h2>
+
+                <p>{{ company.phone }}</p>
+                <p>{{ company.city }} {{ company.postalCode }}</p>
+                <p>{{ company.adress }}</p>
+                <p>{{ company.contactEmail }}</p>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-offset-4">
+                <button type="button" class="btn btn-success">Rejoins le coté obscure</button>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

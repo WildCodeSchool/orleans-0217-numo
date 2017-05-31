@@ -36,20 +36,14 @@ class ContactController extends DefaultController
             $this->get('mailer')->send($commentaire);
             return $this-> redirectToRoute('contact');
         }
-//        $nom = $request->request->get('nom'); $_POST['"
-//        $email = $request->request->get('email');
-//        $sujet = $request->request->get('sujet');
-//        $commentaire = $request->request->get('commentaire');
-//        $data = "";
-//        if($request->request->get('contact_submit')){
-//
-//
-//
-//            $data = "Thank you: $nom";
-//
-//        }
-        return $this->render('NumoBundle:Site:pageContact.html.twig', array('form'=>$form->createView()));
+        $em = $this->getDoctrine()->getManager();
+
+        $company= $em->getRepository('NumoBundle:Company')->find($id=1);
+
+        return $this->render('NumoBundle:Site:pageContact.html.twig', array('form'=>$form->createView(),
+        'company' => $company ));
     }
+
 
 
 

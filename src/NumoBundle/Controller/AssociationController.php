@@ -5,6 +5,7 @@ namespace NumoBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+
 class AssociationController extends Controller
 {
     /**
@@ -12,8 +13,14 @@ class AssociationController extends Controller
      */
     public function indexAction()
     {
+        $em = $this->getDoctrine()->getManager();
 
-        return $this->render('NumoBundle:Site:compagny.html.twig');
+        $contents= $em->getRepository('NumoBundle:PageContent')->find($id=1);
+        $company= $em->getRepository('NumoBundle:Company')->find($id=1);
+
+        return $this->render('NumoBundle:Site:company.html.twig', array(
+            'contents' => $contents,
+            'company' => $company
+        ));
     }
-
 }
