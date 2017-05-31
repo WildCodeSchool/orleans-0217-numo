@@ -1,76 +1,45 @@
-{% extends 'base.html.twig' %}
+{# --- src/NumoBundle/Resources/views/event/show.html.twig --- #}
+
+{% extends 'layout.html.twig' %}
 
 {% block body %}
-    <h1>Event</h1>
+    <div class="row">
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ event.id }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ event.status }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ event.image }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ event.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ event.description }}</td>
-            </tr>
-            <tr>
-                <th>Freetext</th>
-                <td>{{ event.freeText }}</td>
-            </tr>
-            <tr>
-                <th>Tags</th>
-                <td>{{ event.tags }}</td>
-            </tr>
-            <tr>
-                <th>Placename</th>
-                <td>{{ event.placename }}</td>
-            </tr>
-            <tr>
-                <th>Address</th>
-                <td>{{ event.address }}</td>
-            </tr>
-            <tr>
-                <th>Latitude</th>
-                <td>{{ event.latitude }}</td>
-            </tr>
-            <tr>
-                <th>Longitude</th>
-                <td>{{ event.longitude }}</td>
-            </tr>
-            <tr>
-                <th>Ticketlink</th>
-                <td>{{ event.ticketLink }}</td>
-            </tr>
-            <tr>
-                <th>Pricinginfo</th>
-                <td>{{ event.pricingInfo }}</td>
-            </tr>
-        </tbody>
-    </table>
+        {% if error == '' %}
 
-    <ul>
-        <li>
-            <a href="{{ path('event_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('event_edit', { 'id': event.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+            <div class="col-xs-6 col-xs-offset-3">
+                <div class="thumbnail">
+                    <img class="thumbnail" src="{{ event.image }}" alt="{{ event.title }}" />
+                    <div class="caption">
+                        <h3>{{ event.title }} {{ event.id }}</h3>
+                        <p>{{ event.description }}</p>
+                        <p>{{ event.freeText }}</p>
+                        <p>{{ event.address }}</p>
+                        <p>
+                            {% for date in event.evtDates %}
+                                {{ date.evtDate }} {{ date.timeStart }} {{ date.timeEnd }}<br />
+                            {% endfor %}
+                        </p>
+                        <p>{{ event.pricingInfo }}</p>
+                        {% if event.ticketLink > '' %}
+                            <p><a href="{{ event.ticketLink }}" class="btn btn-primary" role="button" target="_blanc">Accéder à la billetterie</a></p>
+                        {% endif %}
+                        <p><a href="{{ event.link }}" class="btn btn-primary" role="button" target="_blanc">Voir sur Open Agenda</a></p>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+
+            <div class="col-xs-12 erreur text-center">
+                {{ erreur }}
+            </div>
+
+        {% endif %}
+
+        <div class="col-xs-12 erreur text-center">
+            <p><a href="{{ path('event_list') }}" class="btn btn-primary" role="button" target="_blanc">Retour à la liste</a></p>
+        </div>
+
+    </div>
 {% endblock %}

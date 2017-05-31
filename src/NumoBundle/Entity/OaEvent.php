@@ -46,6 +46,7 @@ class OaEvent
     public function setId(int $id)
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -62,6 +63,7 @@ class OaEvent
     public function setStatus(int $status)
     {
         $this->status = $status;
+        return $this;
     }
 
     /**
@@ -73,11 +75,15 @@ class OaEvent
     }
 
     /**
-     * @param $image
+     *
      */
-    public function setLink($link='')
+    public function setLink($link)
     {
+        if (null === $link) {
+            $link = '';
+        }
         $this->link = $link;
+        return $this;
     }
 
     /**
@@ -91,9 +97,13 @@ class OaEvent
     /**
      * @param $image
      */
-    public function setImage($image='')
+    public function setImage($image)
     {
+        if (null === $image) {
+            $image = '';
+        }
         $this->image = $image;
+        return $this;
     }
 
     /**
@@ -110,6 +120,7 @@ class OaEvent
     public function setTitle(string $title)
     {
         $this->title = $title;
+        return $this;
     }
 
     /**
@@ -123,9 +134,13 @@ class OaEvent
     /**
      * @param $description
      */
-    public function setDescription($description='')
+    public function setDescription($description)
     {
+        if (null === $description) {
+            $description = '';
+        }
         $this->description = $description;
+        return $this;
     }
 
     /**
@@ -139,9 +154,13 @@ class OaEvent
     /**
      * @param $freeText
      */
-    public function setFreeText($freeText='')
+    public function setFreeText($freeText)
     {
+        if (null === $freeText) {
+            $freeText = '';
+        }
         $this->freeText = $freeText;
+        return $this;
     }
 
     /**
@@ -155,9 +174,13 @@ class OaEvent
     /**
      * @param $tags
      */
-    public function setTags($tags='')
+    public function setTags($tags)
     {
+        if (null === $tags) {
+            $tags = '';
+        }
         $this->tags = $tags;
+        return $this;
     }
 
     /**
@@ -174,6 +197,7 @@ class OaEvent
     public function setPlacename(string $placename)
     {
         $this->placename = $placename;
+        return $this;
     }
 
     /**
@@ -190,6 +214,7 @@ class OaEvent
     public function setAddress(string $address)
     {
         $this->address = $address;
+        return $this;
     }
 
     /**
@@ -206,6 +231,7 @@ class OaEvent
     public function setLatitude(float $latitude)
     {
         $this->latitude = $latitude;
+        return $this;
     }
 
     /**
@@ -222,6 +248,7 @@ class OaEvent
     public function setLongitude(float $longitude)
     {
         $this->longitude = $longitude;
+        return $this;
     }
 
     /**
@@ -235,9 +262,13 @@ class OaEvent
     /**
      * @param $ticketLink
      */
-    public function setTicketLink($ticketLink='')
+    public function setTicketLink($ticketLink)
     {
+        if (null === $ticketLink) {
+            $ticketLink = '';
+        }
         $this->ticketLink = $ticketLink;
+        return $this;
     }
 
     /**
@@ -251,9 +282,13 @@ class OaEvent
     /**
      * @param $pricingInfo
      */
-    public function setPricingInfo($pricingInfo='')
+    public function setPricingInfo($pricingInfo)
     {
+        if (null === $pricingInfo) {
+            $pricingInfo = '';
+        }
         $this->pricingInfo = $pricingInfo;
+        return $this;
     }
 
     /**
@@ -270,6 +305,7 @@ class OaEvent
     public function setEvtDates(array $evtDates)
     {
         $this->evtDates = $evtDates;
+        return $this;
     }
 
 

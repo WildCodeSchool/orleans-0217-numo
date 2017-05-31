@@ -140,6 +140,60 @@ class ApiOpenAgenda
 //        }
     }
 
+    private function convertApi($event)
+    {
+        $newEvent = new OaEvent;
+        $newEvent
+            ->setId($event->uid)
+            ->setStatus(99);
+        $link = 'http://openagenda.com/'.$this->getAgendaSlug().'/event/'.end(explode('/', $event->link));
+        $newEvent
+            ->setLink($link)
+            ->setImage($event->image)
+            ->setTitle($event->title->fr)
+            ->setDescription($event->description->fr)
+            ->setFreeText($event->freetext->fr)
+            ->setTags($event->tags->fr)
+            ->setPlacename($event->locations[0]->placename)
+            ->setAddress($event->locations[0]->address)
+            ->setLatitude($event->locations[0]->latitude)
+            ->setLongitude($event->locations[0]->longitude)
+            ->setTicketLink($event->locations[0]->ticketLink)
+            ->setPricingInfo($event->locations[0]->pricingInfo->fr);
+        $oaDates = [];
+        foreach ($event->location[0]->dates as $evtD) {
+            $oaDates[] = ['evtDate' => $evtD->date, 'timeStart' => $evtd->timeStart, 'timeEnd' => $evtd->timeEnd]; // AAAA-MM-DD HH:MM:SS
+        }
+        $newEvent->setEvtDates($oaDates);
+        return $newEvent;
+    }
+
+    private function convertJson($event)
+    {
+        $newEvent = new OaEvent();
+        $newEvent
+            ->setId($event->uid)
+            ->setStatus(99)
+            ->setLink($event->canonicalUrl)
+            ->setImage($event->image)
+            ->setTitle($event->title->fr)
+            ->setDescription($event->description->fr)
+            ->setFreeText($event->longDescription->fr)
+            ->setTags(implode(', ', $event->keywords->fr))
+            ->setPlacename($event->locationName)
+            ->setAddress($event->address)
+            ->setLatitude($event->latitude)
+            ->setLongitude($event->longitude)
+            ->setTicketLink($event->registrationUrl)
+            ->setPricingInfo($event->conditions->fr);
+        $oaDates = [];
+        foreach ($event->timings as $evtD) {
+            $oaDates[] = ['evtDate' => substr($evtD->start,0,10), 'timeStart' => substr($evtD->start,11,8), 'timeEnd' => substr($evtD->end,11,8)]; // AAAA-MM-DD HH:MM:SS
+        }
+        $newEvent->setEvtDates($oaDates);
+        return $newEvent;
+    }
+
     public function getEventList(array $options=[], $api=true) : array
     {
         if ($api) {
@@ -171,60 +225,18 @@ class ApiOpenAgenda
             $eventList = [];
             if ($api) {
                 foreach ($data as $event) {
-                    $newEvent = new OaEvent();
-                    $newEvent->setId($event->uid);
-                    $newEvent->setStatus(99);
-                    $link = 'http://openagenda.com/'.$this->getAgendaSlug().'/event/'.end(explode('/', $event->link));
-                    $newEvent->setLink($link);
-                    $newEvent->setImage($event->image);
-                    $newEvent->setTitle($event->title->fr);
-                    $newEvent->setDescription($event->description->fr);
-                    $newEvent->setFreeText($event->freetext->fr);
-                    $newEvent->setTags($event->tags->fr);
-                    $newEvent->setPlacename($event->locations[0]->placename);
-                    $newEvent->setAddress($event->locations[0]->address);
-                    $newEvent->setLatitude($event->locations[0]->latitude);
-                    $newEvent->setLongitude($event->locations[0]->longitude);
-                    $newEvent->setTicketLink($event->locations[0]->ticketLink);
-                    $newEvent->setPricingInfo($event->locations[0]->pricingInfo->fr);
-                    $oaDates = [];
-                    foreach ($event->location[0]->dates as $evtD) {
-                        $oaDates[] = ['evtDate' => $evtD->date, 'timeStart' => $evtd->timeStart, 'timeEnd' => $evtd->timeEnd]; // AAAA-MM-DD HH:MM:SS
-                    }
-                    $newevent->setEvtDates($oaDates);
-                    $eventList[] = $newEvent;
+                    $eventList[] = $this->convertApi($event);
                 }
-
             } else {
                 foreach ($data as $event) {
-                    $newEvent = new OaEvent();
-                    $newEvent->setId($event->uid);
-                    $newEvent->setStatus(99);
-                    $newEvent->setLink($event->canonicalUrl);
-                    $newEvent->setImage($event->image);
-                    $newEvent->setTitle($event->title->fr);
-                    $newEvent->setDescription($event->description->fr);
-                    $newEvent->setFreeText($event->longDescription->fr);
-                    $newEvent->setTags(implode(', ', $event->keywords->fr));
-                    $newEvent->setPlacename($event->locationName);
-                    $newEvent->setAddress($event->address);
-                    $newEvent->setLatitude($event->latitude);
-                    $newEvent->setLongitude($event->longitude);
-                    $newEvent->setTicketLink($event->registrationUrl);
-                    $newEvent->setPricingInfo($event->conditions->fr);
-                    $oaDates = [];
-                    foreach ($event->timings as $evtD) {
-                        $oaDates[] = ['evtDate' => substr($evtD->start,0,10), 'timeStart' => substr($evtD->start,11,8), 'timeEnd' => substr($evtD->end,11,8)]; // AAAA-MM-DD HH:MM:SS
-                    }
-                    $newEvent->setEvtDates($oaDates);
-                    $eventList[] = $newEvent;
+                    $eventList[] = $this->convertJson($event);
                 }
             }
             return $eventList;
         }
     }
 
-    public function getEvent(int $uid, $api)
+    public function getEvent(int $uid, $api=true)
     {
         if ($api) {
             // --- version avec l'api -------------------------------------------
@@ -241,9 +253,9 @@ class ApiOpenAgenda
             return false;
         } else {
             if ($api) {
-                return $data;
+                return $this->convertApi($data);
             } else {
-                return $data[0];
+                return $this->convertJson($data[0]);
             }
         }
     }

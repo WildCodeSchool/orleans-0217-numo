@@ -3,6 +3,7 @@
 namespace NumoBundle\Controller;
 
 use NumoBundle\Entity\Event;
+use NumoBundle\Entity\OaEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -76,8 +77,7 @@ class EventController extends Controller
     public function listAction(Request $request)
     {
         $error = '';
-        // --- initialisation des parametres de lecture de la liste des evenements (***** provisoire *****)
-        // --- options pour lecture liste par défaut
+        // --- initialisation des parametres de lecture par defaut de la liste des evenements
         $options = [
             'search[passed]' => 0,  // pas de sélection des évènements passés
             'offset' => 0,          // début de la liste
@@ -90,8 +90,10 @@ class EventController extends Controller
             $options['oaq[to]'] = $_GET['enddate'];
             $options['search[passed]'] = 1;
         }
+        if (isset($_GET['passed'])) {
+            $options['search[passed]'] = $_GET['passed'];
+        }
         // ... autre(s) parametre(s) GET
-
 
 
         // --- lecture de la liste OpenAgenda
@@ -109,13 +111,13 @@ class EventController extends Controller
             $dbEvents = [];
         }
         // --- affichage
-        $params = [
+        $twigParams = [
             'agendaSlug' => $this->getApi()->getAgendaSlug(),
             'events' => $events,
             'dbEvents' => $dbEvents,
             'error' => $error,
         ];
-        return $this->render('NumoBundle:event:list.html.twig', $params);
+        return $this->render('NumoBundle:event:list.html.twig', $twigParams);
     }
 
     /**
@@ -147,17 +149,29 @@ class EventController extends Controller
     /**
      * Finds and displays a event entity.
      *
-     * @Route("/{id}", name="event_show")
+     * @Route("/{id}/{published}", name="event_show")
      * @Method("GET")
      */
-    public function showAction(Event $event)
+    public function showAction($id, $published)
     {
-//        $deleteForm = $this->createDeleteForm($event);
-//
-//        return $this->render('event/show.html.twig', array(
-//            'event' => $event,
-//            'delete_form' => $deleteForm->createView(),
-//        ));
+        $error = '';
+        if ($published) {
+            // --- lecture de l'évènement via json (2ème paramètre à false ci-dessous) sur OpenAgenda
+            $event = $this->getApi()->getEvent($id, false);
+            if (false === $event) {
+                $events = new OaEvent; // objet vide
+                $error = '(' . $this->getApi()->getErrorCode() . ') ' . $this->getApi()->getError();
+            }
+        } else {
+            // lecture dans la database
+            $event = $this->getEm()->getRepository('NumoBundle:Event')->getEvent($id);
+        }
+        $twigParams = [
+            'agendaSlug' => $this->getApi()->getAgendaSlug(),
+            'event' => $event,
+            'error' => $error,
+        ];
+        return $this->render('NumoBundle:event:show.html.twig', $twigParams);
     }
 
     /**
