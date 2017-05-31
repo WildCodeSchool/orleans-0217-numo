@@ -2,6 +2,8 @@ body {
     padding-top: 100px;
 }
 
+/*  -------------------- NAVBAR --------------------*/
+
 .navbar-default {
     background-color: transparent;
     border-color: rgba(34, 34, 34, 0.05);
@@ -88,6 +90,7 @@ body {
     }
 }
 
+/*  -------------------- HEADER --------------------*/
 
 header {
     margin-top:-1%;
@@ -260,4 +263,10 @@ fieldset[disabled] .btn-primary.active {
 }
 .section-heading {
     margin-top: 0;
+}
+
+/*  -------------------- FORM FOSUSER --------------------*/
+
+.input {
+    color: black;
 }
