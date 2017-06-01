@@ -1,8 +1,11 @@
 <?php
 
+// --- src/NumoBundle/Entity/Event.php ---
+
 namespace NumoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Event
@@ -38,12 +41,19 @@ class Event
     /**
      * @var string
      *
+     * @Assert\NotBlank(message=" - Le nom doit être renseigné.")
+     * @Assert\Length(
+     *      max = 100,
+     *      maxMessage = " - Le texte saisi ne doit pas excéder {{ limit }} caractères")
+     *
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank(message=" - Une description minimum doit être indiquée.")
      *
      * @ORM\Column(name="description", type="string", length=255)
      */
@@ -66,12 +76,22 @@ class Event
     /**
      * @var string
      *
+     * @Assert\NotBlank(message=" - Ce champ doit être renseigné.")
+     * @Assert\Length(
+     *      max = 100,
+     *      maxMessage = " - Le texte saisi ne doit pas excéder {{ limit }} caractères")
+     *
      * @ORM\Column(name="placename", type="string", length=255)
      */
     private $placename;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank(message=" - Une adresse valide doit être renseignée.")
+     * @Assert\Length(
+     *      max = 200,
+     *      maxMessage = " - Le texte saisi ne doit pas excéder {{ limit }} caractères")
      *
      * @ORM\Column(name="address", type="string", length=255)
      */

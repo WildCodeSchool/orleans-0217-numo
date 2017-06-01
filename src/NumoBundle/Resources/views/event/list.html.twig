@@ -24,7 +24,11 @@
                         <p>{{ event.description }}</p>
                         <p>
                             {% for date in event.evtDates %}
-                                {{ date.evtDate }} {{ date.timeStart }} {{ date.timeEnd }}<br />
+                                {% if startDate > '' and date.evtDate|slice(0, 10) >= startDate and date.evtDate|slice(0, 10) <= endDate %}
+                                    <span class="emphase">{{ date.evtDate }} {{ date.timeStart }} {{ date.timeEnd }}</span><br />
+                                {% else %}
+                                    {{ date.evtDate }} {{ date.timeStart }} {{ date.timeEnd }}<br />
+                                {% endif %}
                             {% endfor %}
                         </p>
                         <p><a href="{{ event.link }}" class="btn btn-primary" role="button" target="_blanc">Voir sur Open Agenda</a></p>

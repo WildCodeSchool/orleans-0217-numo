@@ -175,17 +175,17 @@ class ApiOpenAgenda
             ->setId($event->uid)
             ->setStatus(99)
             ->setLink($event->canonicalUrl)
-            ->setImage($event->image)
             ->setTitle($event->title->fr)
-            ->setDescription($event->description->fr)
-            ->setFreeText($event->longDescription->fr)
-            ->setTags(implode(', ', $event->keywords->fr))
             ->setPlacename($event->locationName)
             ->setAddress($event->address)
             ->setLatitude($event->latitude)
-            ->setLongitude($event->longitude)
-            ->setTicketLink($event->registrationUrl)
-            ->setPricingInfo($event->conditions->fr);
+            ->setLongitude($event->longitude);
+        if (isset($event->image)) $newEvent->setImage($event->image);
+        if (isset($event->description)) $newEvent->setImage($event->description->fr);
+        if (isset($event->longDescription)) $newEvent->setImage($event->longDescription->fr);
+        if (isset($event->keywords)) $newEvent->setImage($event->keywords->fr);
+        if (isset($event->registrationUrl)) $newEvent->setImage($event->registrationUrl);
+        if (isset($event->conditions)) $newEvent->setImage($event->conditions->fr);
         $oaDates = [];
         foreach ($event->timings as $evtD) {
             $oaDates[] = ['evtDate' => substr($evtD->start,0,10), 'timeStart' => substr($evtD->start,11,8), 'timeEnd' => substr($evtD->end,11,8)]; // AAAA-MM-DD HH:MM:SS

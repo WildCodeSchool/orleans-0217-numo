@@ -4,6 +4,7 @@ namespace NumoBundle\Controller;
 
 use NumoBundle\Entity\Event;
 use NumoBundle\Entity\OaEvent;
+use NumoBundle\Entity\EvtDate;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -76,7 +77,7 @@ class EventController extends Controller
      */
     public function listAction(Request $request)
     {
-        $error = '';
+        $error = $startDate = $endDate = '';
         // --- initialisation des parametres de lecture par defaut de la liste des evenements
         $options = [
             'search[passed]' => 0,  // pas de sélection des évènements passés
@@ -86,12 +87,17 @@ class EventController extends Controller
 
         // --- lecture des parametres GET pour prise en compte des selecteurs
         if (isset($_GET['startdate']) && isset($_GET['enddate'])) {
-            $options['oaq[from]'] = $_GET['startdate'];
-            $options['oaq[to]'] = $_GET['enddate'];
+            $startDate = $_GET['startdate'];
+            $options['oaq[from]'] = $startDate;
+            $endDate = $_GET['enddate'];
+            $options['oaq[to]'] = $endDate;
             $options['search[passed]'] = 1;
         }
         if (isset($_GET['passed'])) {
             $options['search[passed]'] = $_GET['passed'];
+        }
+        if (isset($_GET['id'])) {
+            $options['oaq[uids][]'] = $_GET['id'];
         }
         // ... autre(s) parametre(s) GET
 
@@ -116,6 +122,8 @@ class EventController extends Controller
             'events' => $events,
             'dbEvents' => $dbEvents,
             'error' => $error,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
         ];
         return $this->render('NumoBundle:event:list.html.twig', $twigParams);
     }
@@ -128,22 +136,21 @@ class EventController extends Controller
      */
     public function newAction(Request $request)
     {
-//        $event = new Event();
-//        $form = $this->createForm('NumoBundle\Form\EventType', $event);
-//        $form->handleRequest($request);
+        $error = '';
+        $event = new Event();
+        $evtDate0 = new EvtDate();
+        $event->getEvtDates()->add($evtDate0);
+        $form = $this->createForm('NumoBundle\Form\EventType', $event);
+        $form->handleRequest($request);
 //
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $em = $this->getDoctrine()->getManager();
-//            $em->persist($event);
-//            $em->flush();
-//
-//            return $this->redirectToRoute('event_show', array('id' => $event->getId()));
-//        }
-//
-//        return $this->render('event/new.html.twig', array(
-//            'event' => $event,
-//            'form' => $form->createView(),
-//        ));
+        if ($form->isSubmitted() && $form->isValid()) {
+        }
+        $twigParams = [
+            'event' => $event,
+            'error' => $error,
+            'form' => $form->createView(),
+        ];
+        return $this->render('NumoBundle:event:new.html.twig', $twigParams);
     }
 
     /**

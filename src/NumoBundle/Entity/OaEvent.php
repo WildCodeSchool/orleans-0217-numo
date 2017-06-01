@@ -2,25 +2,66 @@
 
 namespace NumoBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class OaEvent
 {
     private $id = 0;
     private $status = 0;
     private $link = '';
     private $image = '';
+
+    /**
+     * @var
+     * @Assert\NotBlank(message="Le nom doit être renseigné.")
+     * @Assert\Length(
+     *      max = 100,
+     *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
+     */
     private $title = '';
+
+    /**
+     * @var
+     * @Assert\NotBlank(message="Une description minimum doit être indiquée.")
+     */
     private $description = '';
+
     private $freeText = '';
+
     private $tags = '';
+
+    /**
+     * @var
+     * @Assert\NotBlank(message="Ce champ doit être renseigné.")
+     * @Assert\Length(
+     *      max = 100,
+     *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
+     */
     private $placename = '';
+
+    /**
+     * @var
+     * @Assert\NotBlank(message="Une adresse valide doit être renseignée.")
+     * @Assert\Length(
+     *      max = 200,
+     *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
+     */
     private $address = '';
+
     private $latitude = 0.0;
+
     private $longitude = 0.0;
+
     private $ticketLink = '';
+
     private $pricingInfo = '';
+
+    /**
+     * @var array
+     * structure $evtDates : chaque élément du tableau est un tableau asociatif de 3 éléments :
+     *     ['evtDate' => 'AAAA-MM-JJ', 'timeStart' => 'HH:MM:SS', 'timeEnd' => 'HH:MM:SS']
+     */
     private $evtDates = [];
-    // structure $evtDates : chaque élément du tableau est un tableau asociatif de 3 éléments :
-    //     ['evtDate' => 'AAAA-MM-JJ', 'timeStart' => 'HH:MM:SS', 'timeEnd' => 'HH:MM:SS']
 
     public function hydrate (array $properties)
     {

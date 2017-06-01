@@ -19,6 +19,14 @@ div.separation {
     height: 4px;
     background-color: #CCCCCC;
 }
+.emphase {
+    font-weight: bold;
+    color: blue;
+}
+.twigerror ul li {
+    display: inline;
+    color: red;
+}
 
 /* --- fin du rajout --- */
 
