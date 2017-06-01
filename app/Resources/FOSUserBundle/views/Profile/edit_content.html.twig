@@ -10,22 +10,76 @@
         <div class="header-content">
             <div class="header-content-inner">
 
-                <h2 id="homeHeading">Inscription</h2>
+                <h2 id="homeHeading">Modifier le profil</h2>
                 <hr>
+
+                <div style="margin-left: 160px">
+                {{ form_start(form, {
+                    'action': path('fos_user_profile_edit'),
+                    'attr': { 'class': 'fos_user_profile_edit' }}) }}
+
+                <div class="form-group">
+                    {{ form_label(form.name) }}
+                    <div class="col-sm-6">
+                        {{ form_widget(form.name) }}
+                    </div>
+                    {{ form_errors(form.name) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.firstname) }}
+                    <div class="col-sm-6">
+                        {{ form_widget(form.firstname) }}
+                    </div>
+                    {{ form_errors(form.firstname) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.email) }}
+                    <div class="col-sm-6">
+                        {{ form_widget(form.email) }}
+                    </div>
+                    {{ form_errors(form.email) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.description) }}
+                    <div class="col-sm-6">
+                        {{ form_widget(form.description) }}
+                    </div>
+                    {{ form_errors(form.description) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.imageUrl) }}
+                    <div class="col-sm-6">
+                        {{ form_widget(form.imageUrl) }}
+                    </div>
+                    {{ form_errors(form.imageUrl) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.current_password) }}
+                    <div class="col-sm-6">
+                        {{ form_widget(form.current_password) }}
+                    </div>
+                    {{ form_errors(form.current_password) }}
+                </div>
+
+                {{ form_rest(form) }}
+
+                <div class="col-sm-6 col-sm-offset-2 text-center">
+                    <input type="submit" value="{{ 'Valider'|trans }}" class="col-sm-offset-1 btn btn-default btn-xl sr-button"/>
+                </div>
+                {{ form_end(form) }}
+                </div>
 
             </div>
         </div>
     </header>
 
-{{ form_start(form, {
-    'action': path('fos_user_profile_edit'),
-    'attr': { 'class': 'fos_user_profile_edit' }}) }}
 
-    {{ form_widget(form) }}
 
-<div>
-    <input type="submit" value="{{ 'Editer'|trans }}" />
-</div>
-{{ form_end(form) }}
+
 
 {% endblock %}

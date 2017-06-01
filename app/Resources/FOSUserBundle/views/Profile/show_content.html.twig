@@ -25,7 +25,7 @@
     <a href="{{ path('fos_user_change_password') }}" class="btn btn-default">Modifier le mot de passe</a>
 
     {% if not is_granted('ROLE_ADHERENT') %}
-        <a href="{{ path('/adherer') }}" class="btn btn-default">Devenir Adhérent</a>
+        <a href="" class="btn btn-default">Devenir Adhérent</a>
     {% endif %}
 
 {% endblock %}

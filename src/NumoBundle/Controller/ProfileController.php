@@ -15,32 +15,14 @@ use FOS\UserBundle\Form\Factory\FactoryInterface;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
-use NumoBundle\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
-class ProfileController extends BaseController
+class ProfileController extends \FOS\UserBundle\Controller\ProfileController
 {
-    /**
-     * Show the user.
-     */
-    public function showAction()
-    {
-        $user = $this->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
-            throw new AccessDeniedException('This user does not have access to this section.');
-        }
-
-        return $this->render('@FOSUser/Profile/show.html.twig', array(
-            'user' => $user,
-        ));
-    }
-
     /**
      * Edit the user.
      *
@@ -51,6 +33,7 @@ class ProfileController extends BaseController
     public function editAction(Request $request)
     {
         $user = $this->getUser();
+
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
@@ -73,8 +56,6 @@ class ProfileController extends BaseController
 
         $form->handleRequest($request);
 
-//        $image = new User();
-
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var $userManager UserManagerInterface */
             $userManager = $this->get('fos_user.user_manager');
@@ -83,17 +64,6 @@ class ProfileController extends BaseController
             $dispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_SUCCESS, $event);
 
             $userManager->updateUser($user);
-
-//            $file = $image->getImageUrl();
-//
-//            $fileName = md5(uniqid()).'.'.$file->guessExtension();
-//
-//            $file->move(
-//                $this->getParameter('images_membres_directory'),
-//                $fileName
-//            );
-
-//            $image->setImageUrl($fileName);
 
             if (null === $response = $event->getResponse()) {
                 $url = $this->generateUrl('fos_user_profile_show');
