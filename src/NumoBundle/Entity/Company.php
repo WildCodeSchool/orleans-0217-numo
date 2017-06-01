@@ -3,6 +3,7 @@
 namespace NumoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * company
@@ -63,6 +64,14 @@ class Company
      */
     private $imageUrl;
 
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @Assert\NotBlank(message="Please, upload the product brochure as a PDF file.")
+     * @Assert\File(mimeTypes={ "application/pdf" })
+     */
+
+    private $pdf;
 
     /**
      * Get id
@@ -217,5 +226,23 @@ class Company
     {
         return $this->imageUrl;
     }
+
+    /**
+     * @return string
+     */
+    public function getPdf(): string
+    {
+        return $this->pdf;
+    }
+
+    /**
+     * @param string $pdf
+     */
+    public function setPdf(string $pdf)
+    {
+        $this->pdf = $pdf;
+    }
+
+
 }
 

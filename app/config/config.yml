@@ -89,12 +89,50 @@ easy_admin:
     entities:
         User:
             class: NumoBundle\Entity\User
-            #list:
-                #fields:
-                    #- name
-                    #- firstname
+            label: 'Utilisateurs'
+            list:
+                title: 'Utilisateurs'
+                fields:
+                    - username
+                    - email
+                    - enabled
+                    - lastLogin
+                form:
+                    - username
+                    - email
+                    - enabled
+                    - lastLogin
+
         Company:
             class: NumoBundle\Entity\Company
+            label: 'Association'
+            list:
+                title: 'Association'
+                fields:
+                    - contactEmail
+                    - city
+                    - postalCode
+                    - adress
+                    - phone
+                    - imageUrl
+                    - pdf
+
+            form:
+                fields:
+                    - contactEmail
+                    - city
+                    - postalCode
+                    - adress
+                    - phone
+                    - imageUrl
+                    - pdf
 
         PageContent:
             class: NumoBundle\Entity\PageContent
+            label: 'Contenu'
+            list:
+                title: 'Contenu'
+                fields:
+                    - title
+                    - content
+                    - lastModif

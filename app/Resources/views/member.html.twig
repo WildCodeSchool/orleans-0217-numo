@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+{% block body %}
+    <div class="container member">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 text-center">
+                <h2 class="section-heading">{{ content.title }}</h2>
+                <hr class="light">
+                <p class="text-faded">{{ content.content }}</p>
+                <a href="img/" class="page-scroll btn btn-default btn-xl sr-button btn-rib" download="Fiche Technique">Télécharger le RIB de l'association</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
