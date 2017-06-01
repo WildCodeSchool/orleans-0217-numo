@@ -1,6 +1,10 @@
 
 /* --- web/js/scanaddress.js -- */
 
+function clearHtml(id) {
+    $('#'+id).html('');
+}
+
 function scanAddress() {
     var address = $('#numobundle_event_address').val().trim();
     if (address.length > 0) {
