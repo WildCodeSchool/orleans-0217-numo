@@ -82,6 +82,8 @@
                     {#{{ form_errors(form.description) }}#}
                 {#</div>#}
 
+                    {{ form_rest(form) }}
+
                 <div class="col-sm-6 col-sm-offset-2 text-center">
                     <input type="submit" class="col-sm-offset-1 btn btn-default btn-xl sr-button" value="{{ 'registration.submit'|trans }}" />
                 </div>

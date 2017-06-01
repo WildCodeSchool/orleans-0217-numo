@@ -1,8 +1,21 @@
 {% extends 'layout.html.twig' %}
 
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% block body %}
+
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+
+                <h2 id="homeHeading">Inscription</h2>
+                <hr>
+
+            </div>
+        </div>
+    </header>
 
 {{ form_start(form, {
     'action': path('fos_user_profile_edit'),
