@@ -11,7 +11,8 @@
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top">LOGO</a>
+                    <a class="navbar-brand page-scroll" href="/index">  <img src="img/logotrans.png" class="img-responsive" alt="" width="100px">
+                    </a>
 
             </div>
 
@@ -19,7 +20,8 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a class="page-scroll" href="#about">Association</a>
+                            <a class="page-scroll" href="/association">Association</a>
+
                         </li>
                         <li>
                             <a class="page-scroll" href="{{ path('event_list') }}">Agenda</a>
@@ -28,7 +30,7 @@
                             <a class="page-scroll" href="#portfolio">Membres</a>
                         </li>
                         <li>
-                            <a class="page-scroll" href="#contact">Contact</a>
+                            <a class="page-scroll" href="/contact">Contact</a>
                         </li>
                         <li>
                             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
@@ -44,7 +46,7 @@
                                 <a href="/app_dev.php/login" class="btn btn-default">Connexion</a>
                         </li>
                         <li>
-                                <a href="/app_dev.php/register" class="btn btn-default inscription">S'inscrire</a>
+                                <a href="/register" class="btn btn-default inscription">S'inscrire</a>
                         </li>
                             {%endif%}
                     </ul>
@@ -61,26 +63,72 @@
 
 {% block footer %}
     <footer>
-            <div class="footer-bottom text-center visible-xs visible-sm">
-            </div>
-            <div class="footer-last text-center">
-                <p class="footer-legal">
-                    2017 © NUM'O - Site Web crée par David, Fanny, Patrick et Sarah de la Wild Code School Orléans
-                    <br/>
-                    <a data-toggle="modal" data-target="#legal">Mentions légales</a>
-                </p>
-            </div>
-            <div class="modal fade" id="legal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Informations légales</h4>
-                        </div>
-                        <div class="modal-body">
-                        </div>
+
+        <div class="footer-last text-center">
+            <p class="footer-legal">
+                2017 © NUM'O - Site Web crée par David, Fanny, Patrick et Sarah de la Wild Code School Orléans
+                <br/>
+                <a data-toggle="modal" data-target="#legal">Mentions légales</a>
+            </p>
+        </div>
+        <div class="modal fade" id="legal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Informations légales</h4>
+                    </div>
+                    <div class="modal-body">
                     </div>
                 </div>
             </div>
+        </div>
+        {#<div class="container-fluid">#}
+
+            {#<div class="row text-center">#}
+                    {#<h3 class="margin">Conctacter nous</h3>#}
+            {#</div>#}
+
+            {#<div class="row">#}
+                {#<div class="col-lg-offset-3 col-lg-3">#}
+                    {#<img src="img/tel.png" class="img-responsive" alt="" width="100px">#}
+                {#</div>#}
+                {#<div class="col-lg-offset-2 col-lg-3">#}
+                    {#<img src="img/mail.png" class="img-responsive" alt="" width="100px">#}
+                {#</div>#}
+            {#</div>#}
+            {#<div class="row">#}
+                {#<div class="col-lg-offset-4 col-lg-2">#}
+                    {#<img src="img/fb.png" class="img-responsive" alt="" width="100px">#}
+                {#</div>#}
+                {#<div class="col-lg-offset-1 col-lg-2">#}
+                    {#<img src="img/twitter.png" class="img-responsive" alt="" width="100px">#}
+                {#</div>#}
+            {#</div>#}
+            {#<div class="footer-bottom text-center visible-xs visible-sm">#}
+            {#</div>#}
+            {#<div class="row">#}
+
+                {#<div class="footer-last text-center">#}
+                    {#<p class="footer-legal">#}
+                        {#2017 © NUM'O - Site Web crée par David, Fanny, Patrick et Sarah de la Wild Code School Orléans#}
+                        {#<br/>#}
+                        {#<a data-toggle="modal" data-target="#legal">Mentions légales</a>#}
+                    {#</p>#}
+                {#</div>#}
+                {#<div class="modal fade" id="legal" tabindex="-1" role="dialog">#}
+                    {#<div class="modal-dialog" role="document">#}
+                        {#<div class="modal-content">#}
+                            {#<div class="modal-header">#}
+                                {#<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>#}
+                                {#<h4 class="modal-title">Informations légales</h4>#}
+                            {#</div>#}
+                            {#<div class="modal-body">#}
+                            {#</div>#}
+                        {#</div>#}
+                    {#</div>#}
+                {#</div>#}
+            {#</div>#}
+        {#</div>#}
     </footer>
 {% endblock %}

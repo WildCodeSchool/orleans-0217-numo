@@ -16,7 +16,7 @@ class MemberController extends Controller
 {
 
     /**
-     * @Route("/adherer", name="contact")
+     * @Route("/adherer", name="adherer")
      */
     public function indexMember()
     {
