@@ -8,16 +8,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Route("/contact")
+ */
 class ContactController extends DefaultController
 {
-
-
-
-
     /**
-     * @Route("/contact", name="contact")
+     * @Route("/", name="contact")
      */
-
     public function contactAction(Request $request)
     {
         $contact = new Contact();

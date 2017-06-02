@@ -1,3 +1,4 @@
+
 /*.navbar-default {*/
     /*background-color: transparent;*/
     /*border-color: rgba(34, 34, 34, 0.05);*/
@@ -259,6 +260,7 @@
 /*}*/
 
 
+
 /* --- rajoute par Patrick --- */
 body {
     padding-top: 50px;
@@ -447,5 +449,14 @@ footer {
 .footer{
     padding-bottom: 80px;
 }
-
+.section-heading {
+    margin-top: 0;
+}
+.member{
+    margin-top: 7%;
+    margin-bottom: 10%;
+}
+.btn-rib{
+    margin-top: 5%;
+}
 
