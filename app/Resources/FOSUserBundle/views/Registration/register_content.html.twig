@@ -10,13 +10,15 @@
         <div class="header-content">
             <div class="header-content-inner">
 
-                <h2 id="homeHeading">Modifier le profil</h2>
+                <h2 id="homeHeading">Inscription</h2>
                 <hr>
 
                 <div style="margin-left: 160px">
                 {{ form_start(form, {
-                    'action': path('fos_user_profile_edit'),
-                    'attr': { 'class': 'fos_user_profile_edit' }}) }}
+                    'method': 'post',
+                    'action': path('fos_user_registration_register'),
+                    'attr': {'class': 'fos_user_registration_register'}}) }}
+
 
                 <div class="form-group">
                     {{ form_label(form.name) }}
@@ -43,6 +45,22 @@
                 </div>
 
                 <div class="form-group">
+                    {{ form_label(form.plainPassword.first) }}
+                    <div class="col-sm-6">
+                        {{ form_widget(form.plainPassword.first) }}
+                    </div>
+                    {{ form_errors(form.plainPassword.first) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.plainPassword.second) }}
+                    <div class="col-sm-6">
+                        {{ form_widget(form.plainPassword.second) }}
+                    </div>
+                    {{ form_errors(form.plainPassword.second) }}
+                </div>
+
+                <div class="form-group">
                     {{ form_label(form.description) }}
                     <div class="col-sm-6">
                         {{ form_widget(form.description) }}
@@ -58,27 +76,23 @@
                     {{ form_errors(form.imageUrl) }}
                 </div>
 
-                <div class="form-group">
-                    {{ form_label(form.current_password) }}
-                    <div class="col-sm-6">
-                        {{ form_widget(form.current_password) }}
-                    </div>
-                    {{ form_errors(form.current_password) }}
-                </div>
+                {#<div class="form-group">#}
+                    {#{{ form_label(form.description, 'Description', {'label_attr': {'class': 'col-sm-3 col-sm-offset-3'}}) }}#}
+                    {#{{ form_widget(form.description, {'attr': {'class': 'col-sm-3 form-control'}}) }}#}
+                    {#{{ form_errors(form.description) }}#}
+                {#</div>#}
 
-                {{ form_rest(form) }}
+                    {{ form_rest(form) }}
 
                 <div class="col-sm-6 col-sm-offset-2 text-center">
-                    <input type="submit" value="{{ 'Valider'|trans }}" class="col-sm-offset-1 btn btn-default btn-xl sr-button"/>
-                </div>
-                {{ form_end(form) }}
+                    <input type="submit" class="col-sm-offset-1 btn btn-default btn-xl sr-button" value="{{ 'registration.submit'|trans }}" />
                 </div>
 
+                {{ form_end(form) }}
+                </div>
             </div>
         </div>
     </header>
-
-
 
 
 
