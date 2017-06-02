@@ -8,6 +8,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    pdf_directory: '%kernel.root_dir%/web/img/upload'
 
 framework:
     translator: ~
@@ -81,58 +82,3 @@ twig:
     form:
         resources: ['bootstrap_3_layout.html.twig']
 
-easy_admin:
-    site_name: 'NUMO.FR'
-    design:
-        brand_color: '#333333'
-        color_scheme: 'dark'
-    entities:
-        User:
-            class: NumoBundle\Entity\User
-            label: 'Utilisateurs'
-            list:
-                title: 'Utilisateurs'
-                fields:
-                    - username
-                    - email
-                    - enabled
-                    - lastLogin
-                form:
-                    - username
-                    - email
-                    - enabled
-                    - lastLogin
-
-        Company:
-            class: NumoBundle\Entity\Company
-            label: 'Association'
-            list:
-                title: 'Association'
-                fields:
-                    - contactEmail
-                    - city
-                    - postalCode
-                    - adress
-                    - phone
-                    - imageUrl
-                    - pdf
-
-            form:
-                fields:
-                    - contactEmail
-                    - city
-                    - postalCode
-                    - adress
-                    - phone
-                    - imageUrl
-                    - pdf
-
-        PageContent:
-            class: NumoBundle\Entity\PageContent
-            label: 'Contenu'
-            list:
-                title: 'Contenu'
-                fields:
-                    - title
-                    - content
-                    - lastModif
