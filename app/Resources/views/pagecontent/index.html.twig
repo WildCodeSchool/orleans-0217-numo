@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pagecontents list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Lastmodif</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pageContent in pageContents %}
+            <tr>
+                <td><a href="{{ path('pagecontent_show', { 'id': pageContent.id }) }}">{{ pageContent.id }}</a></td>
+                <td>{{ pageContent.title }}</td>
+                <td>{{ pageContent.content }}</td>
+                <td>{% if pageContent.lastModif %}{{ pageContent.lastModif|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('pagecontent_show', { 'id': pageContent.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('pagecontent_edit', { 'id': pageContent.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pagecontent_new') }}">Create a new pageContent</a>
+        </li>
+    </ul>
+{% endblock %}
