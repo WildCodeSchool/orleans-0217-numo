@@ -1,4 +1,17 @@
+# --- src/NumoBundle/Resources/config/services.yml ---
+
 services:
-#    numo.example:
-#        class: NumoBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    numo.curl:
+        class: NumoBundle\Services\Curl
+
+    numo.getfilecontents:
+        class: NumoBundle\Services\GetFileContents
+
+    numo.apiopenagenda:
+        class: NumoBundle\Services\ApiOpenAgenda
+        arguments:
+            - "@numo.curl"
+            - "@numo.getfilecontents"
+            - %agenda_slug%
+            - %public_key%
+            - %secret_key%

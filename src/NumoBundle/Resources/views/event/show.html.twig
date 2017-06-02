@@ -1,0 +1,45 @@
+{# --- src/NumoBundle/Resources/views/event/show.html.twig --- #}
+
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <div class="row">
+
+        {% if error == '' %}
+
+            <div class="col-xs-6 col-xs-offset-3">
+                <div class="thumbnail">
+                    <img class="thumbnail" src="{{ event.image }}" alt="{{ event.title }}" />
+                    <div class="caption">
+                        <h3>{{ event.title }} {{ event.id }}</h3>
+                        <p>{{ event.description }}</p>
+                        <p>{{ event.freeText }}</p>
+                        <p>{{ event.address }}</p>
+                        <p>
+                            {% for date in event.evtDates %}
+                                {{ date.evtDate }} {{ date.timeStart }} {{ date.timeEnd }}<br />
+                            {% endfor %}
+                        </p>
+                        <p>{{ event.pricingInfo }}</p>
+                        {% if event.ticketLink > '' %}
+                            <p><a href="{{ event.ticketLink }}" class="btn btn-primary" role="button" target="_blanc">Accéder à la billetterie</a></p>
+                        {% endif %}
+                        <p><a href="{{ event.link }}" class="btn btn-primary" role="button" target="_blanc">Voir sur Open Agenda</a></p>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+
+            <div class="col-xs-12 erreur text-center">
+                {{ erreur }}
+            </div>
+
+        {% endif %}
+
+        <div class="col-xs-12 erreur text-center">
+            <p><a href="{{ path('event_list') }}" class="btn btn-primary" role="button" target="_blanc">Retour à la liste</a></p>
+        </div>
+
+    </div>
+{% endblock %}
