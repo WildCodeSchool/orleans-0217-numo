@@ -7,21 +7,22 @@
     <div class="fos_user_user_show">
         <p>{{ 'Username'|trans }}: {{ user.username }}</p>
         <p>{{ 'Email'|trans }}: {{ user.email }}</p>
-        <p>Image:</p>
-        <p>Nom:</p>
-        <p>Prenom:</p>
-        <p>Introduction:</p>
+        <img src="{{ asset('img/person_placeholder.png') }}" style="height: 70px">
+        <p>Nom: {{ user.name }}</p>
+        <p>Prenom: {{ user.firstname }}</p>
+        <p>Dedcription: {{ user.description }}</p>
+
         {% if is_granted('ROLE_ADHERENT') %}
-            <p>Présentation:</p>
-            <p>Telephone:</p>
-            <p>Adresse:</p>
-            <p>Site web:</p>
-            <p>Reseaux sociaux:</p>
+            <p>Présentation: {{ user.freeText }}</p>
+            <p>Telephone: {{ user.phone }}</p>
+            <p>Adresse: {{ user.adress }}</p>
+            <p>Site web: {{ user.webSite }}</p>
+            <p>Reseaux sociaux: {{ user.snLink }}</p>
         {% endif %}
     </div>
 
-    <a href="/app_dev.php/profile/edit" class="btn btn-default">Editer</a>
-    <a href="/app_dev.php/change-password" class="btn btn-default">Modifier le mot de passe</a>
+    <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-default">Editer</a>
+    <a href="{{ path('fos_user_change_password') }}" class="btn btn-default">Modifier le mot de passe</a>
 
     {% if not is_granted('ROLE_ADHERENT') %}
         <a href="" class="btn btn-default">Devenir Adhérent</a>

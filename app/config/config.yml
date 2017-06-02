@@ -7,7 +7,8 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: fr
+    images_membres_directory: '%kernel.root_dir%/web/img/membres'
 
 framework:
     translator: ~
@@ -76,6 +77,12 @@ fos_user:
     from_email:
         address: "%mailer_user%"
         sender_name: "%mailer_user%"
+    registration:
+        form:
+            type: NumoBundle\Form\RegistrationType
+    profile:
+        form:
+            type: NumoBundle\Form\ProfileType
 
 twig:
     form:
