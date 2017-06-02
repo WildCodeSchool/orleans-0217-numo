@@ -125,3 +125,4 @@ class PageContent
         return $this->lastModif;
     }
 }
+
