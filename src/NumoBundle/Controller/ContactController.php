@@ -10,10 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ContactController extends DefaultController
 {
-
-
-
-
     /**
      * @Route("/contact", name="contact")
      */
