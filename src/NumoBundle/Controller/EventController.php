@@ -116,6 +116,7 @@ class EventController extends Controller
         } else {
             $dbEvents = [];
         }
+
         // --- affichage
         $twigParams = [
             'agendaSlug' => $this->getApi()->getAgendaSlug(),
