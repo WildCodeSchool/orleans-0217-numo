@@ -12,6 +12,7 @@ group:
 security:
     login:
         username: 'Nom d''utilisateur'
+        email: 'Email'
         password: 'Mot de passe'
         remember_me: 'Se souvenir de moi'
         submit: Connexion
