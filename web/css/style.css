@@ -1,3 +1,4 @@
+
 /* --- rajoute par Patrick --- */
 body {
     padding-top: 90px;
@@ -30,6 +31,8 @@ div.separation {
 
 /* --- fin du rajout --- */
 
+
+/*  -------------------- NAVBAR --------------------*/
 
 .navbar-default {
     background-color: transparent;
@@ -117,6 +120,7 @@ div.separation {
     }
 }
 
+/*  -------------------- HEADER --------------------*/
 
 header {
     margin-top:-1%;
@@ -290,3 +294,11 @@ fieldset[disabled] .btn-primary.active {
 .section-heading {
     margin-top: 0;
 }
+.member{
+    margin-top: 7%;
+    margin-bottom: 10%;
+}
+.btn-rib{
+    margin-top: 5%;
+}
+
