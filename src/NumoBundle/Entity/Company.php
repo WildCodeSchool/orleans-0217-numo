@@ -228,20 +228,21 @@ class Company
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getPdf(): string
+    public function getPdf()
     {
         return $this->pdf;
     }
 
-    /**
-     * @param string $pdf
-     */
-    public function setPdf(string $pdf)
+
+    public function setPdf($pdf)
     {
         $this->pdf = $pdf;
+        return $this;
     }
+
+
 
 
 }
