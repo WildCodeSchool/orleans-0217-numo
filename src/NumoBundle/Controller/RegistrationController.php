@@ -51,7 +51,7 @@ class RegistrationController extends BaseController
 
         $form->handleRequest($request);
 
-//        $image = new User();
+
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
@@ -61,16 +61,19 @@ class RegistrationController extends BaseController
 
                 $userManager->updateUser($user);
 
+//                $em = $this->getDoctrine()->getManager();
+//
 //                $file = $image->getImageUrl();
 //
-//                $fileName = md5(uniqid()).'.'.$file->guessExtension();
 //
+//                $fileName = md5(uniqid()).'.'.$file->guessExtension();
 //                $file->move(
-//                    $this->getParameter('images_membres_directory'),
+//                    $this->getParameter('brochures_directory'),
 //                    $fileName
 //                );
-//
 //                $image->setImageUrl($fileName);
+//                $em->persist($image);
+//                $em->flush();
 
                 if (null === $response = $event->getResponse()) {
                     $url = $this->generateUrl('fos_user_registration_confirmed');
