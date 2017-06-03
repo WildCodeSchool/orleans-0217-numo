@@ -58,6 +58,10 @@
                     {{ form_errors(form.imageUrl) }}
                 </div>
 
+                 {% if is_granted('ROLE_ADHERENT') %}
+
+                 {% endif %}
+
                 <div class="form-group">
                     {{ form_label(form.current_password) }}
                     <div class="col-sm-6">
