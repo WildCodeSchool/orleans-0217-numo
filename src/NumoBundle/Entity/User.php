@@ -78,6 +78,62 @@ class User extends BaseUser
     protected $trust;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Entrez le lien de votre site web.", groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=3,
+     *     max=255,
+     *     minMessage="Le lien est trop court.",
+     *     maxMessage="Le lien est trop long.",
+     *     groups={"Registration", "Profile"}
+     * )
+     */
+    protected $webSite;
+
+    /**
+     * @ORM\Column(type="text", length=5550)
+     *
+     * @Assert\NotBlank(message="Entrez votre description.", groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=3,
+     *     max=5550,
+     *     minMessage="Le texte est trop court.",
+     *     maxMessage="Le texte est trop long.",
+     *     groups={"Registration", "Profile"}
+     * )
+     */
+    protected $freeText;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     *
+     * @Assert\NotBlank(message="Entrez votre numéro de téléphone.", groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=3,
+     *     max=50,
+     *     minMessage="Le numéro est trop court.",
+     *     maxMessage="Le numéro est trop long.",
+     *     groups={"Registration", "Profile"}
+     * )
+     */
+    protected $phone;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Adress", inversedBy="users")
+     *
+     */
+    protected $adress;
+
+    /**
+     * @ORM\OneToMany(targetEntity="SnLink", mappedBy="user")
+     *
+     */
+    protected $snLink;
+
+
+
+    /**
      * @return mixed
      */
     public function getDescription()
