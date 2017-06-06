@@ -4,6 +4,7 @@
 namespace NumoBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,6 +20,7 @@ class RegistrationType extends AbstractType
         $builder->add('firstname', TextType::class, array('label' => 'Prénom'));
         $builder->add('description', TextareaType::class, array('label' => 'Description'));
         $builder->add('imageUrl',FileType::class, array('label' => 'Image'));
+        $builder->add('trust',HiddenType::class);
         $builder->remove('username');
     }
 

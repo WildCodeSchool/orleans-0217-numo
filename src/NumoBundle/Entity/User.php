@@ -70,7 +70,7 @@ class User extends BaseUser
     protected $imageUrl;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 0})
      *
      * @Assert\NotBlank(groups={"Registration", "Profile"})
      */
