@@ -19,7 +19,6 @@ class RegistrationType extends AbstractType
         $builder->add('firstname', TextType::class, array('label' => 'Prénom'));
         $builder->add('description', TextareaType::class, array('label' => 'Description'));
         $builder->add('imageUrl',FileType::class, array('label' => 'Image'));
-//        $builder->remove('username');
     }
 
     public function getParent()
