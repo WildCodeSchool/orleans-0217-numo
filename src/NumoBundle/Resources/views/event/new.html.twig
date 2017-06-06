@@ -2,6 +2,11 @@
 
 {% extends 'layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
+{% endblock %}
+
 {% block body %}
     <div class="row">
         <div class="col-xs-12 text-center">
@@ -11,7 +16,7 @@
 
     {% if error == '' %}
 
-        {{ form_start(form) }}
+        {{ form_start(form, {'attr': {'style': 'form-horizontal'}}) }}
 
         <div class="row ecart-haut">
             <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-group">
