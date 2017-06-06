@@ -158,7 +158,14 @@ class User extends BaseUser
     }
 
 
+    public function setEmail($email)
+    {
+        $email = is_null($email) ? '' : $email;
+        parent::setEmail($email);
+        $this->setUsername($email);
 
+        return $this;
+    }
 
     public function __construct()
     {
