@@ -113,15 +113,15 @@ header .header-content .header-content-inner h1 {
     margin-bottom: 0;
     font-size: 30px;
 }
-    header .header-content .header-content-inner hr {
-        margin: 30px auto;
-    }
-    header .header-content .header-content-inner p {
-        font-weight: 300;
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 16px;
-        margin-bottom: 50px;
-    }
+header .header-content .header-content-inner hr {
+    margin: 30px auto;
+}
+header .header-content .header-content-inner p {
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    margin-bottom: 50px;
+}
 @media (min-width: 768px) {
     header {
         min-height: 100%;
