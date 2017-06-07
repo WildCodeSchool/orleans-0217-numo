@@ -81,9 +81,11 @@ fos_user:
     registration:
         form:
             type: NumoBundle\Form\RegistrationType
+            validation_groups: [NumoRegistration]
     profile:
         form:
             type: NumoBundle\Form\ProfileType
+            validation_groups: [NumoProfile]
 
 twig:
     form:
