@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/contact")
- **/
+ */
 
 
 class ContactController extends DefaultController
