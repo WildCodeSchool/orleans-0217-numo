@@ -76,11 +76,7 @@
                     {{ form_errors(form.imageUrl) }}
                 </div>
 
-                {#<div class="form-group">#}
-                    {#{{ form_label(form.description, 'Description', {'label_attr': {'class': 'col-sm-3 col-sm-offset-3'}}) }}#}
-                    {#{{ form_widget(form.description, {'attr': {'class': 'col-sm-3 form-control'}}) }}#}
-                    {#{{ form_errors(form.description) }}#}
-                {#</div>#}
+                {{ form_widget(form.trust, {'value' : '0'}) }}
 
                     {{ form_rest(form) }}
 
