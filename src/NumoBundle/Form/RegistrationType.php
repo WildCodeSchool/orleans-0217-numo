@@ -18,8 +18,8 @@ class RegistrationType extends AbstractType
     {
         $builder->add('name', TextType::class, array('label' => 'Nom'));
         $builder->add('firstname', TextType::class, array('label' => 'Prénom'));
-        $builder->add('description', TextareaType::class, array('label' => 'Description'));
-        $builder->add('imageUrl',FileType::class, array('label' => 'Image'));
+        $builder->add('description', TextareaType::class, array('label' => 'Description', 'required' => false));
+        $builder->add('imageUrl',FileType::class, array('label' => 'Image', 'required' => false));
         $builder->add('trust',HiddenType::class);
         $builder->remove('username');
     }
