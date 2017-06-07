@@ -15,3 +15,12 @@ services:
             - %agenda_slug%
             - %public_key%
             - %secret_key%
+    app.form.registration:
+        class: NumoBundle\Form\RegistrationType
+        tags:
+            - { name: form.type, alias: app_user_registration }
+    app.form.profile:
+        class: NumoBundle\Form\ProfileType
+        tags:
+            - { name: form.type, alias: app_user_profile }
+

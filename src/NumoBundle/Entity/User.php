@@ -70,7 +70,7 @@ class User extends BaseUser
     protected $imageUrl;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 0})
      *
      * @Assert\NotBlank(groups={"Registration", "Profile"})
      */
@@ -158,11 +158,13 @@ class User extends BaseUser
     }
 
 
-    public function setEmail($email){
+    public function setEmail($email)
+    {
+        $email = is_null($email) ? '' : $email;
         parent::setEmail($email);
         $this->setUsername($email);
+        return $this;
     }
-
 
     public function __construct()
     {
