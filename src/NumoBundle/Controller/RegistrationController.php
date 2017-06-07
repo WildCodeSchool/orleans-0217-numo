@@ -11,6 +11,7 @@ use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 use NumoBundle\Entity\User;
+use NumoBundle\Services\UserUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -51,29 +52,18 @@ class RegistrationController extends BaseController
 
         $form->handleRequest($request);
 
-
-
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+
+//                $em = $this->getDoctrine()->getManager();
+
 
                 $event = new FormEvent($form, $request);
                 $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
 
                 $userManager->updateUser($user);
 
-//                $em = $this->getDoctrine()->getManager();
-//
-//                $file = $image->getImageUrl();
-//
-//
-//                $fileName = md5(uniqid()).'.'.$file->guessExtension();
-//                $file->move(
-//                    $this->getParameter('brochures_directory'),
-//                    $fileName
-//                );
-//                $image->setImageUrl($fileName);
-//                $em->persist($image);
-//                $em->flush();
+
 
                 if (null === $response = $event->getResponse()) {
                     $url = $this->generateUrl('fos_user_registration_confirmed');
