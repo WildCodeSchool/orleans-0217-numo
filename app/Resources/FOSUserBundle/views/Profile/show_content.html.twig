@@ -8,7 +8,11 @@
         <p>{{ 'Username'|trans }}: {{ user.username }}</p>
         <p>{{ 'Email'|trans }}: {{ user.email }}</p>
         <p>Image:</p>
-        <img src="{{ asset('uploads/users/' ~ user.imageUrl.filename) }}" alt="{{ user.name }}" style="height: 70px">
+        {% if user.imageUrl == null %}
+            <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" style="height: 70px">
+        {% else %}
+            <img src="{{ asset('uploads/users/' ~ user.imageUrl.filename) }}" alt="{{ user.name }}" style="height: 70px">
+        {% endif %}
         <p>Nom: {{ user.name }}</p>
         <p>Prenom: {{ user.firstname }}</p>
         <p>Description: {{ user.description }}</p>
