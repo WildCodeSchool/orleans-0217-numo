@@ -371,6 +371,7 @@ header .header-content .header-content-inner h1 {
 
 
 /* --- rajoute par Patrick --- */
+
 body {
     padding-top: 50px;
 }
@@ -402,8 +403,10 @@ div.separation {
 
 
 footer {
-    padding-top: 20px;
-    /*background-color: #2f2f2f; !* Black Gray *!*/
+    height: 100px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    background-color: whitesmoke; /* Black Gray */
     /*color: whitesmoke;*/
 }
 
@@ -455,10 +458,16 @@ footer {
     height: 220px !important;
 }
 
+.imageEvents{
+    width: 640px !important;
+    height:400px !important;
+}
+
 .bg-4 {
     background-color: #2f2f2f; /* Black Gray */
     color: #fff;
 }
+
 .no-gutter > [class*='col-'] {
     padding-right: 0;
     padding-left: 0;
@@ -473,7 +482,7 @@ footer {
     color: white;
     opacity: 0;
     display: block;
-    background: #d9534f;
+    background: cornflowerblue;
     position: absolute;
     bottom: 0;
     text-align: center;
