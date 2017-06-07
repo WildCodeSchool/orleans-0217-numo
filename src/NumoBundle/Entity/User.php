@@ -62,7 +62,7 @@ class User extends BaseUser
      * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\File(
-     *     maxSize = "1024k",
+     *     maxSize = "2024k",
      *     maxSizeMessage="L'image est trop lourde.",
      *     mimeTypes = {"application/jpg", "application/jpeg", "application/png", "application/gif"},
      *     mimeTypesMessage = "Merci d'uploader une image valide"
