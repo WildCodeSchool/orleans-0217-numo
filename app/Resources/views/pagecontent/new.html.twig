@@ -1,16 +1,18 @@
-{% extends 'base.html.twig' %}
+{% extends 'layoutadmin.html.twig' %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
 
 {% block body %}
-    <h1>Pagecontent creation</h1>
+<div class="container font-lato">
+    <h1 class="titreadmin font-lato">NOUVEAU CONTENU</h1>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+        <input type="submit" value="ENREGISTRER" />
     {{ form_end(form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('pagecontent_index') }}">Back to the list</a>
-        </li>
-    </ul>
+<br/>
+            <a href="{{ path('pagecontent_index') }}"><button type="button" value="REVENIR A LA LISTE DES CONTENUS">REVENIR A LA LISTE DES CONTENUS</button></a>
+
+</div>
 {% endblock %}

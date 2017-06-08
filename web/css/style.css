@@ -262,9 +262,9 @@ fieldset[disabled] .btn-primary.active {
 
 
 /* --- rajoute par Patrick --- */
-body {
+/*body {
     padding-top: 50px;
-}
+}*/
 .erreur {
     font-size: 16px;
     font-weight: bold;
@@ -460,3 +460,54 @@ footer {
     margin-top: 5%;
 }
 
+/*
+style admin*/
+.font-lato{
+    font-family: 'Lato', sans-serif;
+    font-size: 1.3em;
+}
+.titreadmin{
+    text-align: left;
+    font-size: 4em;
+    margin-bottom: 7%;
+}
+.tabadmin{
+    text-align: center;
+    align-self: center;
+}
+.tabadmin{
+    margin-bottom: 5%;
+}
+th{
+    width: 12.5%;
+    text-align: center;
+}
+td{
+    width: 12.5%;
+    text-align: center;
+}
+.jumbotron{
+    background-color: transparent !important;
+}
+.btn-admin{
+    background-color: #a70050!important;
+    border: none !important;
+}
+button{
+    margin-top: 10%;
+}
+.modifadmin{
+    font-size: 1em;
+    margin-top: 3%;
+    color: black;
+    font-weight: 700;
+}
+.btnlist{
+    margin-top:5%;
+}
+table{
+    margin-bottom: 5%;
+}
+form{
+    margin-top: 5%;
+}

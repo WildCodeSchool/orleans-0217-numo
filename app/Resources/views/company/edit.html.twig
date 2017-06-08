@@ -1,22 +1,16 @@
 {% extends 'layoutadmin.html.twig' %}
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% form_theme edit_form 'bootstrap_3_layout.html.twig' %}
 
 {% block body %}
-    <h1>Company edit</h1>
+<div class="container font-lato">
+    <h1>MODIFIER LES INFORMATIONS DE NUM'O</h1>
+    <br/>
+    <a href="{{ path('company_show', { 'id': company.id }) }}"><button type="button" value="PROFIL">RETOUR PAGE PROFIL</button></a>
+
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+        <input type="submit" value="ENREGISTRER" />
     {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('company_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+</div>
 {% endblock %}

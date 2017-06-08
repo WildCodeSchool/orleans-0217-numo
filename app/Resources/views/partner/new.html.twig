@@ -3,18 +3,14 @@
 
 {% block body %}
 <div class="container font-lato">
-    <h1 class="titreadmin font-lato">MODIFIER LES INFORMATIONS DE NUM'O</h1>
+    <h1 class="titreadmin font-lato">AJOUTER UN PARTENAIRE</h1>
+    <br/>
+    <a href="{{ path('partner_index') }}"><button type="button" value="PROFIL">RETOUR A LA LISTE</button></a>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
-        {{ form_row(form.pdf) }}
         <input type="submit" value="Create" />
     {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('company_index') }}">Retour</a>
-        </li>
-    </ul>
 </div>
+
 {% endblock %}

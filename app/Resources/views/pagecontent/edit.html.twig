@@ -1,21 +1,18 @@
-{% extends 'base.html.twig' %}
+{% extends 'layoutadmin.html.twig' %}
+{% form_theme edit_form 'bootstrap_3_layout.html.twig' %}
+
 
 {% block body %}
-    <h1>Pagecontent edit</h1>
+<div class="container font-lato">
+    <h1 class="titreadmin font-lato">{{ pageContent.title }}</h1>
+    <a href="{{ path('pagecontent_index') }}"><button type="button" value="MODIFIER">RETOUR A LA LISTE</button></a>
+
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+        <input type="submit" value="ENREGISTRER" />
     {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('pagecontent_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    {{ form_start(delete_form) }}
+        <input type="submit" value="SUPPRIMER">
+    {{ form_end(delete_form) }}
 {% endblock %}
