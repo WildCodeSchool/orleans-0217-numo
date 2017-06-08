@@ -2,17 +2,53 @@
 
 {% extends 'layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <div class="row">
             {% if error == '' %}
+
                 {# --- titre ---#}
                 <div class="col-xs-12 text-center">
-                    <div class="sep"></div>
-                    <h1>event.title</h1>
-                    <div class="sep"></div>
+                    <div class="separation"></div>
+                    <h1>{{ event.title }}</h1>
+                    <div class="separation"></div>
                 </div>
 
+                {# --- partie gauche (image + descriptif) --- #}
+                <div class="col-xs-12 col-md-8">
+                    <p>
+                        <img src="{{ event.image }}" alt="image {{ event.title }}" class="img-responsive" />
+                    </p>
+                    <p>{{ event.description }}</p>
+                    <p>{{ event.freeText }}</p>
+
+                </div>
+
+                {# --- partie droite (date + geoloc) ---(#}
+                <div class="col-xs-12 col-md-4 text-center">
+                    <h3>Lieu :</h3>
+                    <p>{{ event.placename }}</p>
+                    <p>{{ event.address }}</p>
+                    <div class="separation"></div>
+                    <h3>Date(s) :</h3>
+                    {% for evtDate in event.evtDates %}
+                        <p>
+                            {{ evtDate.evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}<br />
+                            de {{ evtDate.timeStart|localizeddate("medium", "none", null, null, "HH'h'mm") }}
+                            à {{ evtDate.timeEnd|localizeddate("medium", "none", null, null, "HH'h'mm") }}
+                        </p>
+                    {% endfor %}
+                    <div class="separation"></div>
+                    <div id="mapzone"></div>
+                    <div id="closemap" class="text-center" onclick="closeMap();">X</div>
+                    <div class="separation"></div>
+
+                </div>
 
             {% else %}
 
@@ -23,6 +59,7 @@
             {% endif %}
 
             <div class="col-xs-12 text-center">
+                <div class="separation"></div>
                 <p><a href="{{ path('event_list') }}" class="btn btn-primary" role="button">Retour à la liste</a></p>
             </div>
 
@@ -71,4 +108,46 @@
         {#</div>#}
 
     {#</div>#}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var mapClosed = false;
+        function initMap(){
+            var centerMap = new google.maps.LatLng('{{ event.latitude }}', '{{ event.longitude }}');
+            var optionsMap = {
+                zoom: 14,
+                center: centerMap,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            var myMap = new google.maps.Map(document.getElementById("mapzone"), optionsMap);
+            var optionsMarqueur = {
+                position: centerMap,
+                map: myMap,
+                title: "{{ event.placename }}"
+            }
+            var marqueur = new google.maps.Marker(optionsMarqueur);
+        }
+        function closeMap() {
+            if (mapClosed) {
+                objet = document.getElementById('mapzone');
+                objet.style.visibility = 'visible';
+                objet.style.height = "300px";
+                objet = document.getElementById('closemap');
+                objet.style.backgroundColor = '#FF0000';
+                objet.innerHTML = 'X';
+                mapClose = false;
+            } else {
+                objet = document.getElementById('mapzone');
+                objet.style.visibility = 'hidden';
+                objet.style.height = "20px";
+                objet = document.getElementById('closemap');
+                objet.style.backgroundColor = '#CADB2A';
+                objet.innerHTML = 'Map';
+                mapClose = true;
+            }
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5FbMBpVejJw6o_4r3eHkUQQde6vlDItg&callback=initMap" async defer></script>
 {% endblock %}
