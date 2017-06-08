@@ -5,7 +5,8 @@ namespace NumoBundle\Controller;
 use NumoBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * User controller.
@@ -133,4 +134,47 @@ class UserController extends Controller
             ->getForm()
         ;
     }
+
+    public function promoteUser()
+    {
+        $userManager = $this->get('fos_user.user_manager');
+
+        // Use findUserby, findUserByUsername() findUserByEmail() findUserByUsernameOrEmail,
+        // findUserByConfirmationToken($token) or findUsers()
+        $user = $userManager->findUserBy(['id' => 1]);
+
+        // Add the role that you want !
+        $user->addRole("ROLE_ADHERENT");
+        // Update user roles
+        $userManager->updateUser($user);
+    }
+
+    public function demoteUser()
+    {
+        $userManager = $this->get('fos_user.user_manager');
+
+        // Use findUserby, findUserByUsername() findUserByEmail() findUserByUsernameOrEmail,
+        // findUserByConfirmationToken($token) or findUsers()
+        $user = $userManager->findUserBy(['id' => 1]);
+
+        // Add the role that you want !
+        $user->addRole("ROLE_USER");
+        // Update user roles
+        $userManager->updateUser($user);
+    }
+
+    public function promoteModerateur()
+    {
+        $userManager = $this->get('fos_user.user_manager');
+
+        // Use findUserby, findUserByUsername() findUserByEmail() findUserByUsernameOrEmail,
+        // findUserByConfirmationToken($token) or findUsers()
+        $user = $userManager->findUserBy(['id' => 1]);
+
+        // Add the role that you want !
+        $user->addRole("ROLE_MODERATOR");
+        // Update user roles
+        $userManager->updateUser($user);
+    }
 }
+
