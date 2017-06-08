@@ -462,6 +462,10 @@ footer {
 
 /*
 style admin*/
+
+.navadmin{
+    font-weight: 500;
+}
 .font-lato{
     font-family: 'Lato', sans-serif;
     font-size: 1.3em;
@@ -479,8 +483,10 @@ style admin*/
     margin-bottom: 5%;
 }
 th{
-    width: 12.5%;
+    width: 11%;
     text-align: center;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.3em;
 }
 td{
     width: 12.5%;
