@@ -6,6 +6,7 @@ namespace NumoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Event
@@ -41,10 +42,10 @@ class Event
     /**
      * @var string
      *
-     * @Assert\NotBlank(message=" - Le nom doit être renseigné.")
+     * @Assert\NotBlank(message="Le nom doit être renseigné.")
      * @Assert\Length(
      *      max = 100,
-     *      maxMessage = " - Le texte saisi ne doit pas excéder {{ limit }} caractères")
+     *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
      *
      * @ORM\Column(name="title", type="string", length=255)
      */
@@ -53,7 +54,7 @@ class Event
     /**
      * @var string
      *
-     * @Assert\NotBlank(message=" - Une description minimum doit être indiquée.")
+     * @Assert\NotBlank(message="Une description minimum doit être indiquée.")
      *
      * @ORM\Column(name="description", type="string", length=255)
      */
@@ -79,7 +80,7 @@ class Event
      * @Assert\NotBlank(message=" - Ce champ doit être renseigné.")
      * @Assert\Length(
      *      max = 100,
-     *      maxMessage = " - Le texte saisi ne doit pas excéder {{ limit }} caractères")
+     *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
      *
      * @ORM\Column(name="placename", type="string", length=255)
      */
@@ -88,10 +89,10 @@ class Event
     /**
      * @var string
      *
-     * @Assert\NotBlank(message=" - Une adresse valide doit être renseignée.")
+     * @Assert\NotBlank(message="Une adresse valide doit être renseignée.")
      * @Assert\Length(
      *      max = 200,
-     *      maxMessage = " - Le texte saisi ne doit pas excéder {{ limit }} caractères")
+     *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
      *
      * @ORM\Column(name="address", type="string", length=255)
      */
@@ -433,7 +434,7 @@ class Event
      */
     public function __construct()
     {
-        $this->evtDates = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->evtDates = new ArrayCollection();
     }
 
     /**

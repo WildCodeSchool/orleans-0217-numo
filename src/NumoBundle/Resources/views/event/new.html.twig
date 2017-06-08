@@ -4,6 +4,23 @@
 
 {#{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}#}
 
+{% form_theme form _self %}
+
+{% block _evtDates_entry_widget %}
+    <tr>
+        <td>{{ form_widget(form.task) }}</td>
+        <td>{{ form_widget(form.dueDate) }}</td>
+    </tr>
+{% endblock %}
+
+
+
+
+
+
+
+
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
@@ -58,9 +75,15 @@
                     </div>
                 </div>
 
-                <hr>
+                <div class="form-group">
+                    {{ form_label(form.image, 'Image', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_widget(form.image, {'attr': {'class': 'form-control '}}) }}
+                    </div>
+                </div>
 
                 {# --- locations ---------------------------------------------------------------------- #}
+                <hr>
                 <h3>Description du lieu</h3>
 
                 <div class="form-group">
@@ -96,26 +119,50 @@
                     </div>
                 </div>
 
-
-
-
                 {# --- dates ---------------------------------------------------------------------- #}
+                <hr>
+                <h3>Date(s) de l'évènement</h3>
+                <ul id="evtdatelist" class="evtdatelist" data-prototype="{{ form_widget(form.evtDates.vars.prototype)|e('html_attr') }}">
+                    {%  for evtDate in form.evtDates %}
+                        <li class="form-group">
+                            {{ form_label(evtDate.evtDate, 'Date : ', {'label_attr': {'class': 'in-line'}}) }}
+                            {{ form_widget(evtDate.evtDate, {'attr': {'class': 'in-line dark-text'}}) }}
+                            &nbsp;&nbsp;&nbsp;
+                            {{ form_label(evtDate.timeStart, 'Heure début : ', {'label_attr': {'class': 'in-line'}}) }}
+                            {{ form_widget(evtDate.timeStart, {'attr': {'class': 'in-line dark-text'}}) }}
+                            &nbsp;&nbsp;&nbsp;
+                            {{ form_label(evtDate.timeEnd, 'Heure fin : ', {'label_attr': {'class': 'in-line'}}) }}
+                            {{ form_widget(evtDate.timeEnd, {'attr': {'class': 'in-line dark-text'}}) }}
+                            &nbsp;&nbsp;&nbsp;
+                            <button type="button" class="btn btn-default cachable">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                            {#{{ form_errors(evtDate.evtDate) }}#}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <p><input type="button" class="btn btn-default" id="adddate" value="Ajoute une date" onclick="addDate();"/></p>
 
 
 
 
+
+
+                <div class="sep"></div>
 
                 <div class="row">
-                <div class="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-group text-center">
-                <button class="btn btn-default type="submit">Créer</button>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a class="btn btn-default" href="{{ path('event_list') }}">Abandonner</a>
+                    <div class="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 text-center">
+                        <button class="btn btn-default" type="submit">Créer l'évènement</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-default" href="{{ path('event_list') }}">Abandonner</a>
+                    </div>
                 </div>
-                </div>
 
-
-
-
+                {#<script>#}
+                    {#var evtDateCount = '{{ form.evtDates|length }}';#}
+                    {#var newWidget = document.getElementById('evtdatelist').attr('data-prototype');#}
+                {#</script>#}
                 {{ form_end(form) }}
             </div>
         </div>
@@ -126,41 +173,7 @@
 {% endblock %}
 
 
-
-                            {# --- dates -------------------------------------------------------------------------- #}
-                            {#<div class="separation"></div>#}
-                            {#<h4>Date(s) de l'évènement</h4>#}
-                            {#{% for evtDate in form.evtDates %}#}
-
-                                {#{{ form_label(evtDate.evtDate, '* Date de l\'évènement') }}#}
-                                {#<span class="erreur" id="errorevtdate{{ loop.index }}"> {{ form_errors(evtDate.evtDate)|striptags }} </span>#}
-                                {#{{ form_widget(evtDate.evtDate, { 'attr': {'class': 'form-control ecart-bas'} }) }}#}
-
-                                {#{{ form_label(evtDate.timeStart, '* Horaire de début') }}#}
-                                {#<span class="erreur" id="errortstart{{ loop.index }}"> {{ form_errors(evtDate.timeStart)|striptags }} </span>#}
-                                {#{{ form_widget(evtDate.timeStart, { 'attr': {'class': 'form-control ecart-bas'} }) }}#}
-
-                                {#{{ form_label(evtDate.timeEnd, '* Horaire de fin') }}#}
-                                {#<span class="erreur" id="errortend{{ loop.index }}"> {{ form_errors(evtDate.timeEnd)|striptags }} </span>#}
-                                {#{{ form_widget(evtDate.timeEnd, { 'attr': {'class': 'form-control ecart-bas'} }) }}#}
-
-                            {#{% endfor %}#}
-
-
-
-
-                        {#</div>#}
-                    {#</div>#}
-
-                    {#<div class="row">#}
-                        {#<div class="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-group text-center">#}
-                            {#<button class="btn btn-default type="submit">Créer</button>#}
-                            {#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#}
-                            {#<a class="btn btn-default" href="{{ path('event_list') }}">Abandonner</a>#}
-                        {#</div>#}
-                    {#</div>#}
-
-                    {#{{ form_end(form) }}#}
+                {#{% if error == '' %}#}
 
                 {#{% else %}#}
 
@@ -172,18 +185,9 @@
 
                 {#{% endif %}#}
 
-            {#</div>#}
-        {#</div>#}
-    {#</header>#}
-
-
-
-
-
-{#{% endblock %}#}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/newevent.js') }}"></script>
-    <script>geocoder = new google.maps.Geocoder();</script>
+    <script> init(); </script>
 {% endblock %}

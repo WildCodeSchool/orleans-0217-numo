@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use NumoBundle\Form\EventType;
 
 /**
  * Event controller.
@@ -145,9 +146,12 @@ class EventController extends Controller
         $form->handleRequest($request);
 //
         if ($form->isSubmitted() && $form->isValid()) {
+
+
+
+
         }
         $twigParams = [
-            'event' => $event,
             'error' => $error,
             'form' => $form->createView(),
         ];

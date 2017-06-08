@@ -6,14 +6,17 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EvtDateType extends AbstractType
+class EvtDateCollectionType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('evtDate')->add('timeStart')->add('timeEnd')->add('event');
+        $builder
+            ->add('evtDate')
+            ->add('timeStart')
+            ->add('timeEnd');
     }
     
     /**

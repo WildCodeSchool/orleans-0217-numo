@@ -27,12 +27,11 @@ class EventType extends AbstractType
             ->add('ticketLink', TextType::class, ['required' => false])
             ->add('pricingInfo', TextType::class, ['required' => false])
             ->add('evtDates', CollectionType::class, [
-                'entry_type' => EvtDateType::class,
+                'entry_type' => EvtDateCollectionType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
             ]);
-
-}
+    }
     
     /**
      * {@inheritdoc}
