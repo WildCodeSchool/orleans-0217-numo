@@ -30,13 +30,13 @@ class SnLink
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="snLink")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="snLinks")
      *
      */
     protected $user;
 
     /**
-     * @ORM\ManyToMany(targetEntity="SocialNetwork", inversedBy="snLink")
+     * @ORM\ManyToMany(targetEntity="SocialNetwork", inversedBy="links")
      *
      */
     protected $socialNetworks;
@@ -75,5 +75,69 @@ class SnLink
     {
         return $this->url;
     }
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->socialNetworks = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    /**
+     * Set user
+     *
+     * @param \NumoBundle\Entity\User $user
+     *
+     * @return SnLink
+     */
+    public function setUser(\NumoBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \NumoBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Add socialNetwork
+     *
+     * @param \NumoBundle\Entity\SocialNetwork $socialNetwork
+     *
+     * @return SnLink
+     */
+    public function addSocialNetwork(\NumoBundle\Entity\SocialNetwork $socialNetwork)
+    {
+        $this->socialNetworks[] = $socialNetwork;
+
+        return $this;
+    }
+
+    /**
+     * Remove socialNetwork
+     *
+     * @param \NumoBundle\Entity\SocialNetwork $socialNetwork
+     */
+    public function removeSocialNetwork(\NumoBundle\Entity\SocialNetwork $socialNetwork)
+    {
+        $this->socialNetworks->removeElement($socialNetwork);
+    }
+
+    /**
+     * Get socialNetworks
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSocialNetworks()
+    {
+        return $this->socialNetworks;
+    }
+}

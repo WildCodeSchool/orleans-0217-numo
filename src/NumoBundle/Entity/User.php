@@ -129,7 +129,7 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="SnLink", mappedBy="user")
      *
      */
-    protected $snLink;
+    protected $snLinks;
 
 
 
@@ -230,4 +230,134 @@ class User extends BaseUser
     }
 
 
+
+    /**
+     * Set webSite
+     *
+     * @param string $webSite
+     *
+     * @return User
+     */
+    public function setWebSite($webSite)
+    {
+        $this->webSite = $webSite;
+
+        return $this;
+    }
+
+    /**
+     * Get webSite
+     *
+     * @return string
+     */
+    public function getWebSite()
+    {
+        return $this->webSite;
+    }
+
+    /**
+     * Set freeText
+     *
+     * @param string $freeText
+     *
+     * @return User
+     */
+    public function setFreeText($freeText)
+    {
+        $this->freeText = $freeText;
+
+        return $this;
+    }
+
+    /**
+     * Get freeText
+     *
+     * @return string
+     */
+    public function getFreeText()
+    {
+        return $this->freeText;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     *
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set adress
+     *
+     * @param \NumoBundle\Entity\Adress $adress
+     *
+     * @return User
+     */
+    public function setAdress(\NumoBundle\Entity\Adress $adress = null)
+    {
+        $this->adress = $adress;
+
+        return $this;
+    }
+
+    /**
+     * Get adress
+     *
+     * @return \NumoBundle\Entity\Adress
+     */
+    public function getAdress()
+    {
+        return $this->adress;
+    }
+
+    /**
+     * Add snLink
+     *
+     * @param \NumoBundle\Entity\SnLink $snLink
+     *
+     * @return User
+     */
+    public function addSnLink(\NumoBundle\Entity\SnLink $snLink)
+    {
+        $this->snLinks[] = $snLink;
+
+        return $this;
+    }
+
+    /**
+     * Remove snLink
+     *
+     * @param \NumoBundle\Entity\SnLink $snLink
+     */
+    public function removeSnLink(\NumoBundle\Entity\SnLink $snLink)
+    {
+        $this->snLinks->removeElement($snLink);
+    }
+
+    /**
+     * Get snLinks
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSnLinks()
+    {
+        return $this->snLinks;
+    }
 }
