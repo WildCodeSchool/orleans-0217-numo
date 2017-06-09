@@ -34,3 +34,4 @@ function delAddrMessage() {
 }
 
 setTimeout(scanAddress(), 500);
+
