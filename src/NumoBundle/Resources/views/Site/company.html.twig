@@ -1,26 +1,28 @@
 {% extends 'layout.html.twig' %}
 {% block body %}
-    <div class="container-fluid">
+    <div class="container-fluid company">
         <div class="row">
             <div class="col-lg-offset-2 col-lg-5">
                 <h2>{{ contents.title }} <hr> </h2>
                 <p>{{ contents.content }}</p>
+                <div class="row companyBottom">
+                    <div class="col-lg-offset-4">
+                        <a href="/register" type="button" class="btn btn-success">Rejoins notre association</a>
+                    </div>
+                </div>
             </div>
+
             <div class="col-lg-offset-1 col-lg-2">
-                <h2>Coordonné <hr> </h2>
+                <h2>Coordonnées <hr> </h2>
                 <p>{{ company.phone }}</p>
                 <p>{{ company.city }} {{ company.postalCode }}</p>
                 <p>{{ company.adress }}</p>
                 <p>{{ company.contactEmail }}</p>
-                <img src="{{ company.imageUrl }}" alt="Numo" style="width:100%">
+                <img src="{{ company.imageUrl }}" alt="Numo" style="width:200px">
             </div>
         </div>
 
-        <div class="row companyBottom">
-            <div class="col-lg-offset-4">
-                <a href="/register" type="button" class="btn btn-success">Rejoins le coté obscure</a>
-            </div>
-        </div>
+
     </div>
 
 {% endblock %}
