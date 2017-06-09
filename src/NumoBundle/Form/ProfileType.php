@@ -22,8 +22,9 @@ class ProfileType extends AbstractType
     {
         $builder->add('name', TextType::class, array('label' => 'Nom'));
         $builder->add('firstname', TextType::class, array('label' => 'Prénom'));
-        $builder->add('description', TextareaType::class, array('label' => 'Description'));
-        $builder->add('imageUrl',FileType::class, array('data_class' => null, 'label' => 'Image'));
+        $builder->add('description', TextareaType::class, array('label' => 'Description', 'required' => false));
+        $builder->add('imageUrl',FileType::class, array('data_class' => null, 'label' => 'Image', 'required' => false));
+        $builder->remove('username');
     }
 
     public function configureOptions(OptionsResolver $resolver)

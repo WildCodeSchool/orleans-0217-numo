@@ -6,6 +6,7 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
@@ -53,24 +54,24 @@ class User extends BaseUser
      * @Assert\Length(
      *     max=653,
      *     maxMessage="Le message est trop long.",
-     *     groups={"Registration", "Profile"}
      * )
      */
     protected $description;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      *
-     * @Assert\Length(
-     *     max=255,
-     *     maxMessage="L'url est trop longue.",
-     *     groups={"Registration", "Profile"}
+     * @Assert\File(
+     *     maxSize = "2024k",
+     *     maxSizeMessage="L'image est trop lourde.",
+     *     mimeTypes = {"application/jpg", "application/jpeg", "application/png", "application/gif"},
+     *     mimeTypesMessage = "Merci d'uploader une image valide"
      * )
      */
     protected $imageUrl;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 0})
      *
      * @Assert\NotBlank(groups={"Registration", "Profile"})
      */
@@ -158,15 +159,19 @@ class User extends BaseUser
     }
 
 
-    public function setEmail($email){
+    public function setEmail($email)
+    {
+        $email = is_null($email) ? '' : $email;
         parent::setEmail($email);
         $this->setUsername($email);
+        return $this;
     }
-
 
     public function __construct()
     {
         parent::__construct();
         // your own logic
     }
+
+
 }

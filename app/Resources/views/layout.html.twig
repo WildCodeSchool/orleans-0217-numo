@@ -40,14 +40,14 @@
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                 <span class="glyphicon glyphicon-bell navbar-right" aria-hidden="true"></span>
                                 <span class="glyphicon glyphicon-cog navbar-right" aria-hidden="true"></span>
-                                <p>{{ app.user.username }}</p>
+                                <p>{{ app.user.name }} {{ app.user.firstname }}</p>
                                 <a href="/app_dev.php/logout" class="btn btn-default navbar-right">Deconnexion</a>
-                                <a href="/app_dev.php/profile" class="btn btn-default navbar-right">Profil</a>
+                                <a href="/app_dev.php/profile/" class="btn btn-default navbar-right">Profil</a>
                             {% else %}
                                 <a href="/app_dev.php/login" class="btn btn-default">Connexion</a>
                         </li>
                         <li>
-                                <a href="/register" class="btn btn-default inscription">S'inscrire</a>
+                                <a href="/register/" class="btn btn-default inscription">S'inscrire</a>
                         </li>
                             {%endif%}
                     </ul>
