@@ -306,6 +306,7 @@ td{
 .btn-admin{
     background-color: #a70050!important;
     border: none !important;
+    margin-top: 40px;
 }
 button{
     margin-top: 10%;
@@ -384,10 +385,6 @@ fin admin
     font-weight: 500;
     text-decoration: none;
     color: darkgray;
-}
-
-.btn-home-admin{
-    margin-top: 35px;
 }
 
 div.separation {
