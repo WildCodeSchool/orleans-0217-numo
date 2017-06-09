@@ -75,14 +75,14 @@ div.separation {
 }
 
 div#mapzone {
+    z-index: 0;
     width: 300px;
     height: 300px;
-    margin: 0 auto;
+    margin: -20px auto 0 auto;
 }
 div#closemap {
-    position:relative;
-    top: -300px;
-    left: 280px;
+    position: relative;
+    margin-left: 260px;
     width: 40px;
     height:20px;
     z-index: 100;
@@ -90,4 +90,13 @@ div#closemap {
     color: white;
     font-weight: bold;
     background-color: red;
+}
+.little-img {
+    border: 1px solid #CCCCCC;
+    height: 40px;
+
+}
+.rs-button {
+    margin: 0 20px;
+    height: 30px;
 }
