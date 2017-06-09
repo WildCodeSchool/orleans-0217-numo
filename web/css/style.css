@@ -540,13 +540,13 @@ footer {
 
 .carousel-control.right, .carousel-control.left {
     background-image: none !important;
-    color: #f4511e !important;
+    color: #d9534f !important;
 }
 .carousel-indicators li {
-    border-color: red !important;
+    border-color: #d9534f !important;
 }
 .carousel-indicators li.active {
-    background-color: red;
+    background-color: #d9534f;
 }
 .item h4 {
     font-size: 19px;
@@ -577,4 +577,62 @@ footer {
 .btn-rib{
     margin-top: 5%;
 }
+
+.company{
+    padding-bottom: 190px;
+    padding-top: 50px;
+}
+
+.companyBottom{
+    padding-top: 30px;
+}
+
+.contact{
+    padding-bottom:220px;
+    padding-top: 50px;
+}
+
+
+.hrMembre{
+    border-color: black;
+}
+
+.imgMember{
+    padding-top: 20px;
+    height:261px !important;
+    width:250px !important;
+}
+
+
+.list{
+    padding-bottom: 180px;
+}
+
+.AlphabetNav{
+    padding-bottom:70px;
+    padding-top: 20px;
+}
+
+
+.AlphabetNav a:hover {
+    background: #ddd;
+    color: #444;
+}
+
+.AlphabetNav .active {
+    background: #f46353;
+    color: white;
+}
+
+.AlphabetNav a  {
+    justify-content: center;
+    padding: .5em;
+    border-radius: 8px;
+    font-size: 1.2em;
+    line-height: 1;
+    font-weight: 500;
+    text-decoration: none;
+    color: darkgray;
+}
+
 

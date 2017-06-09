@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 {% block body %}
-    <div class="container-fluid">
+    <div class="container-fluid company">
         <div class="row">
             <div class="col-lg-offset-2 col-lg-5">
                 <h2>{{ contents.title }} <hr> </h2>
@@ -18,7 +18,7 @@
                 <p>{{ company.city }} {{ company.postalCode }}</p>
                 <p>{{ company.adress }}</p>
                 <p>{{ company.contactEmail }}</p>
-                <img src="{{ company.imageUrl }}" alt="Numo" style="width:100%">
+                <img src="{{ company.imageUrl }}" alt="Numo" style="width:200px">
             </div>
         </div>
 
