@@ -375,32 +375,7 @@ header .header-content .header-content-inner h1 {
 body {
     padding-top: 50px;
 }
-.erreur {
-    font-size: 16px;
-    font-weight: bold;
-    color: red;
-}
-.ecart-haut {
-    margin-top: 20px;
-}
-.ecart-bas {
-    margin-bottom: 10px;
-}
-div.separation {
-    margin: 20px 0px;
-    width: 100%;
-    height: 4px;
-    background-color: #CCCCCC;
-}
-.emphase {
-    font-weight: bold;
-    color: blue;
-}
-.twigerror ul li {
-    display: inline;
-    color: red;
-}
-
+/* ---------------------------- */
 
 footer {
     height: 100px;
