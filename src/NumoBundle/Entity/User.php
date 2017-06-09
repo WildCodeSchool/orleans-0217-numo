@@ -92,7 +92,7 @@ class User extends BaseUser
     protected $webSite;
 
     /**
-     * @ORM\Column(type="text", length=5550, options={"default" : null)
+     * @ORM\Column(type="text", length=5550, options={"default" : null})
      *
      * @Assert\NotBlank(message="Entrez votre description.", groups={"Registration", "Profile"})
      * @Assert\Length(
