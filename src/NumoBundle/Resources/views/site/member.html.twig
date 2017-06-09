@@ -1,20 +1,15 @@
 {% extends 'layout.html.twig' %}
 {% block body %}
 
-    {#<hr class="hrMembre">#}
-    <div class="container-fluid text-center">
-        <h1>Membres</h1>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-offset-1 col-lg-10">
-            <hr class="hrMembre">
-        </div>
+    <div class="col-xs-12 text-center">
+        <div class="separation"></div>
+            <h1>Membres</h1>
+        <div class="separation"></div>
     </div>
 
     <div class="container-fluid text-center">
         <div class="row">
-            <h2>Afficher:</h2>
+            <h3>Afficher:</h3>
         </div>
 
         <nav class="AlphabetNav">
@@ -44,8 +39,6 @@
             <a>X</a>
             <a>Y</a>
             <a>Z</a>
-            <input type="checkbox" name="premium" value="premium" id="premium">
-            <label for="premium">PREMIUM</label>
 
         </nav>
     </div>
@@ -54,18 +47,25 @@
         {% for member in members %}
         <div class="row showMember">
             <div class="col-lg-offset-2 col-xs-offset-2 col-lg-2">
-                <img src="http://img14.deviantart.net/ded4/i/2015/114/4/8/bruce_lee_12_by_kse332-d53mwzy.jpg" alt="Numo" class="imgMember img-responsive"
-                     style="width:250px">
-            </div>
+
+                {% if member.imageUrl == null %}
+                    <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" class="imgMember" >
+                {% else %}
+                    <img src="{{ asset('uploads/users/' ~ member.imageUrl.filename) }}" alt="{{ member.name }}" class="imgMember">
+                {% endif %}
+                </div>
 
             <div class="col-lg-7">
                 <div class="row">
                     <div class="col-lg-offset-0 col-xs-offset-4 col-lg-5">
-                        <a><h2 class="memberName">{{ member.firstname }} {{ member.username }} </h2></a>
+
+                        <a><h2 class="memberName">{{ member.name }} {{ member.firstname }}  </h2></a>
                     </div>
 
                     <div class="col-lg-offset-4 col-xs-offset-4 col-lg-2">
-                        <img src="logotrans.png" alt="Numo" class="imgMember" style="width:250px">
+                        {#{% if member.role == ROLE_ADHERENT %}#}
+                            {#<img src="{{ asset('img/logotrans.png') }}" alt="Numo" style="height:20px">#}
+                        {#{% endif %}#}
                     </div>
                 </div>
                 <div class="row">
@@ -87,4 +87,9 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }} %}
+    <script src="{{ asset('js/member.js') }}"></script>
 {% endblock %}

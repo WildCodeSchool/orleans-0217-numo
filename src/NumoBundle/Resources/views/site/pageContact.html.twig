@@ -3,6 +3,13 @@
 
 {% block body %}
 
+    {# --- titre ---#}
+    <div class="col-xs-12 text-center">
+        <div class="separation"></div>
+            <h1>Contact</h1>
+        <div class="separation"></div>
+    </div>
+
     <div class="container-fluid contact">
         <div class="col-lg-offset-2 col-lg-5">
             <h2>Laissez votre commentaire <hr></h2>
@@ -18,7 +25,7 @@
             <p>{{ company.city }} {{ company.postalCode }}</p>
             <p>{{ company.adress }}</p>
             <p>{{ company.contactEmail }}</p>
-            <a href="/app_dev.php/association">Mieux nous connaitre</a>
+            <a href="{{ path('association') }}">Mieux nous connaitre</a>
             <img src="{{ company.imageUrl }}" alt="Numo" style="width:200px">
 
         </div>

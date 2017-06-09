@@ -22,6 +22,7 @@ class RegistrationType extends AbstractType
         $builder->add('imageUrl',FileType::class, array('label' => 'Image', 'required' => false));
         $builder->add('trust',HiddenType::class);
         $builder->remove('username');
+
     }
 
     public function getParent()

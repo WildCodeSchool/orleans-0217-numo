@@ -20,6 +20,5 @@ parameters:
     secret_key: Tx8z8g8B0UQNMFRoKfIv370XaaDzc5nD
     upload_directory: '%kernel.root_dir%/../web/uploads/users'
 
-
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt

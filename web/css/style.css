@@ -350,8 +350,8 @@ fin admin
 
 .imgMember{
     padding-top: 20px;
-    height:261px !important;
-    width:250px !important;
+    height:231px !important;
+    /*width:210px !important;*/
 }
 
 
@@ -386,4 +386,13 @@ fin admin
     color: darkgray;
 }
 
+.btn-home-admin{
+    margin-top: 35px;
+}
 
+div.separation {
+    margin: 20px 0px;
+    width: 100%;
+    height: 4px;
+    background-color: #CCCCCC;
+}
