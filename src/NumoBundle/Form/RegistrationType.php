@@ -24,7 +24,7 @@ class RegistrationType extends AbstractType
         $builder->add('freeText',HiddenType::class);
         $builder->add('phone',HiddenType::class);
         $builder->add('webSite',HiddenType::class);
-        $builder->add('adress',HiddenType::class);
+        $builder->remove('adress');
         $builder->remove('username');
 
     }

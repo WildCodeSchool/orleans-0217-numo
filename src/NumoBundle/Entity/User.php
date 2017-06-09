@@ -120,14 +120,14 @@ class User extends BaseUser
     protected $phone;
 
     /**
-     * @ORM\Column(type="string", options={"default" : null})
+     * @ORM\Column(type="string", nullable=true)
      * @ORM\ManyToOne(targetEntity="Adress", inversedBy="users")
      *
      */
     protected $adress;
 
     /**
-     * @ORM\Column(type="string",options={"default" : null})
+     * @ORM\Column(type="string", nullable=true)
      * @ORM\OneToMany(targetEntity="SnLink", mappedBy="user")
      *
      */
