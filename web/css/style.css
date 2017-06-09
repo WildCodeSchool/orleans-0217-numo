@@ -492,8 +492,14 @@ td{
     width: 12.5%;
     text-align: center;
 }
+@keyframes appear {
+    from {opacity: 0}
+    to {opacity : 1}
+}
 .jumbotron{
     background-color: transparent !important;
+    animation-name: appear;
+    animation-duration: 2s;
 }
 .btn-admin{
     background-color: #a70050!important;

@@ -60,14 +60,15 @@ class Company
     /**
      * @var string
      *
-     * @ORM\Column(name="imageUrl", type="string", length=255)
+     * @ORM\Column(name="imageUrl", type="string", length=255, nullable=true)
+     *
      */
     private $imageUrl;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Assert\NotBlank(message="Please, upload the product brochure as a PDF file.")
+     * @Assert\NotBlank(message="Merci d'uploader un PDF")
      * @Assert\File(mimeTypes={ "application/pdf" })
      */
 

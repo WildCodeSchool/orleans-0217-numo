@@ -1,18 +1,19 @@
-{% extends 'layoutadmin.html.twig' %}
+{% extends 'layoutAdmin.html.twig' %}
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
 
 {% block body %}
 <div class="container font-lato">
     <h1 class="titreadmin font-lato">NOUVEAU CONTENU</h1>
+    <hr>
+    <br>
+    <a href="{{ path('pagecontent_index') }}"><button type="button" value="REVENIR A LA LISTE DES CONTENUS">REVENIR A LA LISTE DES CONTENUS</button></a>
+
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
         <input type="submit" value="ENREGISTRER" />
     {{ form_end(form) }}
-
-<br/>
-            <a href="{{ path('pagecontent_index') }}"><button type="button" value="REVENIR A LA LISTE DES CONTENUS">REVENIR A LA LISTE DES CONTENUS</button></a>
 
 </div>
 {% endblock %}

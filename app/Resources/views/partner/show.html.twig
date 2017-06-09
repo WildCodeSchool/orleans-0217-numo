@@ -1,14 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'layoutAdmin.html.twig' %}
 
 {% block body %}
-    <h1>Partner</h1>
-
+<div class="container">
+    <h1 class="titreadmin font-lato">{{ partner.name }}</h1>
+    <hr>
     <table>
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ partner.id }}</td>
-            </tr>
             <tr>
                 <th>Name</th>
                 <td>{{ partner.name }}</td>
@@ -28,17 +25,18 @@
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('partner_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('partner_edit', { 'id': partner.id }) }}">Edit</a>
-        </li>
-        <li>
+    <div class="row btnlist">
+        <div class="col-sm-5 boutonadmin">
+            <a href="{{ path('partner_index') }}"><button type="button" value="RETOUR A LA LISTE">RETOUR A LA LISTE</button></a>
+        </div>
+        <div class="col-sm-6">
+            <a href="{{ path('partner_edit', { 'id': partner.id }) }}"><button type="button" value="MODIFIER">MODIFIER</button></a>
+        </div>
+        <div class="col-sm-1">
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+            <input type="submit" value="EFFACER">
             {{ form_end(delete_form) }}
-        </li>
-    </ul>
+        </div>
+    </div>
+
 {% endblock %}

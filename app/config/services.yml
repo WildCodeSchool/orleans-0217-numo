@@ -7,4 +7,16 @@ services:
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
+    numo.pdf_upload:
+        class: NumoBundle\Services\PdfUpload
+        arguments: ['%upload_directory_pdf%']
+
+    numo.doctrine_numo_listener:
+        class: NumoBundle\EventListener\NumoUploadListener
+        arguments: ['@numo.pdf_upload']
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postLoad }
+            - { name: doctrine.event_listener, event: preRemove }
 
