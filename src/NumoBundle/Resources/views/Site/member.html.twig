@@ -54,8 +54,11 @@
         {% for member in members %}
         <div class="row showMember">
             <div class="col-lg-offset-2 col-xs-offset-2 col-lg-2">
-                <img src="http://img14.deviantart.net/ded4/i/2015/114/4/8/bruce_lee_12_by_kse332-d53mwzy.jpg" alt="Numo" class="imgMember img-responsive"
-                     style="width:250px">
+                {% if member.imageUrl == null %}
+                    <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" class="imgMember" >
+                {% else %}
+                    <img src="{{ asset('uploads/users/' ~ member.imageUrl.filename) }}" alt="{{ member.name }}" class="imgMember">
+                {% endif %}
             </div>
 
             <div class="col-lg-7">
