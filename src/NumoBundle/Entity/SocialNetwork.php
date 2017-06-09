@@ -35,6 +35,7 @@ class SocialNetwork
      */
     private $name;
 
+
     /**
      * @ORM\ManyToMany(targetEntity="SnLink", inversedBy="socialNetworks")
      *
@@ -99,6 +100,7 @@ class SocialNetwork
     {
         return $this->name;
     }
+
     /**
      * Constructor
      */
@@ -141,3 +143,4 @@ class SocialNetwork
         return $this->links;
     }
 }
+

@@ -75,6 +75,7 @@ class SnLink
     {
         return $this->url;
     }
+
     /**
      * Constructor
      */
@@ -141,3 +142,4 @@ class SnLink
         return $this->socialNetworks;
     }
 }
+

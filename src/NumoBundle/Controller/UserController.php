@@ -176,5 +176,6 @@ class UserController extends Controller
         // Update user roles
         $userManager->updateUser($user);
     }
+
 }
 
