@@ -78,7 +78,7 @@ class User extends BaseUser
     protected $trust;
 
     /**
-     * @ORM\Column(type="string", length=255, options={"default" : null})
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
      *
      * @Assert\NotBlank(message="Entrez le lien de votre site web.", groups={"Registration", "Profile"})
      * @Assert\Length(
@@ -92,7 +92,7 @@ class User extends BaseUser
     protected $webSite;
 
     /**
-     * @ORM\Column(type="text", length=5550, options={"default" : null)
+     * @ORM\Column(type="text", length=5550, nullable=true, options={"default" : null})
      *
      * @Assert\NotBlank(message="Entrez votre description.", groups={"Registration", "Profile"})
      * @Assert\Length(
@@ -106,7 +106,7 @@ class User extends BaseUser
     protected $freeText;
 
     /**
-     * @ORM\Column(type="string", length=50, options={"default" : null})
+     * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
      *
      * @Assert\NotBlank(message="Entrez votre numéro de téléphone.", groups={"Registration", "Profile"})
      * @Assert\Length(
