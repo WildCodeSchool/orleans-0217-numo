@@ -15,7 +15,7 @@ class ListeMemberController extends Controller
         $em = $this->getDoctrine()->getManager();
         $members= $em->getRepository('NumoBundle:User')->findAll();
 
-        return $this->render('NumoBundle:Site:member.html.twig', array(
+        return $this->render('NumoBundle:site:member.html.twig', array(
             'members' => $members
         ));
     }
