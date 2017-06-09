@@ -1,20 +1,15 @@
 {% extends 'layout.html.twig' %}
 {% block body %}
 
-    {#<hr class="hrMembre">#}
-    <div class="container-fluid text-center">
-        <h1>Membres</h1>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-offset-1 col-lg-10">
-            <hr class="hrMembre">
-        </div>
+    <div class="col-xs-12 text-center">
+        <div class="separation"></div>
+            <h1>Membres</h1>
+        <div class="separation"></div>
     </div>
 
     <div class="container-fluid text-center">
         <div class="row">
-            <h2>Afficher:</h2>
+            <h3>Afficher:</h3>
         </div>
 
         <nav class="AlphabetNav">
@@ -63,11 +58,14 @@
             <div class="col-lg-7">
                 <div class="row">
                     <div class="col-lg-offset-0 col-xs-offset-4 col-lg-5">
+
                         <a><h2 class="memberName">{{ member.name }} {{ member.firstname }}  </h2></a>
                     </div>
 
                     <div class="col-lg-offset-4 col-xs-offset-4 col-lg-2">
-                        <img src="logotrans.png" alt="Numo" class="imgMember" style="width:250px">
+                        {#{% if member.role == ROLE_ADHERENT %}#}
+                            {#<img src="{{ asset('img/logotrans.png') }}" alt="Numo" style="height:20px">#}
+                        {#{% endif %}#}
                     </div>
                 </div>
                 <div class="row">
