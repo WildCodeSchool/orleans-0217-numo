@@ -70,6 +70,37 @@
                 </div>
 
                  {% if is_granted('ROLE_ADHERENT') %}
+                     <div class="form-group">
+                         {{ form_label(form.freeText) }}
+                         <div class="col-sm-6">
+                             {{ form_widget(form.freeText) }}
+                         </div>
+                         {{ form_errors(form.freeText) }}
+                     </div>
+
+                     <div class="form-group">
+                         {{ form_label(form.phone) }}
+                         <div class="col-sm-6">
+                             {{ form_widget(form.phone) }}
+                         </div>
+                         {{ form_errors(form.phone) }}
+                     </div>
+
+                     <div class="form-group">
+                         {{ form_label(form.webSite) }}
+                         <div class="col-sm-6">
+                             {{ form_widget(form.webSite) }}
+                         </div>
+                         {{ form_errors(form.webSite) }}
+                     </div>
+
+                     <div class="form-group">
+                         {{ form_label(form.adress) }}
+                         <div class="col-sm-6">
+                             {{ form_widget(form.adress) }}
+                         </div>
+                         {{ form_errors(form.adress) }}
+                     </div>
 
                  {% endif %}
 

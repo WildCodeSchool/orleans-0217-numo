@@ -24,7 +24,7 @@ class Adress
     /**
      * @var string
      *
-     * @ORM\Column(name="addr1", type="string", length=255)
+     * @ORM\Column(name="addr1", type="string", length=255, nullable=true)
      */
     private $addr1;
 
@@ -38,14 +38,18 @@ class Adress
     /**
      * @var int
      *
-     * @ORM\Column(name="postalCode", type="integer")
+     * @ORM\Column(name="postalCode", type="integer", nullable=true)
+     * @Assert\Length(
+     *      max=5,
+     *      maxMessage="Le code postal est trop long.",
+     * )
      */
     private $postalCode;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="city", type="string", length=255)
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
      */
     private $city;
 
