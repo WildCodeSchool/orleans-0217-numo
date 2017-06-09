@@ -87,3 +87,8 @@
     </div>
 
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }} %}
+    <script src="{{ asset('js/jquery.js') }}"></script>
+{% endblock %}
