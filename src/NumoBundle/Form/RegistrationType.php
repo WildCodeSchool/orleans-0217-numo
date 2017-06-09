@@ -21,7 +21,12 @@ class RegistrationType extends AbstractType
         $builder->add('description', TextareaType::class, array('label' => 'Description', 'required' => false));
         $builder->add('imageUrl',FileType::class, array('label' => 'Image', 'required' => false));
         $builder->add('trust',HiddenType::class);
+        $builder->add('freeText',HiddenType::class);
+        $builder->add('phone',HiddenType::class);
+        $builder->add('webSite',HiddenType::class);
+        $builder->remove('adress',HiddenType::class);
         $builder->remove('username');
+
     }
 
     public function getParent()

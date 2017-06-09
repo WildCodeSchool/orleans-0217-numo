@@ -25,7 +25,7 @@ class User extends BaseUser
      *
      * @Assert\NotBlank(message="Entrez votre nom.", groups={"Registration", "Profile"})
      * @Assert\Length(
-     *     min=3,
+     *     min=1,
      *     max=255,
      *     minMessage="Le nom est trop court.",
      *     maxMessage="Le nom est trop long.",
@@ -39,7 +39,7 @@ class User extends BaseUser
      *
      * @Assert\NotBlank(message="Entrez votre prénom.", groups={"Registration", "Profile"})
      * @Assert\Length(
-     *     min=3,
+     *     min=1,
      *     max=255,
      *     minMessage="Le prénom est trop court.",
      *     maxMessage="Le prénom est trop long.",
@@ -76,6 +76,65 @@ class User extends BaseUser
      * @Assert\NotBlank(groups={"Registration", "Profile"})
      */
     protected $trust;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
+     *
+     * @Assert\NotBlank(message="Entrez le lien de votre site web.", groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=3,
+     *     max=255,
+     *     minMessage="Le lien est trop court.",
+     *     maxMessage="Le lien est trop long.",
+     *     groups={"Registration", "Profile"}
+     * )
+     */
+    protected $webSite;
+
+    /**
+     * @ORM\Column(type="text", length=5550, nullable=true, options={"default" : null})
+     *
+     * @Assert\NotBlank(message="Entrez votre description.", groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=3,
+     *     max=5550,
+     *     minMessage="Le texte est trop court.",
+     *     maxMessage="Le texte est trop long.",
+     *     groups={"Registration", "Profile"}
+     * )
+     */
+    protected $freeText;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
+     *
+     * @Assert\NotBlank(message="Entrez votre numéro de téléphone.", groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=3,
+     *     max=50,
+     *     minMessage="Le numéro est trop court.",
+     *     maxMessage="Le numéro est trop long.",
+     *     groups={"Registration", "Profile"}
+     * )
+     */
+    protected $phone;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Adress", inversedBy="users")
+     *
+     */
+    protected $adress;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @ORM\OneToMany(targetEntity="SnLink", mappedBy="user")
+     *
+     */
+    protected $snLinks;
+
+
+
 
     /**
      * @return mixed
@@ -174,4 +233,134 @@ class User extends BaseUser
     }
 
 
+
+    /**
+     * Set webSite
+     *
+     * @param string $webSite
+     *
+     * @return User
+     */
+    public function setWebSite($webSite)
+    {
+        $this->webSite = $webSite;
+
+        return $this;
+    }
+
+    /**
+     * Get webSite
+     *
+     * @return string
+     */
+    public function getWebSite()
+    {
+        return $this->webSite;
+    }
+
+    /**
+     * Set freeText
+     *
+     * @param string $freeText
+     *
+     * @return User
+     */
+    public function setFreeText($freeText)
+    {
+        $this->freeText = $freeText;
+
+        return $this;
+    }
+
+    /**
+     * Get freeText
+     *
+     * @return string
+     */
+    public function getFreeText()
+    {
+        return $this->freeText;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     *
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set adress
+     *
+     * @param \NumoBundle\Entity\Adress $adress
+     *
+     * @return User
+     */
+    public function setAdress(\NumoBundle\Entity\Adress $adress = null)
+    {
+        $this->adress = $adress;
+
+        return $this;
+    }
+
+    /**
+     * Get adress
+     *
+     * @return \NumoBundle\Entity\Adress
+     */
+    public function getAdress()
+    {
+        return $this->adress;
+    }
+
+    /**
+     * Add snLink
+     *
+     * @param \NumoBundle\Entity\SnLink $snLink
+     *
+     * @return User
+     */
+    public function addSnLink(\NumoBundle\Entity\SnLink $snLink)
+    {
+        $this->snLinks[] = $snLink;
+
+        return $this;
+    }
+
+    /**
+     * Remove snLink
+     *
+     * @param \NumoBundle\Entity\SnLink $snLink
+     */
+    public function removeSnLink(\NumoBundle\Entity\SnLink $snLink)
+    {
+        $this->snLinks->removeElement($snLink);
+    }
+
+    /**
+     * Get snLinks
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSnLinks()
+    {
+        return $this->snLinks;
+    }
 }

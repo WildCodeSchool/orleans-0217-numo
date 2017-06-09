@@ -1,21 +1,20 @@
-{% extends 'layoutadmin.html.twig' %}
+{% extends 'layoutAdmin.html.twig' %}
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
 {% block body %}
-    <h1>Company creation</h1>
+<div class="container font-lato">
+    <h1 class="titreadmin font-lato">MODIFIER LES INFORMATIONS DE NUM'O</h1>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
         {{ form_row(form.pdf) }}
-{#
-    <a href="{{ asset('img/upload' ~ NUMO.pdf) }}">View RIB (PDF)</a>
-#}
         <input type="submit" value="Create" />
     {{ form_end(form) }}
 
     <ul>
         <li>
-            <a href="{{ path('company_index') }}">Back to the list</a>
+            <a href="{{ path('company_index') }}">Retour</a>
         </li>
     </ul>
+</div>
 {% endblock %}

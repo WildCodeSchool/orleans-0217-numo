@@ -128,5 +128,28 @@ class EvtDate
     {
         return $this->timeEnd;
     }
-}
 
+    /**
+     * Set event
+     *
+     * @param \NumoBundle\Entity\Event $event
+     *
+     * @return EvtDate
+     */
+    public function setEvent(\NumoBundle\Entity\Event $event = null)
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
+    /**
+     * Get event
+     *
+     * @return \NumoBundle\Entity\Event
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
+}

@@ -1,38 +1,36 @@
-{% extends 'layoutadmin.html.twig' %}
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% extends 'layoutAdmin.html.twig' %}
 
 {% block body %}
-    <h1>Company</h1>
+<div class="container">
+    <h1 class="titreadmin font-lato">NUM'O</h1>
+    <hr>
 
-    <table>
+    <table class="tabadmin font-lato">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ company.id }}</td>
-            </tr>
-            <tr>
-                <th>Contactemail</th>
+                <th>Email</th>
                 <td>{{ company.contactEmail }}</td>
             </tr>
             <tr>
-                <th>City</th>
+                <th>Ville</th>
                 <td>{{ company.city }}</td>
             </tr>
             <tr>
-                <th>Postalcode</th>
+                <th>Code Postal</th>
                 <td>{{ company.postalCode }}</td>
             </tr>
             <tr>
-                <th>Adress</th>
+                <th>Adresse</th>
                 <td>{{ company.adress }}</td>
             </tr>
             <tr>
-                <th>Phone</th>
+                <th>Téléphone</th>
                 <td>{{ company.phone }}</td>
             </tr>
             <tr>
-                <th>Imageurl</th>
-                <td>{{ company.imageUrl }}</td>
+                <th>Image</th>
+                <td><img src="{{ asset('{{ company.imageUrl }}') }}"
+                         alt="NUM'O"/></td>
             </tr>
             <tr>
                 <th>Pdf</th>
@@ -40,18 +38,13 @@
             </tr>
         </tbody>
     </table>
+    {{ form_start(delete_form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('company_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('company_edit', { 'id': company.id }) }}">Edit</a>
-        </li>
-        <li>
+    <a href="/app_dev.php/company/1/edit"><button type="button" value="MODIFIER">MODIFIER</button></a>
+
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+                <input type="submit" value="SUPPRIMER">
             {{ form_end(delete_form) }}
-        </li>
-    </ul>
+
+</div>
 {% endblock %}

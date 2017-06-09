@@ -1,0 +1,95 @@
+{% extends 'layout.html.twig' %}
+{% block body %}
+
+    <div class="container-fluid bg-1 text-center">
+        <h3 class="margin"></h3>
+        <div class="row imgHeader">
+            <a href="{{ path('event_list') }}" class="btn btn-default btn-lg btnOrange">Consulter les événements</a>
+
+        </div>
+    </div>
+
+    <div class="container-fluid bg-2 text-center">
+        <div class="col-lg-offset-3 col-lg-6">
+            <h3 class="margin">NUM'O</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
+            <a href="/register/" class="btn btn-lg btnwhite">
+                <span class="glyphicon glyphicon-search"></span> Devenez membre
+            </a>
+        </div>
+    </div>
+
+        <div class="container-fluid">
+            <div class="row no-gutter popup-gallery">
+                {%  for event in events %}
+                <div class="col-lg-4 col-sm-6">
+                    <a href="{{ event.image }}" class="portfolio-box">
+                        <img class="imageEvents img-responsive" src="{{ event.image }}" class="img-responsive" alt="">
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-category text-faded">
+                                    <h2>{{ event.title }}</h2>
+                                </div>
+                                <div class="project-name">
+                                    {{ event.description }}
+                                </div>
+                                <p> {{ event.address }}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    <div class="container-fluid text-center">
+        <div class="row moreEvents">
+            <div class="col-lg-offset-3 col-lg-6">
+                <h3 class="margin">Les événements</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
+                <a href="{{ path('event_list') }}" class="btn btn-danger  btn-lg">Voir plus</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid footer">
+        <div class="col-lg-offset-1 col-lg-10 col-lg-offset-1   ">
+            {#<hr class="lineRed">#}
+        </div>
+        <div class="col-lg-offset-0 col-lg-12">
+            <div id="myCarousel" class="carousel slide text-center" data-ride="carousel">
+                <h2>Nos partenaires</h2>
+
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                        {% for partner in partners %}
+                            <div class="col-lg-offset-2  col-lg-2">
+                                <a href="{{ partner.webUrl }}"><img src="{{ asset('img/' ~ partner.imageUrl) }}"
+                                    class="img-partner" alt="{{ partner.name }}"></a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Left and right controls -->
+                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}

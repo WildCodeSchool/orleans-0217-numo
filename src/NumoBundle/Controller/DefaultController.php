@@ -2,6 +2,7 @@
 
 namespace NumoBundle\Controller;
 
+use NumoBundle\Entity\Partner;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -29,13 +30,20 @@ class DefaultController extends Controller
             $events = [];
             $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
         }
+
+
+        $em = $this->getDoctrine()->getManager();
+
+        $partners = $em->getRepository('NumoBundle:Partner')->findAll();
+
 // --- affichage
         $twigParams = [
             'agendaSlug' => $api->getAgendaSlug(),	// le nom de l'agenda
             'events' => $events,			// la liste des events (format OaEvents)
             'error' => $error,				// l'erreur si la lecture a foiré
+            'partners' => $partners,		// affichege dynamique des partenaires
         ];
-        return $this->render('NumoBundle:Site:index.html.twig', $twigParams);
+        return $this->render('NumoBundle:site:index.html.twig', $twigParams);
     }
 
 
