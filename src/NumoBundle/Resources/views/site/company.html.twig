@@ -1,13 +1,22 @@
 {% extends 'layout.html.twig' %}
 {% block body %}
+
+    {# --- titre ---#}
+    <div class="col-xs-12 text-center">
+        <div class="separation"></div>
+        <h1>L'association</h1>
+        <div class="separation"></div>
+    </div>
+
     <div class="container-fluid company">
+
         <div class="row">
             <div class="col-lg-offset-2 col-lg-5">
                 <h2>{{ contents.title }} <hr> </h2>
                 <p>{{ contents.content }}</p>
                 <div class="row companyBottom">
                     <div class="col-lg-offset-4">
-                        <a href="/register" type="button" class="btn btn-success">Rejoins notre association</a>
+                        <a href="/register/" type="button" class="btn btn-success">Adherer à Num'O</a>
                     </div>
                 </div>
             </div>
@@ -21,7 +30,6 @@
                 <img src="{{ company.imageUrl }}" alt="Numo" style="width:200px">
             </div>
         </div>
-
 
     </div>
 

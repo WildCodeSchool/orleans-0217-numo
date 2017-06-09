@@ -78,7 +78,7 @@ class User extends BaseUser
     protected $trust;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
      *
      * @Assert\NotBlank(message="Entrez le lien de votre site web.", groups={"Registration", "Profile"})
      * @Assert\Length(
@@ -92,7 +92,7 @@ class User extends BaseUser
     protected $webSite;
 
     /**
-     * @ORM\Column(type="text", length=5550)
+     * @ORM\Column(type="text", length=5550, nullable=true, options={"default" : null})
      *
      * @Assert\NotBlank(message="Entrez votre description.", groups={"Registration", "Profile"})
      * @Assert\Length(
@@ -106,7 +106,7 @@ class User extends BaseUser
     protected $freeText;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
      *
      * @Assert\NotBlank(message="Entrez votre numéro de téléphone.", groups={"Registration", "Profile"})
      * @Assert\Length(
@@ -120,12 +120,14 @@ class User extends BaseUser
     protected $phone;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
      * @ORM\ManyToOne(targetEntity="Adress", inversedBy="users")
      *
      */
     protected $adress;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
      * @ORM\OneToMany(targetEntity="SnLink", mappedBy="user")
      *
      */
