@@ -66,46 +66,12 @@
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
                     <div class="item active">
-                        <div class="col-lg-offset-2  col-lg-2">
-                            <img src="img/1.jpg" class="img-responsive" alt="" width="100%">
-                        </div>
-                        <div class="col-lg-2">
-                            <img src="img/2.jpg" class="img-responsive" alt="" width="100%">
-                        </div>
-                        <div class="col-lg-2">
-                            <img src="img/3.jpg" class="img-responsive" alt="" width="100%">
-                        </div>
-                        <div class="col-lg-2">
-                            <img src="img/4.jpg" class="img-responsive" alt="" width="100%">
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="col-lg-offset-2  col-lg-2">
-                            <img src="img/5.jpg" class="img-responsive" alt="" width="100%">
-                        </div>
-                        <div class="col-lg-2">
-                            <img src="img/6.jpg" class="img-responsive" alt="" width="100%">
-                        </div>
-                        <div class="col-lg-2">
-                            <img src="img/fb.png" class="img-responsive" alt="" width="70%">
-                        </div>
-                        <div class="col-lg-2">
-                            <img src="img/logotrans.png" class="img-responsive" alt="" width="80%">
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="col-lg-offset-2  col-lg-2">
-                            <img src="img/mail.png" class="img-responsive" alt="" width="70%">
-                        </div>
-                        <div class="col-lg-2">
-                            <img src="img/tel.png" class="img-responsive" alt="" width="70%">
-                        </div>
-                        <div class="col-lg-2">
-                            <img src="img/twitter.png" class="img-responsive" alt="" width="70%">
-                        </div>
-                        <div class="col-lg-2">
-                            <img src="img/3.jpg" class="img-responsive" alt="" width="100%">
-                        </div>
+                        {% for partner in partners %}
+                            <div class="col-lg-offset-2  col-lg-2">
+                                <a href="{{ partner.webUrl }}"><img src="{{ asset('img/' ~ partner.imageUrl) }}"
+                                    class="img-partner" alt="{{ partner.name }}"></a>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
 
