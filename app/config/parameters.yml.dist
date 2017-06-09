@@ -17,3 +17,8 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+
+    upload_directory: '%kernel.root_dir%/../web/uploads/users'
+    agenda_slug: duri-wild
+    public_key: 1F6bZ8wy4X1IU7Myf7lJxcwwE5UdnBFo
+    secret_key: Tx8z8g8B0UQNMFRoKfIv370XaaDzc5nD
