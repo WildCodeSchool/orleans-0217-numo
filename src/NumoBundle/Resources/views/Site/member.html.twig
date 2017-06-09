@@ -1,0 +1,90 @@
+{% extends 'layout.html.twig' %}
+{% block body %}
+
+    {#<hr class="hrMembre">#}
+    <div class="container-fluid text-center">
+        <h1>Membres</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-offset-1 col-lg-10">
+            <hr class="hrMembre">
+        </div>
+    </div>
+
+    <div class="container-fluid text-center">
+        <div class="row">
+            <h2>Afficher:</h2>
+        </div>
+
+        <nav class="AlphabetNav">
+            <a>A</a>
+            <a>B</a>
+            <a>C</a>
+            <a>D</a>
+            <a>E</a>
+            <a>F</a>
+            <a>G</a>
+            <a>H</a>
+            <a>I</a>
+            <a>J</a>
+            <a>K</a>
+            <a>L</a>
+            <a>M</a>
+            <a>N</a>
+            <a>O</a>
+            <a>P</a>
+            <a>Q</a>
+            <a>R</a>
+            <a>S</a>
+            <a>T</a>
+            <a>U</a>
+            <a>V</a>
+            <a>W</a>
+            <a>X</a>
+            <a>Y</a>
+            <a>Z</a>
+            <input type="checkbox" name="premium" value="premium" id="premium">
+            <label for="premium">PREMIUM</label>
+
+        </nav>
+    </div>
+
+    <div class="container-fluid list">
+        {% for member in members %}
+        <div class="row showMember">
+            <div class="col-lg-offset-2 col-xs-offset-2 col-lg-2">
+                <img src="http://img14.deviantart.net/ded4/i/2015/114/4/8/bruce_lee_12_by_kse332-d53mwzy.jpg" alt="Numo" class="imgMember img-responsive"
+                     style="width:250px">
+            </div>
+
+            <div class="col-lg-7">
+                <div class="row">
+                    <div class="col-lg-offset-0 col-xs-offset-4 col-lg-5">
+                        <a><h2 class="memberName">{{ member.firstname }} {{ member.username }} </h2></a>
+                    </div>
+
+                    <div class="col-lg-offset-4 col-xs-offset-4 col-lg-2">
+                        <img src="logotrans.png" alt="Numo" class="imgMember" style="width:250px">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-offset-0 col-xs-offset-1 col-lg-10">
+                        <h3 class="memberSite">{{ member.email }}</h3>
+                        <p class="memberDescription">{{ member.description }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-offset-2 col-lg-8">
+                <hr class="hrMembre">
+            </div>
+        </div>
+            {% endfor %}
+        <div class="container-fluid text-center">
+            <a id="next" class="btn btn-danger  btn-lg">Voir plus</a>
+
+        </div>
+    </div>
+
+{% endblock %}
