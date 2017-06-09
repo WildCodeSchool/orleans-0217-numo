@@ -1,6 +1,8 @@
 
 /* --- web/js/scanaddress.js -- */
 
+setTimeout(scanAddress(), 500);
+
 function init() {
     // --- instanciation de l'objet geocoder de google
     geocoder = new google.maps.Geocoder();

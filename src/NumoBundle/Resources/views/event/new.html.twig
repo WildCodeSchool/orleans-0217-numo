@@ -14,11 +14,18 @@
 {% endblock %}
 
 
+                <h4 class="bg-img">Description de l'évènement</h4>
 
 
 
 
+                {{ form_label(form.title, '* Nom de l\'évènement') }}
+                <span class="erreur bg-img" id="errortitle"> {{ form_errors(form.title)|striptags }} </span>
+                {{ form_widget(form.title, { 'attr': {'class': 'form-control ecart-bas', 'onkeydown': 'clearHtml("errortitle");'} }) }}
 
+                {{ form_label(form.description, '* Description succincte de l\'évènement') }}
+                <span class="erreur bg-img" id="errordesc"> {{ form_errors(form.description)|striptags }} </span>
+                {{ form_widget(form.description, { 'attr': {'class': 'form-control ecart-bas', 'onkeydown': 'clearHtml("errordesc");'} }) }}
 
 
 {% block stylesheets %}
@@ -166,6 +173,49 @@
                 {{ form_end(form) }}
             </div>
         </div>
+
+
+
+                {# --- locations ---------------------------------------------------------------------- #}
+                {#<div class="separation"></div>#}
+                {#<h4 class="bg-img">Description du lieu</h4>#}
+
+                {#{{ form_label(form.placename, '* Nom du lieu de l\'évènement') }}#}
+                {#<span class="erreur bg-img" id="errorplacename"> {{ form_errors(form.placename)|striptags }} </span>#}
+                {#{{ form_widget(form.placename, { 'attr': {'class': 'form-control ecart-bas', 'onkeydown': 'clearHtml("errorplacename");'} }) }}#}
+
+                {#{{ form_label(form.address, '* Adresse complète') }}#}
+                {#<span class="erreur bg-img" id="erroraddr"> {{ form_errors(form.address)|striptags }}</span>#}
+                {#<span id="addrmessage"></span>#}
+                {#{{ form_widget(form.address, { 'attr': {'class': 'form-control ecart-bas', 'onkeydown': 'clearHtml("addrmessage");clearHtml("erroraddr");', 'onfocusout': 'scanAddress();'} }) }}#}
+                {#<input type="hidden" name="latitude" id="latitude" value="">#}
+                {#<input type="hidden" name="longitude" id="longitude" value="">#}
+
+                {#{{ form_label(form.pricingInfo, 'Informations sur la tarification') }}#}
+                {#{{ form_widget(form.pricingInfo, { 'attr': {'class': 'form-control ecart-bas'} }) }}#}
+
+                {#{{ form_label(form.ticketLink, 'Lien vers la billetterie') }}#}
+                {#{{ form_widget(form.ticketLink, { 'attr': {'class': 'form-control ecart-bas'} }) }}#}
+
+                {# --- dates -------------------------------------------------------------------------- #}
+                {#<div class="separation"></div>#}
+                {#<h4 class="bg-img">Date(s) de l'évènement</h4>#}
+                {#{% for evtDate in form.evtDates %}#}
+
+                    {#{{ form_label(evtDate.evtDate, '* Date de l\'évènement') }}#}
+                    {#<span class="erreur bg-img" id="errorevtdate{{ loop.index }}"> {{ form_errors(evtDate.evtDate)|striptags }} </span>#}
+                    {#{{ form_widget(evtDate.evtDate, { 'attr': {'class': 'form-control ecart-bas'} }) }}#}
+
+                    {#{{ form_label(evtDate.timeStart, '* Horaire de début') }}#}
+                    {#<span class="erreur bg-img" id="errortstart{{ loop.index }}"> {{ form_errors(evtDate.timeStart)|striptags }} </span>#}
+                    {#{{ form_widget(evtDate.timeStart, { 'attr': {'class': 'form-control ecart-bas'} }) }}#}
+
+                    {#{{ form_label(evtDate.timeEnd, '* Horaire de fin') }}#}
+                    {#<span class="erreur bg-img" id="errortend{{ loop.index }}"> {{ form_errors(evtDate.timeEnd)|striptags }} </span>#}
+                    {#{{ form_widget(evtDate.timeEnd, { 'attr': {'class': 'form-control ecart-bas'} }) }}#}
+
+                {#{% endfor %}#}
+
 
 
     </div>

@@ -181,6 +181,10 @@ class EventController extends Controller
         $twigParams = [
             'agendaSlug' => $this->getApi()->getAgendaSlug(),
             'event' => $event,
+// --- provisoire ---------------------------------------------------
+            'author' => ['name' => 'John DOE', 'imageUrl' => 'http://localhost:8000/img/logotrans.png', 'badge' => ''], // pour test
+            'user' => ['rs' => []],
+// -------------------------------------------------------------------
             'error' => $error,
         ];
         return $this->render('NumoBundle:event:show.html.twig', $twigParams);
