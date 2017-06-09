@@ -43,9 +43,6 @@ class DefaultController extends Controller
             'error' => $error,				// l'erreur si la lecture a foiré
             'partners' => $partners,		// affichege dynamique des partenaires
         ];
-
-
-
         return $this->render('NumoBundle:site:index.html.twig', $twigParams);
     }
 
