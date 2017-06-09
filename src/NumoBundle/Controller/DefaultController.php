@@ -35,7 +35,7 @@ class DefaultController extends Controller
             'events' => $events,			// la liste des events (format OaEvents)
             'error' => $error,				// l'erreur si la lecture a foiré
         ];
-        return $this->render('NumoBundle:Site:index.html.twig', $twigParams);
+        return $this->render('NumoBundle:site:index.html.twig', $twigParams);
     }
 
 
