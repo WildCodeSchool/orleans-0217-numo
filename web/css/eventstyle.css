@@ -39,19 +39,16 @@ ul.evtdatelist {
     margin-left: 0;
     padding-left: 0;
 }
-.cachable {
+.showtrash {
     visibility: hidden;
 }
-
-
-
-
 .erreur {
     font-size: 16px;
     font-weight: bold;
     color: #CADB2A;
 }
 
+/* --- general --- */
 
 .ecart-haut {
     margin-top: 20px;
@@ -69,13 +66,6 @@ div.separation {
     font-weight: bold;
     color: blue;
 }
-.twigerror ul li {
-    display: inline;
-    color: red;
-}
-    color: #ff0000;
-}
-
 div#mapzone {
     z-index: 0;
     width: 300px;
@@ -88,15 +78,22 @@ div#closemap {
     width: 40px;
     height:20px;
     z-index: 100;
-    cursor: pointer;
     color: white;
     font-weight: bold;
     background-color: red;
+}
+.cursor-pointer {
+    cursor: pointer;
 }
 .little-img {
     border: 1px solid #CCCCCC;
     height: 40px;
 
+}
+.mid-img {
+    max-height: 400px;
+    max-width: 300px;
+    border: 2px solid #FFFFFF;
 }
 .rs-button {
     margin: 0 20px;
