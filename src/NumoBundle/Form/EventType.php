@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class EventType extends AbstractType
 {
@@ -21,9 +22,11 @@ class EventType extends AbstractType
             ->add('description', TextType::class, ['required' => false])
             ->add('freeText', TextareaType::class, ['required' => false])
             ->add('tags', TextType::class, ['required' => false])
-            ->add('image', TextType::class, ['required' => false])
+            ->add('image', fileType::class, ['required' => false])
             ->add('placename', TextType::class, ['required' => false])
             ->add('address', TextType::class, ['required' => false])
+            ->add('latitude', TextType::class, ['required' => false])
+            ->add('longitude', TextType::class, ['required' => false])
             ->add('ticketLink', TextType::class, ['required' => false])
             ->add('pricingInfo', TextType::class, ['required' => false])
             ->add('evtDates', CollectionType::class, [

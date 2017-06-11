@@ -9,4 +9,6 @@ vendor/
 web/bundles/
 .idea/
 
-/web/uploads/
+/web/uploads/event/*
+/web/uploads/numo/*
+/web/uploads/users/*

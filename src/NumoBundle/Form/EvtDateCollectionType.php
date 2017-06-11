@@ -3,6 +3,7 @@
 namespace NumoBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,7 +15,13 @@ class EvtDateCollectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('evtDate')
+            ->add('evtDate', DateType::class, [
+//                'widget' => 'single_text',
+                'widget' => 'choice',
+                'html5' => false,
+//                'format' => 'dd/MM/yyyy',
+                'years' => range(2017, 2027),
+            ], ['required' => false])
             ->add('timeStart')
             ->add('timeEnd');
     }

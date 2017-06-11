@@ -30,10 +30,12 @@ class Event
      *
      * @ORM\Column(name="status", type="integer")
      */
-    private $status;
+    private $status = 1;
 
     /**
      * @var string
+     *
+     * @Assert\Image()
      *
      * @ORM\Column(name="image", type="string", length=255)
      */
@@ -63,16 +65,16 @@ class Event
     /**
      * @var string
      *
-     * @ORM\Column(name="freeText", type="text")
+     * @ORM\Column(name="freeText", type="text", nullable=true)
      */
-    private $freeText;
+    private $freeText = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tags", type="string", length=255)
+     * @ORM\Column(name="tags", type="string", length=255, nullable=true)
      */
-    private $tags;
+    private $tags = '';
 
     /**
      * @var string
@@ -115,21 +117,23 @@ class Event
     /**
      * @var string
      *
-     * @ORM\Column(name="ticketLink", type="string", length=255)
+     * @ORM\Column(name="ticketLink", type="string", length=255, nullable=true)
      */
-    private $ticketLink;
+    private $ticketLink = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="pricingInfo", type="string", length=255)
+     * @ORM\Column(name="pricingInfo", type="string", length=255, nullable=true)
      */
-    private $pricingInfo;
+    private $pricingInfo = '';
 
     /**
-     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"persist"})
      */
     private $evtDates;
+
+
 
 
     /**

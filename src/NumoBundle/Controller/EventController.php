@@ -103,6 +103,7 @@ class EventController extends Controller
         // ... autre(s) parametre(s) GET
 
 
+
         // --- lecture de la liste OpenAgenda
         $events = $this->getApi()->getEventList($options, false);
         if (false === $events) {
@@ -141,15 +142,22 @@ class EventController extends Controller
         $error = '';
         $event = new Event();
         $evtDate0 = new EvtDate();
+        $evtDate0->setEvtDate(new \DateTime());
         $event->getEvtDates()->add($evtDate0);
         $form = $this->createForm('NumoBundle\Form\EventType', $event);
         $form->handleRequest($request);
-//
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $event->getImage();
+            $fileName = $this->getParameter('server_url').'/'.$this->getParameter('img_event_dir').'/'.uniqid().'.'.$file->guessExtension();
+            $file->move(
+                $this->getParameter('upload_directory_event'),
+                $fileName
+            );
+            $event->setImage($fileName);
+            $this->getEm()->persist($event);
+            $this->getEm()->flush();
 
-
-
-
+            return $this->redirectToRoute('event_list');
         }
         $twigParams = [
             'error' => $error,
