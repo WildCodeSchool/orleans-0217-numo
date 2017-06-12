@@ -52,7 +52,9 @@ header .header-content .header-content-inner p {
         margin-right: auto;
     }
 }
-
+.navbar-logo {
+    width: 100px;
+}
 
 body {
     padding-top: 50px;

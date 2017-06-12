@@ -9,6 +9,11 @@ vendor/
 web/bundles/
 .idea/
 
+<<<<<<< HEAD
 /web/uploads/event/*
 /web/uploads/numo/*
 /web/uploads/users/*
+=======
+/web/uploads/
+.web-server-pid
+>>>>>>> dev
