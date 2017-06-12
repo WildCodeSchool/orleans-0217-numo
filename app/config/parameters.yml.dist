@@ -14,16 +14,14 @@ parameters:
     mailer_host: 127.0.0.1
     mailer_user: ~
     mailer_password: ~
+
+    upload_directory: '%kernel.root_dir%/../web/uploads/users'
     upload_directory_pdf: '%kernel.root_dir%/../web/uploads/numo'
+    upload_directory_event: '%kernel.root_dir%/../web/uploads/event'
+
     agenda_slug: duri-wild
     public_key: 1F6bZ8wy4X1IU7Myf7lJxcwwE5UdnBFo
     secret_key: Tx8z8g8B0UQNMFRoKfIv370XaaDzc5nD
-    upload_directory: '%kernel.root_dir%/../web/uploads/users'
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
-
-    upload_directory: '%kernel.root_dir%/../web/uploads/users'
-    agenda_slug: duri-wild
-    public_key: 1F6bZ8wy4X1IU7Myf7lJxcwwE5UdnBFo
-    secret_key: Tx8z8g8B0UQNMFRoKfIv370XaaDzc5nD
