@@ -305,3 +305,13 @@ div.separation {
     height: 4px;
     background-color: #CCCCCC;
 }
+
+.profileUser{
+    padding-top: 30px;
+}
+
+.iconContact{
+    padding-left: 50px;
+    padding-top: 30px;
+}
+
