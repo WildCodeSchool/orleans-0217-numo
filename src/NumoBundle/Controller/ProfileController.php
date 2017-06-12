@@ -54,7 +54,6 @@ class ProfileController extends \FOS\UserBundle\Controller\ProfileController
         $formFactory = $this->get('fos_user.profile.form.factory');
 
         $form = $formFactory->createForm();
-
         $form->setData($user);
 
         $form->handleRequest($request);
