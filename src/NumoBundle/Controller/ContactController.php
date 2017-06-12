@@ -40,7 +40,7 @@ class ContactController extends DefaultController
 
         $company= $em->getRepository('NumoBundle:Company')->find($id=1);
 
-        return $this->render('NumoBundle:Site:pageContact.html.twig', array('form'=>$form->createView(),
+        return $this->render('NumoBundle:site:pageContact.html.twig', array('form'=>$form->createView(),
         'company' => $company ));
     }
 
