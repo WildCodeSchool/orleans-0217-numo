@@ -1,52 +1,65 @@
-{% extends 'layoutadmin.html.twig' %}
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% extends 'layoutAdmin.html.twig' %}
+{% form_theme delete_form 'bootstrap_3_layout.html.twig' %}
+
 
 {% block body %}
-    <h1>Companies list</h1>
+    <div class="container font-lato">
+        <h1 class="titreadmin font-lato">NUM'O</h1>
 
-    <table>
-        <thead>
+        <table class="tabadmin font-lato">
+            <tbody>
+            {% for company in companies %}
             <tr>
-                <th>Id</th>
                 <th>Contactemail</th>
-                <th>City</th>
-                <th>Postalcode</th>
-                <th>Adress</th>
-                <th>Phone</th>
-                <th>Imageurl</th>
-                <th>Pdf</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for company in companies %}
-            <tr>
-                <td><a href="{{ path('company_show', { 'id': company.id }) }}">{{ company.id }}</a></td>
                 <td>{{ company.contactEmail }}</td>
-                <td>{{ company.city }}</td>
-                <td>{{ company.postalCode }}</td>
-                <td>{{ company.adress }}</td>
-                <td>{{ company.phone }}</td>
-                <td>{{ company.imageUrl }}</td>
-                <td>{{ company.pdf }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('company_show', { 'id': company.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('company_edit', { 'id': company.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <tr>
+                <th>City</th>
+                <td>{{ company.city }}</td>
+            </tr>
+            <tr>
+                <th>Postalcode</th>
+                <td>{{ company.postalCode }}</td>
+            </tr>
+            <tr>
+                <th>Adress</th>
+                <td>{{ company.adress }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ company.phone }}</td>
+            </tr>
+            <tr>
+                <th>Imageurl</th>
+                <td>{{ company.imageUrl }}</td>
+            </tr>
+            <tr>
+                <th>Pdf</th>
+                <td>{{ company.pdf }}</td>
+            </tr>
+            </tbody>
+        </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('company_new') }}">Create a new company</a>
-        </li>
-    </ul>
+        <ul>
+            <li>
+                <a href="{{ path('company_index') }}">Back to the list</a>
+            </li>
+            <li>
+                <a href="{{ path('company_edit', { 'id': company.id }) }}">Edit</a>
+            </li>
+            <li>
+                {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+                {{ form_end(delete_form) }}
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="{{ path('company_new') }}">Create a new company</a>
+            </li>
+        </ul>
+        {% endfor %}
+    </div>
+
+
 {% endblock %}

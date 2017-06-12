@@ -1,9 +1,7 @@
-
 header {
     margin-top:-1%;
-    /*position: fixed;    */
+    position: fixed;
     width: 100%;
-    min-height: auto;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
@@ -27,14 +25,14 @@ header .header-content .header-content-inner h1 {
     font-size: 30px;
 }
     header .header-content .header-content-inner hr {
-        margin: 30px auto;
-    }
-    header .header-content .header-content-inner p {
-        font-weight: 300;
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 16px;
-        margin-bottom: 50px;
-    }
+    margin: 30px auto;
+}
+header .header-content .header-content-inner p {
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    margin-bottom: 50px;
+}
 @media (min-width: 768px) {
     header {
         min-height: 100%;
@@ -54,8 +52,9 @@ header .header-content .header-content-inner h1 {
         margin-right: auto;
     }
 }
-
-/* --- rajoute par Patrick --- */
+.navbar-logo {
+    width: 100px;
+}
 
 body {
     padding-top: 50px;
@@ -71,7 +70,7 @@ footer {
 }
 
 .imgHeader{
-    background-image: url("../img/logotrans.png");
+    background-image: url("../img/NUMOmedium.png");
     background-repeat: no-repeat;
     background-position: center;
     height: 100px;
@@ -238,6 +237,74 @@ footer {
     margin-top: 5%;
 }
 
+/*
+style admin*/
+
+.navadmin{
+    font-weight: 500;
+}
+.font-lato{
+    font-family: 'Lato', sans-serif;
+    font-size: 1.3em;
+}
+.titreadmin{
+    text-align: left;
+    font-size: 4em;
+    margin-bottom: 7%;
+}
+.tabadmin{
+    text-align: center;
+    align-self: center;
+}
+.tabadmin{
+    margin-bottom: 5%;
+}
+th{
+    width: 11%;
+    text-align: center;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.3em;
+}
+td{
+    width: 12.5%;
+    text-align: center;
+}
+@keyframes appear {
+    from {opacity: 0}
+    to {opacity : 1}
+}
+.jumbotron{
+    background-color: transparent !important;
+    animation-name: appear;
+    animation-duration: 2s;
+}
+.btn-admin{
+    background-color: #a70050!important;
+    border: none !important;
+    margin-top: 40px;
+}
+button{
+    margin-top: 10%;
+}
+.modifadmin{
+    font-size: 1em;
+    margin-top: 3%;
+    color: black;
+    font-weight: 700;
+}
+.btnlist{
+    margin-top:5%;
+}
+table{
+    margin-bottom: 5%;
+}
+form{
+    margin-top: 5%;
+}
+
+/*
+fin admin
+*/
 .company{
     padding-bottom: 190px;
     padding-top: 50px;
@@ -295,10 +362,6 @@ footer {
     color: darkgray;
 }
 
-.btn-home-admin{
-    margin-top: 35px;
-}
-
 div.separation {
     margin: 20px 0px;
     width: 100%;
@@ -315,3 +378,6 @@ div.separation {
     padding-top: 30px;
 }
 
+.img-partner{
+    height: 120px;
+}

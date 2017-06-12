@@ -62,9 +62,9 @@
                     </div>
 
                     <div class="col-lg-offset-4 col-xs-offset-4 col-lg-2">
-                        {#{% if member.role == ROLE_ADHERENT %}#}
-                            {#<img src="{{ asset('img/logotrans.png') }}" alt="Numo" style="height:20px">#}
-                        {#{% endif %}#}
+                        {% if member.roles.0 == 'ROLE_ADHERENT' %}
+                            <img src="{{ asset('img/NUMOsmall.png') }}" alt="Numo" style="height:20px">
+                        {% endif %}
                     </div>
                 </div>
                 <div class="row">

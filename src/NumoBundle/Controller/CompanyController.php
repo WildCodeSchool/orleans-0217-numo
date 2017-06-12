@@ -48,24 +48,6 @@ class CompanyController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // $file stores the uploaded PDF file
-            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-            $file = $company->getPdf();
-            // Generate a unique name for the file before saving it
-            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-            // Move the file to the directory where brochures are stored
-            $file->move(
-                $this->getParameter('pdf_directory'),
-                $fileName
-            );
-
-            // Update the 'pdf' property to store the PDF file name
-            // instead of its contents
-            $company->setPdf(
-                new File($this->getParameter('pdf_directory').'/'.$company->getPdf())
-            );
-
-            // ... persist the $product variable or any other work
 
             return $this->redirect($this->generateUrl('app_product_list'));
         }

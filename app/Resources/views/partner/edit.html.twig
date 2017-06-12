@@ -4,11 +4,10 @@
 
 {% block body %}
 <div class="container font-lato">
-    <h1 class="titreadmin font-lato">{{ pageContent.title }}</h1>
+    <h1 class="titreadmin font-lato">MODIFIER UN PARTENAIRE</h1>
     <hr>
     <br/>
-    <a href="{{ path('pagecontent_index') }}"><button type="button" value="MODIFIER">RETOUR A LA LISTE</button></a>
-
+    <a href="{{ path('partner_index') }}"><button type="button" value="PROFIL">RETOUR A LA LISTE/button></a>
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
@@ -17,4 +16,6 @@
     {{ form_start(delete_form) }}
         <input type="submit" value="SUPPRIMER">
     {{ form_end(delete_form) }}
+
+</div>
 {% endblock %}
