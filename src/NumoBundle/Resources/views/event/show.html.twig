@@ -1,0 +1,164 @@
+{# --- src/NumoBundle/Resources/views/event/show.html.twig --- #}
+
+{% extends 'layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            {% if error == '' %}
+
+                {# --- titre ---#}
+                <div class="col-xs-12 text-center">
+                    <div class="separation"></div>
+                    <h1>{{ event.title }}</h1>
+                    <div class="separation"></div>
+                </div>
+
+                {# --- partie gauche (image + descriptif) --- #}
+                <div class="col-xs-12 col-md-8">
+                    <p>
+                        <img src="{{ event.image }}" alt="image {{ event.title }}" class="img-responsive" />
+                    </p>
+                    <p>{{ event.description }}</p>
+                    <p>{{ event.freeText }}</p>
+
+                </div>
+
+                {# --- partie droite (date + geoloc + ...) ---(#}
+                <div class="col-xs-12 col-md-4 text-center">
+
+                    {# --- date(s) --- #}
+                    <h3>Date{% if event.evtdates|length > 1 %}s{% endif %}</h3>
+
+                    {#{% for evtDate in event.evtDates %}#}
+                        {#<p>#}
+                            {#{{ evtDate.evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}<br />#}
+                            {#de {{ evtDate.timeStart|localizeddate("medium", "none", null, null, "HH'h'mm") }}#}
+                            {#à {{ evtDate.timeEnd|localizeddate("medium", "none", null, null, "HH'h'mm") }}#}
+                        {#</p>#}
+                    {#{% endfor %}#}
+
+                    <table class="table">
+                        {% for evtDate in event.evtDates %}
+                            <tr>
+                                <td class="text-left">
+                                    {{ evtDate.evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}
+                                </td>
+                                <td class="text-right">
+                                    {{ evtDate.timeStart|localizeddate("medium", "none", null, null, "HH'h'mm") }}
+                                    à {{ evtDate.timeEnd|localizeddate("medium", "none", null, null, "HH'h'mm") }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                    {# --- adresse --- #}
+                    <div class="separation"></div>
+                    <h3>Lieu</h3>
+                    <p>{{ event.placename }}</p>
+                    <p>{{ event.address }}</p>
+
+                    {# --- map --- #}
+                    <div class="separation"></div>
+                    <div id="closemap" class="text-center" onclick="closeMap();">X</div>
+                    <div id="mapzone"></div>
+
+                    {# --- billetterie --- #}
+                    <div class="separation"></div>
+                    <h3>Billetterie / inscription</h3>
+                    <p>{{ event.pricingInfo }}</p>
+                    {% if event.ticketLink > '' %}
+                        <p><a href="{{ event.ticketLink }}" class="btn btn-default" role="button" target="_blanc">Accéder à la billetterie</a></p>
+                    {% endif %}
+
+                    {# --- reseaux sociaux --- #}
+                        <div class="separation"></div>
+                        <h3>Partager sur</h3>
+                        {# --- facebook --- #}
+                        <a name="fb_share" type="box_count" share_url="{{ app.request.uri }}" target="_blanc">
+                            <img src="{{ asset('/img/rs-facebook.png') }}" alt="partager facebook" class="rs-button" />
+                        </a>
+                    {# --- twitter --- #}
+                        <a href="https://twitter.com/share" target="_blanc">
+                            <img src="{{ asset('/img/rs-twitter.png') }}" alt="partager twitter" class="rs-button" />
+                        </a>
+                    {# --- linkedin --- #}
+                        <a href="" target="_blanc">
+                            <img src="{{ asset('/img/rs-linkedin.png') }}" alt="partager linkedin" class="rs-button" />
+                        </a>
+
+                    {# --- organisateur --- #}
+                    <div class="separation"></div>
+                    <h3>Organisé par</h3>
+                    <p><img class="little-img" src="{{ author.imageUrl }}" alt="image organisateur {{ author.name }}" /> {{ author.name }}</p>
+                </div>
+
+            {% else %}
+
+                <div class="col-xs-12 erreur text-center">
+                    {{ erreur }}
+                </div>
+
+            {% endif %}
+
+            <div class="col-xs-12 text-center">
+                <div class="separation"></div>
+                <p><a href="{{ path('event_list') }}" class="btn btn-default" role="button">Retour à la liste</a></p>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+                        {#<p><a href="{{ event.link }}" class="btn btn-primary" role="button" target="_blanc">Voir sur Open Agenda</a></p>#}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/showevent.js') }}"></script>
+    <script>
+        function initMap(){
+            var centerMap = new google.maps.LatLng('{{ event.latitude }}', '{{ event.longitude }}');
+            var optionsMap = {
+                zoom: 14,
+                center: centerMap,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            var myMap = new google.maps.Map(document.getElementById("mapzone"), optionsMap);
+            var optionsMarqueur = {
+                position: centerMap,
+                map: myMap,
+                title: "{{ event.placename }}"
+            }
+            var marqueur = new google.maps.Marker(optionsMarqueur);
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5FbMBpVejJw6o_4r3eHkUQQde6vlDItg&callback=initMap" async defer></script>
+    <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
+{% endblock %}
+
+{# --- twiter --------------------- #}
+{#<a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>#}
+{#<script>#}
+    {#!function(d,s,id) {#}
+        {#var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location)?'http':'https';#}
+        {#if(!d.getElementById(id)) {#}
+            {#js = d.createElement(s);#}
+            {#js.id = id;#}
+            {#js.src = p + '://platform.twitter.com/widgets.js';#}
+            {#fjs.parentNode.insertBefore(js,fjs);#}
+        {#}#}
+    {#}#}
+    {#(document, 'script', 'twitter-wjs');#}
+{#</script>#}
+{# ------------------------------------ #}
+{# --- facebook ------------------------#}
+{#<a name="fb_share" type="box_count" share_url="http://www.example.com/page.html"></a>#}
+{# ------------------------------------ #}

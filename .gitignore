@@ -9,3 +9,5 @@ vendor/
 web/bundles/
 .idea/
 
+/web/uploads/
+.web-server-pid

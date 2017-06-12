@@ -1,0 +1,24 @@
+{% extends 'layoutAdmin.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <h1 class="titreadmin font-lato">{{ pageContent.title }}</h1>
+
+
+        <p class="font-lato">{{ pageContent.content }}</p>
+        <p class="font-lato modifadmin">Dernière modification :<span>{% if pageContent.lastModif %}{{ pageContent.lastModif|date('Y-m-d H:i:s') }}{% endif %}</span></p>
+    <div class="row btnlist">
+        <div class="col-sm-5 boutonadmin">
+            <a href="{{ path('pagecontent_index') }}"><button type="button" value="RETOUR A LA LISTE">RETOUR A LA LISTE</button></a>
+        </div>
+        <div class="col-sm-6">
+            <a href="{{ path('pagecontent_edit', { 'id': pageContent.id }) }}"><button type="button" value="MODIFIER">MODIFIER</button></a>
+        </div>
+        <div class="col-sm-1">
+            {{ form_start(delete_form) }}
+                <input type="submit" value="EFFACER">
+            {{ form_end(delete_form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'layoutAdmin.html.twig' %}
+{% form_theme edit_form 'bootstrap_3_layout.html.twig' %}
+
+{% block body %}
+<div class="container font-lato">
+    <h1 class="titreadmin font-lato">MODIFIER LES INFORMATIONS DE NUM'O</h1>
+    <hr>
+    <br/>
+    <a href="{{ path('company_show', { 'id': company.id }) }}"><button type="button" value="PROFIL">RETOUR PAGE PROFIL</button></a>
+
+
+    {{ form_start(edit_form) }}
+        {{ form_widget(edit_form) }}
+        <input type="submit" value="ENREGISTRER" />
+    {{ form_end(edit_form) }}
+</div>
+{% endblock %}

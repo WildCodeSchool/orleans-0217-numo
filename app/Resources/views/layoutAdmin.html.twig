@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header text-center">
+            <a href="{{ path('admin_accueil') }}">
+                <img src="{{ asset('img/NUMOsmall.png') }}" class="navbar-brand">
+            </a>
+            <button type="button" class="navbar-toggle collapsed navbar-burger" data-toggle="collapse" data-target="#navbar-collapsed" aria-expanded="false">
+                <span class="sr-only">Menu</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse navbar-menu  font-oswald" id="navbar-collapsed">
+            <ul class="nav navbar-nav navbar-list font-lato navadmin">
+                <li><a href="/app_dev.php/company/1">ASSOCIATION</a></li>
+{#
+                <li><a href="/app_dev.php/register">MEMBRES</a></li>
+#}
+                <li><a href="{{ path('pagecontent_index') }}">CONTENUS REDACTIONNELS</a></li>
+                <li><a href="{{ path('partner_index') }}">PARTENAIRES</a></li>
+{#
+                <li><a href="index.php?page=food">EVENEMENTS</a></li>
+#}
+        </div>
+    </div>
+</nav>
+{% endblock %}
+{% block body %}
+{% endblock %}
