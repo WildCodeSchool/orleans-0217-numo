@@ -12,35 +12,35 @@
             <h3>Afficher:</h3>
         </div>
 
-        {#<nav class="AlphabetNav">#}
-            {#<a>A</a>#}
-            {#<a>B</a>#}
-            {#<a>C</a>#}
-            {#<a>D</a>#}
-            {#<a>E</a>#}
-            {#<a>F</a>#}
-            {#<a>G</a>#}
-            {#<a>H</a>#}
-            {#<a>I</a>#}
-            {#<a>J</a>#}
-            {#<a>K</a>#}
-            {#<a>L</a>#}
-            {#<a>M</a>#}
-            {#<a>N</a>#}
-            {#<a>O</a>#}
-            {#<a>P</a>#}
-            {#<a>Q</a>#}
-            {#<a>R</a>#}
-            {#<a>S</a>#}
-            {#<a>T</a>#}
-            {#<a>U</a>#}
-            {#<a>V</a>#}
-            {#<a>W</a>#}
-            {#<a>X</a>#}
-            {#<a>Y</a>#}
-            {#<a>Z</a>#}
+        <nav class="AlphabetNav">
+            <a>A</a>
+            <a>B</a>
+            <a>C</a>
+            <a>D</a>
+            <a>E</a>
+            <a>F</a>
+            <a>G</a>
+            <a>H</a>
+            <a>I</a>
+            <a>J</a>
+            <a>K</a>
+            <a>L</a>
+            <a>M</a>
+            <a>N</a>
+            <a>O</a>
+            <a>P</a>
+            <a>Q</a>
+            <a>R</a>
+            <a>S</a>
+            <a>T</a>
+            <a>U</a>
+            <a>V</a>
+            <a>W</a>
+            <a>X</a>
+            <a>Y</a>
+            <a>Z</a>
 
-        {#</nav>#}
+        </nav>
     </div>
 
     <div class="container-fluid list">
@@ -63,9 +63,9 @@
                     </div>
 
                     <div class="col-lg-offset-4 col-xs-offset-4 col-lg-2">
-                        {#{% if member.role == ROLE_ADHERENT %}#}
-                            {#<img src="{{ asset('img/logotrans.png') }}" alt="Numo" style="height:20px">#}
-                        {#{% endif %}#}
+                        {% if member.roles.0 == 'ROLE_ADHERENT' %}
+                            <img src="{{ asset('img/NUMOsmall.png') }}" alt="Numo" style="height:20px">
+                        {% endif %}
                     </div>
                 </div>
                 <div class="row">
