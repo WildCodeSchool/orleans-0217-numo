@@ -17,6 +17,9 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 
 class ProfileType extends AbstractType
 {
@@ -26,10 +29,10 @@ class ProfileType extends AbstractType
         $builder->add('firstname', TextType::class, array('label' => 'Prénom'));
         $builder->add('description', TextareaType::class, array('label' => 'Description', 'required' => false));
         $builder->add('imageUrl',FileType::class, array('data_class' => null, 'label' => 'Image', 'required' => false));
-        $builder->add('freeText',TextareaType::class, array('label' => 'Présentation', 'required' => false));
-        $builder->add('phone',TextType::class, array('label' => 'Téléphone', 'required' => false));
-        $builder->add('webSite',TextType::class, array('label' => 'Site Web', 'required' => false));
-        $builder->add('adress',AdressType::class, array('label' => 'Adresse', 'required' => false));
+//        $builder->add('freeText',TextareaType::class, array('label' => 'Présentation', 'required' => false));
+//        $builder->add('phone',TextType::class, array('label' => 'Téléphone', 'required' => false));
+//        $builder->add('webSite',TextType::class, array('label' => 'Site Web', 'required' => false));
+//        $builder->add('adress',AdressType::class, array('label' => 'Adresse', 'required' => false));
         $builder->remove('username');
     }
 
