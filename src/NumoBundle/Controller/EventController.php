@@ -104,7 +104,9 @@ class EventController extends Controller
 
 
         // --- lecture de la liste OpenAgenda
-        $events = $this->getApi()->getEventList($options, false);
+        $data = $this->getApi()->getEventList($options, false);
+        $events = $data['eventList'];
+        $dates = $data['eventDateList'];
         if (false === $events) {
             $events = [];
             $error = '(' . $this->getApi()->getErrorCode() . ') ' . $this->getApi()->getError();
@@ -126,7 +128,8 @@ class EventController extends Controller
             'error' => $error,
             'startDate' => $startDate,
             'endDate' => $endDate,
-            'event'  => $event
+            'event'  => $event,
+            'dates' => $dates
         ];
         return $this->render('NumoBundle:event:list.html.twig', $twigParams);
     }

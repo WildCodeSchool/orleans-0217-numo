@@ -223,17 +223,31 @@ class ApiOpenAgenda
         } else {
             // --- mise au bon format des donnees recuperees
             $eventList = [];
+            $eventDateList = [];
             if ($api) {
                 foreach ($data as $event) {
-                    $eventList[] = $this->convertApi($event);
+                    $data = $this->convertApi($event);
+                    $eventList[] = $data;
                 }
             } else {
                 foreach ($data as $event) {
-                    $eventList[] = $this->convertJson($event);
+                    $data = $this->convertJson($event);
+                    $eventList[] = $data;
+                    $dates = $data->getEvtDates();
+                    $title = $data->getTitle();
+                    foreach ($dates as $date) {
+                        $eventDateList[] = [
+                            substr($date['evtDate'],8,2),
+                            substr($date['evtDate'],5,2),
+                            substr($date['evtDate'],0,4),
+                            $title
+                        ];
+                    }
                 }
             }
-            return $eventList;
+            return ['eventList' => $eventList, 'eventDateList' => $eventDateList];
         }
+
     }
 
     public function getEvent(int $uid, $api=true)

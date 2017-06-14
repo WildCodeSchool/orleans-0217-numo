@@ -25,7 +25,8 @@ class DefaultController extends Controller
 // --- lecture de la liste OpenAgenda
 
         $api = $this->get('numo.apiopenagenda'); // initialisation de l'accès à l'API
-        $events = $api->getEventList($options, false); // recuperation de la liste via json, tableau d'objets OaEvent
+        $data = $api->getEventList($options, false);
+        $events = $data['eventList'];// recuperation de la liste via json, tableau d'objets OaEvent
         if (false === $events) { // si ça a foiré, on récupère l'erreur
             $events = [];
             $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
