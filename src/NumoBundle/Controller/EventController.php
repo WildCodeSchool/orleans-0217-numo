@@ -77,6 +77,7 @@ class EventController extends Controller
      */
     public function listAction(Request $request)
     {
+        $event = new Event();
         $error = $startDate = $endDate = '';
         // --- initialisation des parametres de lecture par defaut de la liste des evenements
         $options = [
@@ -125,6 +126,7 @@ class EventController extends Controller
             'error' => $error,
             'startDate' => $startDate,
             'endDate' => $endDate,
+            'event'  => $event
         ];
         return $this->render('NumoBundle:event:list.html.twig', $twigParams);
     }

@@ -91,6 +91,23 @@ div#closemap {
     font-weight: bold;
     background-color: red;
 }
+div#map {
+    z-index: 0;
+    width: 300px;
+    height: 300px;
+    margin: -20px auto 0 auto;
+}
+div#closemap {
+    position: relative;
+    margin-left: 260px;
+    width: 40px;
+    height:20px;
+    z-index: 100;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    background-color: red;
+}
 .little-img {
     border: 1px solid #CCCCCC;
     height: 40px;

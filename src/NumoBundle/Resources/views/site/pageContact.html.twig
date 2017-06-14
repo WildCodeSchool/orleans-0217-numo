@@ -26,7 +26,9 @@
             <p>{{ company.adress }}</p>
             <p>{{ company.contactEmail }}</p>
             <a href="{{ path('association') }}">Mieux nous connaitre</a>
-            <img src="{{ company.imageUrl }}" alt="Numo" style="width:200px">
+            {#<img src="{{ company.imageUrl }}" alt="Numo" style="width:200px">#}
+            <img src="{{ asset('img/NUMOsmall.png') }}" class="img-responsive" alt="numo logo" style="width: 200px">
+
 
         </div>
     </div>

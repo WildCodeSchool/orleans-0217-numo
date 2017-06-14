@@ -218,9 +218,6 @@ footer {
     border-color: red;
 }
 
-.companyBottom{
-    padding-bottom: 33px;
-}
 
 .footer{
     padding-bottom: 80px;
@@ -305,7 +302,7 @@ form{
 fin admin
 */
 .company{
-    padding-bottom: 190px;
+    padding-bottom: 150px;
     padding-top: 50px;
 }
 
@@ -314,7 +311,7 @@ fin admin
 }
 
 .contact{
-    padding-bottom:220px;
+    padding-bottom:120px;
     padding-top: 50px;
 }
 

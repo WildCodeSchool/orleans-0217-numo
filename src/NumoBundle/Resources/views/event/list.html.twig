@@ -1,56 +1,96 @@
 {# --- src/NumoBundle/Resources/views/event/list.html.twig --- #}
 
 {% extends 'layout.html.twig' %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
+{% endblock %}
 {% block body %}
+
     <div class="col-xs-12 text-center">
         <div class="separation"></div>
         <h1>Agenda</h1>
         <div class="separation"></div>
     </div>
 
-<div class="row">
-    <div class="col-xs-12 text-center">
-        <p><a href="{{ path('event_new') }}" class="btn btn-primary" role="button">Créer un nouvel évènement</a></p>
-        <p>sélecteur "en attente de publication" - sélecteur "date deb à date fin"  - sélecteur "lieu"(??) - sélecteur "mot(s) clé" - bouton "Appliquer les critères de recherche"</p>
-    </div>
-
-    {% if error == '' %}
-
-        {% for event in events %}
-            <div class="col-sm-6 col-md-3">
-                <div class="thumbnail">
-                    <a href="{{ path('event_show', {'id': event.id, 'published': event.status == 99}) }}">
-                        <img class="thumbnail" src="{{ event.image }}" alt="{{ event.title }}" />
-                    </a>
-                    <div class="caption">
-                        <a href="{{ path('event_show', {'id': event.id, 'published': event.status == 99}) }}">
-                            <h3>{{ event.title }} {{ event.id }}</h3>
-                        </a>
-                        <p>{{ event.description }}</p>
-                        <p>
-                            {% for date in event.evtDates %}
-                                {% if startDate > '' and date.evtDate|slice(0, 10) >= startDate and date.evtDate|slice(0, 10) <= endDate %}
-                                    <span class="emphase">{{ date.evtDate }} {{ date.timeStart }} {{ date.timeEnd }}</span><br />
-                                {% else %}
-                                    {{ date.evtDate }} {{ date.timeStart }} {{ date.timeEnd }}<br />
-                                {% endif %}
-                            {% endfor %}
-                        </p>
-                        <p><a href="{{ event.link }}" class="btn btn-primary" role="button" target="_blanc">Voir sur Open Agenda</a></p>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-
-    {% else %}
-
-        <div class="col-xs-12 erreur text-center">
-            {{ erreur }}
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <p><a href="{{ path('event_new') }}" class="btn btn-primary" role="button">Créer un nouvel évènement</a></p>
+            <p>sélecteur "en attente de publication" - sélecteur "date deb à date fin" - sélecteur "lieu"(??) -
+                sélecteur "mot(s) clé" - bouton "Appliquer les critères de recherche"</p>
         </div>
 
-    {% endif %}
+        {% if error == '' %}
 
-</div>
+            {% for event in events %}
+                <div class="col-sm-6 col-md-3">
+                    <div class="thumbnail">
+                        <a href="{{ path('event_show', {'id': event.id, 'published': event.status == 99}) }}">
+                            <img class="thumbnail" src="{{ event.image }}" alt="{{ event.title }}"/>
+                        </a>
+                        <div class="caption">
+                            <a href="{{ path('event_show', {'id': event.id, 'published': event.status == 99}) }}">
+                                <h3>{{ event.title }} {{ event.id }}</h3>
+                            </a>
+                            <p>{{ event.description }}</p>
+                            <p>
+                                {% for date in event.evtDates %}
+                                    {% if startDate > '' and date.evtDate|slice(0, 10) >= startDate and date.evtDate|slice(0, 10) <= endDate %}
+                                        <span class="emphase">{{ date.evtDate }} {{ date.timeStart }} {{ date.timeEnd }}</span>
+                                        <br/>
+                                    {% else %}
+                                        {{ date.evtDate }} {{ date.timeStart }} {{ date.timeEnd }}<br/>
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
+                            <p><a href="{{ event.link }}" class="btn btn-primary" role="button" target="_blanc">Voir sur
+                                    Open Agenda</a></p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        {% else %}
+
+            <div class="col-xs-12 erreur text-center">
+                {{ erreur }}
+            </div>
+
+        {% endif %}
+
+            {#<div id="closemap" class="text-center" onclick="closeMap();">X</div>#}
+            <div id="map"></div>
+
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/showevent.js') }}"></script>
+    <script>
+
+
+        function initMap() {
+            var centerMap = new google.maps.LatLng(47.9108329, 1.9157977);
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: centerMap
+            });
+
+            {% for event in events %}
+            var myLatLng = {lat: {{ event.latitude }}, lng: {{ event.longitude }} };
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: '{{ event.title }}!'
+            });
+            {% endfor %}
+        }
+
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5FbMBpVejJw6o_4r3eHkUQQde6vlDItg&callback=initMap"async defer></script>
 {% endblock %}
 
