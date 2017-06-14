@@ -286,8 +286,9 @@ button{
     /*
     margin-top: % !important;
     */
-    margin-left: 2% !important;
+        margin-left: 2% !important;
 }
+
 .modifadmin{
     font-size: 1em;
     margin-top: 3%;
