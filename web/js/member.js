@@ -1,6 +1,4 @@
-/**
- * Created by wilder13 on 08/06/17.
- */
+
 $(document).ready(function(){
 
     var list = $(".list .showMember");
@@ -25,7 +23,7 @@ $(document).ready(function(){
 });
 
 
-$('.AlphabetNav a').click(function(evt) {
+$('.AlphabetNav a').click(function(evt){
     evt.preventDefault();
 
     var $navItem = $(this),
@@ -33,7 +31,7 @@ $('.AlphabetNav a').click(function(evt) {
 
     $contacts.show();
 
-    if ($navItem.hasClass('active'  )) {
+    if ($navItem.hasClass('active')) {
         $navItem.removeClass('active');
     }
         else {
@@ -53,3 +51,4 @@ $('.AlphabetNav a').click(function(evt) {
         });
     }
 });
+

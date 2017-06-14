@@ -76,6 +76,7 @@ class EventController extends Controller
     public function listAction(Request $request)
     {
         $error = '';
+//        $event = new Event();
         // --- initialisation des parametres de lecture par defaut de la liste des evenements
         $options = [
             'search[passed]' => 0,  // pas de sélection des évènements passés

@@ -4,35 +4,170 @@
 
 {% block body %}
 
-    <div class="fos_user_user_show">
-        <p>{{ 'Username'|trans }}: {{ user.username }}</p>
-        <p>{{ 'Email'|trans }}: {{ user.email }}</p>
-        <p>Image:</p>
-        {% if user.imageUrl == null %}
-            <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" style="height: 70px">
-        {% else %}
-            <img src="{{ asset('uploads/users/' ~ user.imageUrl.filename) }}" alt="{{ user.name }}" style="height: 70px">
-        {% endif %}
-        <p>Nom: {{ user.name }}</p>
-        <p>Prenom: {{ user.firstname }}</p>
-        <p>Description: {{ user.description }}</p>
 
-        {% if is_granted('ROLE_ADHERENT') %}
-            <p>Présentation: {{ user.freeText }}</p>
-            <p>Telephone: {{ user.phone }}</p>
-            <p>Adresse: {{ user.adress }}</p>
-            <p>Site web: {{ user.webSite }}</p>
-            {#<p>Reseaux sociaux: {{ user.snLinks }}</p>#}
-        {% endif %}
+    <div class="container-fluid profileUser">
+
+        <div class="col-xs-12 text-center">
+            <div class="separation"></div>
+            <h1>{{ user.name }} {{ user.firstname }}</h1>
+            <div class="separation"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-offset-2 col-lg-2">
+                {% if user.imageUrl == null %}
+                    <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" style="height: 231px">
+                {% else %}
+                    <img src="{{ asset('uploads/users/' ~ user.imageUrl.filename) }}" alt="{{ user.name }}"
+                         style="height: 70px">
+                {% endif %}
+            </div>
+
+            <div class="col-lg-5">
+                <div class="row">
+                    <h2>{{ user.website }}</h2>
+                    <p>{{ user.description }}</p>
+                    <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-default">Editer</a>
+                    <a href="{{ path('fos_user_change_password') }}" class="btn btn-default">Modifier le mot de passe</a>
+
+                    {% if not is_granted('ROLE_ADHERENT') %}
+                        <a href="" class="btn btn-default">Devenir Adhérent</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row iconContact">
+            <div class="col-lg-offset-2 col-lg-1">
+                <a name="fb_share" type="box_count" share_url="{{ app.request.uri }}" target="_blanc">
+                    <img src="{{ asset('/img/rs-facebook.png') }}" alt="partager facebook" class="rs-button"/>
+                </a>
+            </div>
+            <div class="col-lg-1">
+                <h3>Facebook</h3>
+            </div>
+            <div class="col-lg-offset-1 col-lg-1">
+                <a href="https://twitter.com/share" target="_blanc">
+                    <img src="{{ asset('/img/rs-twitter.png') }}" alt="partager twitter" class="rs-button"/>
+                </a>
+            </div>
+            <div class="col-lg-1">
+                <h3>Twitter</h3>
+            </div>
+            <div class="col-lg-offset-1 col-lg-1">
+                <a href="" target="_blanc">
+                    <img src="{{ asset('/img/rs-linkedin.png') }}" alt="partager linkedin" class="rs-button"/>
+                </a>
+            </div>
+            <div class="col-lg-1">
+                <h3>Linkedin</h3>
+            </div>
+        </div>
+        <div class="row iconContact">
+            <div class="col-lg-offset-2 col-lg-1">
+                <img src="{{ asset('/img/mail.png') }}" alt="partager twitter" class="rs-button"/>
+            </div>
+            <div class="col-lg-1">
+                <h3>{{ user.email }}</h3>
+            </div>
+            <div class="col-lg-offset-1 col-lg-1">
+                <img src="{{ asset('/img/tel.png') }}" alt="partager twitter" class="rs-button"/>
+            </div>
+            <div class="col-lg-2">
+                <h3>06 06 06 06 06</h3>
+            </div>
+        </div>
+
+        <div class="col-xs-12 text-center">
+            <div class="separation"></div>
+        </div>
+
+        <div class="text-center">
+            <h2>Mes événements</h2>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                {#{% for event in events %}#}
+                <div class="col-lg-4 col-sm-6">
+                    <a href="" class="portfolio-box">
+                        <img class="imageEvents img-responsive" src="https://www.w3schools.com/w3images/fjords.jpg"
+                             class="img-responsive" alt="">
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-category text-faded">
+                                    <h2></h2>
+                                </div>
+                                <div class="project-name">
+
+                                </div>
+                                <p></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <a href="" class="portfolio-box">
+                        <img class="imageEvents img-responsive" src="https://www.w3schools.com/w3images/fjords.jpg"
+                             class="img-responsive" alt="">
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-category text-faded">
+                                    <h2></h2>
+                                </div>
+                                <div class="project-name">
+
+                                </div>
+                                <p></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <a href="" class="portfolio-box">
+                        <img class="imageEvents img-responsive" src="https://www.w3schools.com/w3images/fjords.jpg"
+                             class="img-responsive" alt="">
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-category text-faded">
+                                    <h2></h2>
+                                </div>
+                                <div class="project-name">
+
+                                </div>
+                                <p></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {#{% endfor %}#}
+            </div>
+        </div>
+
+
+        {#<div class="fos_user_user_show">#}
+        {#<p>{{ 'Username'|trans }}: {{ user.username }}</p>#}
+        {#<p>{{ 'Email'|trans }}: {{ user.email }}</p>#}
+        {#<p>Image:</p>#}
+        {#{% if user.imageUrl == null %}#}
+        {#<img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" style="height: 70px">#}
+        {#{% else %}#}
+        {#<img src="{{ asset('uploads/users/' ~ user.imageUrl.filename) }}" alt="{{ user.name }}"#}
+        {#style="height: 70px">#}
+        {#{% endif %}#}
+        {#<p>Nom: {{ user.name }}</p>#}
+        {#<p>Prenom: {{ user.firstname }}</p>#}
+        {#<p>Description: {{ user.description }}</p>#}
+
+        {#{% if is_granted('ROLE_ADHERENT') %}#}
+        {#<p>Présentation: {{ user.freeText }}</p>#}
+        {#<p>Telephone: {{ user.phone }}</p>#}
+        {#<p>Adresse: {{ user.adress }}</p>#}
+        {#<p>Site web: {{ user.webSite }}</p>#}
+        {#<p>Reseaux sociaux: {{ user.snLinks }}</p>#}
+        {#{% endif %}#}
+        {#</div>#}
+
     </div>
-
-    <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-default">Editer</a>
-    <a href="{{ path('fos_user_change_password') }}" class="btn btn-default">Modifier le mot de passe</a>
-
-    {% if not is_granted('ROLE_ADHERENT') %}
-        <a href="" class="btn btn-default">Devenir Adhérent</a>
-    {% endif %}
-
 {% endblock %}
 
 

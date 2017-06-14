@@ -247,6 +247,7 @@ class ApiOpenAgenda
             }
             return ['eventList' => $eventList, 'eventDateList' => $eventDateList];
         }
+
     }
 
     public function getEvent(int $uid, $api=true)

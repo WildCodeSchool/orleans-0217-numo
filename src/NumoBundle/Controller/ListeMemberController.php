@@ -20,4 +20,19 @@ class ListeMemberController extends Controller
         ));
     }
 
+    /**
+     * Finds and displays a user entity.
+     * @Route("/profilMember/{id}", name="profilMember")
+     */
+    public function ShowProfilMenber($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user= $em->getRepository('NumoBundle:User')->find($id);
+        return $this->render('NumoBundle:site:profilMember.html.twig', array(
+            'user' => $user,
+        ));
+    }
+
+
+
 }
