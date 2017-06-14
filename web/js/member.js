@@ -1,6 +1,4 @@
-git /**
- * Created by wilder13 on 08/06/17.
- */
+
 $(document).ready(function(){
 
     var list = $(".list .showMember");
@@ -54,11 +52,11 @@ $('.AlphabetNav a').click(function(evt) {
     }
 });
 
-$('.AlphabetNav a').click(function(evt) {
-    evt.preventDefault();
-    if ($navItem.hasClass('active')) {
-        $navItem.removeClass('active');
-
-    }
-
-});
+// $('.AlphabetNav a').click(function(evt) {
+//     evt.preventDefault();
+//     if ($navItem.hasClass('active')) {
+//         $navItem.removeClass('active');
+//
+//     }
+//
+// });
