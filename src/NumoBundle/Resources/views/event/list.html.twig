@@ -74,6 +74,8 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/showevent.js') }}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js"></script>
+
     <script>
 
 
@@ -223,6 +225,7 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5FbMBpVejJw6o_4r3eHkUQQde6vlDItg&callback=initMap"
             async defer></script>
+
 
 {% endblock %}
 
