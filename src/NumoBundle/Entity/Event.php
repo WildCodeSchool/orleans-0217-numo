@@ -129,7 +129,7 @@ class Event
     private $pricingInfo = '';
 
     /**
-     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"persist", "remove"})
      */
     private $evtDates;
 

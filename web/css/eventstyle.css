@@ -42,10 +42,23 @@ ul.evtdatelist {
 .showtrash {
     visibility: hidden;
 }
-.erreur {
+.erreur, .red-error {
     font-size: 16px;
     font-weight: bold;
+}
+.erreur {
     color: #CADB2A;
+}
+.red-error {
+    color: #FC0606;
+}
+.datefield {
+    width: 130px;
+    margin: 0 30px 0 10px;
+}
+.tagfield {
+    width: 300px;
+    margin: 0 30px 0 10px;
 }
 
 /* --- general --- */
