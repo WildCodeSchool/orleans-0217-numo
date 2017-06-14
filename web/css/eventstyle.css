@@ -28,9 +28,11 @@ bg-img {
 .in-line {
     display: inline;
 }
+/* ------------------------------------- */
 .btn {
     text-transform: none;
 }
+/* ------------------------------------- */
 .dark-text {
     color: #444444;
 }
@@ -62,7 +64,12 @@ ul.evtdatelist {
 }
 
 /* --- general --- */
-
+.erreur {
+    font-size: 16px;
+    font-weight: bold;
+    color: #CADB2A;
+    text-shadow: 0 0 3px #000;
+}
 .ecart-haut {
     margin-top: 20px;
 }
@@ -111,4 +118,7 @@ div#closemap {
 .rs-button {
     margin: 0 20px;
     height: 30px;
+.twigerror ul li {
+    display: inline;
+    color: red;
 }
