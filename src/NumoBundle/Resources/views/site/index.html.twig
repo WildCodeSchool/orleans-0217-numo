@@ -13,7 +13,8 @@
         <div class="col-lg-offset-3 col-lg-6">
             <h3 class="margin">NUM'O</h3>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                aliquip ex ea commodo consequat.
             </p>
             <a href="/register/" class="btn btn-lg btnwhite">
                 <span class="glyphicon glyphicon-search"></span> Devenez membre
@@ -21,9 +22,9 @@
         </div>
     </div>
 
-        <div class="container-fluid">
-            <div class="row no-gutter popup-gallery">
-                {%  for event in events %}
+    <div class="container-fluid">
+        <div class="row no-gutter popup-gallery">
+            {% for event in events %}
                 <div class="col-lg-4 col-sm-6">
                     <a href="{{ event.image }}" class="portfolio-box">
                         <img class="imageEvents img-responsive" src="{{ event.image }}" class="img-responsive" alt="">
@@ -40,15 +41,16 @@
                         </div>
                     </a>
                 </div>
-                {% endfor %}
-            </div>
+            {% endfor %}
         </div>
+    </div>
 
     <div class="container-fluid text-center">
         <div class="row moreEvents">
             <div class="col-lg-offset-3 col-lg-6">
                 <h3 class="margin">Les événements</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore</p>
                 <a href="{{ path('event_list') }}" class="btn btn-danger  btn-lg">Voir plus</a>
             </div>
         </div>
