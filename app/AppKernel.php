@@ -17,8 +17,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new NumoBundle\NumoBundle(),
-            new Solilokiam\git SummernoteBundle\SolilokiamSummernoteBundle()
-        ];
+            ];
 
         if (in_array($this->getEnvironment(), ['dev', 'tests'], true)) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
