@@ -22,7 +22,7 @@ $(document).ready(function(){
 });
 
 
-$('.AlphabetNav a').click(function(evt) {
+$('.AlphabetNav a').click(function(evt){
     evt.preventDefault();
 
     var $navItem = $(this),
@@ -30,7 +30,7 @@ $('.AlphabetNav a').click(function(evt) {
 
     $contacts.show();
 
-    if ($navItem.hasClass('active'  )) {
+    if ($navItem.hasClass('active')) {
         $navItem.removeClass('active');
     }
         else {

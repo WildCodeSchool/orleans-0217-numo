@@ -28,9 +28,11 @@ bg-img {
 .in-line {
     display: inline;
 }
+/* ------------------------------------- */
 .btn {
     text-transform: none;
 }
+/* ------------------------------------- */
 .dark-text {
     color: #444444;
 }
@@ -39,20 +41,35 @@ ul.evtdatelist {
     margin-left: 0;
     padding-left: 0;
 }
-.cachable {
+.showtrash {
     visibility: hidden;
 }
+.erreur, .red-error {
+    font-size: 16px;
+    font-weight: bold;
+}
+.erreur {
+    color: #CADB2A;
+}
+.red-error {
+    color: #FC0606;
+}
+.datefield {
+    width: 130px;
+    margin: 0 30px 0 10px;
+}
+.tagfield {
+    width: 300px;
+    margin: 0 30px 0 10px;
+}
 
-
-
-
+/* --- general --- */
 .erreur {
     font-size: 16px;
     font-weight: bold;
     color: #CADB2A;
+    text-shadow: 0 0 3px #000;
 }
-
-
 .ecart-haut {
     margin-top: 20px;
 }
@@ -69,12 +86,26 @@ div.separation {
     font-weight: bold;
     color: blue;
 }
-.twigerror ul li {
-    display: inline;
-    color: #ff0000;
-}
-
 div#mapzone {
+    z-index: 0;
+    width: 300px;
+    height: 300px;
+    margin: -20px auto 0 auto;
+}
+div#closemap {
+    position: relative;
+    margin-left: 260px;
+    width: 40px;
+    height:20px;
+    z-index: 100;
+    color: white;
+    font-weight: bold;
+    background-color: red;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+div#map {
     z-index: 0;
     width: 300px;
     height: 300px;
@@ -96,7 +127,16 @@ div#closemap {
     height: 40px;
 
 }
+.mid-img {
+    max-height: 400px;
+    max-width: 300px;
+    border: 2px solid #FFFFFF;
+}
 .rs-button {
     margin: 0 20px;
     height: 30px;
+}
+.twigerror ul li {
+    display: inline;
+    color: red;
 }

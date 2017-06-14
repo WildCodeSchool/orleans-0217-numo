@@ -183,7 +183,7 @@ class ApiOpenAgenda
         if (isset($event->image)) $newEvent->setImage($event->image);
         if (isset($event->description)) $newEvent->setDescription($event->description->fr);
         if (isset($event->longDescription)) $newEvent->setFreeText($event->longDescription->fr);
-        if (isset($event->keywords)) $newEvent->setTags($event->keywords->fr);
+        if (isset($event->keywords)) $newEvent->setTags(implode(', ',$event->keywords->fr));
         if (isset($event->registrationUrl)) $newEvent->setTicketLink($event->registrationUrl);
         if (isset($event->conditions)) $newEvent->setPricingInfo($event->conditions->fr);
         $oaDates = [];
@@ -223,17 +223,31 @@ class ApiOpenAgenda
         } else {
             // --- mise au bon format des donnees recuperees
             $eventList = [];
+            $eventDateList = [];
             if ($api) {
                 foreach ($data as $event) {
-                    $eventList[] = $this->convertApi($event);
+                    $data = $this->convertApi($event);
+                    $eventList[] = $data;
                 }
             } else {
                 foreach ($data as $event) {
-                    $eventList[] = $this->convertJson($event);
+                    $data = $this->convertJson($event);
+                    $eventList[] = $data;
+                    $dates = $data->getEvtDates();
+                    $title = $data->getTitle();
+                    foreach ($dates as $date) {
+                        $eventDateList[] = [
+                            substr($date['evtDate'],8,2),
+                            substr($date['evtDate'],5,2),
+                            substr($date['evtDate'],0,4),
+                            $title
+                        ];
+                    }
                 }
             }
-            return $eventList;
+            return ['eventList' => $eventList, 'eventDateList' => $eventDateList];
         }
+
     }
 
     public function getEvent(int $uid, $api=true)
