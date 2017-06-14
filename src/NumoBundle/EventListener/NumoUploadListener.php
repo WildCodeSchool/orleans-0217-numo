@@ -30,8 +30,7 @@ class NumoUploadListener
         $this->uploadFile($entity);
     }
     public function preUpdate(PreUpdateEventArgs $args)
-    {        dump('a');
-
+    {
         $entity = $args->getEntity();
         $this->uploadFile($entity);
     }

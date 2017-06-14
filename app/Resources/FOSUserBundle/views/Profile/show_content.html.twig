@@ -37,6 +37,8 @@
             </div>
         </div>
 
+
+        {% if is_granted('ROLE_ADHERENT') %}
         <div class="row iconContact">
             <div class="col-lg-offset-2 col-lg-1">
                 <a name="fb_share" type="box_count" share_url="{{ app.request.uri }}" target="_blanc">
@@ -143,7 +145,7 @@
             </div>
         </div>
 
-
+        {% endif %}
         {#<div class="fos_user_user_show">#}
         {#<p>{{ 'Username'|trans }}: {{ user.username }}</p>#}
         {#<p>{{ 'Email'|trans }}: {{ user.email }}</p>#}
