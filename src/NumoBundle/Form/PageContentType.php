@@ -19,7 +19,7 @@ class PageContentType extends AbstractType
     {
         $builder->add('title', TextType::class, array('label' => 'Titre'));
         $builder->add('content',TextareaType::class, array('label' => 'Contenu', 'required' => true));
-        $builder->add('lastModif', TextType::class, array('label' => 'Dernière modification'));
+        $builder->remove('lastModif', TextType::class, array('label' => 'Dernière modification'));
     }
     
     /**
