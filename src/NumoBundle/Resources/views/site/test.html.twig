@@ -1,0 +1,28 @@
+
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <h1>Liste des Utilisateurs</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>email</th>
+            <th>Roles</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{% for role in user.roles %}
+                        {{ role }},
+                    {% endfor %}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

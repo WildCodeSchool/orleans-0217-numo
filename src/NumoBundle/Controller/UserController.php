@@ -11,170 +11,41 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * User controller.
  *
- * @Route("user")
+ * @Route("/promote")
  */
 class UserController extends Controller
 {
     /**
-     * Lists all user entities.
-     *
-     * @Route("/", name="user_index")
-     * @Method("GET")
+     * Lists all Users.
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $users = $em->getRepository('NumoBundle:User')->findAll();
-
-        return $this->render('user/index.html.twig', array(
+        $userManager = $this->get('fos_user.user_manager');
+        $users = $userManager->findUsers();
+        return $this->render('test.html.twig', array(
             'users' => $users,
         ));
     }
 
     /**
-     * Creates a new user entity.
-     *
-     * @Route("/new", name="user_new")
-     * @Method({"GET", "POST"})
+     * Displays a form to edit an existing Users.
+     *@Route("/", name="promote")
      */
-    public function newAction(Request $request)
+    public function editAction(Request $request)
     {
-        $user = new User();
-        $form = $this->createForm('NumoBundle\Form\UserType', $user);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-
-            return $this->redirectToRoute('user_show', array('id' => $user->getId()));
-        }
-
-        return $this->render('user/new.html.twig', array(
-            'user' => $user,
-            'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Finds and displays a user entity.
-     *
-     * @Route("/{id}", name="user_show")
-     * @Method("GET")
-     */
-    public function showAction(User $user)
-    {
-        $deleteForm = $this->createDeleteForm($user);
-
-        return $this->render('user/show.html.twig', array(
-            'user' => $user,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Displays a form to edit an existing user entity.
-     *
-     * @Route("/{id}/edit", name="user_edit")
-     * @Method({"GET", "POST"})
-     */
-    public function editAction(Request $request, User $user)
-    {
-        $deleteForm = $this->createDeleteForm($user);
-        $editForm = $this->createForm('NumoBundle\Form\UserType', $user);
+        $id = $this->getUser()->getId();
+        $editForm = $this->createForm('NumoBundle\Form\UserType', $id);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('user_edit', array('id' => $user->getId()));
-        }
-
-        return $this->render('user/edit.html.twig', array(
-            'user' => $user,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Deletes a user entity.
-     *
-     * @Route("/{id}", name="user_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, User $user)
-    {
-        $form = $this->createDeleteForm($user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($user);
+            $em->persist($id);
             $em->flush();
+
+            return $this->redirectToRoute('fos_user_profile_show');
         }
-
-        return $this->redirectToRoute('user_index');
-    }
-
-    /**
-     * Creates a form to delete a user entity.
-     *
-     * @param User $user The user entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(User $user)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('user_delete', array('id' => $user->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
         ;
-    }
-
-    public function promoteUser()
-    {
-        $userManager = $this->get('fos_user.user_manager');
-
-        // Use findUserby, findUserByUsername() findUserByEmail() findUserByUsernameOrEmail,
-        // findUserByConfirmationToken($token) or findUsers()
-        $user = $userManager->findUserBy(['id' => 1]);
-
-        // Add the role that you want !
-        $user->addRole("ROLE_ADHERENT");
-        // Update user roles
-        $userManager->updateUser($user);
-    }
-
-    public function demoteUser()
-    {
-        $userManager = $this->get('fos_user.user_manager');
-
-        // Use findUserby, findUserByUsername() findUserByEmail() findUserByUsernameOrEmail,
-        // findUserByConfirmationToken($token) or findUsers()
-        $user = $userManager->findUserBy(['id' => 1]);
-
-        // Add the role that you want !
-        $user->addRole("ROLE_USER");
-        // Update user roles
-        $userManager->updateUser($user);
-    }
-
-    public function promoteModerateur()
-    {
-        $userManager = $this->get('fos_user.user_manager');
-
-        // Use findUserby, findUserByUsername() findUserByEmail() findUserByUsernameOrEmail,
-        // findUserByConfirmationToken($token) or findUsers()
-        $user = $userManager->findUserBy(['id' => 1]);
-
-        // Add the role that you want !
-        $user->addRole("ROLE_MODERATOR");
-        // Update user roles
-        $userManager->updateUser($user);
     }
 
 }

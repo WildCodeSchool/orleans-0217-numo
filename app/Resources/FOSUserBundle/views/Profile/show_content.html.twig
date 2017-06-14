@@ -28,6 +28,7 @@
                     <h2>{{ user.website }}</h2>
                     <p>{{ user.description }}</p>
                     <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-default">Editer</a>
+                    <a href="{{ path('promote') }}" class="btn btn-warning">Promote</a>
                     <a href="{{ path('fos_user_change_password') }}" class="btn btn-default">Modifier le mot de passe</a>
 
                     {% if not is_granted('ROLE_ADHERENT') %}
