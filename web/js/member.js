@@ -52,11 +52,3 @@ $('.AlphabetNav a').click(function(evt) {
     }
 });
 
-// $('.AlphabetNav a').click(function(evt) {
-//     evt.preventDefault();
-//     if ($navItem.hasClass('active')) {
-//         $navItem.removeClass('active');
-//
-//     }
-//
-// });
