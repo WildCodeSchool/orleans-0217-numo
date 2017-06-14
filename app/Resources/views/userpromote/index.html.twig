@@ -1,5 +1,8 @@
 {% extends 'layoutAdmin.html.twig' %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styleonoffbutton.css') }}">
+{% endblock %}
 
 {% block body %}
     <div class="container font-lato">
@@ -21,7 +24,18 @@
                 <tr>
                     <td class="admin">{{ user.name }}</td>
                     <td class="admin">{{ user.firstname }}</td>
-                    <td class="admin">{{ user.trust }}</td>
+                    {% if user.trust == 0 %}
+                    <td class="admin">
+                        <div class="onoffswitch center-block bouton">
+                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                            <label class="onoffswitch-label" for="myonoffswitch">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </td>
+                    {% endif %}
+
                     <td class="admin">{{ user.roles.0 }}</td>
                     <td class="admin">
                         <a href="{{ path('pagecontent_edit', { 'id': user.id }) }}"><button type="button" value="MODIFIER" class="pull-right">MODIFIER</button></a>
