@@ -283,7 +283,9 @@ td{
     margin-top: 40px;
 }
 button{
-    margin-top: 10% !important;
+    /*
+    margin-top: % !important;
+    */
     margin-left: 2% !important;
 }
 .modifadmin{
