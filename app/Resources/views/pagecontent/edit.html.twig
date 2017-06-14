@@ -9,12 +9,30 @@
     <br/>
     <a href="{{ path('pagecontent_index') }}"><button type="button" value="MODIFIER">RETOUR A LA LISTE</button></a>
 
-
     {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="ENREGISTRER" />
+    {{ form_errors(edit_form) }}
+
+    {{ form_label(edit_form.title) }}
+    {{ form_errors(edit_form.title) }}
+    {{ form_widget(edit_form.title) }}
+
+    {{ form_label(edit_form.content) }}
+    {{ form_errors(edit_form.content) }}
+    {{ form_widget(edit_form.content) }}
+
+
+    {{ form_widget(edit_form) }}
+    <input type="submit" value="ENREGISTRER" />
+
     {{ form_end(edit_form) }}
     {{ form_start(delete_form) }}
-        <input type="submit" value="SUPPRIMER">
+    <input type="submit" value="SUPPRIMER">
     {{ form_end(delete_form) }}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/summernote.js') }}"></script>
+    <script src="{{ asset('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js') }}"></script>
 {% endblock %}

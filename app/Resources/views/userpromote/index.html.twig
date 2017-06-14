@@ -1,0 +1,54 @@
+{% extends 'layoutAdmin.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styleonoffbutton.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container font-lato">
+        <h1 class="titreadmin font-lato">CONTENUS</h1>
+        <table>
+            <thead>
+            <tr class="text-center admin">
+                <th class="text-center">NOM</th>
+                <th class="text-center">PRENOM</th>
+                <th class="text-center">MEMBRE DE CONFIANCE</th>
+                <th class="text-center">STATUT</th>
+                <th class="text-center">ACTION</th>
+            </tr>
+            </thead>
+        </table>
+        <table>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td class="admin">{{ user.name }}</td>
+                    <td class="admin">{{ user.firstname }}</td>
+                    {% if user.trust == 0 %}
+                    <td class="admin">
+                        <div class="onoffswitch center-block bouton">
+                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                            <label class="onoffswitch-label" for="myonoffswitch">
+                                <span class="onoffswitch-inner"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </div>
+                    </td>
+                    {% endif %}
+
+                    <td class="admin">{{ user.roles.0 }}</td>
+                    <td class="admin">
+                        <a href="{{ path('pagecontent_edit', { 'id': user.id }) }}"><button type="button" value="MODIFIER" class="pull-right">MODIFIER</button></a>
+
+                    </td>
+                </tr>
+            {% endfor %}
+            <hr>
+            </tbody>
+        </table>
+
+        <br/>
+        <a href="{{ path('pagecontent_new') }}"><button type="button" value="CREATION DE CONTENU">+</button></a>
+    </div>
+
+{% endblock %}

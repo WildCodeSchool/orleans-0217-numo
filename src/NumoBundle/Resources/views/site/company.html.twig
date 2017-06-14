@@ -1,12 +1,14 @@
 {% extends 'layout.html.twig' %}
 {% block body %}
+
+    {# --- titre ---#}
+    <div class="col-xs-12 text-center">
+        <div class="separation"></div>
+        <h1>L'association</h1>
+        <div class="separation"></div>
+    </div>
+
     <div class="container-fluid company">
-        {# --- titre ---#}
-        <div class="col-xs-12 text-center">
-            <div class="separation"></div>
-            <h1>L'association</h1>
-            <div class="separation"></div>
-        </div>
 
         <div class="row">
             <div class="col-lg-offset-2 col-lg-5">
@@ -14,7 +16,7 @@
                 <p>{{ contents.content }}</p>
                 <div class="row companyBottom">
                     <div class="col-lg-offset-4">
-                        <a href="/register/" type="button" class="btn btn-success">Adherer à Num'O</a>
+                        <a href="/register/" type="button" class="btn btn-success">{{ contents.title }}</a>
                     </div>
                 </div>
             </div>

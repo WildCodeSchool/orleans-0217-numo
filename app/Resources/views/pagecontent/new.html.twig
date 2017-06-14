@@ -11,9 +11,30 @@
 
 
     {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+    {{ form_label(form.title) }}
+    {{ form_errors(form.title) }}
+    {{ form_widget(form.title) }}
+
+    {{ form_label(form.content) }}
+    {{ form_errors(form.content) }}
+    {{ form_widget(form.content) }}
+
+
         {{ form_widget(form) }}
         <input type="submit" value="ENREGISTRER" />
+
     {{ form_end(form) }}
 
+
 </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/summernote.js') }}"></script>
+    <script src="{{ asset('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js') }}"></script>
+
+
 {% endblock %}
