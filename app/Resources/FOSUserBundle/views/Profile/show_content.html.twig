@@ -27,9 +27,13 @@
                 <div class="row">
                     <h2>{{ user.website }}</h2>
                     <p>{{ user.description }}</p>
+                    <p>{{ user.roles.0 }}</p>
                     <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-default">Editer</a>
-                    <a href="{{ path('promote') }}" class="btn btn-warning">Promote</a>
                     <a href="{{ path('fos_user_change_password') }}" class="btn btn-default">Modifier le mot de passe</a>
+
+
+                    <a href="{{ path('promote',{'id': app.user.id} ) }}" class="btn btn-warning">Promote</a>
+
 
                     {% if not is_granted('ROLE_ADHERENT') %}
                         <a href="" class="btn btn-default">Devenir Adhérent</a>

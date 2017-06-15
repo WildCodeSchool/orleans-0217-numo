@@ -26,27 +26,20 @@ class UserController extends Controller
             'users' => $users,
         ));
     }
-
     /**
-     * Displays a form to edit an existing Users.
-     *@Route("/", name="promote")
+     *@Route("/{id}", name="promote")
+     *
      */
-    public function editAction(Request $request)
+    public function promoteAction(User $user)
     {
+        $em = $this->getDoctrine()->getManager();
+        $user->addRole('ROLE_ADHERENT');
+        $em->flush();
 
-        $id = $this->getUser()->getId();
-        $editForm = $this->createForm('NumoBundle\Form\UserType', $id);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($id);
-            $em->flush();
-
-            return $this->redirectToRoute('fos_user_profile_show');
-        }
-        ;
+        return $this->redirectToRoute('fos_user_profile_show');
     }
+
+
 
 }
 
