@@ -5,19 +5,22 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.css">
+
 {% endblock %}
 
 
 {% block body %}
-
+   <div class="container-fluid">
     {# --- Titre de la page --- #}
     <div class="row">
         <div class="col-xs-12 text-center">
             <div class="separation"></div>
             <h1>Agenda</h1>
-             {# --- bouton "créer nouvel évènement --- #}
+            {# --- bouton "créer nouvel évènement --- #}
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <p><a href="{{ path('event_new') }}" class="btn btn-default btn-xs" role="button">Créer un nouvel évènement</a></p>
+                <p><a href="{{ path('event_new') }}" class="btn btn-default btn-xs" role="button">Créer un nouvel
+                        évènement</a></p>
             {% endif %}
             <div class="separation"></div>
         </div>
@@ -28,26 +31,25 @@
         <div class="col-xs-12 text-center">
 
             {{ form_start(selectForm, {'attr': {'class': 'form-inline'}}) }}
+            {{ form_label(selectForm.startDate, 'Date début : ', {'label_attr': {'class': 'in-line'}}) }}
+            {{ form_widget(selectForm.startDate, {'attr': {'class': 'in-line datefield', 'placeholder': 'jj/mm/aaaa'}}) }}
 
-                {{ form_label(selectForm.startDate, 'Date début : ', {'label_attr': {'class': 'in-line'}}) }}
-                {{ form_widget(selectForm.startDate, {'attr': {'class': 'in-line datefield', 'placeholder': 'jj/mm/aaaa'}}) }}
+            {{ form_label(selectForm.endDate, 'Date fin : ', {'label_attr': {'class': 'in-line'}}) }}
+            {{ form_widget(selectForm.endDate, {'attr': {'class': 'in-line datefield', 'placeholder': 'jj/mm/aaaa'}}) }}
 
-                {{ form_label(selectForm.endDate, 'Date fin : ', {'label_attr': {'class': 'in-line'}}) }}
-                {{ form_widget(selectForm.endDate, {'attr': {'class': 'in-line datefield', 'placeholder': 'jj/mm/aaaa'}}) }}
+            {{ form_label(selectForm.category, 'Catégorie : ', {'label_attr': {'class': 'in-line'}}) }}
+            {{ form_widget(selectForm.category, {'attr': {'class': 'in-line tagfield'}}) }}
 
-                {{ form_label(selectForm.category, 'Catégorie : ', {'label_attr': {'class': 'in-line'}}) }}
-                {{ form_widget(selectForm.category, {'attr': {'class': 'in-line tagfield'}}) }}
+            {#{{ form_row(selectForm.select, {'attr': {'class': 'in-line btn btn-default'}}) }}#}
+            {#{{ form_row(selectForm.reset, {'attr': {'class': 'in-line btn btn-default'}}) }}#}
 
-                {#{{ form_row(selectForm.select, {'attr': {'class': 'in-line btn btn-default'}}) }}#}
-                {#{{ form_row(selectForm.reset, {'attr': {'class': 'in-line btn btn-default'}}) }}#}
+            <button class="btn btn-default" type="submit" name="select">Appliquer</button>
+            <a href="{{ path('event_list') }}" class="btn btn-default" role="button">Effacer</a>
 
-                <button class="btn btn-default" type="submit" name="select">Appliquer</button>
-                <a href="{{ path('event_list') }}" class="btn btn-default" role="button">Effacer</a>
-
-                <p class="red-error">
-                    {{ form_errors(selectForm.startDate)|striptags }}
-                    {{ form_errors(selectForm.endDate)|striptags }}
-                </p>
+            <p class="red-error">
+                {{ form_errors(selectForm.startDate)|striptags }}
+                {{ form_errors(selectForm.endDate)|striptags }}
+            </p>
 
             {{ form_end(selectForm) }}
 
@@ -56,63 +58,59 @@
     </div>
 
     {# --- contenu de page --- #}
-    <div class="row">
-        <div class="col-xs-12 text-center">
-
-            {% if error == '' %}
-
-                {% for event in events %}
-                    <div class="col-sm-6 col-md-3">
-                        <div class="thumbnail">
-                            <a href="{{ path('event_show', {'id': event.id, 'published': event.status == 99}) }}">
-                                <img class="thumbnail" src="{{ event.image }}" alt="{{ event.title }}" />
-                            </a>
-                            <div class="caption">
-                                <a href="{{ path('event_show', {'id': event.id, 'published': event.status == 99}) }}">
-                                    <h3>{{ event.title }} {{ event.id }}</h3>
-                                </a>
-                                <p>{{ event.description }}</p>
-                                <p>
-                                    {% for date in event.evtDates %}
-                                        {% if selector.startDate > '' and date.evtDate|slice(0, 10) >= selector.startDate and date.evtDate|slice(0, 10) <= selector.endDate %}
-                                            <span class="emphase">{{ date.evtDate }} {{ date.timeStart }} {{ date.timeEnd }}</span><br />
-                                        {% else %}
-                                            {{ date.evtDate }} {{ date.timeStart }} {{ date.timeEnd }}<br />
-                                        {% endif %}
-                                    {% endfor %}
-                                </p>
-                                <p><a href="{{ event.link }}" class="btn btn-primary" role="button" target="_blanc">Voir sur Open Agenda</a></p>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-
-            {% else %}
-
-                <div class="col-xs-12 erreur text-center">
-                    {{ erreur }}
-                </div>
-
-            {% endif %}
-
-        {#<div id="closemap" class="text-center" onclick="closeMap();">X</div>#}
-        <div id="map"></div>
 
         <div class="row">
+            <div class="col-xs-12 col-md-8 text-center">
 
-            <div class="col-sm-offset-1 col-sm-5" id="calendar">
+                {% if error == '' %}
+            <div class="row no-gutter popup-gallery">
 
+                    {% for event in events %}
+                        <div class="col-lg-6 col-sm-6 allEvents">
+                            <a href="{{ path('event_show', {'id': event.id, 'published': event.status == 99}) }}" class="portfolio-box">
+                                <img class="imageEvents img-responsive" src="{{ event.image }}" class="img-responsive" alt="">
+                                <div class="portfolio-box-caption">
+                                    <div class="portfolio-box-caption-content">
+                                        <div class="project-category text-faded">
+                                            <h2>{{ event.title }}</h2>
+                                        </div>
+                                        <div class="project-name">
+                                            {{ event.description }}
+                                        </div>
+                                        <p> {{ event.address }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+            </div>
+
+
+                {% else %}
+
+                    <div class="col-xs-12 erreur text-center">
+                        {{ erreur }}
+                    </div>
+
+                {% endif %}
+            </div>
+
+            <div class="col-xs-12 col-md-4">
+                <div id="closemap" class="text-center" onclick="closeMap1();">X</div>
+                <div id="map"></div>
+                <div id="calendar"></div>
             </div>
         </div>
 
-
     </div>
+
 
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/showevent.js') }}"></script>
+
     <script src="{{ asset('//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js') }}"></script>
     <script>
 
@@ -142,34 +140,33 @@
             weeKends: true,
             allDayslot: true,
             droppable: true,
-            eventAfterAllRender:function(view){
-                var header =  $calendar.find(".fc-header");
+            eventAfterAllRender: function (view) {
+                var header = $calendar.find(".fc-header");
                 // trigger current view
-                header.find('.fc-header-right').find('.fc-button').off('mouseup').on('mouseup', function(){
-                    if(!$(this).hasClass('fc-button-agendaView')){
+                header.find('.fc-header-right').find('.fc-button').off('mouseup').on('mouseup', function () {
+                    if (!$(this).hasClass('fc-button-agendaView')) {
                         $calendar.data("view", '');
                     }
                 });
 
-                if( $calendar.data("view") != 'agendaView' ){
+                if ($calendar.data("view") != 'agendaView') {
                     header.find(".fc-button-agendaView").removeClass('fc-state-active active');
                     $("#agendaView").remove();
 
-                }else{
+                } else {
                     renderAgendaView();
                 }
 
 
-
             },
-            eventRender: function(event, e){
+            eventRender: function (event, e) {
 
                 currentView = $('#calendar').fullCalendar('getView').name;
-            },dayClick: function(date, jsEvent, view) {
+            }, dayClick: function (date, jsEvent, view) {
 
 
             },
-            eventClick: function(calEvent, jsEvent, view) {
+            eventClick: function (calEvent, jsEvent, view) {
 //                console.log("===== eventClick =====");
 //                console.log(calEvent);
 
@@ -182,7 +179,7 @@
         var agendaBtn = headerRight.find(".fc-corner-right").removeClass('fc-corner-right')
             .clone().addClass('fc-corner-right fc-button-agendaView').removeClass('fc-button-agendaDay').text("agenda");
 
-        agendaBtn.on('click', function(){
+        agendaBtn.on('click', function () {
             renderAgendaView();
         });
 
@@ -190,31 +187,31 @@
 
         // test event data
         {% for date in dates %}
-            var newEvent = {
-                title: '{{ date.3 }}',
-                start: new Date({{ date.2 }}, {{ date.1 }}-1, {{ date.0 }}),
-                end: new Date({{ date.2 }}, {{ date.1 }}-1, {{ date.0 }}),
-                editable: true
-            };
+        var newEvent = {
+            title: '{{ date.3 }}',
+            start: new Date({{ date.2 }}, {{ date.1 }}-1, {{ date.0 }}),
+            end: new Date({{ date.2 }}, {{ date.1 }}-1, {{ date.0 }}),
+            editable: true
+        };
 
-            // add event to calendar
-            var event = $('#calendar').fullCalendar( 'renderEvent', newEvent , 'stick');
+        // add event to calendar
+        var event = $('#calendar').fullCalendar('renderEvent', newEvent, 'stick');
         {% endfor %}
-        function renderAgendaView(){
+        function renderAgendaView() {
 
-            if($calendar.fullCalendar('getView') != 'agendaView'){
-                $calendar.fullCalendar( 'changeView', 'month' );
+            if ($calendar.fullCalendar('getView') != 'agendaView') {
+                $calendar.fullCalendar('changeView', 'month');
                 var newView = $calendar.fullCalendar('getView');
                 newView.name = 'agendaView';
 
-                $calendar.fullCalendar( 'changeView', 'agendaView' );
+                $calendar.fullCalendar('changeView', 'agendaView');
             }
 
             // get current events in memory
-            var events = $calendar.fullCalendar( 'clientEvents' );
+            var events = $calendar.fullCalendar('clientEvents');
 
             // get current date
-            var currentDate = $calendar.fullCalendar( 'getDate' );
+            var currentDate = $calendar.fullCalendar('getDate');
 
             $calendar.find(".fc-header").find(".fc-button-agendaView").siblings().removeClass('fc-state-active').end().addClass('fc-state-active');
 
@@ -234,7 +231,7 @@
                 var monthRange = moment().range(moment(currentDate).startOf('month'), moment(currentDate).endOf('month'));
                 var eventStart = moment(events[key].start).format("YYYY/MM/DD-H:mm:ss");
                 var eventEnd = moment(events[key].end).format("YYYY/MM/DD-H:mm:ss");
-                if(monthRange.contains(events[key].start) && monthRange.contains(events[key].end)){
+                if (monthRange.contains(events[key].start) && monthRange.contains(events[key].end)) {
                     var eventTitle = events[key].title;
                     contents += '<tr>' +
                         '<td class="fc-widget-content">' + eventStart + '</td>' +
