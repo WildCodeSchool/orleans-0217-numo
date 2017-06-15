@@ -140,3 +140,12 @@ div#closemap {
     display: inline;
     color: red;
 }
+/*.fc-event-title {*/
+    /*background-color: #4C9ED9;*/
+    /*color: white;*/
+/*}*/
+#calendar {
+    width: 100%;
+    padding-top: 30px;
+    padding-right: 20px;
+}
