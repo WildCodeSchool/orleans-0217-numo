@@ -15,14 +15,14 @@ class AdressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('addr1', TextType::class, array('label' => 'Adr 1','required' => false))
+            ->add('addr1', TextType::class, array('label' => 'Adr 1', 'required' => false))
             ->add('addr2', TextType::class, array('label' => 'Adr 2', 'required' => false))
-            ->add('postalCode', TextType::class, array('label' => 'Code Postal','required' => false))
-            ->add('city', TextType::class, array('label' => 'Ville','required' => false))
+            ->add('postalCode', TextType::class, array('label' => 'Code Postal', 'required' => false))
+            ->add('city', TextType::class, array('label' => 'Ville', 'required' => false))
             ->remove('geoLat')
             ->remove('geoLng');
     }
-    
+
     /**
      * {@inheritdoc}
      */

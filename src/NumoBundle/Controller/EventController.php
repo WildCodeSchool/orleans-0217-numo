@@ -20,44 +20,6 @@ use NumoBundle\Form\EventType;
  */
 class EventController extends Controller
 {
-    /**
-     * @var
-     * accès ORM Doctrine
-     */
-    private $em;
-
-    /**
-     * @var
-     * accès service lecture/écriture OpenAgenda
-     */
-    private $api;
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectManager|object
-     * initialisation accès Doctrine
-     */
-    private function getEm()
-    {
-        if ( !isset($this->em) ) {
-            // On appelle Doctrine
-            $this->em = $this->getDoctrine()->getManager();
-        }
-        return $this->em;
-    }
-
-    /**
-     * @return object
-     * initialisation service lecture/écriture OpenAgenda
-     */
-    private function getApi()
-    {
-        if ( !isset($this->api) ) {
-            // On appelle l'API OpenAgenda (connexion au service)
-            $this->api = $this->get('numo.apiopenagenda');
-        }
-        return $this->api;
-    }
-
 
     /**
      * Lists all event entities.
@@ -90,7 +52,7 @@ class EventController extends Controller
         if ($selectForm->isSubmitted() && $selectForm->isValid()) {
             $selector->DatesControl();
             // --- creation des options d'affichage
-            if ($selector->getStartDate() > '' && $selector->getEndDate() > '') {
+            if (is_null($selector->getStartDate()) && is_null($selector->getEndDate())) {
                 $options['oaq[from]'] = $selector->getStartDate()->format('Y-m-d');
                 $options['oaq[to]'] = $selector->getEndDate()->format('Y-m-d');
             }
@@ -101,17 +63,19 @@ class EventController extends Controller
         }
 
         // --- lecture de la liste OpenAgenda
-        $data = $this->getApi()->getEventList($options, false);
+        $api = $this->get('numo.apiopenagenda');
+
+        $data = $api->getEventList($options, false);
         $events = $data['eventList'];
         $dates = $data['eventDateList'];
         if (false === $events) {
             $events = [];
-            $error = '(' . $this->getApi()->getErrorCode() . ') ' . $this->getApi()->getError();
+            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
         }
         // --- affichage
         $twigParams = [
             'selectForm' => $selectForm->createView(),
-            'agendaSlug' => $this->getApi()->getAgendaSlug(),
+            'agendaSlug' => $api->getAgendaSlug(),
             'events' => $events,
             'dates'=> $dates,
             'error' => $error,
@@ -147,8 +111,10 @@ class EventController extends Controller
                 $fileName
             );
             $event->setImage($fileName);
-            $this->getEm()->persist($event);
-            $this->getEm()->flush();
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($event);
+            $em->flush();
 
             return $this->redirectToRoute('event_list');
         }
@@ -168,19 +134,21 @@ class EventController extends Controller
     public function showAction($id, $published)
     {
         $error = '';
+        $api = $this->get('numo.apiopenagenda');
         if ($published) {
             // --- lecture de l'évènement via json (2ème paramètre à false ci-dessous) sur OpenAgenda
-            $event = $this->getApi()->getEvent($id, false);
+            $event = $api->getEvent($id, false);
             if (false === $event) {
                 $events = new OaEvent; // objet vide
-                $error = '(' . $this->getApi()->getErrorCode() . ') ' . $this->getApi()->getError();
+                $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
             }
         } else {
             // lecture dans la database
-            $event = $this->getEm()->getRepository('NumoBundle:Event')->getEvent($id);
+            $em = $this->getDoctrine()->getManager();
+            $event = $em->getRepository('NumoBundle:Event')->getEvent($id);
         }
         $twigParams = [
-            'agendaSlug' => $this->getApi()->getAgendaSlug(),
+            'agendaSlug' => $api->getAgendaSlug(),
             'event' => $event,
 // --- provisoire ---------------------------------------------------
             'author' => ['name' => 'John DOE', 'imageUrl' => 'http://localhost:8000/img/logotrans.png', 'badge' => ''], // pour test
@@ -199,21 +167,6 @@ class EventController extends Controller
      */
     public function editAction(Request $request, Event $event)
     {
-//        $deleteForm = $this->createDeleteForm($event);
-//        $editForm = $this->createForm('NumoBundle\Form\EventType', $event);
-//        $editForm->handleRequest($request);
-//
-//        if ($editForm->isSubmitted() && $editForm->isValid()) {
-//            $this->getDoctrine()->getManager()->flush();
-//
-//            return $this->redirectToRoute('event_edit', array('id' => $event->getId()));
-//        }
-//
-//        return $this->render('event/edit.html.twig', array(
-//            'event' => $event,
-//            'edit_form' => $editForm->createView(),
-//            'delete_form' => $deleteForm->createView(),
-//        ));
     }
 
     /**
@@ -224,16 +177,6 @@ class EventController extends Controller
      */
     public function deleteAction(Request $request, Event $event)
     {
-//        $form = $this->createDeleteForm($event);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $em = $this->getDoctrine()->getManager();
-//            $em->remove($event);
-//            $em->flush();
-//        }
-//
-//        return $this->redirectToRoute('event_index');
     }
 
     /**
@@ -245,10 +188,5 @@ class EventController extends Controller
      */
     private function createDeleteForm(Event $event)
     {
-//        return $this->createFormBuilder()
-//            ->setAction($this->generateUrl('event_delete', array('id' => $event->getId())))
-//            ->setMethod('DELETE')
-//            ->getForm()
-//        ;
     }
 }

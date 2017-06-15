@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 
 
-class becomeAdherentController extends Controller
+class BecomeAdherentController extends Controller
 {
     /**
      * @Route("/devenezadherent", name="become_adherent")
