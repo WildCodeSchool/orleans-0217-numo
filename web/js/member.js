@@ -52,6 +52,3 @@ $('.AlphabetNav a').click(function(evt){
     }
 });
 
-
-
-

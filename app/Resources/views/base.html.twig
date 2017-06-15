@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}NUM'O{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -23,9 +24,7 @@
         {% block footer %}{% endblock %}
 
         {% block javascripts %}
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-                    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-                    crossorigin="anonymous"></script>
+            <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap.js') }}"></script>
         {% endblock %}
     </body>
