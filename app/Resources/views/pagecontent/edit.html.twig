@@ -1,6 +1,10 @@
 {% extends 'layoutAdmin.html.twig' %}
 {% form_theme edit_form 'bootstrap_3_layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.css') }}">
+{% endblock %}
 
 {% block body %}
 <div class="container font-lato">

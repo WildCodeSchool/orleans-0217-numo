@@ -1,8 +1,11 @@
 {% extends 'layoutAdmin.html.twig' %}
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.css') }}">
+{% endblock %}
 
-
-{% block body %}
+    {% block body %}
 <div class="container font-lato">
     <h1 class="titreadmin font-lato">NOUVEAU CONTENU</h1>
     <hr>
@@ -31,10 +34,10 @@
 </div>
 
 {% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('js/summernote.js') }}"></script>
-    <script src="{{ asset('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js') }}"></script>
+    {% block javascripts %}
+        {{ parent() }}
+        <script src="{{ asset('js/summernote.js') }}"></script>
+        <script src="{{ asset('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js') }}"></script>
 
 
-{% endblock %}
+    {% endblock %}
