@@ -34,6 +34,8 @@ class SelectEventType extends AbstractType
             ->add('category', EntityType::class, array(
                 'class' => 'NumoBundle:Category',
                 'choice_label' => 'name',
+                'required' => false,
+                'placeholder' => '- Toutes -',
             ))
 
 

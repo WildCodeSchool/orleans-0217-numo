@@ -95,7 +95,7 @@ class EventController extends Controller
                 $options['oaq[to]'] = $selector->getEndDate()->format('Y-m-d');
             }
             $options['search[passed]'] = $selector->getPassed();
-            if ($selector->getCategory()->getName() != '- Toutes -') {
+            if ($selector->getCategory()) {
                 $options['oaq[what]'] = urlencode($selector->getCategory()->getName());
             }
         }
