@@ -42,7 +42,7 @@ $('.AlphabetNav a').click(function(evt){
                 $contactName = $contact.find('.memberName'),
                 $nameArr = $contactName.text().split(' ');
 
-            console.log($nameArr[0].split('')[0].toLowerCase());
+            //console.log($nameArr[0].split('')[0].toLowerCase());
 
             if ($nameArr[0].split('')[0].toLowerCase() !== $navItem.text().toLowerCase()) {
                 $contact.hide();
