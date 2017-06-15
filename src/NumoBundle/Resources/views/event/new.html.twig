@@ -1,0 +1,203 @@
+{# --- src/NumoBundle/Resources/views/event/new.html.twig --- #}
+
+{% extends 'layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid bg-form">
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <h2>Nouvel évènement</h2>
+                <a href="{{ path('event_list') }}" class="btn btn-default btn-xs" type="button">Retour à la liste</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3">
+
+                <div class="sep"></div>
+
+                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+                {# --- event ---------------------------------------------------------------------- #}
+                <h3>Description de l'évènement</h3>
+
+                <div class="form-group">
+                    {{ form_label(form.title, '* Nom', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_widget(form.title, {'attr': {
+                                                        'class': 'form-control',
+                                                        'onkeydown': 'clearHtml("errortitle");',
+                                                        'onchange': 'clearHtml("errortitle");'}}) }}
+                    </div>
+                    <span class="erreur" id="errortitle"> {{ form_errors(form.title)|striptags }} </span>
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.description, '* Description succincte', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_widget(form.description, {'attr': {
+                                                            'class': 'form-control',
+                                                            'onkeydown': 'clearHtml("errordesc");',
+                                                            'onchange': 'clearHtml("errordesc");'}}) }}
+                    </div>
+                    <span class="erreur" id="errordesc"> {{ form_errors(form.description)|striptags }} </span>
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.freeText, 'Description détaillée', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_widget(form.freeText, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.tags, 'Mots-clé', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_widget(form.tags, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">
+                        {{ form_label(form.image, 'Charger une image', {'label_attr': {'class': 'btn btn-default btn-xs'}}) }}
+                    </div>
+                    <div class="col-sm-9 text-center">
+                        {#{% set imageUrl = form.image.vars.value %}#}
+                        {#{% if imageUrl == '' %}#}
+                            {#{% set imageUrl = 'img/view_placeholder.png' %}#}
+                        {#{% endif %}#}
+                        {#<img id="tmpimg" class="mid-img" src="{{ asset(imageUrl) }}" alt=""/>#}
+                        {#{{ form_widget(form.image, {'attr': {#}
+                                                        {#'class': 'form-control hidden',#}
+                                                        {#'accept': '.jpg, .jpeg, .png',#}
+                                                        {#'onchange': 'affTmpImg(\'' ~ form.image.vars.id ~ '\');'#}
+                        {#}}) }}#}
+                        {{ form_widget(form.image, {'attr': {
+                                                        'class': 'form-control hidden',
+                                                        'accept': '.jpg, .jpeg, .png',
+                                                        'onchange': 'affTmpImg(\'' ~ form.image.vars.id ~ '\');'
+                        }}) }}
+                        <input type="text" id="imgname" class="form-control" value="" readonly="readonly" />
+                    </div>
+                </div>
+
+                {# --- locations ---------------------------------------------------------------------- #}
+                <hr><h3>Description du lieu</h3>
+
+                <div class="form-group">
+                    {{ form_label(form.placename, '* Nom du lieu', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_widget(form.placename, {'attr': {
+                                                            'class': 'form-control',
+                                                            'onkeydown': 'clearHtml("errorplacename");',
+                                                            'onchange': 'clearHtml("errorplacename");'}}) }}
+                    </div>
+                    <span class="erreur" id="errorplacename"> {{ form_errors(form.placename)|striptags }} </span>
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.address, '* Adresse complète', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_widget(form.address, {'attr': {
+                                                        'class': 'form-control',
+                                                        'onkeydown': 'clearHtml("erroraddr");clearHtml("addrmessage");',
+                                                        'onchange': 'clearHtml("erroraddr");clearHtml("addrmessage");',
+                                                        'onfocusout': 'scanAddress();'}}) }}
+                        <input type="hidden" id="id-addr" value="{{ form.address.vars.id }}">
+                        {{ form_widget(form.latitude, {'attr': {'class': 'hidden'}}) }}
+                        <input type="hidden" id="id-lat" value="{{ form.latitude.vars.id }}">
+                        {{ form_widget(form.longitude, {'attr': {'class': 'hidden'}}) }}
+                        <input type="hidden" id="id-lng" value="{{ form.longitude.vars.id }}">
+                    </div>
+                    <span class="erreur" id="erroraddr"> {{ form_errors(form.address)|striptags }} </span>
+                    <span id="addrmessage"></span>
+                </div>
+                <input type="hidden" name="longitude" id="longitude" value="">
+
+                <div class="form-group">
+                    {{ form_label(form.pricingInfo, 'Informations sur la tarification', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_widget(form.pricingInfo, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.ticketLink, 'Lien vers la billetterie', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                    <div class="col-sm-9">
+                        {{ form_widget(form.ticketLink, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                {# --- dates ---------------------------------------------------------------------- #}
+                <hr>
+                <h3>Date(s) de l'évènement</h3>
+                <ul id="evtdatelist"
+                    class="evtdatelist"
+                    data-prototype="{{ form_widget(form.evtDates.vars.prototype)|e('html_attr') }}"
+                    data-index="{{ form.evtDates|length }}"
+                >
+                    {%  for evtDate in form.evtDates %}
+                        <li class="form-group">
+
+
+
+                            {{ form_label(evtDate.evtDate, 'Date : ', {'label_attr': {'class': 'in-line'}}) }}
+                            {{ form_widget(evtDate.evtDate, {'attr': {'class': 'in-line dark-text'}}) }}
+                            &nbsp;&nbsp;&nbsp;
+                            {{ form_label(evtDate.timeStart, 'Heure début : ', {'label_attr': {'class': 'in-line'}}) }}
+                            {{ form_widget(evtDate.timeStart, {'attr': {'class': 'in-line dark-text'}}) }}
+                            &nbsp;&nbsp;&nbsp;
+                            {{ form_label(evtDate.timeEnd, 'Heure fin : ', {'label_attr': {'class': 'in-line'}}) }}
+                            {{ form_widget(evtDate.timeEnd, {'attr': {'class': 'in-line dark-text'}}) }}
+                            &nbsp;&nbsp;&nbsp;
+                            <button type="button" class="btn btn-default showtrash" id="_{{ loop.index0 }}_" onclick="delDate(this);">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                            {#{{ form_errors(evtDate.evtDate) }}#}
+
+
+
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <p><input type="button" class="btn btn-default" id="adddate" value="Ajoute une date" onclick="addDate();"/></p>
+
+
+
+
+
+
+                <div class="sep"></div>
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 text-center">
+                        <button class="btn btn-default" type="submit">Créer l'évènement</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-default" href="{{ path('event_list') }}">Abandonner</a>
+                    </div>
+                </div>
+
+                {#<script>#}
+                    {#var evtDateCount = '{{ form.evtDates|length }}';#}
+                    {#var newWidget = document.getElementById('evtdatelist').attr('data-prototype');#}
+                {#</script>#}
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/newevent.js') }}"></script>
+    <script>geocoder = new google.maps.Geocoder();</script>
+{% endblock %}

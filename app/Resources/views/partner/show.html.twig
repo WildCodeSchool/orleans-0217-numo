@@ -1,0 +1,42 @@
+{% extends 'layoutAdmin.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <h1 class="titreadmin font-lato">{{ partner.name }}</h1>
+    <hr>
+    <table>
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ partner.name }}</td>
+            </tr>
+            <tr>
+                <th>Weburl</th>
+                <td>{{ partner.webUrl }}</td>
+            </tr>
+            <tr>
+                <th>Imageurl</th>
+                <td>{{ partner.imageUrl }}</td>
+            </tr>
+            <tr>
+                <th>Active</th>
+                <td>{{ partner.active }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row btnlist">
+        <div class="col-sm-5 boutonadmin">
+            <a href="{{ path('partner_index') }}"><button type="button" value="RETOUR A LA LISTE">RETOUR A LA LISTE</button></a>
+        </div>
+        <div class="col-sm-6">
+            <a href="{{ path('partner_edit', { 'id': partner.id }) }}"><button type="button" value="MODIFIER">MODIFIER</button></a>
+        </div>
+        <div class="col-sm-1">
+            {{ form_start(delete_form) }}
+            <input type="submit" value="EFFACER">
+            {{ form_end(delete_form) }}
+        </div>
+    </div>
+
+{% endblock %}
