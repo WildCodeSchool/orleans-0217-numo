@@ -1,6 +1,3 @@
-
-/* --- web/js/newevent.js --- */
-
 var mapClosed = false;
 function closeMap() {
     if (mapClosed) {

@@ -3,6 +3,7 @@
 namespace NumoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Partner
@@ -25,13 +26,17 @@ class Partner
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Le nom doit être renseigné")
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="webUrl", type="string", length=255)
+     * @ORM\Column(name="webUrl", type="string", length=255, nullable=true)
+     *
+     * @Assert\Url(message = "L\'url saisie n\'est pas valide")
      */
     private $webUrl;
 
@@ -39,6 +44,13 @@ class Partner
      * @var string
      *
      * @ORM\Column(name="imageUrl", type="string", length=255)
+     *
+     * @Assert\File(
+     *     maxSize = "2024k",
+     *     maxSizeMessage="L'image est trop lourde.",
+     *     mimeTypes = {"application/jpg", "application/jpeg", "application/png", "application/gif"},
+     *     mimeTypesMessage = "Merci d'uploader une image valide"
+     * )
      */
     private $imageUrl;
 

@@ -37,16 +37,9 @@ class SelectEventType extends AbstractType
                 'required' => false,
                 'placeholder' => '- Toutes -',
             ))
-
-
-
-//            ->add('tags', TextType::class, array(
-//                'label' => 'Mots-clé',
-//                'required' => false,
-//            ))
-            ->add('passed', hiddenType::class, array('required' => false))
-//            ->add('id', TextType::class, array('required' => false))
-        ;
+            ->add('passed', hiddenType::class, array(
+                'required' => false
+            ));
     }
     
     /**

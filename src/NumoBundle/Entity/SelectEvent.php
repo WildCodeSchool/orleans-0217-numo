@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wilder10
- * Date: 12/06/17
- * Time: 17:58
- */
 
 namespace NumoBundle\Entity;
 
@@ -125,9 +119,9 @@ class SelectEvent
     {
         // --- contrôle dates
         // - si une seule date , 2eme date = date saisie
-        if ($this->getStartDate() == '' && $this->getEndDate() != '') {
+        if ($this->getStartDate() && !$this->getEndDate()) {
             $this->setStartDate($this->getEndDate());
-        } elseif ($this->getEndDate() == '' && $this->getStartDate() != '') {
+        } elseif ($this->getEndDate() && !$this->getStartDate()) {
             $this->setEndDate($this->getStartDate());
         }
         // - si date deb apres date fin, inverser dates
@@ -135,10 +129,6 @@ class SelectEvent
             $tmpDate = $this->getStartDate();
             $this->setStartDate($this->getEndDate());
             $this->setEndDate($tmpDate);
-        }
-        // --- positionnement passed
-        if ($this->getStartDate() != '' ) {
-            $this->setPassed(1);
         }
     }
 }

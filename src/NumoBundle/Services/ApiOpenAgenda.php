@@ -1,7 +1,5 @@
 <?php
 
-// --- src/NumoBundle/Services/ApiOpenAgenda.php ---
-
 namespace NumoBundle\Services;
 
 use NumoBundle\Entity\Event;

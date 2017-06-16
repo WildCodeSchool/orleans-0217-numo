@@ -13,7 +13,11 @@ class PartnerType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name')->add('webUrl')->add('imageUrl')->add('active');
+        $builder
+            ->add('name')
+            ->add('webUrl')
+            ->add('imageUrl')
+            ->add('active');
     }
     
     /**

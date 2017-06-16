@@ -16,8 +16,13 @@ class ContactType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('nom')->add('email')->add('sujet')->add('commentaire', TextareaType::class, array(
-        'attr' => array('class' => 'tinymce')));
+        $builder
+            ->add('nom')
+            ->add('email')
+            ->add('sujet')
+            ->add('commentaire', TextareaType::class, array(
+                'attr' => array('class' => 'tinymce')
+                ));
     }
 
 

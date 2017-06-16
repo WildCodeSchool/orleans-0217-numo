@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * SnLink
  *
- * @ORM\Table(name="sn_link")
- * @ORM\Entity(repositoryClass="NumoBundle\Repository\SnLinkRepository")
+ * @ORM\Table(name="social_network_link")
+ * @ORM\Entity(repositoryClass="NumoBundle\Repository\SocialNetworkLinkRepository")
  */
-class SnLink
+class SocialNetworkLink
 {
     /**
      * @var int
@@ -142,4 +142,3 @@ class SnLink
         return $this->socialNetworks;
     }
 }
-

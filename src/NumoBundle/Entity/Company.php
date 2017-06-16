@@ -26,6 +26,8 @@ class Company
      * @var string
      *
      * @ORM\Column(name="contactEmail", type="string", length=255)
+     * @Assert\NotBlank(message="Merci de renseigner une adresse Email valide")
+     * @Assert\Email(message = "l\'Email '{{ value }}' n'est pas valide")
      */
     private $contactEmail;
 
@@ -33,6 +35,7 @@ class Company
      * @var string
      *
      * @ORM\Column(name="city", type="string", length=255)
+     * @Assert\NotBlank(message="Le nom doit être renseigné.")
      */
     private $city;
 
@@ -40,6 +43,11 @@ class Company
      * @var string
      *
      * @ORM\Column(name="postalCode", type="string", length=255)
+     * @Assert\NotBlank(message="Le nom doit être renseigné.")
+     * @Assert\Length(
+     *      max=7,
+     *      maxMessage="Le code postal est trop long."
+     * )
      */
     private $postalCode;
 
@@ -47,13 +55,14 @@ class Company
      * @var string
      *
      * @ORM\Column(name="adress", type="string", length=255)
+     * @Assert\NotBlank(message="Le nom doit être renseigné.")
      */
     private $adress;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="phone", type="string", length=255)
+     * @ORM\Column(name="phone", type="string", length=255, nullable=true)
      */
     private $phone;
 

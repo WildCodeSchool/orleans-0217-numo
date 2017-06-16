@@ -1,6 +1,3 @@
-
-/* --- web/js/scanaddress.js -- */
-
 setTimeout(init(), 300);
 
 function init() {
@@ -15,10 +12,6 @@ function affTrashes() {
     } else {
         $('.showtrash').css('visibility','visible');
     }
-}
-// -----------------------------------------------------------
-function clearHtml(id) {
-    $('#'+id).html('');
 }
 // -----------------------------------------------------------
 function scanAddress() {
@@ -42,10 +35,6 @@ function displayAddress(data) {
         $('#latitude').val('');
         $('#longitude').val('');
     }
-}
-// -----------------------------------------------------------
-function delAddrMessage() {
-    $('#addrmessage').html('');
 }
 // -----------------------------------------------------------
 function addDate() {
@@ -78,10 +67,5 @@ function delDate(obj) {
         id++;
     }
     affTrashes();
-}
-// -----------------------------------------------------------
-function affTmpImg(id) {
-    var pathFile = $('#'+id).val().split('\\');
-    $('#imgname').val(pathFile[pathFile.length-1]);
 }
 // -----------------------------------------------------------

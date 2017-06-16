@@ -15,13 +15,12 @@ class EvtDateCollectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('evtDate', DateType::class, [
-//                'widget' => 'single_text',
+            ->add('evtDate', DateType::class, array(
                 'widget' => 'choice',
                 'html5' => false,
-//                'format' => 'dd/MM/yyyy',
                 'years' => range(2017, 2027),
-            ], ['required' => false])
+                'required' => false
+            ))
             ->add('timeStart')
             ->add('timeEnd');
     }

@@ -52,14 +52,16 @@ class EventController extends Controller
         if ($selectForm->isSubmitted() && $selectForm->isValid()) {
             $selector->DatesControl();
             // --- creation des options d'affichage
-            if (is_null($selector->getStartDate()) && is_null($selector->getEndDate())) {
+            if ($selector->getStartDate() && $selector->getEndDate()) {
                 $options['oaq[from]'] = $selector->getStartDate()->format('Y-m-d');
                 $options['oaq[to]'] = $selector->getEndDate()->format('Y-m-d');
+                $selector->setPassed(1);
             }
-            $options['search[passed]'] = $selector->getPassed();
             if ($selector->getCategory()) {
                 $options['oaq[what]'] = urlencode($selector->getCategory()->getName());
+                $selector->setPassed(1);
             }
+            $options['search[passed]'] = $selector->getPassed();
         }
 
         // --- lecture de la liste OpenAgenda

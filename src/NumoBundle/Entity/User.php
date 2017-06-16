@@ -121,19 +121,17 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @ORM\ManyToOne(targetEntity="Adress", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="Address", inversedBy="users")
      *
      */
-    protected $adress;
+    protected $address;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @ORM\OneToMany(targetEntity="SnLink", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="SocialNetworkLink", mappedBy="user")
      *
      */
-    protected $snLinks;
-
-
+    protected $socialNetworkLinks;
 
 
     /**
@@ -233,7 +231,6 @@ class User extends BaseUser
     }
 
 
-
     /**
      * Set webSite
      *
@@ -309,13 +306,13 @@ class User extends BaseUser
     /**
      * Set adress
      *
-     * @param \NumoBundle\Entity\Adress $adress
+     * @param \NumoBundle\Entity\Address $adress
      *
      * @return User
      */
-    public function setAdress(\NumoBundle\Entity\Adress $adress = null)
+    public function setAddress(Address $address = null)
     {
-        $this->adress = $adress;
+        $this->address = $address;
 
         return $this;
     }
@@ -323,44 +320,59 @@ class User extends BaseUser
     /**
      * Get adress
      *
-     * @return \NumoBundle\Entity\Adress
+     * @return \NumoBundle\Entity\Address
      */
-    public function getAdress()
+    public function getAddress()
     {
-        return $this->adress;
+        return $this->address;
     }
 
     /**
-     * Add snLink
+     * Add socialNetworkLink
      *
-     * @param \NumoBundle\Entity\SnLink $snLink
+     * @param \NumoBundle\Entity\SocialNetworkLink $socialNetworkLink
      *
      * @return User
      */
-    public function addSnLink(\NumoBundle\Entity\SnLink $snLink)
+    public function addSocialNetworkLink(SocialNetworkLink $socialNetworkLink)
     {
-        $this->snLinks[] = $snLink;
+        $this->socialNetworkLinks[] = $socialNetworkLink;
 
         return $this;
     }
 
     /**
-     * Remove snLink
+     * Remove socialNetworkLink
      *
-     * @param \NumoBundle\Entity\SnLink $snLink
+     * @param \NumoBundle\Entity\SocialNetworkLink $socialNetworkLink
      */
-    public function removeSnLink(\NumoBundle\Entity\SnLink $snLink)
+    public function removeSocialNetworkLink(SocialNetworkLink $socialNetworkLink)
     {
-        $this->snLinks->removeElement($snLink);
+        $this->socialNetworkLinks->removeElement($socialNetworkLink);
     }
 
     /**
-     * Get snLinks
+     * Get socialNetworkLinks
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSnLinks()
+    public function getSocialNetworkLinks()
     {
-        return $this->snLinks;
+        return $this->socialNetworkLinks;
     }
+
+    /**
+     * Set socialNetworkLinks
+     *
+     * @param string $socialNetworkLinks
+     *
+     * @return User
+     */
+    public function setSocialNetworkLinks($socialNetworkLinks)
+    {
+        $this->socialNetworkLinks = $socialNetworkLinks;
+
+        return $this;
+    }
+
 }
