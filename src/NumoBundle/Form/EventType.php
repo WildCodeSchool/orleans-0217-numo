@@ -18,22 +18,44 @@ class EventType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, array('required' => false))
-            ->add('description', TextType::class, array('required' => false))
-            ->add('freeText', TextareaType::class, array('required' => false))
-            ->add('tags', TextType::class, array('required' => false))
-            ->add('image', fileType::class, array('required' => false))
-            ->add('placename', TextType::class, array('required' => false))
-            ->add('address', TextType::class, array('required' => false))
-            ->add('latitude', TextType::class, array('required' => false))
-            ->add('longitude', TextType::class, array('required' => false))
-            ->add('ticketLink', TextType::class, array('required' => false))
-            ->add('pricingInfo', TextType::class, array('required' => false))
-            ->add('evtDates', CollectionType::class, array(
+            ->add('title', TextType::class, [
+                'required' => false,
+            ])
+            ->add('description', TextType::class, [
+                'required' => false,
+            ])
+            ->add('freeText', TextareaType::class, [
+                'required' => false,
+            ])
+            ->add('tags', TextType::class, [
+                'required' => false,
+            ])
+            ->add('image', fileType::class, [
+                'required' => false,
+            ])
+            ->add('placename', TextType::class, [
+                'required' => false,
+            ])
+            ->add('address', TextType::class, [
+                'required' => false,
+            ])
+            ->add('latitude', TextType::class, [
+                'required' => false,
+            ])
+            ->add('longitude', TextType::class, [
+                'required' => false,
+            ])
+            ->add('ticketLink', TextType::class, [
+                'required' => false,
+            ])
+            ->add('pricingInfo', TextType::class, [
+                'required' => false,
+            ])
+            ->add('evtDates', CollectionType::class, [
                 'entry_type' => EvtDateCollectionType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-            ));
+            ]);
     }
     
     /**
@@ -41,9 +63,9 @@ class EventType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'NumoBundle\Entity\Event'
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'NumoBundle\Entity\Event',
+        ]);
     }
 
     /**

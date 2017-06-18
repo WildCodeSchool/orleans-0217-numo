@@ -78,9 +78,9 @@ class ProfileController extends \FOS\UserBundle\Controller\ProfileController
             return $response;
         }
 
-        return $this->render('@FOSUser/Profile/edit.html.twig', array(
+        return $this->render('@FOSUser/Profile/edit.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
-        ));
+        ]);
     }
 }

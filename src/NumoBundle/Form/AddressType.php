@@ -15,18 +15,18 @@ class AddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('address', TextType::class, array(
-                'label' => 'Adr 1',
-                'required' => false
-            ))
-            ->add('postalCode', TextType::class, array(
+            ->add('address', TextType::class, [
+                'label' => 'Adresse',
+                'required' => false,
+            ])
+            ->add('postalCode', TextType::class, [
                 'label' => 'Code Postal',
-                'required' => false
-            ))
-            ->add('city', TextType::class, array(
+                'required' => false,
+            ])
+            ->add('city', TextType::class, [
                 'label' => 'Ville',
-                'required' => false
-            ))
+                'required' => false,
+            ])
             ->remove('latitude')
             ->remove('longitude');
     }
@@ -36,9 +36,9 @@ class AddressType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'NumoBundle\Entity\Address'
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'NumoBundle\Entity\Address',
+        ]);
     }
 
     /**

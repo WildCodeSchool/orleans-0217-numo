@@ -26,9 +26,9 @@ class CategoryController extends Controller
 
         $categories = $em->getRepository('NumoBundle:Category')->findAll();
 
-        return $this->render('category/index.html.twig', array(
+        return $this->render('category/index.html.twig', [
             'categories' => $categories,
-        ));
+        ]);
     }
 
     /**
@@ -48,13 +48,13 @@ class CategoryController extends Controller
             $em->persist($category);
             $em->flush();
 
-            return $this->redirectToRoute('category_show', array('id' => $category->getId()));
+            return $this->redirectToRoute('category_show', ['id' => $category->getId()]);
         }
 
-        return $this->render('category/new.html.twig', array(
+        return $this->render('category/new.html.twig', [
             'category' => $category,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -67,10 +67,10 @@ class CategoryController extends Controller
     {
         $deleteForm = $this->createDeleteForm($category);
 
-        return $this->render('category/show.html.twig', array(
+        return $this->render('category/show.html.twig', [
             'category' => $category,
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -88,14 +88,14 @@ class CategoryController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('category_edit', array('id' => $category->getId()));
+            return $this->redirectToRoute('category_edit', ['id' => $category->getId()]);
         }
 
-        return $this->render('category/edit.html.twig', array(
+        return $this->render('category/edit.html.twig', [
             'category' => $category,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -128,7 +128,7 @@ class CategoryController extends Controller
     private function createDeleteForm(Category $category)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('category_delete', array('id' => $category->getId())))
+            ->setAction($this->generateUrl('category_delete', ['id' => $category->getId()]))
             ->setMethod('DELETE')
             ->getForm()
         ;

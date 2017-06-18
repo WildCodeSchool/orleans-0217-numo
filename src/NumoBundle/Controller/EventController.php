@@ -31,7 +31,7 @@ class EventController extends Controller
      *      - via sélecteurs :
      *          - sélecteur de période (date de début et date de fin - Note : dates passées possibles)
      *              seuls les évènement ayant au moins une date entrant dans la plage seront affichés
-     *          - sélecteur de catégories (recherche dans le champ "tags" des evenements)
+     *          - sélecteur de catégorie (recherche dans le champ "tags" des evenements)
      *      Note : les sélecteurs sont cumulables
      * -------------------------------------------------------------------------------------------------------------
      */
@@ -41,9 +41,9 @@ class EventController extends Controller
 //        $event = new Event();
         // --- initialisation des parametres de lecture par defaut de la liste des evenements
         $options = [
-            'search[passed]' => 0,  // pas de sélection des évènements passés
-            'offset' => 0,          // début de la liste
-            'limit' => 10,          // nombre d'éléments retournés
+            'search[passed]' => 0,
+            'offset' => 0,
+            'limit' => 10,
         ];
         $selector = new SelectEvent();
         $selectForm = $this->createForm(SelectEventType::class, $selector);
@@ -52,7 +52,7 @@ class EventController extends Controller
         if ($selectForm->isSubmitted() && $selectForm->isValid()) {
             $selector->DatesControl();
             // --- creation des options d'affichage
-            if ($selector->getStartDate() && $selector->getEndDate()) {
+            if ($selector->getStartDate()) {
                 $options['oaq[from]'] = $selector->getStartDate()->format('Y-m-d');
                 $options['oaq[to]'] = $selector->getEndDate()->format('Y-m-d');
                 $selector->setPassed(1);
@@ -75,16 +75,14 @@ class EventController extends Controller
             $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
         }
         // --- affichage
-        $twigParams = [
+        return $this->render('NumoBundle:event:list.html.twig', [
             'selectForm' => $selectForm->createView(),
             'agendaSlug' => $api->getAgendaSlug(),
             'events' => $events,
             'dates'=> $dates,
             'error' => $error,
-            'selector' => $selector,
             'selectForm' => $selectForm->createView(),
-        ];
-        return $this->render('NumoBundle:event:list.html.twig', $twigParams);
+        ]);
     }
 
 
@@ -103,7 +101,7 @@ class EventController extends Controller
         $evtDate0 = new EvtDate();
         $evtDate0->setEvtDate(new \DateTime());
         $event->getEvtDates()->add($evtDate0);
-        $form = $this->createForm('NumoBundle\Form\EventType', $event);
+        $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $event->getImage();
@@ -120,11 +118,10 @@ class EventController extends Controller
 
             return $this->redirectToRoute('event_list');
         }
-        $twigParams = [
+        return $this->render('NumoBundle:event:new.html.twig', [
             'error' => $error,
             'form' => $form->createView(),
-        ];
-        return $this->render('NumoBundle:event:new.html.twig', $twigParams);
+        ]);
     }
 
     /**
@@ -149,16 +146,19 @@ class EventController extends Controller
             $em = $this->getDoctrine()->getManager();
             $event = $em->getRepository('NumoBundle:Event')->getEvent($id);
         }
-        $twigParams = [
-            'agendaSlug' => $api->getAgendaSlug(),
+        return $this->render('NumoBundle:event:show.html.twig', [
+        'agendaSlug' => $api->getAgendaSlug(),
             'event' => $event,
+
+
 // --- provisoire ---------------------------------------------------
             'author' => ['name' => 'John DOE', 'imageUrl' => 'http://localhost:8000/img/logotrans.png', 'badge' => ''], // pour test
             'user' => ['rs' => []],
 // -------------------------------------------------------------------
+
+
             'error' => $error,
-        ];
-        return $this->render('NumoBundle:event:show.html.twig', $twigParams);
+        ]);
     }
 
     /**

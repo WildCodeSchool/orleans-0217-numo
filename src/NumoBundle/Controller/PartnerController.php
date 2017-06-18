@@ -26,9 +26,9 @@ class PartnerController extends Controller
 
         $partners = $em->getRepository('NumoBundle:Partner')->findAll();
 
-        return $this->render('partner/index.html.twig', array(
+        return $this->render('partner/index.html.twig', [
             'partners' => $partners,
-        ));
+        ]);
     }
 
     /**
@@ -48,13 +48,13 @@ class PartnerController extends Controller
             $em->persist($partner);
             $em->flush();
 
-            return $this->redirectToRoute('partner_show', array('id' => $partner->getId()));
+            return $this->redirectToRoute('partner_show', ['id' => $partner->getId()]);
         }
 
-        return $this->render('partner/new.html.twig', array(
+        return $this->render('partner/new.html.twig', [
             'partner' => $partner,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -67,10 +67,10 @@ class PartnerController extends Controller
     {
         $deleteForm = $this->createDeleteForm($partner);
 
-        return $this->render('partner/show.html.twig', array(
+        return $this->render('partner/show.html.twig', [
             'partner' => $partner,
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -88,14 +88,14 @@ class PartnerController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('partner_edit', array('id' => $partner->getId()));
+            return $this->redirectToRoute('partner_edit', ['id' => $partner->getId()]);
         }
 
-        return $this->render('partner/edit.html.twig', array(
+        return $this->render('partner/edit.html.twig', [
             'partner' => $partner,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -128,7 +128,7 @@ class PartnerController extends Controller
     private function createDeleteForm(Partner $partner)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('partner_delete', array('id' => $partner->getId())))
+            ->setAction($this->generateUrl('partner_delete', ['id' => $partner->getId()]))
             ->setMethod('DELETE')
             ->getForm()
         ;

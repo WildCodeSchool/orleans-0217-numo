@@ -26,7 +26,7 @@ class ContactController extends DefaultController
 
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
-        $company= $em->getRepository('NumoBundle:Company')->findAll()[0];
+        $company= $em->getRepository('NumoBundle:Company')->find(1);
 
         if($form->isSubmitted() && $form->isValid()) {
 
@@ -40,9 +40,10 @@ class ContactController extends DefaultController
             return $this-> redirectToRoute('contact');
         }
 
-
-        return $this->render('NumoBundle:site:pageContact.html.twig', array('form'=>$form->createView(),
-        'company' => $company ));
+        return $this->render('NumoBundle:site:pageContact.html.twig', [
+            'form'=>$form->createView(),
+            'company' => $company,
+        ]);
     }
 
 

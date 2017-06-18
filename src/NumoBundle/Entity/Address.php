@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Adress
+ * Address
  *
- * @ORM\Table(name="adress")
- * @ORM\Entity(repositoryClass="NumoBundle\Repository\AdressRepository")
+ * @ORM\Table(name="address")
+ * @ORM\Entity(repositoryClass="NumoBundle\Repository\AddressRepository")
  */
 class Address
 {
@@ -66,7 +66,6 @@ class Address
     /**
      * @ORM\OneToMany(targetEntity="User", mappedBy="address")
      */
-
     private $users;
 
 

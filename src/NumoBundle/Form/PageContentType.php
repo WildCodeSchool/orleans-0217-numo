@@ -13,7 +13,10 @@ class PageContentType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title')->add('content')->add('lastModif');
+        $builder
+            ->add('title')
+            ->add('content')
+            ->add('lastModif');
     }
     
     /**
@@ -21,9 +24,9 @@ class PageContentType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'NumoBundle\Entity\PageContent'
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'NumoBundle\Entity\PageContent',
+        ]);
     }
 
     /**

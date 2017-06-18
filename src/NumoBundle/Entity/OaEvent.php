@@ -61,17 +61,32 @@ class OaEvent
      * structure $evtDates : chaque élément du tableau est un tableau asociatif de 3 éléments :
      *     ['evtDate' => 'AAAA-MM-JJ', 'timeStart' => 'HH:MM:SS', 'timeEnd' => 'HH:MM:SS']
      */
-    private $evtDates = [];
+    private $evtDates;
 
-//    public function hydrate (array $properties)
-//    {
-//        foreach ($properties as $key => $value) {
-//            if (property_exists($this)) {
-//                $method = 'set'.ucfirst($key);
-//                $this->$method($value);
-//            }
-//        }
-//    }
+    public function init()
+    {
+        $this
+            ->setStatus(1)
+            ->setLink('')
+            ->setImage('')
+            ->setTitle('')
+            ->setDescription('')
+            ->setFreeText('')
+            ->setTags('')
+            ->setPlacename('')
+            ->setAddress('')
+            ->setLatitude(0.0)
+            ->setLongitude(0.0)
+            ->setTicketLink('')
+            ->setPricingInfo('')
+            ->setEvtDates([]);
+    }
+
+    public function __construct()
+    {
+        $this->init();
+    }
+
 
     /**
      * @return int

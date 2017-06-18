@@ -19,27 +19,27 @@ class SelectEventType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('startDate', DateType::class, array(
+            ->add('startDate', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
                 'invalid_message' => 'Date début invalide (format attendu : jj/mm/aaaa). ',
-            ))
-            ->add('endDate', DateType::class, array(
+            ])
+            ->add('endDate', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
                 'invalid_message' => 'Date fin invalide (format attendu : jj/mm/aaaa). ',
-            ))
-            ->add('category', EntityType::class, array(
+            ])
+            ->add('category', EntityType::class, [
                 'class' => 'NumoBundle:Category',
                 'choice_label' => 'name',
                 'required' => false,
                 'placeholder' => '- Toutes -',
-            ))
-            ->add('passed', hiddenType::class, array(
+            ])
+            ->add('passed', hiddenType::class, [
                 'required' => false
-            ));
+            ]);
     }
     
     /**
@@ -47,9 +47,9 @@ class SelectEventType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'NumoBundle\Entity\SelectEvent'
-        ));
+        ]);
     }
 
     /**

@@ -20,17 +20,17 @@ class ContactType extends AbstractType
             ->add('nom')
             ->add('email')
             ->add('sujet')
-            ->add('commentaire', TextareaType::class, array(
-                'attr' => array('class' => 'tinymce')
-                ));
+            ->add('commentaire', TextareaType::class, [
+                'attr' => ['class' => 'tinymce'],
+            ]);
     }
 
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Contact::class,
-        ));
+        ]);
     }
     /**
      * {@inheritdoc}

@@ -16,13 +16,28 @@ class CompanyType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('contactEmail', TextType::class, array('label' => 'Email'));
-        $builder->add('city', TextType::class, array('label' => 'Ville'));
-        $builder->add('postalCode', TextType::class, array('label' => 'Code Postal'));
-        $builder->add('adress', TextType::class, array('label' => 'Adresse'));
-        $builder->add('phone', TextType::class, array('label' => 'Téléphone'));
-//        $builder->add('imageUrl', FileType::class, array('label' => 'Image'));
-        $builder->add('pdf', FileType::class, array('label' => 'RIB (PDF File)'));
+        $builder
+            ->add('contactEmail', TextType::class, [
+                'label' => 'Email',
+            ])
+            ->add('city', TextType::class, [
+                'label' => 'Ville',
+            ])
+            ->add('postalCode', TextType::class, [
+                'label' => 'Code Postal',
+            ])
+            ->add('address', TextType::class, [
+                'label' => 'Adresse',
+            ])
+            ->add('phone', TextType::class, ['
+            label' => 'Téléphone',
+            ])
+            ->add('imageUrl', FileType::class, [
+                'label' => 'Image',
+            ])
+            ->add('pdf', FileType::class, [
+                'label' => 'RIB (PDF File)',
+            ]);
     }
     
     /**
@@ -30,9 +45,9 @@ class CompanyType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Company::class,
-        ));
+        ]);
     }
 
     /**

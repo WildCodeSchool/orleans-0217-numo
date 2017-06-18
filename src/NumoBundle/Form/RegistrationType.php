@@ -17,25 +17,25 @@ class RegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array(
-                'label' => 'Nom'
-            ))
-            ->add('firstname', TextType::class, array(
-                'label' => 'Prénom'
-            ))
-            ->add('description', TextareaType::class, array(
+            ->add('name', TextType::class, [
+                'label' => 'Nom',
+            ])
+            ->add('firstname', TextType::class, [
+                'label' => 'Prénom',
+            ])
+            ->add('description', TextareaType::class, [
                 'label' => 'Description',
-                'required' => false
-            ))
-            ->add('imageUrl',FileType::class, array(
+                'required' => false,
+            ])
+            ->add('imageUrl',FileType::class, [
                 'label' => 'Image',
-                'required' => false
-            ))
-            ->add('trust',HiddenType::class)
-            ->add('freeText',HiddenType::class)
-            ->add('phone',HiddenType::class)
-            ->add('webSite',HiddenType::class)
-            ->remove('adress')
+                'required' => false,
+            ])
+            ->add('trust', HiddenType::class)
+            ->add('freeText', HiddenType::class)
+            ->add('phone', HiddenType::class)
+            ->add('webSite', HiddenType::class)
+            ->remove('address')
             ->remove('username');
 
     }

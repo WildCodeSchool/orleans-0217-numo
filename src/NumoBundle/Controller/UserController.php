@@ -27,9 +27,9 @@ class UserController extends Controller
 
         $users = $em->getRepository('NumoBundle:User')->findAll();
 
-        return $this->render('user/index.html.twig', array(
+        return $this->render('user/index.html.twig', [
             'users' => $users,
-        ));
+        ]);
     }
 
 }

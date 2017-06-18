@@ -16,9 +16,9 @@ class ListMemberController extends Controller
         $em = $this->getDoctrine()->getManager();
         $members= $em->getRepository('NumoBundle:User')->findAll();
 
-        return $this->render('NumoBundle:site:member.html.twig', array(
+        return $this->render('NumoBundle:site:member.html.twig', [
             'members' => $members
-        ));
+        ]);
     }
 
     /**
@@ -27,9 +27,9 @@ class ListMemberController extends Controller
      */
     public function showProfilMember(User $user)
     {
-        return $this->render('NumoBundle:site:profilMember.html.twig', array(
+        return $this->render('NumoBundle:site:profilMember.html.twig', [
             'user' => $user,
-        ));
+        ]);
     }
 
 

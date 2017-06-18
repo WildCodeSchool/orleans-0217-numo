@@ -17,45 +17,45 @@ class ProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array(
-                'label' => 'Nom'
-            ))
-            ->add('firstname', TextType::class, array(
-                'label' => 'Prénom'
-            ))
-            ->add('description', TextareaType::class, array(
+            ->add('name', TextType::class, [
+                'label' => 'Nom',
+            ])
+            ->add('firstname', TextType::class, [
+                'label' => 'Prénom',
+            ])
+            ->add('description', TextareaType::class, [
                 'label' => 'Description',
-                'required' => false
-            ))
-            ->add('imageUrl',FileType::class, array(
+                'required' => false,
+            ])
+            ->add('imageUrl',FileType::class, [
                 'data_class' => null,
                 'label' => 'Image',
-                'required' => false
-            ))
-            ->add('freeText',TextareaType::class, array(
+                'required' => false,
+            ])
+            ->add('freeText',TextareaType::class, [
                 'label' => 'Présentation',
-                'required' => false
-            ))
-            ->add('phone',TextType::class, array(
+                'required' => false,
+            ])
+            ->add('phone',TextType::class, [
                 'label' => 'Téléphone',
-                'required' => false
-            ))
-            ->add('webSite',TextType::class, array(
+                'required' => false,
+            ])
+            ->add('webSite',TextType::class, [
                 'label' => 'Site Web',
-                'required' => false
-            ))
-            ->add('adress',AddressType::class, array(
+                'required' => false,
+            ])
+            ->add('address',AddressType::class, [
                 'label' => 'Adresse',
-                'required' => false
-            ))
+                'required' => false,
+            ])
             ->remove('username');
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => User::class
-        ));
+        $resolver->setDefaults([
+            'data_class' => User::class,
+        ]);
     }
 
     public function getParent()

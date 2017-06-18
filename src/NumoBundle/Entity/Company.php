@@ -54,7 +54,7 @@ class Company
     /**
      * @var string
      *
-     * @ORM\Column(name="adress", type="string", length=255)
+     * @ORM\Column(name="address", type="string", length=255)
      * @Assert\NotBlank(message="Le nom doit être renseigné.")
      */
     private $adress;
@@ -166,7 +166,7 @@ class Company
     }
 
     /**
-     * Set adress
+     * Set address
      *
      * @param string $adress
      *
@@ -180,7 +180,7 @@ class Company
     }
 
     /**
-     * Get adress
+     * Get address
      *
      * @return string
      */

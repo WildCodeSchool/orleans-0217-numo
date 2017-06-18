@@ -15,12 +15,12 @@ class EvtDateCollectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('evtDate', DateType::class, array(
+            ->add('evtDate', DateType::class, [
                 'widget' => 'choice',
                 'html5' => false,
                 'years' => range(2017, 2027),
-                'required' => false
-            ))
+                'required' => false,
+            ])
             ->add('timeStart')
             ->add('timeEnd');
     }
@@ -30,9 +30,9 @@ class EvtDateCollectionType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'NumoBundle\Entity\EvtDate'
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'NumoBundle\Entity\EvtDate',
+        ]);
     }
 
     /**

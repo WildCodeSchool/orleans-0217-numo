@@ -304,9 +304,9 @@ class User extends BaseUser
     }
 
     /**
-     * Set adress
+     * Set address
      *
-     * @param \NumoBundle\Entity\Address $adress
+     * @param \NumoBundle\Entity\Address $address
      *
      * @return User
      */
@@ -318,7 +318,7 @@ class User extends BaseUser
     }
 
     /**
-     * Get adress
+     * Get address
      *
      * @return \NumoBundle\Entity\Address
      */

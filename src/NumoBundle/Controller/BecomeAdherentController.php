@@ -27,12 +27,12 @@ class BecomeAdherentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $content = $em->getRepository('NumoBundle:PageContent')->find($id = 2);
-        $company = $em->getRepository('NumoBundle:Company')->find($id = 1);
+        $content = $em->getRepository('NumoBundle:PageContent')->find(2);
+        $company = $em->getRepository('NumoBundle:Company')->find(1);
 
-        return $this->render('NumoBundle:site:becomeAdherent.html.twig', array(
+        return $this->render('NumoBundle:site:becomeAdherent.html.twig', [
             'content' => $content,
             'company' => $company
-        ));
+        ]);
     }
 }

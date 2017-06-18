@@ -13,7 +13,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $error = ''; // sera initialisée par l'api si erreur de lecture
+        $error = '';
 
 // --- initialisation des parametres de lecture par defaut de la liste des evenements
         $options = [
@@ -23,7 +23,7 @@ class DefaultController extends Controller
         ];
 
 // --- lecture de la liste OpenAgenda
-        $api = $this->get('numo.apiopenagenda'); // initialisation de l'accès à l'API
+        $api = $this->get('numo.apiopenagenda');
         $data = $api->getEventList($options, false);
         $events = $data['eventList'];
         if (false === $events) {
@@ -34,12 +34,12 @@ class DefaultController extends Controller
         $partners = $em->getRepository('NumoBundle:Partner')->findAll();
 
 // --- affichage
-        return $this->render('NumoBundle:site:index.html.twig', array(
-        'agendaSlug' => $api->getAgendaSlug(),
+        return $this->render('NumoBundle:site:index.html.twig', [
+            'agendaSlug' => $api->getAgendaSlug(),
             'events' => $events,
             'error' => $error,
             'partners' => $partners,
-        ));
+        ]);
     }
 
 
