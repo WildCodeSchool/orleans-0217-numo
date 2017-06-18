@@ -7,7 +7,7 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Address</th>
+                <th>Street</th>
                 <th>Postalcode</th>
                 <th>City</th>
                 <th>Latitude</th>
@@ -19,7 +19,7 @@
         {% for address in addresses %}
             <tr>
                 <td><a href="{{ path('address_show', { 'id': address.id }) }}">{{ address.id }}</a></td>
-                <td>{{ address.addresse }}</td>
+                <td>{{ address.street }}</td>
                 <td>{{ address.postalCode }}</td>
                 <td>{{ address.city }}</td>
                 <td>{{ address.latitude }}</td>

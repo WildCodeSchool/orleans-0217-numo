@@ -25,10 +25,10 @@ class Address
     /**
      * @var string
      *
-     * @ORM\Column(name="address", type="string", length=255, nullable=true)
+     * @ORM\Column(name="street", type="string", length=255, nullable=true)
 
      */
-    private $address;
+    private $street;
 
     /**
      * @var int
@@ -68,7 +68,6 @@ class Address
      */
     private $users;
 
-
     /**
      * Get id
      *
@@ -82,18 +81,18 @@ class Address
     /**
      * @return string
      */
-    public function getAddress(): string
+    public function getStreet(): string
     {
-        return $this->address;
+        return $this->street;
     }
 
     /**
-     * @param string $address
+     * @param string $street
      * @return Address
      */
-    public function setAddress(string $address): Address
+    public function setStreet(string $street): Address
     {
-        $this->address = $address;
+        $this->street = $street;
         return $this;
     }
 

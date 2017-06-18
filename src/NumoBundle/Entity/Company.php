@@ -57,7 +57,7 @@ class Company
      * @ORM\Column(name="address", type="string", length=255)
      * @Assert\NotBlank(message="Le nom doit être renseigné.")
      */
-    private $adress;
+    private $address;
 
     /**
      * @var string
@@ -168,13 +168,13 @@ class Company
     /**
      * Set address
      *
-     * @param string $adress
+     * @param string $address
      *
      * @return company
      */
-    public function setAdress($adress)
+    public function setAddress($address)
     {
-        $this->adress = $adress;
+        $this->address = $address;
 
         return $this;
     }
@@ -184,9 +184,9 @@ class Company
      *
      * @return string
      */
-    public function getAdress()
+    public function getAddress()
     {
-        return $this->adress;
+        return $this->address;
     }
 
     /**
