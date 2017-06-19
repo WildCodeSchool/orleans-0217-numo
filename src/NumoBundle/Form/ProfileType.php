@@ -44,10 +44,6 @@ class ProfileType extends AbstractType
                 'label' => 'Site Web',
                 'required' => false,
             ])
-            ->add('address',AddressType::class, [
-                'label' => 'Adresse',
-                'required' => false,
-            ])
             ->remove('username');
     }
 

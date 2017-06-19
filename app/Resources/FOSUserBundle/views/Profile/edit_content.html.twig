@@ -94,13 +94,14 @@
                          {{ form_errors(form.webSite) }}
                      </div>
 
-                     <div class="form-group">
-                         {{ form_label(form.address) }}
-                         <div class="col-sm-6">
-                             {{ form_widget(form.address) }}
-                         </div>
-                         {{ form_errors(form.address) }}
-                     </div>
+                     {# ---- corrigé dans un prochain pull request ---- #}
+                     {#<div class="form-group">#}
+                         {#{{ form_label(form.address) }}#}
+                         {#<div class="col-sm-6">#}
+                             {#{{ form_widget(form.address) }}#}
+                         {#</div>#}
+                         {#{{ form_errors(form.address) }}#}
+                     {#</div>#}
 
                  {% endif %}
 

@@ -15,11 +15,9 @@ class AssociationController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $contents= $em->getRepository('NumoBundle:PageContent')->find(1);
         $company= $em->getRepository('NumoBundle:Company')->find(1);
 
         return $this->render('NumoBundle:site:company.html.twig', [
-            'contents' => $contents,
             'company' => $company
         ]);
     }

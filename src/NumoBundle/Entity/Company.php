@@ -55,7 +55,7 @@ class Company
      * @var string
      *
      * @ORM\Column(name="address", type="string", length=255)
-     * @Assert\NotBlank(message="Le nom doit être renseigné.")
+     * @Assert\NotBlank(message="L\'adresse doit être renseignée.")
      */
     private $address;
 
@@ -65,6 +65,42 @@ class Company
      * @ORM\Column(name="phone", type="string", length=255, nullable=true)
      */
     private $phone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="presentationTitle", type="string", length=255)
+     * @Assert\NotBlank(message="Ce champ doit être renseigné.")
+     *
+     */
+    private $presentationTitle;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="presentationContent", type="text")
+     * @Assert\NotBlank(message="Ce champ doit être renseigné.")
+     *
+     */
+    private $presentationContent;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adherentTitle", type="string", length=255)
+     * @Assert\NotBlank(message="Ce champ doit être renseigné.")
+     *
+     */
+    private $adherentTitle;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adherentContent", type="text")
+     * @Assert\NotBlank(message="Ce champ doit être renseigné.")
+     *
+     */
+    private $adherentContent;
 
     /**
      * @var string
@@ -80,7 +116,6 @@ class Company
      * @Assert\NotBlank(message="Merci d'uploader un PDF")
      * @Assert\File(mimeTypes={ "application/pdf" })
      */
-
     private $pdf;
 
     /**
@@ -211,6 +246,78 @@ class Company
     public function getPhone()
     {
         return $this->phone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPresentationTitle(): string
+    {
+        return $this->presentationTitle;
+    }
+
+    /**
+     * @param string $presentationTitle
+     * @return Company
+     */
+    public function setPresentationTitle(string $presentationTitle): Company
+    {
+        $this->presentationTitle = $presentationTitle;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPresentationContent(): string
+    {
+        return $this->presentationContent;
+    }
+
+    /**
+     * @param string $presentationContent
+     * @return Company
+     */
+    public function setPresentationContent(string $presentationContent): Company
+    {
+        $this->presentationContent = $presentationContent;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdherentTitle(): string
+    {
+        return $this->adherentTitle;
+    }
+
+    /**
+     * @param string $adherentTitle
+     * @return Company
+     */
+    public function setAdherentTitle(string $adherentTitle): Company
+    {
+        $this->adherentTitle = $adherentTitle;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdherentContent(): string
+    {
+        return $this->adherentContent;
+    }
+
+    /**
+     * @param string $adherentContent
+     * @return Company
+     */
+    public function setAdherentContent(string $adherentContent): Company
+    {
+        $this->adherentContent = $adherentContent;
+        return $this;
     }
 
     /**

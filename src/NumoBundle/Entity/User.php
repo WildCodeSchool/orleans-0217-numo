@@ -108,7 +108,6 @@ class User extends BaseUser
     /**
      * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
      *
-     * @Assert\NotBlank(message="Entrez votre numéro de téléphone.", groups={"Registration", "Profile"})
      * @Assert\Length(
      *     min=3,
      *     max=50,
@@ -119,12 +118,48 @@ class User extends BaseUser
      */
     protected $phone;
 
+//    /**
+//     * @ORM\Column(type="string", nullable=true)
+//     * @ORM\ManyToOne(targetEntity="Address", inversedBy="users")
+//     *
+//     */
+//    protected $address;
+
+
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @ORM\ManyToOne(targetEntity="Address", inversedBy="users")
+     * @ORM\Column(type="string", length=250, nullable=true, options={"default" : null})
      *
+     * @Assert\Length(
+     *     max=250,
+     *     maxMessage="L\'adresse saisie est trop longue"
+     * )
      */
     protected $address;
+
+    /**
+     * @ORM\Column(type="string", length=7, nullable=true, options={"default" : null})
+     *
+     * @Assert\Length(
+     *     min=5,
+     *     max=7,
+     *     minMessage="Le code postal est trop court.",
+     *     maxMessage="Le code postal est trop long."
+     * )
+     */
+    protected $postalCode;
+
+    /**
+     * @ORM\Column(type="string", length=250, nullable=true, options={"default" : null})
+     *
+     * @Assert\Length(
+     *     min=3,
+     *     max=250,
+     *     minMessage="Le texte saisi est trop court.",
+     *     maxMessage="Le texte saisi est trop long."
+     * )
+     */
+    protected $city;
+
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -304,28 +339,59 @@ class User extends BaseUser
     }
 
     /**
-     * Set address
-     *
-     * @param \NumoBundle\Entity\Address $address
-     *
-     * @return User
-     */
-    public function setAddress(Address $address = null)
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return \NumoBundle\Entity\Address
+     * @return mixed
      */
     public function getAddress()
     {
         return $this->address;
     }
+
+    /**
+     * @param mixed $address
+     * @return User
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param mixed $city
+     * @return User
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPostalCode()
+    {
+        return $this->postalCode;
+    }
+
+    /**
+     * @param mixed $postalCode
+     * @return User
+     */
+    public function setPostalCode($postalCode)
+    {
+        $this->postalCode = $postalCode;
+        return $this;
+    }
+
 
     /**
      * Add socialNetworkLink
