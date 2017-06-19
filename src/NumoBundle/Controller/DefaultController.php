@@ -31,7 +31,7 @@ class DefaultController extends Controller
             $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
         }
         $em = $this->getDoctrine()->getManager();
-        $partners = $em->getRepository('NumoBundle:Partner')->findAll();
+        $partners = $em->getRepository('NumoBundle:Partner')->findBy(['active' => 1]);
 
 // --- affichage
         return $this->render('NumoBundle:site:index.html.twig', [
