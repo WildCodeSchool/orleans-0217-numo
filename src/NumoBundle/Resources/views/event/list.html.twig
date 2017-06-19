@@ -1,11 +1,9 @@
-{# --- src/NumoBundle/Resources/views/event/list.html.twig --- #}
-
 {% extends 'layout.html.twig' %}
 
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.css">
+    <link rel="stylesheet" href="{{ asset('css/fullcalendar.min.css') }}">
 {% endblock %}
 
 
@@ -39,9 +37,6 @@
             {{ form_label(selectForm.category, 'Catégorie : ', {'label_attr': {'class': 'in-line'}}) }}
             {{ form_widget(selectForm.category, {'attr': {'class': 'in-line tagfield'}}) }}
 
-            {#{{ form_row(selectForm.select, {'attr': {'class': 'in-line btn btn-default'}}) }}#}
-            {#{{ form_row(selectForm.reset, {'attr': {'class': 'in-line btn btn-default'}}) }}#}
-
             <button class="btn btn-default" type="submit" name="select">Appliquer</button>
             <a href="{{ path('event_list') }}" class="btn btn-default" role="button">Effacer</a>
 
@@ -67,7 +62,7 @@
                     {% for event in events %}
                         <div class="col-lg-6 col-sm-6 allEvents">
                             <a href="{{ path('event_show', {'id': event.id, 'published': event.status == 99}) }}" class="portfolio-box">
-                                <img class="imageEvents img-responsive" src="{{ event.image }}" class="img-responsive" alt="">
+                                <img class="imageEvents img-responsive" src="{{ event.image }}" alt="image {{ event.title }}">
                                 <div class="portfolio-box-caption">
                                     <div class="portfolio-box-caption-content">
                                         <div class="project-category text-faded">
@@ -109,8 +104,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/showevent.js') }}"></script>
-
-    <script src="{{ asset('//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('js/fullcalendar.min.js') }}"></script>
     <script>
 
         function initMap() {
@@ -166,8 +160,6 @@
 
             },
             eventClick: function (calEvent, jsEvent, view) {
-//                console.log("===== eventClick =====");
-//                console.log(calEvent);
 
 
             }
@@ -246,8 +238,5 @@
 
         }
     </script>
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5FbMBpVejJw6o_4r3eHkUQQde6vlDItg&callback=initMap"
-            async defer></script>
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5FbMBpVejJw6o_4r3eHkUQQde6vlDItg&callback=initMap" async defer></script>
 {% endblock %}

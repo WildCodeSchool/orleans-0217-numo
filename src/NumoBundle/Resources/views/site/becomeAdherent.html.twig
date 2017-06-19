@@ -2,7 +2,7 @@
 {% block body %}
     <div class="col-xs-12 text-center">
         <div class="separation"></div>
-        <h1>{{ content.title }}</h1>
+        <h1>{{ company.adherentTitle }}</h1>
         <div class="separation"></div>
     </div>
 
@@ -10,10 +10,12 @@
 
         <div class="row">
             <div class="col-sm-offset-4 col-sm-4">
-                <p>{{ content.content }}</p>
+                <p>{{ company.adherentContent }}</p>
                 <div class="row companyBottom">
                     <div class="col-lg-offset-4">
-                        <a href="{{ asset('uploads/numo/' ~ company.pdf.filename) }}" download="RIB NUMO" type="button" class="btn btn-success btn-admin ribnumo">Téléchargez le RIB de NUM'O (PDF)</a>
+                        {% if company.pdf != '' %}
+                            <a href="{{ asset('uploads/numo/' ~ company.pdf) }}" download="RIB NUMO" type="button" class="btn btn-success btn-admin ribnumo">Téléchargez le RIB de NUM'O (PDF)</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

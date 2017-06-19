@@ -21,9 +21,9 @@ class CategoryType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'NumoBundle\Entity\Category'
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'NumoBundle\Entity\Category',
+        ]);
     }
 
     /**

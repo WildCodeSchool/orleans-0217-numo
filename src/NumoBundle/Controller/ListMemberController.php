@@ -2,35 +2,34 @@
 
 namespace NumoBundle\Controller;
 
+use NumoBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-class ListeMemberController extends Controller
+class ListMemberController extends Controller
 {
     /**
      * @Route("/members", name="members")
      */
-    public function ShowlistMenber()
+    public function showListMember()
     {
         $em = $this->getDoctrine()->getManager();
         $members= $em->getRepository('NumoBundle:User')->findAll();
 
-        return $this->render('NumoBundle:site:member.html.twig', array(
+        return $this->render('NumoBundle:site:member.html.twig', [
             'members' => $members
-        ));
+        ]);
     }
 
     /**
      * Finds and displays a user entity.
      * @Route("/profilMember/{id}", name="profilMember")
      */
-    public function ShowProfilMenber($id)
+    public function showProfilMember(User $user)
     {
-        $em = $this->getDoctrine()->getManager();
-        $user= $em->getRepository('NumoBundle:User')->find($id);
-        return $this->render('NumoBundle:site:profilMember.html.twig', array(
+        return $this->render('NumoBundle:site:profilMember.html.twig', [
             'user' => $user,
-        ));
+        ]);
     }
 
 

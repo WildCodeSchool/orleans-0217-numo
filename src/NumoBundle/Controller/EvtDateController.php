@@ -88,7 +88,9 @@ class EvtDateController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('evtdate_edit', array('id' => $evtDate->getId()));
+            return $this->redirectToRoute('evtdate_edit', array(
+                'id' => $evtDate->getId()
+            ));
         }
 
         return $this->render('evtdate/edit.html.twig', array(

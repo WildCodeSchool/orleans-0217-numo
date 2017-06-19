@@ -30,7 +30,7 @@ class Event
      *
      * @ORM\Column(name="status", type="integer")
      */
-    private $status = 1;
+    private $status;
 
     /**
      * @var string
@@ -44,21 +44,21 @@ class Event
     /**
      * @var string
      *
+     * @ORM\Column(name="title", type="string", length=255)
+     *
      * @Assert\NotBlank(message="Le nom doit être renseigné.")
      * @Assert\Length(
      *      max = 100,
      *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
-     *
-     * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="Une description minimum doit être indiquée.")
-     *
      * @ORM\Column(name="description", type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Une description minimum doit être indiquée.")
      */
     private $description;
 
@@ -67,36 +67,36 @@ class Event
      *
      * @ORM\Column(name="freeText", type="text", nullable=true)
      */
-    private $freeText = '';
+    private $freeText;
 
     /**
      * @var string
      *
      * @ORM\Column(name="tags", type="string", length=255, nullable=true)
      */
-    private $tags = '';
+    private $tags;
 
     /**
      * @var string
      *
-     * @Assert\NotBlank(message=" - Ce champ doit être renseigné.")
+     * @ORM\Column(name="placename", type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Ce champ doit être renseigné.")
      * @Assert\Length(
      *      max = 100,
      *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
-     *
-     * @ORM\Column(name="placename", type="string", length=255)
      */
     private $placename;
 
     /**
      * @var string
      *
+     *
+     * @ORM\Column(name="address", type="string", length=255)
      * @Assert\NotBlank(message="Une adresse valide doit être renseignée.")
      * @Assert\Length(
      *      max = 200,
      *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
-     *
-     * @ORM\Column(name="address", type="string", length=255)
      */
     private $address;
 
@@ -119,14 +119,14 @@ class Event
      *
      * @ORM\Column(name="ticketLink", type="string", length=255, nullable=true)
      */
-    private $ticketLink = '';
+    private $ticketLink;
 
     /**
      * @var string
      *
      * @ORM\Column(name="pricingInfo", type="string", length=255, nullable=true)
      */
-    private $pricingInfo = '';
+    private $pricingInfo;
 
     /**
      * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"persist", "remove"})

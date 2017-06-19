@@ -6,10 +6,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OaEvent
 {
-    private $id = 0;
-    private $status = 0;
-    private $link = '';
-    private $image = '';
+    private $id;
+    private $status;
+    private $link;
+    private $image;
 
     /**
      * @var
@@ -18,17 +18,17 @@ class OaEvent
      *      max = 100,
      *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
      */
-    private $title = '';
+    private $title;
 
     /**
      * @var
      * @Assert\NotBlank(message="Une description minimum doit être indiquée.")
      */
-    private $description = '';
+    private $description;
 
-    private $freeText = '';
+    private $freeText;
 
-    private $tags = '';
+    private $tags;
 
     /**
      * @var
@@ -37,7 +37,7 @@ class OaEvent
      *      max = 100,
      *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
      */
-    private $placename = '';
+    private $placename;
 
     /**
      * @var
@@ -46,32 +46,47 @@ class OaEvent
      *      max = 200,
      *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
      */
-    private $address = '';
+    private $address;
 
-    private $latitude = 0.0;
+    private $latitude;
 
-    private $longitude = 0.0;
+    private $longitude;
 
-    private $ticketLink = '';
+    private $ticketLink;
 
-    private $pricingInfo = '';
+    private $pricingInfo;
 
     /**
      * @var array
      * structure $evtDates : chaque élément du tableau est un tableau asociatif de 3 éléments :
      *     ['evtDate' => 'AAAA-MM-JJ', 'timeStart' => 'HH:MM:SS', 'timeEnd' => 'HH:MM:SS']
      */
-    private $evtDates = [];
+    private $evtDates;
 
-    public function hydrate (array $properties)
+    public function init()
     {
-        foreach ($properties as $key => $value) {
-            if (property_exists($this)) {
-                $method = 'set'.ucfirst($key);
-                $this->$method($value);
-            }
-        }
+        $this
+            ->setStatus(1)
+            ->setLink('')
+            ->setImage('')
+            ->setTitle('')
+            ->setDescription('')
+            ->setFreeText('')
+            ->setTags('')
+            ->setPlacename('')
+            ->setAddress('')
+            ->setLatitude(0.0)
+            ->setLongitude(0.0)
+            ->setTicketLink('')
+            ->setPricingInfo('')
+            ->setEvtDates([]);
     }
+
+    public function __construct()
+    {
+        $this->init();
+    }
+
 
     /**
      * @return int
