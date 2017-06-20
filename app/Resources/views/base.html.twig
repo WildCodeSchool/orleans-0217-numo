@@ -2,12 +2,34 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <title>{% block title %}NUM'O{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+            <link rel="stylesheet" href="{{ asset('https://fonts.googleapis.com/css?family=Lato:300') }}">
+            <link rel="stylesheet" href="{{ asset('css/summernote.css') }}">
+
+
+        {% endblock %}
+
+
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    <body>
+
+    <body id="page-top">
+        {% block header %}{% endblock %}
+
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+
+        {% block footer %}{% endblock %}
+
+        {% block javascripts %}
+            <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
+            <script src="{{ asset('js/bootstrap.js') }}"></script>
+            <script src="{{ asset('js/summernote.js') }}"></script>
+        {% endblock %}
     </body>
+
 </html>

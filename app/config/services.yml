@@ -4,6 +4,38 @@ parameters:
     #parameter_name: value
 
 services:
+    _defaults:
+        autowire: true
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
+    numo.pdf_upload:
+        class: NumoBundle\Services\PdfUpload
+        arguments: ['%upload_directory_pdf%']
+
+    numo.doctrine_numo_listener:
+        class: NumoBundle\EventListener\NumoUploadListener
+        arguments: ['@numo.pdf_upload']
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postLoad }
+            - { name: doctrine.event_listener, event: preRemove }
+
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+
+    numo.file_uploader:
+        class: NumoBundle\Services\UserUploader
+        arguments: ['%upload_directory%']
+
+    numo.doctrine_user_listener:
+        class: NumoBundle\EventListener\UserUploadListener
+        arguments: ['@numo.file_uploader']
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postLoad }
+            - { name: doctrine.event_listener, event: preRemove }

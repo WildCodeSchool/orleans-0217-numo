@@ -1,0 +1,20 @@
+{% extends 'layoutAdmin.html.twig' %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block body %}
+<div class="container font-lato">
+    <h1 class="titreadmin font-lato">MODIFIER LES INFORMATIONS DE NUM'O</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_row(form.pdf) }}
+        <input type="submit" value="Create" />
+    {{ form_end(form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('company_index') }}">Retour</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}

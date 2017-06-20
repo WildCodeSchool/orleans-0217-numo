@@ -1,0 +1,50 @@
+{% extends 'layoutAdmin.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <h1 class="titreadmin font-lato">NUM'O</h1>
+    <hr>
+
+    <table class="tabadmin font-lato">
+        <tbody>
+            <tr>
+                <th>Email</th>
+                <td>{{ company.contactEmail }}</td>
+            </tr>
+            <tr>
+                <th>Ville</th>
+                <td>{{ company.city }}</td>
+            </tr>
+            <tr>
+                <th>Code Postal</th>
+                <td>{{ company.postalCode }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ company.adress }}</td>
+            </tr>
+            <tr>
+                <th>Téléphone</th>
+                <td>{{ company.phone }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td><img src="{{ asset('{{ company.imageUrl }}') }}"
+                         alt="NUM'O"/></td>
+            </tr>
+            <tr>
+                <th>Pdf</th>
+                <td>{{ company.pdf }}</td>
+            </tr>
+        </tbody>
+    </table>
+    {{ form_start(delete_form) }}
+
+    <a href="/app_dev.php/company/1/edit"><button type="button" value="MODIFIER">MODIFIER</button></a>
+
+            {{ form_start(delete_form) }}
+                <input type="submit" value="SUPPRIMER">
+            {{ form_end(delete_form) }}
+
+</div>
+{% endblock %}

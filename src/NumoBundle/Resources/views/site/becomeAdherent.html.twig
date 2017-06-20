@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+{% block body %}
+    <div class="col-xs-12 text-center">
+        <div class="separation"></div>
+        <h1>{{ company.adherentTitle }}</h1>
+        <div class="separation"></div>
+    </div>
+
+    <div class="container-fluid company">
+
+        <div class="row">
+            <div class="col-sm-offset-4 col-sm-4">
+                <p>{{ company.adherentContent }}</p>
+                <div class="row companyBottom">
+                    <div class="col-lg-offset-4">
+                        {% if company.pdf != '' %}
+                            <a href="{{ asset('uploads/numo/' ~ company.pdf) }}" download="RIB NUMO" type="button" class="btn btn-success btn-admin ribnumo">Téléchargez le RIB de NUM'O (PDF)</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
