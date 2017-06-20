@@ -9,5 +9,7 @@ vendor/
 web/bundles/
 .idea/
 
-/web/uploads/users/*
 .web-server-pid
+web/uploads/event/*
+web/uploads/numo/*
+web/uploads/users/*

@@ -37,7 +37,7 @@ class SocialNetwork
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="SnLink", inversedBy="socialNetworks")
+     * @ORM\ManyToMany(targetEntity="SocialNetworkLink", inversedBy="socialNetworks")
      *
      */
     protected $links;
@@ -143,4 +143,3 @@ class SocialNetwork
         return $this->links;
     }
 }
-

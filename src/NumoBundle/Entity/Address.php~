@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="adress")
  * @ORM\Entity(repositoryClass="NumoBundle\Repository\AdressRepository")
  */
-class Adress
+class Address
 {
     /**
      * @var int
@@ -25,25 +25,18 @@ class Adress
     /**
      * @var string
      *
-     * @ORM\Column(name="addr1", type="string", length=255, nullable=true)
+     * @ORM\Column(name="address", type="string", length=255, nullable=true)
 
      */
-    private $addr1;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="addr2", type="string", length=255, nullable=true)
-     */
-    private $addr2;
+    private $address;
 
     /**
      * @var int
      *
      * @ORM\Column(name="postalCode", type="integer", nullable=true)
      * @Assert\Length(
-     *      max=5,
-     *      maxMessage="Le code postal est trop long.",
+     *      max=7,
+     *      maxMessage="Le code postal est trop long."
      * )
      */
     private $postalCode;
@@ -59,19 +52,19 @@ class Adress
     /**
      * @var float
      *
-     * @ORM\Column(name="geoLat", type="float", nullable=true)
+     * @ORM\Column(name="latitude", type="float", nullable=true)
      */
-    private $geoLat;
+    private $latitude;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="geoLng", type="float", nullable=true)
+     * @ORM\Column(name="longitude", type="float", nullable=true)
      */
-    private $geoLng;
+    private $longitude;
 
     /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="adresse")
+     * @ORM\OneToMany(targetEntity="User", mappedBy="address")
      */
 
     private $users;
@@ -88,148 +81,95 @@ class Adress
     }
 
     /**
-     * Set addr1
-     *
-     * @param string $addr1
-     *
-     * @return Adress
-     */
-    public function setAddr1($addr1)
-    {
-        $this->addr1 = $addr1;
-
-        return $this;
-    }
-
-    /**
-     * Get addr1
-     *
      * @return string
      */
-    public function getAddr1()
+    public function getAddress(): string
     {
-        return $this->addr1;
+        return $this->address;
     }
 
     /**
-     * Set addr2
-     *
-     * @param string $addr2
-     *
-     * @return Adress
+     * @param string $address
+     * @return Address
      */
-    public function setAddr2($addr2)
+    public function setAddress(string $address): Address
     {
-        $this->addr2 = $addr2;
-
+        $this->address = $address;
         return $this;
     }
 
     /**
-     * Get addr2
-     *
-     * @return string
-     */
-    public function getAddr2()
-    {
-        return $this->addr2;
-    }
-
-    /**
-     * Set postalCode
-     *
-     * @param integer $postalCode
-     *
-     * @return Adress
-     */
-    public function setPostalCode($postalCode)
-    {
-        $this->postalCode = $postalCode;
-
-        return $this;
-    }
-
-    /**
-     * Get postalCode
-     *
      * @return int
      */
-    public function getPostalCode()
+    public function getPostalCode(): int
     {
         return $this->postalCode;
     }
 
     /**
-     * Set city
-     *
-     * @param string $city
-     *
-     * @return Adress
+     * @param int $postalCode
+     * @return Address
      */
-    public function setCity($city)
+    public function setPostalCode(int $postalCode): Address
     {
-        $this->city = $city;
-
+        $this->postalCode = $postalCode;
         return $this;
     }
 
     /**
-     * Get city
-     *
      * @return string
      */
-    public function getCity()
+    public function getCity(): string
     {
         return $this->city;
     }
 
     /**
-     * Set geoLat
-     *
-     * @param float $geoLat
-     *
-     * @return Adress
+     * @param string $city
+     * @return Address
      */
-    public function setGeoLat($geoLat)
+    public function setCity(string $city): Address
     {
-        $this->geoLat = $geoLat;
-
+        $this->city = $city;
         return $this;
     }
 
     /**
-     * Get geoLat
-     *
      * @return float
      */
-    public function getGeoLat()
+    public function getLatitude(): float
     {
-        return $this->geoLat;
+        return $this->latitude;
     }
 
     /**
-     * Set geoLng
-     *
-     * @param float $geoLng
-     *
-     * @return Adress
+     * @param float $latitude
+     * @return Address
      */
-    public function setGeoLng($geoLng)
+    public function setLatitude(float $latitude): Address
     {
-        $this->geoLng = $geoLng;
-
+        $this->latitude = $latitude;
         return $this;
     }
 
     /**
-     * Get geoLng
-     *
      * @return float
      */
-    public function getGeoLng()
+    public function getLongitude(): float
     {
-        return $this->geoLng;
+        return $this->longitude;
     }
+
+    /**
+     * @param float $longitude
+     * @return Address
+     */
+    public function setLongitude(float $longitude): Address
+    {
+        $this->longitude = $longitude;
+        return $this;
+    }
+
 
     /**
      * Constructor
@@ -244,7 +184,7 @@ class Adress
      *
      * @param \NumoBundle\Entity\User $user
      *
-     * @return Adress
+     * @return Address
      */
     public function addUser(\NumoBundle\Entity\User $user)
     {

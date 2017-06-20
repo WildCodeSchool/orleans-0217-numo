@@ -6,7 +6,6 @@
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
 
-
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
@@ -30,7 +29,7 @@
                             <a class="page-scroll" href="{{ path('members') }}" >Membres</a>
                         </li>
                         <li>
-                            <a class="page-scroll" href="{{ path('become_adherent') }}" >Devenez membre</a>
+                            <a class="page-scroll" href="{{ path('become_adherent') }}" >Devenez Adhérent</a>
                         </li>
                         <li>
                             <a class="page-scroll" href="{{ path('contact') }}">Contact</a>
@@ -43,13 +42,13 @@
                                 <span class="glyphicon glyphicon-bell navbar-right" aria-hidden="true"></span>
                                 <span class="glyphicon glyphicon-cog navbar-right" aria-hidden="true"></span>
                                 <p>{{ app.user.name }} {{ app.user.firstname }}</p>
-                                <a href="/app_dev.php/logout" class="btn btn-default navbar-right">Deconnexion</a>
-                                <a href="/app_dev.php/profile/" class="btn btn-default navbar-right">Profil</a>
+                                <a href="{{ path('fos_user_security_logout') }}" class="btn btn-default navbar-right">Deconnexion</a>
+                                <a href="{{ path('fos_user_profile_show') }}" class="btn btn-default navbar-right">Profil</a>
                             {% else %}
-                                <a href="/app_dev.php/login" class="btn btn-default">Connexion</a>
+                                <a href="{{ path('fos_user_security_login') }}" class="btn btn-default">Connexion</a>
                         </li>
                         <li>
-                                <a href="/register/" class="btn btn-default inscription">S'inscrire</a>
+                                <a href="{{ path('fos_user_registration_register') }}" class="btn btn-default inscription">S'inscrire</a>
                         </li>
                             {%endif%}
                     </ul>

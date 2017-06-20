@@ -22,10 +22,10 @@ class MemberController extends Controller
     {
             $em = $this->getDoctrine()->getManager();
 
-            $content = $em->getRepository('NumoBundle:PageContent')->findOneBy(['title'=>'Devenez adhérent']);
+            $content = $em->getRepository('NumoBundle:PageContent')->find(2);
 
-            return $this->render('member.html.twig', array(
+            return $this->render('member.html.twig', [
                 'content' => $content,
-            ));
+            ]);
     }
 }

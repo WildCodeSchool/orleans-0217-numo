@@ -1,6 +1,3 @@
-git /**
- * Created by wilder13 on 08/06/17.
- */
 $(document).ready(function(){
 
     var list = $(".list .showMember");
@@ -25,7 +22,7 @@ $(document).ready(function(){
 });
 
 
-$('.AlphabetNav a').click(function(evt) {
+$('.AlphabetNav a').click(function(evt){
     evt.preventDefault();
 
     var $navItem = $(this),
@@ -33,7 +30,7 @@ $('.AlphabetNav a').click(function(evt) {
 
     $contacts.show();
 
-    if ($navItem.hasClass('active'  )) {
+    if ($navItem.hasClass('active')) {
         $navItem.removeClass('active');
     }
         else {
@@ -45,7 +42,7 @@ $('.AlphabetNav a').click(function(evt) {
                 $contactName = $contact.find('.memberName'),
                 $nameArr = $contactName.text().split(' ');
 
-            console.log($nameArr[0].split('')[0].toLowerCase());
+            //console.log($nameArr[0].split('')[0].toLowerCase());
 
             if ($nameArr[0].split('')[0].toLowerCase() !== $navItem.text().toLowerCase()) {
                 $contact.hide();
@@ -53,3 +50,4 @@ $('.AlphabetNav a').click(function(evt) {
         });
     }
 });
+

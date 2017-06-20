@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 
-class PageContentType extends AbstractType
+class CategoryType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -20,6 +20,7 @@ class PageContentType extends AbstractType
         $builder->add('title', TextType::class, array('label' => 'Titre'));
         $builder->add('content',TextareaType::class, array('label' => 'Contenu', 'required' => true));
         $builder->remove('lastModif', TextType::class, array('label' => 'Dernière modification'));
+        $builder->add('name');
     }
     
     /**
@@ -27,9 +28,9 @@ class PageContentType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'NumoBundle\Entity\PageContent'
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'NumoBundle\Entity\Category',
+        ]);
     }
 
     /**
@@ -37,7 +38,7 @@ class PageContentType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'numobundle_pagecontent';
+        return 'numobundle_category';
     }
 
 
