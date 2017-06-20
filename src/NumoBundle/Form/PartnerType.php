@@ -13,7 +13,11 @@ class PartnerType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name')->add('webUrl')->add('imageUrl')->add('active');
+        $builder
+            ->add('name')
+            ->add('webUrl')
+            ->add('imageUrl')
+            ->add('active');
     }
     
     /**
@@ -21,9 +25,9 @@ class PartnerType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'NumoBundle\Entity\Partner'
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'NumoBundle\Entity\Partner',
+        ]);
     }
 
     /**

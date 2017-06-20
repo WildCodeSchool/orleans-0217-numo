@@ -1,7 +1,5 @@
 <?php
 
-// --- src/NumoBundle/Services/GetFileContents.php ---
-
 namespace NumoBundle\Services;
 
 class GetFileContents

@@ -146,28 +146,6 @@
         </div>
 
         {% endif %}
-        {#<div class="fos_user_user_show">#}
-        {#<p>{{ 'Username'|trans }}: {{ user.username }}</p>#}
-        {#<p>{{ 'Email'|trans }}: {{ user.email }}</p>#}
-        {#<p>Image:</p>#}
-        {#{% if user.imageUrl == null %}#}
-        {#<img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" style="height: 70px">#}
-        {#{% else %}#}
-        {#<img src="{{ asset('uploads/users/' ~ user.imageUrl.filename) }}" alt="{{ user.name }}"#}
-        {#style="height: 70px">#}
-        {#{% endif %}#}
-        {#<p>Nom: {{ user.name }}</p>#}
-        {#<p>Prenom: {{ user.firstname }}</p>#}
-        {#<p>Description: {{ user.description }}</p>#}
-
-        {#{% if is_granted('ROLE_ADHERENT') %}#}
-        {#<p>Présentation: {{ user.freeText }}</p>#}
-        {#<p>Telephone: {{ user.phone }}</p>#}
-        {#<p>Adresse: {{ user.adress }}</p>#}
-        {#<p>Site web: {{ user.webSite }}</p>#}
-        {#<p>Reseaux sociaux: {{ user.snLinks }}</p>#}
-        {#{% endif %}#}
-        {#</div>#}
 
     </div>
 {% endblock %}

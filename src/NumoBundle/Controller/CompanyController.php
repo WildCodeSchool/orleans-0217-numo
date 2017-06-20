@@ -29,9 +29,9 @@ class CompanyController extends Controller
 
         $companies = $em->getRepository('NumoBundle:Company')->findAll();
 
-        return $this->render('company/index.html.twig', array(
+        return $this->render('company/index.html.twig', [
             'companies' => $companies,
-        ));
+        ]);
     }
 
     /**
@@ -52,26 +52,10 @@ class CompanyController extends Controller
             return $this->redirect($this->generateUrl('app_product_list'));
         }
 
-        return $this->render('company/new.html.twig', array(
+        return $this->render('company/new.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
-
-
-
-
-/*            $em = $this->getDoctrine()->getManager();
-            $em->persist($company);
-            $em->flush();
-
-            return $this->redirectToRoute('company_show', array('id' => $company->getId()));
-        }
-
-        return $this->render('company/new.html.twig', array(
-            'company' => $company,
-            'form' => $form->createView(),
-        ));*/
-
 
     /**
      * Finds and displays a company entity.
@@ -83,10 +67,10 @@ class CompanyController extends Controller
     {
         $deleteForm = $this->createDeleteForm($company);
 
-        return $this->render('company/show.html.twig', array(
+        return $this->render('company/show.html.twig', [
             'company' => $company,
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -104,14 +88,14 @@ class CompanyController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('company_edit', array('id' => $company->getId()));
+            return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
         }
 
-        return $this->render('company/edit.html.twig', array(
+        return $this->render('company/edit.html.twig', [
             'company' => $company,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -144,7 +128,7 @@ class CompanyController extends Controller
     private function createDeleteForm(Company $company)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('company_delete', array('id' => $company->getId())))
+            ->setAction($this->generateUrl('company_delete', ['id' => $company->getId()]))
             ->setMethod('DELETE')
             ->getForm()
         ;

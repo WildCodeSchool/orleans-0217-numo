@@ -1,10 +1,9 @@
-{# --- src/NumoBundle/Resources/views/event/show.html.twig --- #}
-
 {% extends 'layout.html.twig' %}
 
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.css">
 {% endblock %}
 
 {% block body %}
@@ -16,11 +15,14 @@
                 <div class="col-xs-12 text-center">
                     <div class="separation"></div>
                     <h1>{{ event.title }}</h1>
+                    <p><a href="{{ event.link }}" class="btn btn-default" role="button" target="_blanc">Voir
+                            sur Open Agenda</a></p>
                     <div class="separation"></div>
                 </div>
 
                 {# --- partie gauche (image + descriptif) --- #}
                 <div class="col-xs-12 col-md-8">
+                    <p>Mots-clé : {{ event.tags }}</p>
                     <p>
                         <img src="{{ event.image }}" alt="image {{ event.title }}" class="img-responsive" />
                     </p>
@@ -34,14 +36,6 @@
 
                     {# --- date(s) --- #}
                     <h3>Date{% if event.evtdates|length > 1 %}s{% endif %}</h3>
-
-                    {#{% for evtDate in event.evtDates %}#}
-                        {#<p>#}
-                            {#{{ evtDate.evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}<br />#}
-                            {#de {{ evtDate.timeStart|localizeddate("medium", "none", null, null, "HH'h'mm") }}#}
-                            {#à {{ evtDate.timeEnd|localizeddate("medium", "none", null, null, "HH'h'mm") }}#}
-                        {#</p>#}
-                    {#{% endfor %}#}
 
                     <table class="table">
                         {% for evtDate in event.evtDates %}
@@ -65,7 +59,7 @@
 
                     {# --- map --- #}
                     <div class="separation"></div>
-                    <div id="closemap" class="text-center" onclick="closeMap();">X</div>
+                    <div id="closemap cursor-pointer" class="text-center" onclick="closeMap();">X</div>
                     <div id="mapzone"></div>
 
                     {# --- billetterie --- #}
@@ -114,16 +108,13 @@
         </div>
     </div>
 
-
-
-
-                        {#<p><a href="{{ event.link }}" class="btn btn-primary" role="button" target="_blanc">Voir sur Open Agenda</a></p>#}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/showevent.js') }}"></script>
     <script>
+
         function initMap(){
             var centerMap = new google.maps.LatLng('{{ event.latitude }}', '{{ event.longitude }}');
             var optionsMap = {
@@ -139,26 +130,8 @@
             }
             var marqueur = new google.maps.Marker(optionsMarqueur);
         }
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5FbMBpVejJw6o_4r3eHkUQQde6vlDItg&callback=initMap" async defer></script>
     <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
 {% endblock %}
-
-{# --- twiter --------------------- #}
-{#<a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>#}
-{#<script>#}
-    {#!function(d,s,id) {#}
-        {#var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location)?'http':'https';#}
-        {#if(!d.getElementById(id)) {#}
-            {#js = d.createElement(s);#}
-            {#js.id = id;#}
-            {#js.src = p + '://platform.twitter.com/widgets.js';#}
-            {#fjs.parentNode.insertBefore(js,fjs);#}
-        {#}#}
-    {#}#}
-    {#(document, 'script', 'twitter-wjs');#}
-{#</script>#}
-{# ------------------------------------ #}
-{# --- facebook ------------------------#}
-{#<a name="fb_share" type="box_count" share_url="http://www.example.com/page.html"></a>#}
-{# ------------------------------------ #}

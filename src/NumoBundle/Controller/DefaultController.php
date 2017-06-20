@@ -13,37 +13,33 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $error = ''; // sera initialisée par l'api si erreur de lecture
+        $error = '';
 
 // --- initialisation des parametres de lecture par defaut de la liste des evenements
         $options = [
-            'search[passed]' => 0,  // pas de sélection des évènements passés
-            'offset' => 0,          // début de la liste
-            'limit' => 6,           // nombre d'éléments retournés
+            'search[passed]' => 0,
+            'offset' => 0,
+            'limit' => 6,
         ];
 
 // --- lecture de la liste OpenAgenda
-
-        $api = $this->get('numo.apiopenagenda'); // initialisation de l'accès à l'API
-        $events = $api->getEventList($options, false); // recuperation de la liste via json, tableau d'objets OaEvent
-        if (false === $events) { // si ça a foiré, on récupère l'erreur
+        $api = $this->get('numo.apiopenagenda');
+        $data = $api->getEventList($options, false);
+        $events = $data['eventList'];
+        if (false === $events) {
             $events = [];
             $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
         }
-
-
         $em = $this->getDoctrine()->getManager();
-
-        $partners = $em->getRepository('NumoBundle:Partner')->findAll();
+        $partners = $em->getRepository('NumoBundle:Partner')->findBy(['active' => 1]);
 
 // --- affichage
-        $twigParams = [
-            'agendaSlug' => $api->getAgendaSlug(),	// le nom de l'agenda
-            'events' => $events,			// la liste des events (format OaEvents)
-            'error' => $error,				// l'erreur si la lecture a foiré
-            'partners' => $partners,		// affichege dynamique des partenaires
-        ];
-        return $this->render('NumoBundle:site:index.html.twig', $twigParams);
+        return $this->render('NumoBundle:site:index.html.twig', [
+            'agendaSlug' => $api->getAgendaSlug(),
+            'events' => $events,
+            'error' => $error,
+            'partners' => $partners,
+        ]);
     }
 
 

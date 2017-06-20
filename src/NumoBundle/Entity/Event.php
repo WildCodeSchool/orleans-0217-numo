@@ -6,6 +6,7 @@ namespace NumoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Event
@@ -34,6 +35,8 @@ class Event
     /**
      * @var string
      *
+     * @Assert\Image()
+     *
      * @ORM\Column(name="image", type="string", length=255)
      */
     private $image;
@@ -41,59 +44,59 @@ class Event
     /**
      * @var string
      *
-     * @Assert\NotBlank(message=" - Le nom doit être renseigné.")
+     * @ORM\Column(name="title", type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Le nom doit être renseigné.")
      * @Assert\Length(
      *      max = 100,
-     *      maxMessage = " - Le texte saisi ne doit pas excéder {{ limit }} caractères")
-     *
-     * @ORM\Column(name="title", type="string", length=255)
+     *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
      */
     private $title;
 
     /**
      * @var string
      *
-     * @Assert\NotBlank(message=" - Une description minimum doit être indiquée.")
-     *
      * @ORM\Column(name="description", type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Une description minimum doit être indiquée.")
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="freeText", type="text")
+     * @ORM\Column(name="freeText", type="text", nullable=true)
      */
     private $freeText;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tags", type="string", length=255)
+     * @ORM\Column(name="tags", type="string", length=255, nullable=true)
      */
     private $tags;
 
     /**
      * @var string
      *
-     * @Assert\NotBlank(message=" - Ce champ doit être renseigné.")
+     * @ORM\Column(name="placename", type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Ce champ doit être renseigné.")
      * @Assert\Length(
      *      max = 100,
-     *      maxMessage = " - Le texte saisi ne doit pas excéder {{ limit }} caractères")
-     *
-     * @ORM\Column(name="placename", type="string", length=255)
+     *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
      */
     private $placename;
 
     /**
      * @var string
      *
-     * @Assert\NotBlank(message=" - Une adresse valide doit être renseignée.")
-     * @Assert\Length(
-     *      max = 200,
-     *      maxMessage = " - Le texte saisi ne doit pas excéder {{ limit }} caractères")
      *
      * @ORM\Column(name="address", type="string", length=255)
+     * @Assert\NotBlank(message="Une adresse valide doit être renseignée.")
+     * @Assert\Length(
+     *      max = 200,
+     *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
      */
     private $address;
 
@@ -114,21 +117,23 @@ class Event
     /**
      * @var string
      *
-     * @ORM\Column(name="ticketLink", type="string", length=255)
+     * @ORM\Column(name="ticketLink", type="string", length=255, nullable=true)
      */
     private $ticketLink;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="pricingInfo", type="string", length=255)
+     * @ORM\Column(name="pricingInfo", type="string", length=255, nullable=true)
      */
     private $pricingInfo;
 
     /**
-     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"persist", "remove"})
      */
     private $evtDates;
+
+
 
 
     /**
@@ -433,7 +438,7 @@ class Event
      */
     public function __construct()
     {
-        $this->evtDates = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->evtDates = new ArrayCollection();
     }
 
     /**

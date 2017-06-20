@@ -108,7 +108,6 @@ class User extends BaseUser
     /**
      * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
      *
-     * @Assert\NotBlank(message="Entrez votre numéro de téléphone.", groups={"Registration", "Profile"})
      * @Assert\Length(
      *     min=3,
      *     max=50,
@@ -119,21 +118,55 @@ class User extends BaseUser
      */
     protected $phone;
 
+//    /**
+//     * @ORM\Column(type="string", nullable=true)
+//     * @ORM\ManyToOne(targetEntity="Address", inversedBy="users")
+//     *
+//     */
+//    protected $address;
+
+
+    /**
+     * @ORM\Column(type="string", length=250, nullable=true, options={"default" : null})
+     *
+     * @Assert\Length(
+     *     max=250,
+     *     maxMessage="L\'adresse saisie est trop longue"
+     * )
+     */
+    protected $address;
+
+    /**
+     * @ORM\Column(type="string", length=7, nullable=true, options={"default" : null})
+     *
+     * @Assert\Length(
+     *     min=5,
+     *     max=7,
+     *     minMessage="Le code postal est trop court.",
+     *     maxMessage="Le code postal est trop long."
+     * )
+     */
+    protected $postalCode;
+
+    /**
+     * @ORM\Column(type="string", length=250, nullable=true, options={"default" : null})
+     *
+     * @Assert\Length(
+     *     min=3,
+     *     max=250,
+     *     minMessage="Le texte saisi est trop court.",
+     *     maxMessage="Le texte saisi est trop long."
+     * )
+     */
+    protected $city;
+
+
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @ORM\ManyToOne(targetEntity="Adress", inversedBy="users")
+     * @ORM\OneToMany(targetEntity="SocialNetworkLink", mappedBy="user")
      *
      */
-    protected $adress;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @ORM\OneToMany(targetEntity="SnLink", mappedBy="user")
-     *
-     */
-    protected $snLinks;
-
-
+    protected $socialNetworkLinks;
 
 
     /**
@@ -233,7 +266,6 @@ class User extends BaseUser
     }
 
 
-
     /**
      * Set webSite
      *
@@ -307,60 +339,106 @@ class User extends BaseUser
     }
 
     /**
-     * Set adress
+     * @return mixed
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param mixed $address
+     * @return User
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param mixed $city
+     * @return User
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPostalCode()
+    {
+        return $this->postalCode;
+    }
+
+    /**
+     * @param mixed $postalCode
+     * @return User
+     */
+    public function setPostalCode($postalCode)
+    {
+        $this->postalCode = $postalCode;
+        return $this;
+    }
+
+
+    /**
+     * Add socialNetworkLink
      *
-     * @param \NumoBundle\Entity\Adress $adress
+     * @param \NumoBundle\Entity\SocialNetworkLink $socialNetworkLink
      *
      * @return User
      */
-    public function setAdress(\NumoBundle\Entity\Adress $adress = null)
+    public function addSocialNetworkLink(SocialNetworkLink $socialNetworkLink)
     {
-        $this->adress = $adress;
+        $this->socialNetworkLinks[] = $socialNetworkLink;
 
         return $this;
     }
 
     /**
-     * Get adress
+     * Remove socialNetworkLink
      *
-     * @return \NumoBundle\Entity\Adress
+     * @param \NumoBundle\Entity\SocialNetworkLink $socialNetworkLink
      */
-    public function getAdress()
+    public function removeSocialNetworkLink(SocialNetworkLink $socialNetworkLink)
     {
-        return $this->adress;
+        $this->socialNetworkLinks->removeElement($socialNetworkLink);
     }
 
     /**
-     * Add snLink
-     *
-     * @param \NumoBundle\Entity\SnLink $snLink
-     *
-     * @return User
-     */
-    public function addSnLink(\NumoBundle\Entity\SnLink $snLink)
-    {
-        $this->snLinks[] = $snLink;
-
-        return $this;
-    }
-
-    /**
-     * Remove snLink
-     *
-     * @param \NumoBundle\Entity\SnLink $snLink
-     */
-    public function removeSnLink(\NumoBundle\Entity\SnLink $snLink)
-    {
-        $this->snLinks->removeElement($snLink);
-    }
-
-    /**
-     * Get snLinks
+     * Get socialNetworkLinks
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSnLinks()
+    public function getSocialNetworkLinks()
     {
-        return $this->snLinks;
+        return $this->socialNetworkLinks;
     }
+
+    /**
+     * Set socialNetworkLinks
+     *
+     * @param string $socialNetworkLinks
+     *
+     * @return User
+     */
+    public function setSocialNetworkLinks($socialNetworkLinks)
+    {
+        $this->socialNetworkLinks = $socialNetworkLinks;
+
+        return $this;
+    }
+
 }

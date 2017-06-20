@@ -3,7 +3,7 @@
 
     <div class="col-xs-12 text-center">
         <div class="separation"></div>
-            <h1>Membres</h1>
+        <h1>Membres</h1>
         <div class="separation"></div>
     </div>
 
@@ -13,77 +13,56 @@
         </div>
 
         <nav class="AlphabetNav">
-            <a>A</a>
-            <a>B</a>
-            <a>C</a>
-            <a>D</a>
-            <a>E</a>
-            <a>F</a>
-            <a>G</a>
-            <a>H</a>
-            <a>I</a>
-            <a>J</a>
-            <a>K</a>
-            <a>L</a>
-            <a>M</a>
-            <a>N</a>
-            <a>O</a>
-            <a>P</a>
-            <a>Q</a>
-            <a>R</a>
-            <a>S</a>
-            <a>T</a>
-            <a>U</a>
-            <a>V</a>
-            <a>W</a>
-            <a>X</a>
-            <a>Y</a>
-            <a>Z</a>
-
+            {%  for letter in 'A'..'Z' %}
+                <a>{{ letter }}</a>
+            {% endfor %}
         </nav>
     </div>
 
     <div class="container-fluid list">
         {% for member in members %}
-        <div class="row showMember">
-            <div class="col-lg-offset-2 col-xs-offset-2 col-lg-2">
+            <div class="row showMember">
+                <div class="col-lg-offset-2 col-xs-offset-2 col-lg-2">
 
-                {% if member.imageUrl == null %}
-                    <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" class="imgMember" >
-                {% else %}
-                    <img src="{{ asset('uploads/users/' ~ member.imageUrl.filename) }}" alt="{{ member.name }}" class="imgMember">
-                {% endif %}
+                    {% if member.imageUrl == null %}
+                        <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" class="imgMember">
+                    {% else %}
+                        <img src="{{ asset('uploads/users/' ~ member.imageUrl.filename) }}" alt="{{ member.name }}"
+                             class="imgMember">
+                    {% endif %}
                 </div>
 
-            <div class="col-lg-7">
-                <div class="row">
-                    <div class="col-lg-offset-0 col-xs-offset-4 col-lg-5">
-                        <a href="{{ path('profilMember', { 'id': member.id }) }}"><h2 class="memberName">{{ member.name }} {{ member.firstname }}  </h2></a>
-                    </div>
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="col-lg-offset-0 col-xs-offset-4 col-lg-5">
+                            <a href="{{ path('profilMember', { 'id': member.id }) }}">
+                                <h2 class="memberName">{{ member.name }} {{ member.firstname }}  </h2></a>
+                        </div>
 
-                    <div class="col-lg-offset-4 col-xs-offset-4 col-lg-2">
-                        {% if member.roles.0 == 'ROLE_ADHERENT' %}
-                            <img src="{{ asset('img/NUMOsmall.png') }}" alt="Numo" style="height:20px">
-                        {% endif %}
+                        <div class="col-lg-offset-4 col-xs-offset-4 col-lg-2">
+                            {% if member.roles.0 == 'ROLE_ADHERENT' %}
+                                <img src="{{ asset('img/NUMOsmall.png') }}" alt="Numo" style="height:20px">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-offset-0 col-xs-offset-1 col-lg-10">
+                            <h3 class="memberSite">{{ member.email }}</h3>
+                            <p class="memberDescription">{{ member.description }}</p>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-offset-0 col-xs-offset-1 col-lg-10">
-                        <h3 class="memberSite">{{ member.email }}</h3>
-                        <p class="memberDescription">{{ member.description }}</p>
-                    </div>
+
+                <div class="col-lg-offset-2 col-lg-8">
+                    <hr class="hrMembre">
                 </div>
             </div>
-
-            <div class="col-lg-offset-2 col-lg-8">
-                <hr class="hrMembre">
-            </div>
-        </div>
-            {% endfor %}
+        {% endfor %}
         <div class="container-fluid text-center">
             <a id="next" class="btn btn-danger  btn-lg">Voir plus</a>
 
         </div>
+
     </div>
 
 {% endblock %}

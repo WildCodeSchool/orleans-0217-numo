@@ -36,9 +36,9 @@ class UserPromoteController extends Controller
 
         $users = $em->getRepository('NumoBundle:User')->findAll();
 
-        return $this->render('userpromote/index.html.twig', array(
+        return $this->render('userpromote/index.html.twig', [
             'users' => $users,
-        ));
+        ]);
 
     }
 }
