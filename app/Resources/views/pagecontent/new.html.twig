@@ -2,7 +2,7 @@
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/summernote.css') }}">
 {% endblock %}
 
     {% block body %}
@@ -38,6 +38,4 @@
         {{ parent() }}
         <script src="{{ asset('js/summernote.js') }}"></script>
         <script src="{{ asset('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js') }}"></script>
-
-
-    {% endblock %}
+{% endblock %}

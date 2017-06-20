@@ -57,22 +57,6 @@ class CompanyController extends Controller
         ));
     }
 
-
-
-
-/*            $em = $this->getDoctrine()->getManager();
-            $em->persist($company);
-            $em->flush();
-
-            return $this->redirectToRoute('company_show', array('id' => $company->getId()));
-        }
-
-        return $this->render('company/new.html.twig', array(
-            'company' => $company,
-            'form' => $form->createView(),
-        ));*/
-
-
     /**
      * Finds and displays a company entity.
      *
