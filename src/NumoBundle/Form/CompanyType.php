@@ -29,15 +29,28 @@ class CompanyType extends AbstractType
             ->add('address', TextType::class, [
                 'label' => 'Adresse',
             ])
-            ->add('phone', TextType::class, ['
-            label' => 'Téléphone',
+            ->add('presentationTitle', TextType::class, [
+                'label' => 'Titre',
+            ])
+            ->add('presentationContent', TextType::class, [
+                'label' => 'Contenu',
+            ])
+            ->add('adherentTitle', TextType::class, [
+                'label' => 'Titre',
+            ])
+            ->add('adherentContent', TextType::class, [
+                'label' => 'Contenu',
+            ])
+            ->add('phone', TextType::class, [
+                'label' => 'Téléphone',
             ])
             ->add('imageUrl', FileType::class, [
                 'label' => 'Image',
             ])
             ->add('pdf', FileType::class, [
                 'label' => 'RIB (PDF File)',
-            ]);
+            ])
+            ->add('Titre');
     }
     
     /**

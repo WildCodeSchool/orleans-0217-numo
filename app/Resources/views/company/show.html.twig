@@ -21,7 +21,7 @@
             </tr>
             <tr>
                 <th>Adresse</th>
-                <td>{{ company.adress }}</td>
+                <td>{{ company.address }}</td>
             </tr>
             <tr>
                 <th>Téléphone</th>
@@ -35,6 +35,16 @@
             <tr>
                 <th>Pdf</th>
                 <td>{{ company.pdf }}</td>
+            </tr>
+            <tr>
+                <th>Page présentation Num'O</th>
+                <td><h2>{{ company.presentationTitle }}</h2>
+                    {{ company.presentationContent }}</td>
+            </tr>
+            <tr>
+                <th>Page devenez membre</th>
+                <td><h2>{{ company.adherentTitle }}</h2>
+                    {{ company.adherentContent }}</td>
             </tr>
         </tbody>
     </table>
