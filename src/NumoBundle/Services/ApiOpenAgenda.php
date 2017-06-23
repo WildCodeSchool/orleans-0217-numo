@@ -142,8 +142,8 @@ class ApiOpenAgenda
     {
         $newEvent = new OaEvent;
         $newEvent
-            ->setId($event->uid)
-            ->setStatus(99);
+            ->setId($event->uid);
+//            ->setStatus(99);
         $link = 'http://openagenda.com/'.$this->getAgendaSlug().'/event/'.end(explode('/', $event->link));
         $newEvent
             ->setLink($link)
@@ -163,6 +163,17 @@ class ApiOpenAgenda
             $oaDates[] = ['evtDate' => $evtD->date, 'timeStart' => $evtd->timeStart, 'timeEnd' => $evtd->timeEnd]; // AAAA-MM-DD HH:MM:SS
         }
         $newEvent->setEvtDates($oaDates);
+        $newEvent->setEvtDates($oaDates);
+        $nextDate = [];
+        $dateRef = new \DateTime();
+        $dateRef->format('Y-m-d');
+        foreach ($oaDates as $oaDate) {
+            if ($oaDate['evtDate'] >= $dateRef) {
+                $nextDate = $oaDate;
+                break;
+            }
+        }
+        $newEvent->setNextDate($nextDate);
         return $newEvent;
     }
 
@@ -171,7 +182,7 @@ class ApiOpenAgenda
         $newEvent = new OaEvent();
         $newEvent
             ->setId($event->uid)
-            ->setStatus(99)
+//            ->setStatus(99)
             ->setLink($event->canonicalUrl)
             ->setTitle($event->title->fr)
             ->setPlacename($event->locationName)
@@ -189,10 +200,20 @@ class ApiOpenAgenda
             $oaDates[] = ['evtDate' => substr($evtD->start,0,10), 'timeStart' => substr($evtD->start,11,8), 'timeEnd' => substr($evtD->end,11,8)]; // AAAA-MM-DD HH:MM:SS
         }
         $newEvent->setEvtDates($oaDates);
+        $nextDate = [];
+        $dateRef = new \DateTime();
+        $dateRef;
+        foreach ($oaDates as $oaDate) {
+            if ($oaDate['evtDate'] >= $dateRef->format('Y-m-d')) {
+                $nextDate = $oaDate;
+                break;
+            }
+        }
+        $newEvent->setNextDate($nextDate);
         return $newEvent;
     }
 
-    public function getEventList(array $options=[], $api=true) : array
+    public function getEventList(array $options=[], $api=false) : array
     {
         if ($api) {
             // --- version avec l'api -------------------------------------------
@@ -248,7 +269,7 @@ class ApiOpenAgenda
 
     }
 
-    public function getEvent(int $uid, $api=true)
+    public function getEvent(int $uid, $api=false)
     {
         if ($api) {
             // --- version avec l'api -------------------------------------------

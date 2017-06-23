@@ -115,7 +115,7 @@ class SelectEvent
         return $this;
     }
 
-    public function DatesControl()
+    public function datesControl()
     {
         // --- contrôle dates
         // - si une seule date , 2eme date = date saisie

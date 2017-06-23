@@ -19,6 +19,7 @@ class SelectEventType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->setMethod("GET")
             ->add('startDate', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',

@@ -4,6 +4,11 @@ namespace NumoBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ *
+ * Class OaEvent
+ * @package NumoBundle\Entity
+ */
 class OaEvent
 {
     private $id;
@@ -56,6 +61,8 @@ class OaEvent
 
     private $pricingInfo;
 
+    private $nextDate;
+
     /**
      * @var array
      * structure $evtDates : chaque élément du tableau est un tableau asociatif de 3 éléments :
@@ -63,7 +70,7 @@ class OaEvent
      */
     private $evtDates;
 
-    public function init()
+    public function __construct()
     {
         $this
             ->setStatus(1)
@@ -80,11 +87,6 @@ class OaEvent
             ->setTicketLink('')
             ->setPricingInfo('')
             ->setEvtDates([]);
-    }
-
-    public function __construct()
-    {
-        $this->init();
     }
 
 
@@ -361,6 +363,24 @@ class OaEvent
     public function setEvtDates(array $evtDates)
     {
         $this->evtDates = $evtDates;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNextDate() : array
+    {
+        return $this->nextDate;
+    }
+
+    /**
+     * @param array $nextDate
+     * @return OaEvent
+     */
+    public function setNextDate($nextDate)
+    {
+        $this->nextDate = $nextDate;
         return $this;
     }
 
