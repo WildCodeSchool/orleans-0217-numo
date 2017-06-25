@@ -30,7 +30,7 @@ class Event
      *
      * @ORM\Column(name="status", type="integer")
      */
-    private $status = 1;
+    private $status;
 
     /**
      * @var string
@@ -67,14 +67,14 @@ class Event
      *
      * @ORM\Column(name="freeText", type="text", nullable=true)
      */
-    private $freeText = '';
+    private $freeText;
 
     /**
      * @var string
      *
      * @ORM\Column(name="tags", type="string", length=255, nullable=true)
      */
-    private $tags = '';
+    private $tags;
 
     /**
      * @var string
@@ -119,14 +119,14 @@ class Event
      *
      * @ORM\Column(name="ticketLink", type="string", length=255, nullable=true)
      */
-    private $ticketLink = '';
+    private $ticketLink;
 
     /**
      * @var string
      *
      * @ORM\Column(name="pricingInfo", type="string", length=255, nullable=true)
      */
-    private $pricingInfo = '';
+    private $pricingInfo;
 
     /**
      * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"persist", "remove"})
