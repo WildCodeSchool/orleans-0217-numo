@@ -168,6 +168,17 @@ class User extends BaseUser
      */
     protected $socialNetworkLinks;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Published", mappedBy="author")
+     *
+     */
+    protected $publications;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Published", mappedBy="moderator")
+     *
+     */
+    protected $moderations;
 
     /**
      * @return mixed
@@ -441,4 +452,72 @@ class User extends BaseUser
         return $this;
     }
 
+
+    /**
+     * Add publication
+     *
+     * @param \NumoBundle\Entity\Published $publication
+     *
+     * @return User
+     */
+    public function addPublication(\NumoBundle\Entity\Published $publication)
+    {
+        $this->publications[] = $publication;
+
+        return $this;
+    }
+
+    /**
+     * Remove publication
+     *
+     * @param \NumoBundle\Entity\Published $publication
+     */
+    public function removePublication(\NumoBundle\Entity\Published $publication)
+    {
+        $this->publications->removeElement($publication);
+    }
+
+    /**
+     * Get publications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPublications()
+    {
+        return $this->publications;
+    }
+
+    /**
+     * Add moderation
+     *
+     * @param \NumoBundle\Entity\Published $moderation
+     *
+     * @return User
+     */
+    public function addModeration(\NumoBundle\Entity\Published $moderation)
+    {
+        $this->moderations[] = $moderation;
+
+        return $this;
+    }
+
+    /**
+     * Remove moderation
+     *
+     * @param \NumoBundle\Entity\Published $moderation
+     */
+    public function removeModeration(\NumoBundle\Entity\Published $moderation)
+    {
+        $this->moderations->removeElement($moderation);
+    }
+
+    /**
+     * Get moderations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getModerations()
+    {
+        return $this->moderations;
+    }
 }

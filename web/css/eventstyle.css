@@ -3,16 +3,21 @@ h1 {
     font-weight: bold;
     font-size: 30px;
 }
+.grey-text {
+    color: lightgrey;
+}
+.strong-text {
+    font-weight: bold;
+    color: #0000F0;
+}
 a {
     text-decoration: none !important;
     color: black !important;
     z-index: 10;
 }
 a:link, a:visited, a:active {
-
 }
 a:hover {
-
 }
 .bg-form {
     background-size: cover;
@@ -30,6 +35,11 @@ bg-img {
     height: 3px;
     background-color: white;
     margin: 20px 0px;
+}
+.h-sep {
+    width: 30px;
+    height: 10px;
+    display: inline-block;
 }
 .in-line {
     display: inline;

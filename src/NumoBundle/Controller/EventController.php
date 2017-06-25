@@ -35,6 +35,13 @@ class EventController extends Controller
      * -------------------------------------------------------------------------------------------------------------
      */
     public function listPublishedAction(Request $request)
+
+// ---------------------------------------------------------------------------
+//  manque la pagination des evenements (si liste > 10 elements)
+//  finir le selecteur (ajouter validateur sur dates et checkbox passed)
+//  ??? calendrier a remettre (sous la map) ???
+// ---------------------------------------------------------------------------
+
     {
         $error = '';
         // --- initialisation des parametres de lecture par defaut de la liste des evenements
@@ -91,20 +98,9 @@ class EventController extends Controller
             'selectForm' => $selectForm->createView(),
             'agendaSlug' => $api->getAgendaSlug(),
             'events' => $events,
-//            'dates'=> $dates,
+            'dates'=> $dates,
             'error' => $error,
         ]);
-    }
-
-    /**
-     * Finds and displays a published event.
-     *
-     * @Route("/showpublished/{id}", name="event_show_published")
-     * @Method("GET")
-     */
-    public function showAction($id)
-    {
-
     }
 
 
@@ -145,44 +141,36 @@ class EventController extends Controller
         ]);
     }
 
+    /**
+     * Finds and displays a published event.
+     *
+     * @Route("/showpublished/{id}", name="event_show_published")
+     * @Method("GET")
+     */
+    public function showAction($id)
+    {
+        $error = '';
+        $published = null;
+        $api = $this->get('numo.apiopenagenda');
+        // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
+        $event = $api->getEvent($id);
+        if (false === $event) {
+            $event = null; // objet vide
+            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+        } else {
+            // --- lecture des infos complementaires
+            $em = $this->getDoctrine()->getManager();
+            $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+        }
+        return $this->render('NumoBundle:event:showPublished.html.twig', [
+            'agendaSlug' => $api->getAgendaSlug(),
+            'event' => $event,
+            'published' => $published,
+            'error' => $error,
+        ]);
+    }
 
 
-//        /**
-//     * Finds and displays a event entity.
-//     *
-//     * @Route("/{id}/{published}", name="event_show")
-//     * @Method("GET")
-//     */
-//    public function showAction($id, $published)
-//    {
-//        $error = '';
-//        $api = $this->get('numo.apiopenagenda');
-//        if ($published) {
-//            // --- lecture de l'évènement via json (2ème paramètre à false ci-dessous) sur OpenAgenda
-//            $event = $api->getEvent($id, false);
-//            if (false === $event) {
-//                $events = new OaEvent; // objet vide
-//                $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
-//            }
-//        } else {
-//            // lecture dans la database
-//            $em = $this->getDoctrine()->getManager();
-//            $event = $em->getRepository('NumoBundle:Event')->getEvent($id);
-//        }
-//        return $this->render('NumoBundle:event:show.html.twig', [
-//        'agendaSlug' => $api->getAgendaSlug(),
-//            'event' => $event,
-//
-//
-//// --- provisoire ---------------------------------------------------
-//            'author' => ['name' => 'John DOE', 'imageUrl' => 'http://localhost:8000/img/logotrans.png', 'badge' => ''], // pour test
-//            'user' => ['rs' => []],
-//// -------------------------------------------------------------------
-//
-//
-//            'error' => $error,
-//        ]);
-//    }
 
     /**
      * Displays a form to edit an existing event entity.

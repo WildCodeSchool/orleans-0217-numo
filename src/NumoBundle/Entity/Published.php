@@ -35,6 +35,20 @@ class Published
      */
     private $publishedDate;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="publications")
+     *
+     */
+    private $author;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="moderations")
+     *
+     */
+    private $moderator;
+
+
+
 
     /**
      * Get id
@@ -92,5 +106,53 @@ class Published
     public function getPublishedDate()
     {
         return $this->publishedDate;
+    }
+
+    /**
+     * Set author
+     *
+     * @param \NumoBundle\Entity\User $author
+     *
+     * @return Published
+     */
+    public function setAuthor(\NumoBundle\Entity\User $author = null)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \NumoBundle\Entity\User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set moderator
+     *
+     * @param \NumoBundle\Entity\User $moderator
+     *
+     * @return Published
+     */
+    public function setModerator(\NumoBundle\Entity\User $moderator = null)
+    {
+        $this->moderator = $moderator;
+
+        return $this;
+    }
+
+    /**
+     * Get moderator
+     *
+     * @return \NumoBundle\Entity\User
+     */
+    public function getModerator()
+    {
+        return $this->moderator;
     }
 }
