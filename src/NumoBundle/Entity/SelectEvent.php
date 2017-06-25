@@ -2,7 +2,10 @@
 
 namespace NumoBundle\Entity;
 
-
+/**
+ * Class SelectEvent
+ * @package NumoBundle\Entity
+ */
 class SelectEvent
 {
     private $startDate;
@@ -11,18 +14,14 @@ class SelectEvent
     private $passed;
     private $id;
 
-    public function reset()
-    {
-        $this
-            ->setStartDate(null)
-            ->setEndDate(null)
-            ->setCategory('')
-            ->setPassed(0)
-            ->setId('');
-    }
     public function __construct()
     {
-        $this->reset();
+        $this
+        ->setStartDate(null)
+        ->setEndDate(null)
+        ->setCategory('')
+        ->setPassed(0)
+        ->setId('');
     }
 
     /**
@@ -115,20 +114,21 @@ class SelectEvent
         return $this;
     }
 
-    public function datesControl()
-    {
-        // --- contrôle dates
-        // - si une seule date , 2eme date = date saisie
-        if ($this->getStartDate() && !$this->getEndDate()) {
-            $this->setStartDate($this->getEndDate());
-        } elseif ($this->getEndDate() && !$this->getStartDate()) {
-            $this->setEndDate($this->getStartDate());
-        }
-        // - si date deb apres date fin, inverser dates
-        if ($this->getStartDate() > $this->getEndDate()) {
-            $tmpDate = $this->getStartDate();
-            $this->setStartDate($this->getEndDate());
-            $this->setEndDate($tmpDate);
-        }
-    }
+
+//    public function datesControl()
+//    {
+//        // --- contrôle dates
+//        // - si une seule date , 2eme date = date saisie
+//        if ($this->getStartDate() && !$this->getEndDate()) {
+//            $this->setStartDate($this->getEndDate());
+//        } elseif ($this->getEndDate() && !$this->getStartDate()) {
+//            $this->setEndDate($this->getStartDate());
+//        }
+//        // - si date deb apres date fin, inverser dates
+//        if ($this->getStartDate() > $this->getEndDate()) {
+//            $tmpDate = $this->getStartDate();
+//            $this->setStartDate($this->getEndDate());
+//            $this->setEndDate($tmpDate);
+//        }
+//    }
 }

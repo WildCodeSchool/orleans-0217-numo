@@ -12,7 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use NumoBundle\Form\EventType;
-
 /**
  * Event controller.
  *
@@ -49,7 +48,21 @@ class EventController extends Controller
         $selectForm->handleRequest($request);
 
         if ($selectForm->isSubmitted() && $selectForm->isValid()) {
-            $selector->datesControl();
+
+            // --- contrôle dates
+            // - si une seule date , 2eme date = date saisie
+            if ($selector->getStartDate() && !$selector->getEndDate()) {
+                $selector->setStartDate($selector->getEndDate());
+            } elseif ($selector->getEndDate() && !$selector->getStartDate()) {
+                $selector->setEndDate($selector->getStartDate());
+            }
+            // - si date deb apres date fin, inverser dates
+            if ($selector->getStartDate() > $selector->getEndDate()) {
+                $tmpDate = $selector->getStartDate();
+                $selector->setStartDate($selector->getEndDate());
+                $selector->setEndDate($tmpDate);
+            }
+
             // --- creation des options d'affichage
             if ($selector->getStartDate()) {
                 $options['oaq[from]'] = $selector->getStartDate()->format('Y-m-d');
@@ -65,9 +78,9 @@ class EventController extends Controller
 
         // --- lecture de la liste OpenAgenda
         $api = $this->get('numo.apiopenagenda');
-
         $data = $api->getEventList($options);
         $events = $data['eventList'];
+        $nbEvents = $data['nbEvents'];
         $dates = $data['eventDateList'];
         if (false === $events) {
             $events = [];
@@ -78,12 +91,10 @@ class EventController extends Controller
             'selectForm' => $selectForm->createView(),
             'agendaSlug' => $api->getAgendaSlug(),
             'events' => $events,
-            'dates'=> $dates,
+//            'dates'=> $dates,
             'error' => $error,
-            'selectForm' => $selectForm->createView(),
         ]);
     }
-
 
     /**
      * Finds and displays a published event.

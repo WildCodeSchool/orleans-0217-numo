@@ -61,14 +61,19 @@ class OaEvent
 
     private $pricingInfo;
 
-    private $nextDate;
+    /**
+     * @var array
+     * liste les dates passees de l'evenement (peut etre vide)
+     * structure $oldDates : chaque élément du tableau est un tableau asociatif de 3 éléments :
+     *     ['evtDate' => 'AAAA-MM-JJ', 'timeStart' => 'HH:MM:SS', 'timeEnd' => 'HH:MM:SS']
+     */
+    private $oldDates;
 
     /**
      * @var array
-     * structure $evtDates : chaque élément du tableau est un tableau asociatif de 3 éléments :
-     *     ['evtDate' => 'AAAA-MM-JJ', 'timeStart' => 'HH:MM:SS', 'timeEnd' => 'HH:MM:SS']
+     * liste les dates a venir de l'evenement (peut etre vide) - meme structure que $oldDates
      */
-    private $evtDates;
+    private $newDates;
 
     public function __construct()
     {
@@ -86,7 +91,8 @@ class OaEvent
             ->setLongitude(0.0)
             ->setTicketLink('')
             ->setPricingInfo('')
-            ->setEvtDates([]);
+            ->setOldDates([])
+            ->setNewDates([]);
     }
 
 
@@ -352,35 +358,36 @@ class OaEvent
     /**
      * @return array
      */
-    public function getEvtDates(): array
+    public function getOldDates(): array
     {
-        return $this->evtDates;
+        return $this->oldDates;
     }
 
     /**
-     * @param array $evtDates
+     * @param array $oldDates
+     * @return OaEvent
      */
-    public function setEvtDates(array $evtDates)
+    public function setOldDates(array $oldDates): OaEvent
     {
-        $this->evtDates = $evtDates;
+        $this->oldDates = $oldDates;
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getNextDate() : array
+    public function getNewDates(): array
     {
-        return $this->nextDate;
+        return $this->newDates;
     }
 
     /**
-     * @param array $nextDate
+     * @param array $newDate
      * @return OaEvent
      */
-    public function setNextDate($nextDate)
+    public function setNewDates(array $newDates): OaEvent
     {
-        $this->nextDate = $nextDate;
+        $this->newDates = $newDates;
         return $this;
     }
 
