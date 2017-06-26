@@ -129,10 +129,21 @@ class Event
     private $pricingInfo;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="creation", type="datetime", nullable=true)
+     */
+    private $creation;
+
+    /**
      * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"persist", "remove"})
      */
     private $evtDates;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="events")
+     */
+    private $author;
 
 
 
@@ -433,6 +444,26 @@ class Event
     {
         return $this->pricingInfo;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCreation()
+    {
+        return $this->creation;
+    }
+
+    /**
+     * @param mixed $creation
+     * @return Event
+     */
+    public function setCreation($creation)
+    {
+        $this->creation = $creation;
+        return $this;
+    }
+
+
     /**
      * Constructor
      */
@@ -474,4 +505,24 @@ class Event
     {
         return $this->evtDates;
     }
+
+    /**
+     * @return User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param User $author
+     * @return Event
+     */
+    public function setAuthor(User $author)
+    {
+        $this->author = $author;
+        return $this;
+    }
+
+
 }

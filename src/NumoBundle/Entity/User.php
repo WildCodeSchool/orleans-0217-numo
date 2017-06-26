@@ -168,6 +168,11 @@ class User extends BaseUser
      */
     protected $socialNetworkLinks;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="author")
+     */
+    protected $events;
+
 
     /**
      * @return mixed
