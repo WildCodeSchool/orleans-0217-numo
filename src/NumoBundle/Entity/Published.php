@@ -3,6 +3,7 @@
 namespace NumoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use NumoBundle\Entity\User;
 
 /**
  * Published
@@ -111,11 +112,11 @@ class Published
     /**
      * Set author
      *
-     * @param \NumoBundle\Entity\User $author
+     * @param User $author
      *
      * @return Published
      */
-    public function setAuthor(\NumoBundle\Entity\User $author = null)
+    public function setAuthor(User $author)
     {
         $this->author = $author;
 
@@ -135,11 +136,11 @@ class Published
     /**
      * Set moderator
      *
-     * @param \NumoBundle\Entity\User $moderator
+     * @param User $moderator
      *
      * @return Published
      */
-    public function setModerator(\NumoBundle\Entity\User $moderator = null)
+    public function setModerator(User $moderator)
     {
         $this->moderator = $moderator;
 
