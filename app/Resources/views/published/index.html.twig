@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Publisheds list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Uid</th>
+                <th>Publisheddate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for published in publisheds %}
+            <tr>
+                <td><a href="{{ path('published_show', { 'id': published.id }) }}">{{ published.id }}</a></td>
+                <td>{{ published.uid }}</td>
+                <td>{% if published.publishedDate %}{{ published.publishedDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('published_show', { 'id': published.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('published_edit', { 'id': published.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('published_new') }}">Create a new published</a>
+        </li>
+    </ul>
+{% endblock %}

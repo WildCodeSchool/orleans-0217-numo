@@ -67,7 +67,7 @@ class PartnerController extends Controller
     {
         $deleteForm = $this->createDeleteForm($partner);
 
-        return $this->render('partner/show.html.twig', [
+        return $this->render('partner/showPublished.html.twig', [
             'partner' => $partner,
             'delete_form' => $deleteForm->createView(),
         ]);
