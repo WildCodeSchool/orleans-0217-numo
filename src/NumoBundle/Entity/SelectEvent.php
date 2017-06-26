@@ -113,22 +113,4 @@ class SelectEvent
         $this->id = $id;
         return $this;
     }
-
-
-//    public function datesControl()
-//    {
-//        // --- contrôle dates
-//        // - si une seule date , 2eme date = date saisie
-//        if ($this->getStartDate() && !$this->getEndDate()) {
-//            $this->setStartDate($this->getEndDate());
-//        } elseif ($this->getEndDate() && !$this->getStartDate()) {
-//            $this->setEndDate($this->getStartDate());
-//        }
-//        // - si date deb apres date fin, inverser dates
-//        if ($this->getStartDate() > $this->getEndDate()) {
-//            $tmpDate = $this->getStartDate();
-//            $this->setStartDate($this->getEndDate());
-//            $this->setEndDate($tmpDate);
-//        }
-//    }
 }

@@ -143,7 +143,6 @@ class ApiOpenAgenda
         $newEvent = new OaEvent;
         $newEvent
             ->setId($event->uid);
-//            ->setStatus(99);
         $link = 'http://openagenda.com/'.$this->getAgendaSlug().'/event/'.end(explode('/', $event->link));
         $newEvent
             ->setLink($link)
@@ -166,7 +165,6 @@ class ApiOpenAgenda
         }
         $newEvent->setEvtDates($oaDates);
         $newEvent->setEvtDates($oaDates);
-        $nextDate = [];
         $dateRef = new \DateTime();
         $dateRef->format('Y-m-d');
         foreach ($oaDates as $oaDate) {
@@ -257,17 +255,6 @@ class ApiOpenAgenda
                 foreach ($data['data'] as $event) {
                     $oneEvent = $this->convertJson($event);
                     $eventList[] = $oneEvent;
-//                    // pour affichage dans calendrier
-//                    $dates = $oneEvent->getNewDates();
-//                    $title = $oneEvent->getTitle();
-//                    foreach ($dates as $date) {
-//                        $eventDateList[] = [
-//                            substr($date['evtDate'],8,2),
-//                            substr($date['evtDate'],5,2),
-//                            substr($date['evtDate'],0,4),
-//                            $title
-//                        ];
-//                    }
                 }
             }
             return ['nbEvents' => $data['nbEvents'], 'eventList' => $eventList, 'eventDateList' => $eventDateList];

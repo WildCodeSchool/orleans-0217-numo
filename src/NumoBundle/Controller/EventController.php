@@ -146,44 +146,6 @@ class EventController extends Controller
     }
 
 
-
-//        /**
-//     * Finds and displays a event entity.
-//     *
-//     * @Route("/{id}/{published}", name="event_show")
-//     * @Method("GET")
-//     */
-//    public function showAction($id, $published)
-//    {
-//        $error = '';
-//        $api = $this->get('numo.apiopenagenda');
-//        if ($published) {
-//            // --- lecture de l'évènement via json (2ème paramètre à false ci-dessous) sur OpenAgenda
-//            $event = $api->getEvent($id, false);
-//            if (false === $event) {
-//                $events = new OaEvent; // objet vide
-//                $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
-//            }
-//        } else {
-//            // lecture dans la database
-//            $em = $this->getDoctrine()->getManager();
-//            $event = $em->getRepository('NumoBundle:Event')->getEvent($id);
-//        }
-//        return $this->render('NumoBundle:event:show.html.twig', [
-//        'agendaSlug' => $api->getAgendaSlug(),
-//            'event' => $event,
-//
-//
-//// --- provisoire ---------------------------------------------------
-//            'author' => ['name' => 'John DOE', 'imageUrl' => 'http://localhost:8000/img/logotrans.png', 'badge' => ''], // pour test
-//            'user' => ['rs' => []],
-//// -------------------------------------------------------------------
-//
-//
-//            'error' => $error,
-//        ]);
-//    }
-
     /**
      * Displays a form to edit an existing event entity.
      *
