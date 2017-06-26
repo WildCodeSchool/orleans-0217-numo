@@ -110,8 +110,12 @@
                     <div class="separation"></div>
                     <h3>Organisé par</h3>
                     <p>
-                        <img class="little-img" src="{{ published.author.imageUrl }}" alt="image organisateur {{ published.author.name }}" />
-                        {{ published.author.name }} {{ published.author.firstname }}
+                        {% if published and published.author %}
+                            <img class="little-img" src="{{ published.author.imageUrl }}" alt="image organisateur {{ published.author.name }}" />
+                            {{ published.author.name }} {{ published.author.firstname }}
+                        {% else %}
+                            Information non disponible.
+                        {% endif %}
                     </p>
                 </div>
 
