@@ -12,7 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use NumoBundle\Form\EventType;
-
 /**
  * Event controller.
  *
@@ -22,10 +21,10 @@ class EventController extends Controller
 {
 
     /**
-     * Lists all event entities.
+     * Lists all published events.
      *
-     * @Route("/list", name="event_list")
-     * @Method({"GET", "POST"})
+     * @Route("/listpublished", name="event_list_published")
+     * @Method("GET")
      * -- Liste les évènements -------------------------------------------------------------------------------------
      *      - par défaut : liste tous les évènements publiés à venir (provenance OpenAgenda)
      *      - via sélecteurs :
@@ -35,10 +34,9 @@ class EventController extends Controller
      *      Note : les sélecteurs sont cumulables
      * -------------------------------------------------------------------------------------------------------------
      */
-    public function listAction(Request $request)
+    public function listPublishedAction(Request $request)
     {
         $error = '';
-//        $event = new Event();
         // --- initialisation des parametres de lecture par defaut de la liste des evenements
         $options = [
             'search[passed]' => 0,
@@ -50,7 +48,21 @@ class EventController extends Controller
         $selectForm->handleRequest($request);
 
         if ($selectForm->isSubmitted() && $selectForm->isValid()) {
-            $selector->DatesControl();
+
+            // --- contrôle dates
+            // - si une seule date , 2eme date = date saisie
+            if ($selector->getStartDate() && !$selector->getEndDate()) {
+                $selector->setStartDate($selector->getEndDate());
+            } elseif ($selector->getEndDate() && !$selector->getStartDate()) {
+                $selector->setEndDate($selector->getStartDate());
+            }
+            // - si date deb apres date fin, inverser dates
+            if ($selector->getStartDate() > $selector->getEndDate()) {
+                $tmpDate = $selector->getStartDate();
+                $selector->setStartDate($selector->getEndDate());
+                $selector->setEndDate($tmpDate);
+            }
+
             // --- creation des options d'affichage
             if ($selector->getStartDate()) {
                 $options['oaq[from]'] = $selector->getStartDate()->format('Y-m-d');
@@ -66,25 +78,34 @@ class EventController extends Controller
 
         // --- lecture de la liste OpenAgenda
         $api = $this->get('numo.apiopenagenda');
-
-        $data = $api->getEventList($options, false);
+        $data = $api->getEventList($options);
         $events = $data['eventList'];
+        $nbEvents = $data['nbEvents'];
         $dates = $data['eventDateList'];
         if (false === $events) {
             $events = [];
             $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
         }
         // --- affichage
-        return $this->render('NumoBundle:event:list.html.twig', [
+        return $this->render('NumoBundle:event:listPublished.html.twig', [
             'selectForm' => $selectForm->createView(),
             'agendaSlug' => $api->getAgendaSlug(),
             'events' => $events,
-            'dates'=> $dates,
+//            'dates'=> $dates,
             'error' => $error,
-            'selectForm' => $selectForm->createView(),
         ]);
     }
 
+    /**
+     * Finds and displays a published event.
+     *
+     * @Route("/showpublished/{id}", name="event_show_published")
+     * @Method("GET")
+     */
+    public function showAction($id)
+    {
+
+    }
 
 
 
@@ -124,42 +145,6 @@ class EventController extends Controller
         ]);
     }
 
-    /**
-     * Finds and displays a event entity.
-     *
-     * @Route("/{id}/{published}", name="event_show")
-     * @Method("GET")
-     */
-    public function showAction($id, $published)
-    {
-        $error = '';
-        $api = $this->get('numo.apiopenagenda');
-        if ($published) {
-            // --- lecture de l'évènement via json (2ème paramètre à false ci-dessous) sur OpenAgenda
-            $event = $api->getEvent($id, false);
-            if (false === $event) {
-                $events = new OaEvent; // objet vide
-                $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
-            }
-        } else {
-            // lecture dans la database
-            $em = $this->getDoctrine()->getManager();
-            $event = $em->getRepository('NumoBundle:Event')->getEvent($id);
-        }
-        return $this->render('NumoBundle:event:show.html.twig', [
-        'agendaSlug' => $api->getAgendaSlug(),
-            'event' => $event,
-
-
-// --- provisoire ---------------------------------------------------
-            'author' => ['name' => 'John DOE', 'imageUrl' => 'http://localhost:8000/img/logotrans.png', 'badge' => ''], // pour test
-            'user' => ['rs' => []],
-// -------------------------------------------------------------------
-
-
-            'error' => $error,
-        ]);
-    }
 
     /**
      * Displays a form to edit an existing event entity.

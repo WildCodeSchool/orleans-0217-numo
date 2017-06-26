@@ -40,13 +40,13 @@ class GetFileContents
     {
         if (!isset($this->url) || $this->url == '') {
             $this->setHttpCode(404);
-            $this->setError('FileGetContents : URL non définie');
+            $this->setError('GetFileContents : URL non définie');
             return false;
         } else {
             $info = file_get_contents($this->url);
             if (false === $info) {
                 $this->setErrorCode(999);
-                $this->setError('FileGetContents : Erreur inconnue');
+                $this->setError('GetFileContents : Erreur inconnue');
                 return false;
             } else {
                 $data = json_decode($info);
@@ -54,19 +54,20 @@ class GetFileContents
                     // --- version api ----------
                     if (false === $data->success) {
                         $this->setErrorCode($data->code);
-                        $this->setError('FileGetContents : ' . $data->message);
+                        $this->setError('GetFileContents : ' . $data->message);
                         return false;
                     } else {
-                        return $data->data;
+                        // -1 car on ne recupere pas le nombre d'evenements (2eme parametre)
+                        return ['data' => $data->data, 'nbEvents' => -1];
                     }
                 } else {
                     // --- version json -------
                     if (isset($data->message)) {
                         $this->setErrorCode(0);
-                        $this->setError('FileGetContents : ' . $data->message);
+                        $this->setError('GetFileContents : ' . $data->message);
                         return false;
                     } else {
-                        return $data->events;
+                        return ['data' => $data->events, 'nbEvents' => $data->total];
                     }
                 }
 
