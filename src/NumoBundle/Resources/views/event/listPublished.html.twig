@@ -96,8 +96,11 @@
                 <div class="col-xs-12 col-md-5 col-lg-3">
                     <div id="closemap" class="text-center" onclick="closeMap1();">X</div>
                     <div id="map"></div>
-                    <div id="calendar"></div>
+                    {% for event in events %}
+                    <a href="{{ path('event_show_published', {'id': event.id}) }}">  <div id="calendar"></div></a>
+                    {% endfor %}
                 </div>
+
 
             {% else %}
 
@@ -108,6 +111,7 @@
             {% endif %}
 
         </div>
+
     </div>
 {% endblock %}
 
@@ -116,39 +120,153 @@
     <script src="{{ asset('js/showevent.js') }}"></script>
     <script src="{{ asset('js/fullcalendar.min.js') }}"></script>
     <script>
-
         function initMap() {
-
             // --- calcul du centrage de la map
             var minLatitude = 1000.0; var maxLatitude = 0.0; var centerLatitude = 0.0;
             var minLongitude = 1000.0; var maxLongitude = 0.0; var centerLongitude = 0.0;
             {% for event in events %}
-                minLatitude = Math.min(minLatitude, parseFloat({{ event.latitude }}));
-                maxLatitude = Math.max(maxLatitude, parseFloat({{ event.latitude }}));
-                minLongitude = Math.min(minLongitude, parseFloat({{ event.longitude }}));
-                maxLongitude = Math.max(maxLongitude, parseFloat({{ event.longitude }}));
+            minLatitude = Math.min(minLatitude, parseFloat({{ event.latitude }}));
+            maxLatitude = Math.max(maxLatitude, parseFloat({{ event.latitude }}));
+            minLongitude = Math.min(minLongitude, parseFloat({{ event.longitude }}));
+            maxLongitude = Math.max(maxLongitude, parseFloat({{ event.longitude }}));
             {% endfor %}
             centerLatitude = (minLatitude + maxLatitude)/2;
             centerLongitude = (minLongitude + maxLongitude)/2;
             var centerMap = new google.maps.LatLng(centerLatitude.toFixed(6), centerLongitude.toFixed(6));
-
             // --- creation de la map
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 10, // arbitraire
                 center: centerMap
             });
-
             // --- positionnement des points sur la map
             {% for event in events %}
-                var myLatLng = {lat: {{ event.latitude }}, lng: {{ event.longitude }} };
-                var marker = new google.maps.Marker({
-                    position: myLatLng,
-                    map: map,
-                    title: '{{ event.title }}!'
-                });
+            var myLatLng = {lat: {{ event.latitude }}, lng: {{ event.longitude }} };
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: '{{ event.title }}!'
+            });
             {% endfor %}
         }
 
+        var $calendar = $("#calendar");
+        $calendar.fullCalendar({
+            header: {
+                left: ' today,prev,next,  title',
+                right: ' '
+            },
+            weeKends: true,
+            allDayslot: true,
+            droppable: true,
+            eventAfterAllRender: function (view) {
+                var header = $calendar.find(".fc-header");
+                // trigger current view
+                header.find('.fc-header-right').find('.fc-button').off('mouseup').on('mouseup', function () {
+                    if (!$(this).hasClass('fc-button-agendaView')) {
+                        $calendar.data("view", '');
+                    }
+                });
+
+                if ($calendar.data("view") != 'agendaView') {
+                    header.find(".fc-button-agendaView").removeClass('fc-state-active active');
+                    $("#agendaView").remove();
+
+                } else {
+                    renderAgendaView();
+                }
+
+
+            },
+            eventRender: function (event, e) {
+
+                currentView = $('#calendar').fullCalendar('getView').name;
+            }, dayClick: function (date, jsEvent, view) {
+
+
+            },
+            eventClick: function (calEvent, jsEvent, view) {
+//                console.log("===== eventClick =====");
+//                console.log(calEvent);
+
+
+            }
+        });
+
+        var headerRight = $calendar.find(".fc-header").find(".fc-header-right");
+
+        var agendaBtn = headerRight.find(".fc-corner-right").removeClass('fc-corner-right')
+            .clone().addClass('fc-corner-right fc-button-agendaView').removeClass('fc-button-agendaDay').text("agenda");
+
+        agendaBtn.on('click', function () {
+            renderAgendaView();
+        });
+
+        headerRight.find(".fc-header-space").before(agendaBtn);
+
+        // test event data
+        {% for date in dates %}
+        var newEvent = {
+            title: '{{ date.3 }}',
+            start: new Date({{ date.2 }}, {{ date.1 }}-1, {{ date.0 }}),
+            end: new Date({{ date.2 }}, {{ date.1 }}-1, {{ date.0 }}),
+            editable: true
+        };
+
+        // add event to calendar
+        var event = $('#calendar').fullCalendar('renderEvent', newEvent, 'stick');
+        {% endfor %}
+        function renderAgendaView() {
+
+            if ($calendar.fullCalendar('getView') != 'agendaView') {
+                $calendar.fullCalendar('changeView', 'month');
+                var newView = $calendar.fullCalendar('getView');
+                newView.name = 'agendaView';
+
+                $calendar.fullCalendar('changeView', 'agendaView');
+            }
+
+            // get current events in memory
+            var events = $calendar.fullCalendar('clientEvents');
+
+            // get current date
+            var currentDate = $calendar.fullCalendar('getDate');
+
+            $calendar.find(".fc-header").find(".fc-button-agendaView").siblings().removeClass('fc-state-active').end().addClass('fc-state-active');
+
+            $calendar.data("view", 'agendaView');
+            var agendaViewHtml = document.createElement('div');
+            agendaViewHtml.setAttribute("id", "agendaView");
+            var contents = "<table>" +
+                "<thead><tr>" +
+                "<th class='fc-widget-header fc-agendaView-event-start'>DateStart</th>" +
+                "<th class='fc-widget-header fc-agendaView-event-end'>DateEnd</th>" +
+                "<th class='fc-widget-header fc-agendaView-event-title'>Event</th>" +
+                "</tr></thead>" +
+                "<tbody>";
+
+            for (key in events) {
+                //  detect month range
+                var monthRange = moment().range(moment(currentDate).startOf('month'), moment(currentDate).endOf('month'));
+                var eventStart = moment(events[key].start).format("YYYY/MM/DD-H:mm:ss");
+                var eventEnd = moment(events[key].end).format("YYYY/MM/DD-H:mm:ss");
+                if (monthRange.contains(events[key].start) && monthRange.contains(events[key].end)) {
+                    var eventTitle = events[key].title;
+                    contents += '<tr>' +
+                        '<td class="fc-widget-content">' + eventStart + '</td>' +
+                        '<td class="fc-widget-content">' + eventEnd + '</td>' +
+                        '<td class="fc-widget-content">' + eventTitle + '</td>' +
+                        '</tr>';
+
+                }
+            }
+            contents += "</tbody></table>";
+            agendaViewHtml.innerHTML = contents;
+            $calendar.find(".fc-content").html(agendaViewHtml);
+
+        }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5FbMBpVejJw6o_4r3eHkUQQde6vlDItg&callback=initMap" async defer></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5FbMBpVejJw6o_4r3eHkUQQde6vlDItg&callback=initMap"
+            async defer></script>
+
 {% endblock %}

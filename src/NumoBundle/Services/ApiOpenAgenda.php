@@ -255,6 +255,16 @@ class ApiOpenAgenda
                 foreach ($data['data'] as $event) {
                     $oneEvent = $this->convertJson($event);
                     $eventList[] = $oneEvent;
+                    if($oneEvent->getNewDates()){
+                        $date = $oneEvent->getNewDates()[0];
+                        $title = $oneEvent->getTitle();
+                        $eventDateList[] = [
+                            substr($date['evtDate'],8,2),
+                            substr($date['evtDate'],5,2),
+                            substr($date['evtDate'],0,4),
+                            $title
+                        ];
+                    }
                 }
             }
             return ['nbEvents' => $data['nbEvents'], 'eventList' => $eventList, 'eventDateList' => $eventDateList];

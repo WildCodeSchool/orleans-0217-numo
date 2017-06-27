@@ -387,6 +387,13 @@ table{
 }
 
 
+
+/*     HIDDEN TYPE FORM         */
+
+.form-hidden {
+    display: none;
+}
+
 /* ------- Agenda View ------- */
 /*#agendaView > table{*/
     /*width: 100%;*/
