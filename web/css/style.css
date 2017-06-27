@@ -115,11 +115,6 @@ footer {
     height: 220px !important;
 }
 
-.imageEvents{
-    width: 640px !important;
-    height:400px !important;
-}
-
 .bg-4 {
     background-color: #2f2f2f; /* Black Gray */
     color: #fff;
@@ -389,6 +384,13 @@ div.separation {
     height: 120px;
 }
 
+
+
+/*     HIDDEN TYPE FORM         */
+
+.form-hidden {
+    display: none;
+}
 
 /* ------- Agenda View ------- */
 /*#agendaView > table{*/

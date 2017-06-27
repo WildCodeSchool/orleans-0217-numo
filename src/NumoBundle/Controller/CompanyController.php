@@ -66,7 +66,7 @@ class CompanyController extends Controller
     {
         $deleteForm = $this->createDeleteForm($company);
 
-        return $this->render('company/show.html.twig', [
+        return $this->render('company/showPublished.html.twig', [
             'company' => $company,
             'delete_form' => $deleteForm->createView(),
         ]);

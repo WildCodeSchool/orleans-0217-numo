@@ -35,6 +35,20 @@ class Published
      */
     private $publishedDate;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="publications")
+     *
+     */
+    private $author;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="moderations")
+     *
+     */
+    private $moderator;
+
+
+
 
     /**
      * Get id

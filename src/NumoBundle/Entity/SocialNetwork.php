@@ -24,23 +24,30 @@ class SocialNetwork
     /**
      * @var string
      *
-     * @ORM\Column(name="imageUrl", type="string", length=255)
+     * @ORM\Column(name="facebook", type="string", length=255)
      */
-    private $imageUrl;
+    private $facebook;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="twitter", type="string", length=255)
      */
-    private $name;
+    private $twitter;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="linkedin", type="string", length=255)
+     */
+    private $linkedin;
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="SocialNetworkLink", inversedBy="socialNetworks")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="socialNetworks")
      *
      */
-    protected $links;
+    protected $user;
 
 
     /**
@@ -53,53 +60,7 @@ class SocialNetwork
         return $this->id;
     }
 
-    /**
-     * Set imageUrl
-     *
-     * @param string $imageUrl
-     *
-     * @return SocialNetwork
-     */
-    public function setImageUrl($imageUrl)
-    {
-        $this->imageUrl = $imageUrl;
 
-        return $this;
-    }
-
-    /**
-     * Get imageUrl
-     *
-     * @return string
-     */
-    public function getImageUrl()
-    {
-        return $this->imageUrl;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return SocialNetwork
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
 
     /**
      * Constructor
@@ -110,36 +71,98 @@ class SocialNetwork
     }
 
     /**
-     * Add link
+     * Set user
      *
-     * @param \NumoBundle\Entity\SnLink $link
+     * @param \NumoBundle\Entity\User $user
      *
      * @return SocialNetwork
      */
-    public function addLink(\NumoBundle\Entity\SnLink $link)
+    public function setUser(\NumoBundle\Entity\User $user = null)
     {
-        $this->links[] = $link;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Remove link
+     * Get user
      *
-     * @param \NumoBundle\Entity\SnLink $link
+     * @return \NumoBundle\Entity\User
      */
-    public function removeLink(\NumoBundle\Entity\SnLink $link)
+    public function getUser()
     {
-        $this->links->removeElement($link);
+        return $this->user;
     }
 
     /**
-     * Get links
+     * Set facebook
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @param string $facebook
+     *
+     * @return SocialNetwork
      */
-    public function getLinks()
+    public function setFacebook($facebook)
     {
-        return $this->links;
+        $this->facebook = $facebook;
+
+        return $this;
+    }
+
+    /**
+     * Get facebook
+     *
+     * @return string
+     */
+    public function getFacebook()
+    {
+        return $this->facebook;
+    }
+
+    /**
+     * Set twitter
+     *
+     * @param string $twitter
+     *
+     * @return SocialNetwork
+     */
+    public function setTwitter($twitter)
+    {
+        $this->twitter = $twitter;
+
+        return $this;
+    }
+
+    /**
+     * Get twitter
+     *
+     * @return string
+     */
+    public function getTwitter()
+    {
+        return $this->twitter;
+    }
+
+    /**
+     * Set linkedin
+     *
+     * @param string $linkedin
+     *
+     * @return SocialNetwork
+     */
+    public function setLinkedin($linkedin)
+    {
+        $this->linkedin = $linkedin;
+
+        return $this;
+    }
+
+    /**
+     * Get linkedin
+     *
+     * @return string
+     */
+    public function getLinkedin()
+    {
+        return $this->linkedin;
     }
 }
