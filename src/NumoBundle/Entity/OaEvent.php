@@ -4,6 +4,11 @@ namespace NumoBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ *
+ * Class OaEvent
+ * @package NumoBundle\Entity
+ */
 class OaEvent
 {
     private $id;
@@ -58,12 +63,19 @@ class OaEvent
 
     /**
      * @var array
-     * structure $evtDates : chaque élément du tableau est un tableau asociatif de 3 éléments :
+     * liste les dates passees de l'evenement (peut etre vide)
+     * structure $oldDates : chaque élément du tableau est un tableau asociatif de 3 éléments :
      *     ['evtDate' => 'AAAA-MM-JJ', 'timeStart' => 'HH:MM:SS', 'timeEnd' => 'HH:MM:SS']
      */
-    private $evtDates;
+    private $oldDates;
 
-    public function init()
+    /**
+     * @var array
+     * liste les dates a venir de l'evenement (peut etre vide) - meme structure que $oldDates
+     */
+    private $newDates;
+
+    public function __construct()
     {
         $this
             ->setStatus(1)
@@ -79,12 +91,8 @@ class OaEvent
             ->setLongitude(0.0)
             ->setTicketLink('')
             ->setPricingInfo('')
-            ->setEvtDates([]);
-    }
-
-    public function __construct()
-    {
-        $this->init();
+            ->setOldDates([])
+            ->setNewDates([]);
     }
 
 
@@ -350,17 +358,36 @@ class OaEvent
     /**
      * @return array
      */
-    public function getEvtDates(): array
+    public function getOldDates(): array
     {
-        return $this->evtDates;
+        return $this->oldDates;
     }
 
     /**
-     * @param array $evtDates
+     * @param array $oldDates
+     * @return OaEvent
      */
-    public function setEvtDates(array $evtDates)
+    public function setOldDates(array $oldDates): OaEvent
     {
-        $this->evtDates = $evtDates;
+        $this->oldDates = $oldDates;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNewDates(): array
+    {
+        return $this->newDates;
+    }
+
+    /**
+     * @param array $newDate
+     * @return OaEvent
+     */
+    public function setNewDates(array $newDates): OaEvent
+    {
+        $this->newDates = $newDates;
         return $this;
     }
 

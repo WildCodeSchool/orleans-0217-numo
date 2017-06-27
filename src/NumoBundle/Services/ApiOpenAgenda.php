@@ -74,7 +74,7 @@ class ApiOpenAgenda
                 $this->setError('Lecture agenda : Erreur inconnue');
                 return false;
             } else {
-                $this->setAgendaUid($data->uid);
+                $this->setAgendaUid($data['data']->uid);
             }
         }
         return $this->aUid;
@@ -142,8 +142,7 @@ class ApiOpenAgenda
     {
         $newEvent = new OaEvent;
         $newEvent
-            ->setId($event->uid)
-            ->setStatus(99);
+            ->setId($event->uid);
         $link = 'http://openagenda.com/'.$this->getAgendaSlug().'/event/'.end(explode('/', $event->link));
         $newEvent
             ->setLink($link)
@@ -158,11 +157,27 @@ class ApiOpenAgenda
             ->setLongitude($event->locations[0]->longitude)
             ->setTicketLink($event->locations[0]->ticketLink)
             ->setPricingInfo($event->locations[0]->pricingInfo->fr);
-        $oaDates = [];
+        $oldDates = [];
+        $newDates = [];
+        $dateRef = new \DateTime();
         foreach ($event->location[0]->dates as $evtD) {
             $oaDates[] = ['evtDate' => $evtD->date, 'timeStart' => $evtd->timeStart, 'timeEnd' => $evtd->timeEnd]; // AAAA-MM-DD HH:MM:SS
         }
         $newEvent->setEvtDates($oaDates);
+        $newEvent->setEvtDates($oaDates);
+        $dateRef = new \DateTime();
+        $dateRef->format('Y-m-d');
+        foreach ($oaDates as $oaDate) {
+            // $evtD = AAAA-MM-DD HH:MM:SS
+            $evtDate = ['evtDate' => substr($evtD->start,0,10), 'timeStart' => substr($evtD->start,11,8), 'timeEnd' => substr($evtD->end,11,8)];
+            if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
+                $oldDates[] = $evtDate;
+            } else {
+                $newDates[] = $evtDate;
+            }
+        }
+        $newEvent->setOldDates($oldDates);
+        $newEvent->setNewDates($newDates);
         return $newEvent;
     }
 
@@ -171,7 +186,7 @@ class ApiOpenAgenda
         $newEvent = new OaEvent();
         $newEvent
             ->setId($event->uid)
-            ->setStatus(99)
+//            ->setStatus(99)
             ->setLink($event->canonicalUrl)
             ->setTitle($event->title->fr)
             ->setPlacename($event->locationName)
@@ -184,15 +199,24 @@ class ApiOpenAgenda
         if (isset($event->keywords)) $newEvent->setTags(implode(', ',$event->keywords->fr));
         if (isset($event->registrationUrl)) $newEvent->setTicketLink($event->registrationUrl);
         if (isset($event->conditions)) $newEvent->setPricingInfo($event->conditions->fr);
-        $oaDates = [];
+        $oldDates = [];
+        $newDates = [];
+        $dateRef = new \DateTime();
         foreach ($event->timings as $evtD) {
-            $oaDates[] = ['evtDate' => substr($evtD->start,0,10), 'timeStart' => substr($evtD->start,11,8), 'timeEnd' => substr($evtD->end,11,8)]; // AAAA-MM-DD HH:MM:SS
+            // $evtD = AAAA-MM-DD HH:MM:SS
+            $evtDate = ['evtDate' => substr($evtD->start,0,10), 'timeStart' => substr($evtD->start,11,8), 'timeEnd' => substr($evtD->end,11,8)];
+            if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
+                $oldDates[] = $evtDate;
+            } else {
+                $newDates[] = $evtDate;
+            }
         }
-        $newEvent->setEvtDates($oaDates);
+        $newEvent->setOldDates($oldDates);
+        $newEvent->setNewDates($newDates);
         return $newEvent;
     }
 
-    public function getEventList(array $options=[], $api=true) : array
+    public function getEventList(array $options=[], bool $api=false) : array
     {
         if ($api) {
             // --- version avec l'api -------------------------------------------
@@ -223,32 +247,22 @@ class ApiOpenAgenda
             $eventList = [];
             $eventDateList = [];
             if ($api) {
-                foreach ($data as $event) {
-                    $data = $this->convertApi($event);
-                    $eventList[] = $data;
+                foreach ($data['data'] as $event) {
+                    $oneEvent = $this->convertApi($event);
+                    $eventList[] = $oneEvent;
                 }
             } else {
-                foreach ($data as $event) {
-                    $data = $this->convertJson($event);
-                    $eventList[] = $data;
-                    $dates = $data->getEvtDates();
-                    $title = $data->getTitle();
-                    foreach ($dates as $date) {
-                        $eventDateList[] = [
-                            substr($date['evtDate'],8,2),
-                            substr($date['evtDate'],5,2),
-                            substr($date['evtDate'],0,4),
-                            $title
-                        ];
-                    }
+                foreach ($data['data'] as $event) {
+                    $oneEvent = $this->convertJson($event);
+                    $eventList[] = $oneEvent;
                 }
             }
-            return ['eventList' => $eventList, 'eventDateList' => $eventDateList];
+            return ['nbEvents' => $data['nbEvents'], 'eventList' => $eventList, 'eventDateList' => $eventDateList];
         }
 
     }
 
-    public function getEvent(int $uid, $api=true)
+    public function getEvent(int $uid, $api=false)
     {
         if ($api) {
             // --- version avec l'api -------------------------------------------
@@ -265,9 +279,9 @@ class ApiOpenAgenda
             return false;
         } else {
             if ($api) {
-                return $this->convertApi($data);
+                return $this->convertApi($data['data']);
             } else {
-                return $this->convertJson($data[0]);
+                return $this->convertJson($data['data'][0]);
             }
         }
     }

@@ -55,7 +55,7 @@ class Company
      * @var string
      *
      * @ORM\Column(name="address", type="string", length=255)
-     * @Assert\NotBlank(message="L\'adresse doit être renseignée.")
+     * @Assert\NotBlank(message="L'adresse doit être renseignée.")
      */
     private $address;
 

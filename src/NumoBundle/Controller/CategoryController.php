@@ -67,7 +67,7 @@ class CategoryController extends Controller
     {
         $deleteForm = $this->createDeleteForm($category);
 
-        return $this->render('category/show.html.twig', [
+        return $this->render('category/showPublished.html.twig', [
             'category' => $category,
             'delete_form' => $deleteForm->createView(),
         ]);

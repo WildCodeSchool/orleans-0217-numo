@@ -3,6 +3,7 @@
 namespace NumoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use NumoBundle\Entity\User;
 
 /**
  * Published
@@ -34,6 +35,20 @@ class Published
      * @ORM\Column(name="publishedDate", type="datetime")
      */
     private $publishedDate;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="publications")
+     *
+     */
+    private $author;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="moderations")
+     *
+     */
+    private $moderator;
+
+
 
 
     /**
@@ -92,5 +107,53 @@ class Published
     public function getPublishedDate()
     {
         return $this->publishedDate;
+    }
+
+    /**
+     * Set author
+     *
+     * @param User $author
+     *
+     * @return Published
+     */
+    public function setAuthor(User $author)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \NumoBundle\Entity\User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set moderator
+     *
+     * @param User $moderator
+     *
+     * @return Published
+     */
+    public function setModerator(User $moderator)
+    {
+        $this->moderator = $moderator;
+
+        return $this;
+    }
+
+    /**
+     * Get moderator
+     *
+     * @return \NumoBundle\Entity\User
+     */
+    public function getModerator()
+    {
+        return $this->moderator;
     }
 }
