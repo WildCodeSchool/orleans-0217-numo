@@ -38,6 +38,15 @@
     {{ form_end(edit_form.imageUrl) }}
     {% endif %}
     {{ form_label(edit_form.pdf) }}
+    {% if company.pdf.filename is defined %}
+        <p><iframe src="{{ asset('uploads/users/' ~ company.pdf.filename ) }}" >
+            <a href="{{ path('company_delete_image', {'id' : company.id}) }}">Remplacer l'image</a>
+        </p>
+    {% else %}
+        {{ form_widget(edit_form.pdf) }}
+        {{ form_end(edit_form.pdf) }}
+    {% endif %}
+
     {{ form_widget(edit_form.pdf) }}
 
         {{ form_widget(edit_form) }}
@@ -49,3 +58,4 @@
     {{ parent() }}
     <script src="{{ asset('js/summernote.js') }}"></script>
 {% endblock %}
+

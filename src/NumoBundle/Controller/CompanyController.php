@@ -66,7 +66,7 @@ class CompanyController extends Controller
     {
         $deleteForm = $this->createDeleteForm($company);
 
-        return $this->render('company/showPublished.html.twig', [
+        return $this->render('company/show.html.twig', [
             'company' => $company,
             'delete_form' => $deleteForm->createView(),
         ]);
@@ -104,7 +104,7 @@ class CompanyController extends Controller
                 $company->setImageUrl($oldimage);
             }
             if($oldpdf){
-                $company->
+                $company->setPdf($oldpdf);
             }
 
             return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
