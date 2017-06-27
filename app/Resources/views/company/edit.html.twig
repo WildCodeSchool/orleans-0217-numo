@@ -10,8 +10,42 @@
 
 
     {{ form_start(edit_form) }}
+    {{ form_label(edit_form.contactEmail) }}
+    {{ form_widget(edit_form.contactEmail) }}
+    {{ form_label(edit_form.phone) }}
+    {{ form_widget(edit_form.phone) }}
+    {{ form_label(edit_form.city) }}
+    {{ form_widget(edit_form.city) }}
+    {{ form_label(edit_form.postalCode) }}
+    {{ form_widget(edit_form.postalCode) }}
+    {{ form_label(edit_form.address) }}
+    {{ form_widget(edit_form.address) }}
+    {{ form_label(edit_form.presentationTitle) }}
+    {{ form_widget(edit_form.presentationTitle) }}
+    {{ form_label(edit_form.presentationContent) }}
+    {{ form_widget(edit_form.presentationContent) }}
+    {{ form_label(edit_form.adherentTitle) }}
+    {{ form_widget(edit_form.adherentTitle) }}
+    {{ form_label(edit_form.adherentContent) }}
+    {{ form_widget(edit_form.adherentContent) }}
+    {{ form_label(edit_form.imageUrl) }}
+    {% if company.imageUrl.filename is defined %}
+        <p><img class="img-thumbnail" src="{{ asset('uploads/users/' ~ company.imageUrl.filename ) }}" alt="Num'O" width="300">
+            <a href="{{ path('company_delete_image', {'id' : company.id}) }}">Remplacer l'image</a>
+        </p>
+    {% else %}
+    {{ form_widget(edit_form.imageUrl) }}
+    {{ form_end(edit_form.imageUrl) }}
+    {% endif %}
+    {{ form_label(edit_form.pdf) }}
+    {{ form_widget(edit_form.pdf) }}
+
         {{ form_widget(edit_form) }}
         <input type="submit" value="ENREGISTRER" />
     {{ form_end(edit_form) }}
 </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/summernote.js') }}"></script>
 {% endblock %}

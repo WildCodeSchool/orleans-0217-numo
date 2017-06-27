@@ -235,6 +235,12 @@ footer {
 /*
 style admin*/
 
+.logo-title{
+    margin-top: 10%;
+    margin-bottom: 10%;
+
+}
+
 .navadmin{
     font-weight: 500;
 }
@@ -279,13 +285,11 @@ td{
     margin-top: 40px;
 }
 button{
-<<<<<<< HEAD
-=======
+
     /*
     margin-top: % !important;
     */
         margin-left: 2% !important;
->>>>>>> dev
 }
 
 .modifadmin{

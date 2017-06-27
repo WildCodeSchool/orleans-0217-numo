@@ -36,7 +36,7 @@
 
                     <td class="admin">{{ user.roles.0 }}</td>
                     <td class="admin">
-                        <a href="{{ path('pagecontent_edit', { 'id': user.id }) }}"><button type="button" value="MODIFIER" class="pull-right">MODIFIER</button></a>
+                        <a href="{{ path('memberstatus_index', { 'id': user.id }) }}"><button type="button" value="MODIFIER" class="pull-right">MODIFIER</button></a>
 
                     </td>
                 </tr>
@@ -46,7 +46,9 @@
         </table>
 
         <br/>
+{#
         <a href="{{ path('pagecontent_new') }}"><button type="button" value="CREATION DE CONTENU">+</button></a>
+#}
     </div>
 
 {% endblock %}

@@ -7,9 +7,9 @@
 
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
-            <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-            <link rel="stylesheet" href="{{ asset('https://fonts.googleapis.com/css?family=Lato:300') }}">
             <link rel="stylesheet" href="{{ asset('css/summernote.css') }}">
+            <link rel="stylesheet" href="{{ asset('https://fonts.googleapis.com/css?family=Lato:300') }}">
+            <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         {% endblock %}
 
 
@@ -26,12 +26,12 @@
         {% endblock %}
         {% endblock %}
 
-        {% block footer %}{% endblock %}
+        {% block footer %}
+        {% endblock %}
 
         {% block javascripts %}
             <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap.js') }}"></script>
-            <script src="{{ asset('js/summernote.js') }}"></script>
         {% endblock %}
     </body>
 

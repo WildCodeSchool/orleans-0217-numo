@@ -4,7 +4,6 @@
 
 {% block body %}
     <div class="container font-lato">
-        <h1 class="titreadmin font-lato">NUM'O</h1>
 
         <table class="tabadmin font-lato">
             <tbody>
@@ -47,11 +46,13 @@
             <li>
                 <a href="{{ path('company_edit', { 'id': company.id }) }}">Edit</a>
             </li>
+{#
             <li>
                 {{ form_start(delete_form) }}
                 <input type="submit" value="Delete">
                 {{ form_end(delete_form) }}
             </li>
+#}
         </ul>
         <ul>
             <li>
