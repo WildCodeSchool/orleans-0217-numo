@@ -67,7 +67,7 @@ class EvtDateController extends Controller
     {
         $deleteForm = $this->createDeleteForm($evtDate);
 
-        return $this->render('evtdate/show.html.twig', array(
+        return $this->render('evtdate/showPublished.html.twig', array(
             'evtDate' => $evtDate,
             'delete_form' => $deleteForm->createView(),
         ));
