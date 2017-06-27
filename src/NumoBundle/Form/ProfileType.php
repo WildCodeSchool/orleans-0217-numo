@@ -43,6 +43,19 @@ class ProfileType extends AbstractType
                 'label' => 'Site Web',
                 'required' => false,
             ])
+            ->add('facebook',TextType::class, [
+                'label' => 'Lien Facebook',
+                'required' => false,
+            ])
+            ->add('twitter',TextType::class, [
+                'label' => 'Lien Twitter',
+                'required' => false,
+            ])
+            ->add('linkedin',TextType::class, [
+                'label' => 'Lien Linkedin',
+                'required' => false,
+            ])
+
             ->remove('username');
     }
 
