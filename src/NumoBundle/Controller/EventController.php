@@ -140,14 +140,7 @@ class EventController extends Controller
                     // gerer erreur si ecriture foireuse
                 }
                 // --- creationde l'enregistrement "published"
-                $published = new Published();
-                $published
-                    ->setDeleted(0)
-                    ->setUid($uid)
-                    ->setAuthor($curentUser)
-                    ->setAuthorUpdateDate($event->getCreationDate())
-                    ->setModerator($curentUser)
-                    ->setModeratorUpdateDate(new \DateTime);
+                $published = new Published($event, $uid, $curentUser);
                 $em->persist($published);
                 $em->flush();
             } else {
