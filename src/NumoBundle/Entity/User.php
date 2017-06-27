@@ -118,14 +118,6 @@ class User extends BaseUser
      */
     protected $phone;
 
-//    /**
-//     * @ORM\Column(type="string", nullable=true)
-//     * @ORM\ManyToOne(targetEntity="Address", inversedBy="users")
-//     *
-//     */
-//    protected $address;
-
-
     /**
      * @ORM\Column(type="string", length=250, nullable=true, options={"default" : null})
      *
@@ -160,13 +152,35 @@ class User extends BaseUser
      */
     protected $city;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
+     *
+     * @Assert\Length(
+     *     min=3,
+     *     minMessage="Le numéro est trop court.",
+     * )
+     */
+    protected $facebook;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @ORM\OneToMany(targetEntity="SocialNetworkLink", mappedBy="user")
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
      *
+     * @Assert\Length(
+     *     min=3,
+     *     minMessage="Le numéro est trop court.",
+     * )
      */
-    protected $socialNetworkLinks;
+    protected $twitter;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
+     *
+     * @Assert\Length(
+     *     min=3,
+     *     minMessage="Le numéro est trop court.",
+     * )
+     */
+    protected $linkedin;
 
     /**
      * @ORM\OneToMany(targetEntity="Published", mappedBy="author")
@@ -403,56 +417,6 @@ class User extends BaseUser
         return $this;
     }
 
-
-    /**
-     * Add socialNetworkLink
-     *
-     * @param \NumoBundle\Entity\SocialNetworkLink $socialNetworkLink
-     *
-     * @return User
-     */
-    public function addSocialNetworkLink(SocialNetworkLink $socialNetworkLink)
-    {
-        $this->socialNetworkLinks[] = $socialNetworkLink;
-
-        return $this;
-    }
-
-    /**
-     * Remove socialNetworkLink
-     *
-     * @param \NumoBundle\Entity\SocialNetworkLink $socialNetworkLink
-     */
-    public function removeSocialNetworkLink(SocialNetworkLink $socialNetworkLink)
-    {
-        $this->socialNetworkLinks->removeElement($socialNetworkLink);
-    }
-
-    /**
-     * Get socialNetworkLinks
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSocialNetworkLinks()
-    {
-        return $this->socialNetworkLinks;
-    }
-
-    /**
-     * Set socialNetworkLinks
-     *
-     * @param string $socialNetworkLinks
-     *
-     * @return User
-     */
-    public function setSocialNetworkLinks($socialNetworkLinks)
-    {
-        $this->socialNetworkLinks = $socialNetworkLinks;
-
-        return $this;
-    }
-
-
     /**
      * Add publication
      *
@@ -519,5 +483,78 @@ class User extends BaseUser
     public function getModerations()
     {
         return $this->moderations;
+    }
+
+
+    /**
+     * Set facebook
+     *
+     * @param string $facebook
+     *
+     * @return User
+     */
+    public function setFacebook($facebook)
+    {
+        $this->facebook = $facebook;
+
+        return $this;
+    }
+
+    /**
+     * Get facebook
+     *
+     * @return string
+     */
+    public function getFacebook()
+    {
+        return $this->facebook;
+    }
+
+    /**
+     * Set twitter
+     *
+     * @param string $twitter
+     *
+     * @return User
+     */
+    public function setTwitter($twitter)
+    {
+        $this->twitter = $twitter;
+
+        return $this;
+    }
+
+    /**
+     * Get twitter
+     *
+     * @return string
+     */
+    public function getTwitter()
+    {
+        return $this->twitter;
+    }
+
+    /**
+     * Set linkedin
+     *
+     * @param string $linkedin
+     *
+     * @return User
+     */
+    public function setLinkedin($linkedin)
+    {
+        $this->linkedin = $linkedin;
+
+        return $this;
+    }
+
+    /**
+     * Get linkedin
+     *
+     * @return string
+     */
+    public function getLinkedin()
+    {
+        return $this->linkedin;
     }
 }
