@@ -43,12 +43,12 @@
                 <div class="form-group">
                     {{ form_label(form.freeText, 'Description détaillée', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
                     <div class="col-sm-9">
-                        {{ form_widget(form.freeText, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_widget(form.freeText, {'attr': {'class': 'form-control', 'rows': '6'}}) }}
                     </div>
                 </div>
 
                 <div class="form-group">
-                    {{ form_label(form.tags, 'Mots-clé', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                    {{ form_label(form.tags, 'Catégorie', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
                     <div class="col-sm-9">
                         {{ form_widget(form.tags, {'attr': {'class': 'form-control'}}) }}
                     </div>

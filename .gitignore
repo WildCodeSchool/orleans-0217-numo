@@ -12,3 +12,4 @@ web/bundles/
 web/uploads/event/*
 web/uploads/numo/*
 web/uploads/users/*
+web/tests/

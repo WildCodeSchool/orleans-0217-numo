@@ -5,6 +5,7 @@ namespace NumoBundle\Controller;
 use NumoBundle\Entity\Event;
 use NumoBundle\Entity\OaEvent;
 use NumoBundle\Entity\EvtDate;
+use NumoBundle\Entity\Published;
 use NumoBundle\Entity\SelectEvent;
 use NumoBundle\Form\SelectEventType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -103,8 +104,6 @@ class EventController extends Controller
         ]);
     }
 
-
-
     /**
      * Creates a new event, and register locally.
      *
@@ -127,17 +126,32 @@ class EventController extends Controller
                 $this->getParameter('upload_directory_event'),
                 $fileName
             );
-            $event->setImage($fileName);
             $curentUser = $this->getUser();
-            $event->setAuthor($curentUser);
-            $event->setCreation(new \DateTime);
+            $event
+                ->setImage($fileName)
+                ->setAuthor($curentUser)
+                ->setCreationDate(new \DateTime);
+            $em = $this->getDoctrine()->getManager();
             if ($curentUser->getTrust() == 1) {
                 // --- si utilisateur de confiance, on publie directement
-                    // A creer
-
+                $api = $this->get('numo.apiopenagenda');
+                $uid = $api->publishEvent($event);
+                if (false === $uid) {
+                    // gerer erreur si ecriture foireuse
+                }
+                // --- creationde l'enregistrement "published"
+                $published = new Published();
+                $published
+                    ->setDeleted(0)
+                    ->setUid($uid)
+                    ->setAuthor($curentUser)
+                    ->setAuthorUpdateDate($event->getCreationDate())
+                    ->setModerator($curentUser)
+                    ->setModeratorUpdateDate(new \DateTime);
+                $em->persist($published);
+                $em->flush();
             } else {
                 // --- sinon enregistrement de l'evenement dans la database
-                $em = $this->getDoctrine()->getManager();
                 $em->persist($event);
                 $em->flush();
             }
@@ -145,7 +159,7 @@ class EventController extends Controller
                 // A creer
 
 
-            return $this->redirectToRoute('event_list');
+            return $this->redirectToRoute('event_list_published');
         }
         return $this->render('NumoBundle:event:new.html.twig', [
             'error' => $error,

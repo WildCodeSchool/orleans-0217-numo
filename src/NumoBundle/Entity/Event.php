@@ -28,9 +28,9 @@ class Event
     /**
      * @var int
      *
-     * @ORM\Column(name="status", type="integer")
+     * @ORM\Column(name="rejected", type="integer")
      */
-    private $status;
+    private $rejected;
 
     /**
      * @var string
@@ -70,9 +70,7 @@ class Event
     private $freeText;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="tags", type="string", length=255, nullable=true)
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="events")
      */
     private $tags;
 
@@ -122,30 +120,38 @@ class Event
     private $ticketLink;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="pricingInfo", type="string", length=255, nullable=true)
+     * @ORM\ManyToOne(targetEntity="PricingInfo", inversedBy="events")
      */
     private $pricingInfo;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="creation", type="datetime", nullable=true)
+     * @ORM\Column(name="creationdate", type="datetime", nullable=true)
      */
-    private $creation;
-
-    /**
-     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"persist", "remove"})
-     */
-    private $evtDates;
+    private $creationDate;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="events")
      */
     private $author;
 
+    /**
+     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"persist", "remove"})
+     */
+    private $evtDates;
 
+
+    public function __construct()
+    {
+//        $this
+//            ->setRejected(0)
+//            ->setFreeText('')
+//            ->setImage('')
+//            ->setTicketLink('');
+        $this->evtDates = new ArrayCollection();
+
+    }
 
     /**
      * Get id
@@ -158,27 +164,27 @@ class Event
     }
 
     /**
-     * Set status
+     * Set rejected
      *
-     * @param integer $status
+     * @param integer $rejected
      *
      * @return Event
      */
-    public function setStatus($status)
+    public function setRejected($rejected)
     {
-        $this->status = $status;
+        $this->rejected = $rejected;
 
         return $this;
     }
 
     /**
-     * Get status
+     * Get rejected
      *
      * @return int
      */
-    public function getStatus()
+    public function getRejected()
     {
-        return $this->status;
+        return $this->rejected;
     }
 
     /**
@@ -275,30 +281,6 @@ class Event
     public function getFreeText()
     {
         return $this->freeText;
-    }
-
-    /**
-     * Set tags
-     *
-     * @param string $tags
-     *
-     * @return Event
-     */
-    public function setTags($tags)
-    {
-        $this->tags = $tags;
-
-        return $this;
-    }
-
-    /**
-     * Get tags
-     *
-     * @return string
-     */
-    public function getTags()
-    {
-        return $this->tags;
     }
 
     /**
@@ -422,23 +404,25 @@ class Event
     }
 
     /**
-     * Set pricingInfo
-     *
-     * @param string $pricingInfo
-     *
+     * @return mixed
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param mixed $tags
      * @return Event
      */
-    public function setPricingInfo($pricingInfo)
+    public function setTags($tags)
     {
-        $this->pricingInfo = $pricingInfo;
-
+        $this->tags = $tags;
         return $this;
     }
 
     /**
-     * Get pricingInfo
-     *
-     * @return string
+     * @return mixed
      */
     public function getPricingInfo()
     {
@@ -446,31 +430,33 @@ class Event
     }
 
     /**
-     * @return mixed
-     */
-    public function getCreation()
-    {
-        return $this->creation;
-    }
-
-    /**
-     * @param mixed $creation
+     * @param mixed $pricingInfo
      * @return Event
      */
-    public function setCreation($creation)
+    public function setPricingInfo($pricingInfo)
     {
-        $this->creation = $creation;
+        $this->pricingInfo = $pricingInfo;
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCreationDate()
+    {
+        return $this->creationDate;
+    }
 
     /**
-     * Constructor
+     * @param mixed $creationDate
+     * @return Event
      */
-    public function __construct()
+    public function setCreationDate($creationDate)
     {
-        $this->evtDates = new ArrayCollection();
+        $this->creationDate = $creationDate;
+        return $this;
     }
+
 
     /**
      * Add evtDate

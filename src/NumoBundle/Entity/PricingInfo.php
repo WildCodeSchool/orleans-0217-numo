@@ -3,16 +3,14 @@
 namespace NumoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-
 
 /**
- * Category
+ * PricingInfo
  *
- * @ORM\Table(name="category")
- * @ORM\Entity(repositoryClass="NumoBundle\Repository\CategoryRepository")
+ * @ORM\Table(name="pricing_info")
+ * @ORM\Entity(repositoryClass="NumoBundle\Repository\PricingInfoRepository")
  */
-class Category
+class PricingInfo
 {
     /**
      * @var int
@@ -26,18 +24,12 @@ class Category
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
-     *
-     * @Assert\Length(
-     *      min = 2,
-     *      max = 100,
-     *      minMessage = "Le texte saisi doit contenir au moins {{ limit }} caractères.")
-     *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères.")
+     * @ORM\Column(name="pricing", type="string", length=100)
      */
-    private $name;
+    private $pricing;
 
     /**
-     * @ORM\OneToMany(targetEntity="Event", mappedBy="tags")
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="pricingInfo")
      */
     private $events;
 
@@ -53,27 +45,27 @@ class Category
     }
 
     /**
-     * Set category
+     * Set pricing
      *
-     * @param string $category
+     * @param string $pricing
      *
-     * @return Category
+     * @return PricingInfo
      */
-    public function setName($name)
+    public function setPricing($pricing)
     {
-        $this->name = $name;
+        $this->pricing = $pricing;
 
         return $this;
     }
 
     /**
-     * Get category
+     * Get pricing
      *
      * @return string
      */
-    public function getname()
+    public function getPricing()
     {
-        return $this->name;
+        return $this->pricing;
     }
 
     /**
@@ -86,7 +78,7 @@ class Category
 
     /**
      * @param mixed $events
-     * @return Category
+     * @return PricingInfo
      */
     public function setEvents($events)
     {
@@ -96,3 +88,4 @@ class Category
 
 
 }
+

@@ -2,7 +2,9 @@
 
 namespace NumoBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,8 +29,10 @@ class EventType extends AbstractType
             ->add('freeText', TextareaType::class, [
                 'required' => false,
             ])
-            ->add('tags', TextType::class, [
-                'required' => false,
+            ->add('tags', EntityType::class, [
+                'class' => 'NumoBundle:Category',
+                'choice_label' => 'name',
+                'required' => true,
             ])
             ->add('image', fileType::class, [
                 'required' => false,
@@ -48,8 +52,10 @@ class EventType extends AbstractType
             ->add('ticketLink', TextType::class, [
                 'required' => false,
             ])
-            ->add('pricingInfo', TextType::class, [
-                'required' => false,
+            ->add('pricingInfo', EntityType::class, [
+                'class' => 'NumoBundle:PricingInfo',
+                'choice_label' => 'pricing',
+                'required' => true,
             ])
             ->add('evtDates', CollectionType::class, [
                 'entry_type' => EvtDateCollectionType::class,
