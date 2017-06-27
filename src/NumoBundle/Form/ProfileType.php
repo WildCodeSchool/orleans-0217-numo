@@ -2,7 +2,6 @@
 
 namespace NumoBundle\Form;
 
-use NumoBundle\Entity\Adress;
 use NumoBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
