@@ -2,7 +2,11 @@
 
 {% block body %}
 <div class="container">
-    <h1 class="titreadmin font-lato">NUM'O</h1>
+    <div class="row logo-title">
+        <div class="col-sm-offset-4 col-sm-4">
+            <img class="img-responsive" src="{{ asset('uploads/users/' ~ company.imageUrl.filename) }}">
+        </div>
+    </div>
     <hr>
 
     <table class="tabadmin font-lato">
@@ -21,20 +25,30 @@
             </tr>
             <tr>
                 <th>Adresse</th>
-                <td>{{ company.adress }}</td>
+                <td>{{ company.address }}</td>
             </tr>
             <tr>
                 <th>Téléphone</th>
                 <td>{{ company.phone }}</td>
             </tr>
             <tr>
-                <th>Image</th>
-                <td><img src="{{ asset('{{ company.imageUrl }}') }}"
-                         alt="NUM'O"/></td>
-            </tr>
-            <tr>
                 <th>Pdf</th>
                 <td>{{ company.pdf }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <table class="tabadmin font-lato">
+        <tbody>
+            <tr>
+                <th>Page présentation Num'O</th>
+                <td><h2>{{ company.presentationTitle }}</h2>
+                    {{ company.presentationContent|slice(0,300) ~ '...' }}</td>
+            </tr>
+            <tr>
+                <th>Page devenez membre</th>
+                <td><h2>{{ company.adherentTitle }}</h2>
+                    {{ company.adherentContent|slice(0,300) ~ '...' }}</td>
             </tr>
         </tbody>
     </table>
