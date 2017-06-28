@@ -10,7 +10,7 @@
                 <h2 id="homeHeading">Modifier le mot de passe</h2>
                 <hr>
 
-                <div style="margin-left: 200px">
+                <div class="form-left-margin">
                     {{ form_start(form, {
                         'action': path('fos_user_resetting_reset', {'token': token}),
                         'attr': { 'class': 'fos_user_resetting_reset' } }) }}

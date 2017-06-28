@@ -403,6 +403,10 @@ div.separation {
     margin-top: 15px;
 }
 
+.form-left-margin {
+    margin-left: 200px;
+}
+
 /* ------- Agenda View ------- */
 /*#agendaView > table{*/
     /*width: 100%;*/
