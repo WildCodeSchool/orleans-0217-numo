@@ -448,6 +448,26 @@ a.hoverContact:hover {color: #CADB2A !important;}
 }
 
 
+/*---------- index color-----------*/
+
+
+
+.btnRed{
+    background-color: #FC0606 !important;
+}
+
+.zoneRed{
+    background-color:  #FC0606 !important;
+}
+.textRed{
+    color:  #FC0606 !important;
+
+}
+
+.zoneBlue{
+    background-color: #005897 !important;
+}
+
 
 
 
