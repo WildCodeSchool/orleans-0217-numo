@@ -61,18 +61,15 @@ class Published
     private $moderatorUpdateDate;
 
 
-    public function __construct(Event $event, string $uid, $moderator = null)
+    public function __construct(Event $event, string $uid, $moderator)
     {
         $this
             ->setDeleted(0)
             ->setUid($uid)
             ->setAuthor($event->getAuthor())
-            ->setAuthorUpdateDate($event->getCreationDate());
-        if (isset($moderator)) {
-            $this
-                ->setModerator($moderator)
-                ->setModeratorUpdateDate(new \DateTime);
-        }
+            ->setAuthorUpdateDate($event->getCreationDate())
+            ->setModerator($moderator)
+            ->setModeratorUpdateDate(new \DateTime);
     }
 
 

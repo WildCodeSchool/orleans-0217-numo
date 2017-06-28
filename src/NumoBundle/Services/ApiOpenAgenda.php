@@ -8,6 +8,9 @@ use NumoBundle\Entity\OaEvent;
 
 class ApiOpenAgenda
 {
+    const WEBROOTURL = 'https://openagenda.com/';
+    const APIROOTURL = 'https://api.openagenda.com/v1/';
+
     private $curl;
     private $getFileContents;
     private $agendaSlug;
@@ -66,7 +69,7 @@ class ApiOpenAgenda
     public function getAgendaUid()
     {
         if (!isset($this->aUid)) {
-            $url = 'https://api.openagenda.com/v1/agendas/uid/'.$this->getAgendaSlug().'?key=' . $this->getPublicKey();
+            $url = self::APIROOTURL . 'agendas/uid/'.$this->getAgendaSlug().'?key=' . $this->getPublicKey();
             $this->getFileContents->setUrl($url);
             $data = $this->getFileContents->execute(true);
             if (false === $data) {
@@ -90,7 +93,7 @@ class ApiOpenAgenda
         $newEvent = new OaEvent;
         $newEvent
             ->setId($event->uid);
-        $link = 'http://openagenda.com/'.$this->getAgendaSlug().'/event/'.end(explode('/', $event->link));
+        $link = self::WEBROOTURL . $this->getAgendaSlug().'/event/'.end(explode('/', $event->link));
         $newEvent
             ->setLink($link)
             ->setImage($event->image)
@@ -133,7 +136,6 @@ class ApiOpenAgenda
         $newEvent = new OaEvent();
         $newEvent
             ->setId($event->uid)
-//            ->setStatus(99)
             ->setLink($event->canonicalUrl)
             ->setTitle($event->title->fr)
             ->setPlacename($event->locationName)
@@ -167,10 +169,10 @@ class ApiOpenAgenda
     {
         if ($api) {
             // --- version avec l'api -------------------------------------------
-            $url = 'https://api.openagenda.com/v1/agendas/' . $this->getAgendaUid() . '/events?key=' . $this->getPublicKey() . '&';
+            $url = self::APIROOTURL . 'agendas/' . $this->getAgendaUid() . '/events?key=' . $this->getPublicKey() . '&';
         } else {
             // --- version avec le json (sans l'api) -----------------------------
-            $url = "https://openagenda.com/agendas/" . $this->getAgendaUid() . "/events.json";
+            $url = self::WEBROOTURL . 'agendas/' . $this->getAgendaUid() . '/events.json';
             if (count($options) > 0) {
                 $url .= '?';
             }
@@ -213,10 +215,10 @@ class ApiOpenAgenda
     {
         if ($api) {
             // --- version avec l'api -------------------------------------------
-            $url = "https://api.openagenda.com/v1/events/$uid?key=" . $this->getPublicKey();
+            $url = self::APIROOTURL . "events/$uid?key=" . $this->getPublicKey();
         } else {
             // --- version avec le json -----------------------------------
-            $url = "https://openagenda.com/agendas/".$this->getAgendaUid()."/events.json?oaq[uids][]=$uid";
+            $url = self::WEBROOTURL . 'agendas/'.$this->getAgendaUid()."/events.json?oaq[uids][]=$uid";
         }
         $this->getFileContents->setUrl($url);
         $data = $this->getFileContents->execute($api);
@@ -237,7 +239,7 @@ class ApiOpenAgenda
     private function initToken()
     {
         $this->curl
-            ->seturl('https://api.openagenda.com/v1/requestAccessToken')
+            ->seturl(self::APIROOTURL . 'requestAccessToken')
             ->setPost([
                 'grant_type' => 'authorization_code',
                 'code' => $this->getSecretKey(),
@@ -266,7 +268,7 @@ class ApiOpenAgenda
     public function publishLocation($nonce,$event)
     {
         $this->curl
-            ->setUrl("https://api.openagenda.com/v1/locations")
+            ->setUrl(self::APIROOTURL . 'locations')
             ->setPost([
                 'access_token' => $this->getToken(),
                 'nonce' => $nonce,
@@ -330,7 +332,7 @@ class ApiOpenAgenda
                 'timeEnd' => $evtDate->getTimeEnd()->format('H:i'),
             ];
         }
-        $this->curl->setUrl("https://api.openagenda.com/v1/events");
+        $this->curl->setUrl(self::APIROOTURL . 'events');
         $this->curl->setPost([
             'access_token' => $this->getToken(),
             'nonce' => $nonce + 1,
@@ -348,7 +350,7 @@ class ApiOpenAgenda
         $refData = [
             'event_uid' => $event_uid,
         ];
-        $this->curl->setUrl("https://api.openagenda.com/v1/agendas/".$this->getAgendaUid()."/events");
+        $this->curl->setUrl(self::APIROOTURL . 'agendas/' . $this->getAgendaUid() . '/events');
         $this->curl->setPost([
             'access_token' => $this->getToken(),
             'nonce' => $nonce + 2,

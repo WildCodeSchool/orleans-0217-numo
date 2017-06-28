@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use NumoBundle\Entity\Category;
+use NumoBundle\Entity\PricingInfo;
 
 class EventType extends AbstractType
 {
@@ -30,7 +32,7 @@ class EventType extends AbstractType
                 'required' => false,
             ])
             ->add('tags', EntityType::class, [
-                'class' => 'NumoBundle:Category',
+                'class' => Category::class,
                 'choice_label' => 'name',
                 'required' => true,
             ])
@@ -53,7 +55,7 @@ class EventType extends AbstractType
                 'required' => false,
             ])
             ->add('pricingInfo', EntityType::class, [
-                'class' => 'NumoBundle:PricingInfo',
+                'class' => PricingInfo::Class,
                 'choice_label' => 'pricing',
                 'required' => true,
             ])
