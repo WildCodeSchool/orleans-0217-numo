@@ -34,17 +34,60 @@
 
                     <td class="admin">{{ user.roles.0 }}</td>
                     <td class="admin">
-                        <a href="{{ path('memberstatus_index', { 'id': user.id }) }}"><button type="button" value="MODIFIER" class="pull-right">MODIFIER</button></a>
+                        {#<select>#}
+                            {#<option>ROLE_USER</option>#}
+                            {#<option>ROLE_ADHERENT</option>#}
+                            {#<option>ROLE_MODERATOR</option>#}
+                            {#<option>ROLE_ADMIN</option>#}
+                        {#</select>#}
+                        {#<input type="submit" value="Ok">#}
 
+                        {#{{ form_start(form) }}#}
+                        {#<div class="form-hidden">{{ form_label(form.Roles) }}</div>#}
+                        {#{{ form_widget(form.Roles) }}#}
+                        {#{{ form_widget(form.Ok) }}#}
+                        {#{{ form_end(form) }}#}
+
+                        <a data-toggle="modal" href="#promote"><button type="button" value="MODIFIER" class="pull-right">PROMOUVOIR</button></a>
+                        <div class="modal fade" id="promote">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">Promouvoir {{ user.name }} {{ user.firstname }}</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        {#{{ form_start(form) }}#}
+                                        {#<div class="form-hidden">{{ form_label(form.Roles) }}</div>#}
+                                        {#{{ form_widget(form.Roles) }}#}
+                                        {#{{ form_widget(form.Ok) }}#}
+                                        {#{{ form_end(form) }}#}
+                                        {#<form action="{{ path('membertrust', {'id': user.id}) }}" method="get">#}
+                                            {#<select>#}
+                                                {#<option>ROLE_USER</option>#}
+                                                {#<option>ROLE_ADHERENT</option>#}
+                                                {#<option>ROLE_MODERATOR</option>#}
+                                                {#<option>ROLE_ADMIN</option>#}
+                                            {#</select>#}
+                                            {#<input type="submit" value="Ok">#}
+                                        {#</form>#}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
                     </td>
+
+
                 </tr>
             {% endfor %}
             <hr>
             </tbody>
         </table>
-
-
-
     </div>
+
+
 
 {% endblock %}

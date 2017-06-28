@@ -27,17 +27,27 @@ class UserPromoteController extends Controller
      * Lists all pageContent entities.
      *
      * @Route("/", name="memberstatus_index")
-     * @Method("GET")
+     * @Method({"POST", "GET"})
      */
 
-    public function indexAction()
+    public function indexAction(Request $request, User $user)
     {
-        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm('NumoBundle\Form\PromoteType', $user);
+        $form->handleRequest($request);
 
+        if ($form->isValid() && $form->isSubmitted()) {
+//            $em = $this->getDoctrine()->getManager();
+//            $user->addRole('ROLE_ADHERENT');
+//            $em->flush();
+            $this->getDoctrine()->getManager()->flush();
+        }
+
+        $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository('NumoBundle:User')->findAll();
 
         return $this->render('userpromote/index.html.twig', [
             'users' => $users,
+            'form' => $form->createView(),
         ]);
 
     }
@@ -58,7 +68,18 @@ class UserPromoteController extends Controller
         $em->flush();
 
         return $this->redirectToRoute('memberstatus_index');
+    }
 
+    /**
+     *@Route("/{id}", name="memberpromote")
+     *
+     */
+    public function promoteAction(User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user->addRole('ROLE_ADHERENT');
+        $em->flush();
 
+        return $this->redirectToRoute('memberstatus_index');
     }
 }
