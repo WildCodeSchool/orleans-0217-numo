@@ -357,11 +357,32 @@ fin admin
     color: darkgray;
 }
 
+/*------------ bar color------------*/
+
+.barreRed{
+    background-color: #FC0606;
+}
+
+.barrePurple{
+    background-color: #97258D;
+}
+
+.barreGreen{
+    background-color: #8CC63C;
+}
+
+.barreBlue{
+    background-color: #005897;
+}
+
+.barreYellow{
+    background-color: #CADB2A;
+}
+
 div.separation {
     margin: 20px 0px;
     width: 100%;
-    height: 4px;
-    background-color: #CCCCCC;
+    height: 1px;
 }
 
 .profileUser{
@@ -408,5 +429,25 @@ div.separation {
     /*font-size: 14px;*/
     /*vertical-align: text-bottom;*/
 /*}*/
+
+
+
+/*------------nav bar in hover------------*/
+
+
+a.hoverAssociation:hover {color: #FC0606 !important;}
+a.hoverAgenda:hover {color: #97258D !important;}
+a.hoverMembres:hover {color: #8CC63C !important;}
+a.hoverAdherer:hover {color: #005897 !important;}
+a.hoverContact:hover {color: #CADB2A !important;}
+
+
+.navWhite{
+    background-color: white !important;
+
+}
+
+
+
 
 

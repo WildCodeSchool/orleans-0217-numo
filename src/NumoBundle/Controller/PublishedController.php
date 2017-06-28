@@ -2,6 +2,7 @@
 
 namespace NumoBundle\Controller;
 
+use NumoBundle\Entity\Company;
 use NumoBundle\Entity\Published;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -42,11 +43,23 @@ class PublishedController extends Controller
         $published = new Published();
         $form = $this->createForm('NumoBundle\Form\PublishedType', $published);
         $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $company= $em->getRepository('NumoBundle:Company')->find(1);
+        $events=$em->getRepository('NumoBundle:Event')->findAll();
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($published);
             $em->flush();
+
+            $confirmation = \Swift_Message::newInstance()
+                ->setSubject('Demande de confirmation pour publier un événement sur numo')
+                ->setTo($company->getContactEmail())
+                ->setFrom($company->getContactEmail())
+                ->setBody($this->renderView('Emails/registration.html.twig', array('events' => $events)), 'text/html');
+
+            $this->get('mailer')->send($confirmation);
 
             return $this->redirectToRoute('published_show', array('id' => $published->getId()));
         }

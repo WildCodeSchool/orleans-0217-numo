@@ -2,6 +2,7 @@
 
 namespace NumoBundle\Controller;
 
+use NumoBundle\Entity\Event;
 use NumoBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -27,6 +28,9 @@ class ListMemberController extends Controller
      */
     public function showProfilMember(User $user)
     {
+//        $em = $this->getDoctrine()->getManager();
+//        $events= $em->getRepository('NumoBundle:Event')->findBy($id);
+
         return $this->render('NumoBundle:site:profilMember.html.twig', [
             'user' => $user,
         ]);
