@@ -1,9 +1,12 @@
 {% extends 'layoutAdmin.html.twig' %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styleonoffbutton.css') }}">
+{% endblock %}
 
 {% block body %}
     <div class="container font-lato">
-        <h1 class="titreadmin font-lato">CONTENUS</h1>
+        <h1 class="titreadmin font-lato">MEMBRES</h1>
         <table>
             <thead>
             <tr class="text-center admin">
@@ -14,17 +17,24 @@
                 <th class="text-center">ACTION</th>
             </tr>
             </thead>
-        </table>
-        <table>
             <tbody>
             {% for user in users %}
                 <tr>
                     <td class="admin">{{ user.name }}</td>
                     <td class="admin">{{ user.firstname }}</td>
-                    <td class="admin">{{ user.trust }}</td>
+                    <td class="admin">
+                        {% if user.trust == 0 %}
+                        {% set trustcolor='red' %}
+                        {% else %}
+                        {% set trustcolor = 'green' %}
+                        {% endif %}
+                        <a href="{{ path('membertrust', {'id': user.id}) }}">
+                            <button class="onoff {{ trustcolor }}"></button></a>
+                    </td>
+
                     <td class="admin">{{ user.roles.0 }}</td>
                     <td class="admin">
-                        <a href="{{ path('pagecontent_edit', { 'id': user.id }) }}"><button type="button" value="MODIFIER" class="pull-right">MODIFIER</button></a>
+                        <a href="{{ path('memberstatus_index', { 'id': user.id }) }}"><button type="button" value="MODIFIER" class="pull-right">MODIFIER</button></a>
 
                     </td>
                 </tr>
@@ -33,8 +43,8 @@
             </tbody>
         </table>
 
-        <br/>
-        <a href="{{ path('pagecontent_new') }}"><button type="button" value="CREATION DE CONTENU">+</button></a>
+
+
     </div>
 
 {% endblock %}

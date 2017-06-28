@@ -1,5 +1,3 @@
-{% extends 'layout.html.twig' %}
-
 {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
 
 {% trans_default_domain 'FOSUserBundle' %}
@@ -72,7 +70,7 @@
                  {% if is_granted('ROLE_ADHERENT') %}
                      <div class="form-group">
                          {{ form_label(form.freeText) }}
-                         <div class="col-sm-6">
+                         <div class="col-sm-6" id="summernote">
                              {{ form_widget(form.freeText) }}
                          </div>
                          {{ form_errors(form.freeText) }}
@@ -188,9 +186,4 @@
             </div>
         </div>
     </header>
-
-
-
-
-
 {% endblock %}
