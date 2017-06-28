@@ -3,6 +3,7 @@
 namespace NumoBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use NumoBundle\Entity\Company;
@@ -20,6 +21,9 @@ class CompanyType extends AbstractType
             ->add('contactEmail', TextType::class, [
                 'label' => 'Email',
             ])
+            ->add('phone', TextType::class, [
+                'label' => 'Téléphone',
+            ])
             ->add('city', TextType::class, [
                 'label' => 'Ville',
             ])
@@ -29,15 +33,25 @@ class CompanyType extends AbstractType
             ->add('address', TextType::class, [
                 'label' => 'Adresse',
             ])
-            ->add('phone', TextType::class, ['
-            label' => 'Téléphone',
+            ->add('presentationTitle', TextType::class, [
+                'label' => 'Titre (présentation de l\'association)',
+            ])
+            ->add('presentationContent', TextareaType::class, [
+                'label' => 'Contenu (présentation de l\'association)',
+            ])
+            ->add('adherentTitle', TextType::class, [
+                'label' => 'Titre (adhésion à Num\'O)',
+            ])
+            ->add('adherentContent', TextareaType::class, [
+                'label' => 'Contenu (adhésion à Num\'O)',
             ])
             ->add('imageUrl', FileType::class, [
-                'label' => 'Image',
+                'label'=>'Modifier le logo de Num\'O',
             ])
             ->add('pdf', FileType::class, [
-                'label' => 'RIB (PDF File)',
-            ]);
+                'label' => 'Modifier le RIB de l\'association',
+            ])
+            ;
     }
     
     /**
@@ -53,10 +67,10 @@ class CompanyType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+/*    public function getBlockPrefix()
     {
         return 'numobundle_company';
     }
-
+*/
 
 }

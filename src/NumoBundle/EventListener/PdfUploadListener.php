@@ -15,14 +15,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use NumoBundle\Entity\Company;
 use NumoBundle\Services\UserUploader;
 
-
-class NumoUploadListener
+class PdfUploadListener
 {
     private $uploader;
 
     public function __construct(UserUploader $fileUpload)
     {
         $this->uploader = $fileUpload;
+
     }
     public function prePersist(LifecycleEventArgs $args)
     {
@@ -40,11 +40,9 @@ class NumoUploadListener
         if (!$entity instanceof Company) {
             return;
         }
-
-        if ($fileName = $entity->getImageUrl()) {
-            $entity->setImageUrl(new File($this->uploader->getTargetDir().'/'.$fileName));
+        if ($fileName = $entity->getPdf()) {
+            $entity->setPdf(new File($this->uploader->getTargetDir().'/'.$fileName));
         }
-
     }
     public function preRemove(LifecycleEventArgs $args)
     {
@@ -52,11 +50,10 @@ class NumoUploadListener
         if (!$entity instanceof Company) {
             return;
         }
-        if(is_file($entity->getImageUrl())) {
-            unlink($entity->getImageUrl());
+        if(is_file($entity->getPdf())) {
+            unlink($entity->getPdf());
         }
     }
-
     private function uploadFile($entity)
     {
         // upload only works for Product entities
@@ -64,12 +61,12 @@ class NumoUploadListener
             return;
         }
 
-        $file = $entity->getImageUrl();
+        $file = $entity->getPdf();
         // only upload new files
         if (!$file instanceof UploadedFile) {
             return;
         }
         $fileName = $this->uploader->upload($file);
-        $entity->setImageUrl($fileName);
+        $entity->setPdf($fileName);
     }
 }
