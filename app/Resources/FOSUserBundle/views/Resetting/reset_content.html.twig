@@ -1,17 +1,45 @@
-{% extends 'layout.html.twig' %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
 
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% block body %}
-    {{ form_start(form, {
-        'action': path('fos_user_resetting_reset', {'token': token}),
-        'attr': { 'class': 'fos_user_resetting_reset' } }) }}
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
 
-    {{ form_widget(form) }}
+                <h2 id="homeHeading">Modifier le mot de passe</h2>
+                <hr>
 
-    <div>
-        <input type="submit" value="{{ 'resetting.reset.submit'|trans }}" />
-    </div>
-    {{ form_end(form) }}
+                <div style="margin-left: 200px">
+                    {{ form_start(form, {
+                        'action': path('fos_user_resetting_reset', {'token': token}),
+                        'attr': { 'class': 'fos_user_resetting_reset' } }) }}
+
+                    <div class="form-group">
+                        {{ form_label(form.plainPassword.first) }}
+                        <div class="col-sm-5">
+                            {{ form_widget(form.plainPassword.first) }}
+                        </div>
+                        {{ form_errors(form.plainPassword.first) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.plainPassword.second) }}
+                        <div class="col-sm-5">
+                            {{ form_widget(form.plainPassword.second) }}
+                        </div>
+                        {{ form_errors(form.plainPassword.second) }}
+                    </div>
+
+                    <div class="col-sm-6 col-sm-offset-1 text-center">
+                        <input class=" btn btn-default btn-xl sr-button" type="submit" value="{{ 'resetting.reset.submit'|trans }}" />
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+
+            </div>
+        </div>
+    </header>
+
 
 {% endblock %}
