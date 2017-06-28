@@ -34,16 +34,16 @@ class CompanyType extends AbstractType
                 'label' => 'Adresse',
             ])
             ->add('presentationTitle', TextType::class, [
-                'label' => 'Titre (présentation de l\'association)',
+                'label' => 'Présentation de l\'association (titre)',
             ])
             ->add('presentationContent', TextareaType::class, [
-                'label' => 'Contenu (présentation de l\'association)',
+                'label' => 'Présentation de l\'association (contenu)',
             ])
             ->add('adherentTitle', TextType::class, [
-                'label' => 'Titre (adhésion à Num\'O)',
+                'label' => 'Adhérer à Num\'O (titre)',
             ])
             ->add('adherentContent', TextareaType::class, [
-                'label' => 'Contenu (adhésion à Num\'O)',
+                'label' => 'Adhérer à Num\'O (contenu)',
             ])
             ->add('imageUrl', FileType::class, [
                 'label'=>'Modifier le logo de Num\'O',
