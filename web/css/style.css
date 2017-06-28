@@ -83,22 +83,22 @@ footer {
 }
 
 .btnOrange {
-    background-color: #d9534f !important;
-    border-color: #d9534f !important;
+    background-color:#FC0606 !important;
+    border-color:#FC0606 !important;
     color: #FFFFFF !important;
 }
 
 .bg-2 {
-    background-color: #d9534f;
+    background-color: #FC0606;
     color: white;
     height: 250px;
     padding-top: 30px;
 }
 
 .btnwhite{
-    color: #d9534f;
+    color: #FC0606;
     background-color: white;
-    border-color: #d9534f !important;
+    border-color: #FC0606 !important;
 }
 
 
@@ -187,18 +187,18 @@ footer {
 
 .lineRed{
     height: 1px;
-    background-color: #d9534f;
+    background-color: #FC0606;
 }
 
 .carousel-control.right, .carousel-control.left {
     background-image: none !important;
-    color: #d9534f !important;
+    color: #FC0606 !important;
 }
 .carousel-indicators li {
-    border-color: #d9534f !important;
+    border-color: #FC0606 !important;
 }
 .carousel-indicators li.active {
-    background-color: #d9534f;
+    background-color: #FC0606;
 }
 .item h4 {
     font-size: 19px;
@@ -209,7 +209,7 @@ footer {
 }
 
 .orange{
-    border-color: red;
+    border-color: #FC0606;
 }
 
 
@@ -342,7 +342,7 @@ fin admin
 }
 
 .AlphabetNav .active {
-    background: #f46353;
+    background:  #8CC63C ;
     color: white;
 }
 
@@ -451,7 +451,9 @@ a.hoverContact:hover {color: #CADB2A !important;}
 /*---------- index color-----------*/
 
 
-
+.btnGreen{
+    background-color:  #8CC63C !important;
+}
 .btnRed{
     background-color: #FC0606 !important;
 }

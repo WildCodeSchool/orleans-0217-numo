@@ -39,10 +39,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             <li>
-                                <a class="glyphicon glyphicon-user" aria-hidden="true"> {{ app.user.name }} {{ app.user.firstname }}</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('fos_user_profile_show') }}" class="glyphicon glyphicon-user"> Profil</a>
+                                <a href="{{ path('fos_user_profile_show') }}" class="glyphicon glyphicon-user"> {{ app.user.name }} {{ app.user.firstname }}</a>
                             </li>
                             <li>
                                 <a href="{{ path('fos_user_security_logout') }}" class="glyphicon glyphicon-log-in"> Deconnexion</a>

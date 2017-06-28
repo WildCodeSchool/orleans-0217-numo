@@ -28,9 +28,6 @@ class ListMemberController extends Controller
      */
     public function showProfilMember(User $user)
     {
-//        $em = $this->getDoctrine()->getManager();
-//        $events= $em->getRepository('NumoBundle:Event')->findBy($id);
-
         return $this->render('NumoBundle:site:profilMember.html.twig', [
             'user' => $user,
         ]);
