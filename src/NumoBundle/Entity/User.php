@@ -183,6 +183,11 @@ class User extends BaseUser
     protected $linkedin;
 
     /**
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="author")
+     */
+    protected $events;
+
+    /**
      * @ORM\OneToMany(targetEntity="Published", mappedBy="author")
      *
      */
