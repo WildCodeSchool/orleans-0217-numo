@@ -6,6 +6,7 @@ namespace NumoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Event
@@ -27,12 +28,14 @@ class Event
     /**
      * @var int
      *
-     * @ORM\Column(name="status", type="integer")
+     * @ORM\Column(name="rejected", type="integer")
      */
-    private $status;
+    private $rejected;
 
     /**
      * @var string
+     *
+     * @Assert\Image()
      *
      * @ORM\Column(name="image", type="string", length=255)
      */
@@ -41,59 +44,57 @@ class Event
     /**
      * @var string
      *
-     * @Assert\NotBlank(message=" - Le nom doit être renseigné.")
+     * @ORM\Column(name="title", type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Le nom doit être renseigné.")
      * @Assert\Length(
      *      max = 100,
-     *      maxMessage = " - Le texte saisi ne doit pas excéder {{ limit }} caractères")
-     *
-     * @ORM\Column(name="title", type="string", length=255)
+     *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
      */
     private $title;
 
     /**
      * @var string
      *
-     * @Assert\NotBlank(message=" - Une description minimum doit être indiquée.")
-     *
      * @ORM\Column(name="description", type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Une description minimum doit être indiquée.")
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="freeText", type="text")
+     * @ORM\Column(name="freeText", type="text", nullable=true)
      */
     private $freeText;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="tags", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="events")
      */
     private $tags;
 
     /**
      * @var string
      *
-     * @Assert\NotBlank(message=" - Ce champ doit être renseigné.")
+     * @ORM\Column(name="placename", type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Ce champ doit être renseigné.")
      * @Assert\Length(
      *      max = 100,
-     *      maxMessage = " - Le texte saisi ne doit pas excéder {{ limit }} caractères")
-     *
-     * @ORM\Column(name="placename", type="string", length=255)
+     *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
      */
     private $placename;
 
     /**
      * @var string
      *
-     * @Assert\NotBlank(message=" - Une adresse valide doit être renseignée.")
-     * @Assert\Length(
-     *      max = 200,
-     *      maxMessage = " - Le texte saisi ne doit pas excéder {{ limit }} caractères")
      *
      * @ORM\Column(name="address", type="string", length=255)
+     * @Assert\NotBlank(message="Une adresse valide doit être renseignée.")
+     * @Assert\Length(
+     *      max = 200,
+     *      maxMessage = "Le texte saisi ne doit pas excéder {{ limit }} caractères")
      */
     private $address;
 
@@ -114,22 +115,38 @@ class Event
     /**
      * @var string
      *
-     * @ORM\Column(name="ticketLink", type="string", length=255)
+     * @ORM\Column(name="ticketLink", type="string", length=255, nullable=true)
      */
     private $ticketLink;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="pricingInfo", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="PricingInfo", inversedBy="events")
      */
     private $pricingInfo;
 
     /**
-     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event")
+     * @var \DateTime
+     *
+     * @ORM\Column(name="creationdate", type="datetime", nullable=true)
+     */
+    private $creationDate;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="events")
+     */
+    private $author;
+
+    /**
+     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"persist", "remove"})
      */
     private $evtDates;
 
+
+    public function __construct()
+    {
+        $this->evtDates = new ArrayCollection();
+
+    }
 
     /**
      * Get id
@@ -142,27 +159,27 @@ class Event
     }
 
     /**
-     * Set status
+     * Set rejected
      *
-     * @param integer $status
+     * @param integer $rejected
      *
      * @return Event
      */
-    public function setStatus($status)
+    public function setRejected($rejected)
     {
-        $this->status = $status;
+        $this->rejected = $rejected;
 
         return $this;
     }
 
     /**
-     * Get status
+     * Get rejected
      *
      * @return int
      */
-    public function getStatus()
+    public function getRejected()
     {
-        return $this->status;
+        return $this->rejected;
     }
 
     /**
@@ -259,30 +276,6 @@ class Event
     public function getFreeText()
     {
         return $this->freeText;
-    }
-
-    /**
-     * Set tags
-     *
-     * @param string $tags
-     *
-     * @return Event
-     */
-    public function setTags($tags)
-    {
-        $this->tags = $tags;
-
-        return $this;
-    }
-
-    /**
-     * Get tags
-     *
-     * @return string
-     */
-    public function getTags()
-    {
-        return $this->tags;
     }
 
     /**
@@ -406,35 +399,59 @@ class Event
     }
 
     /**
-     * Set pricingInfo
-     *
-     * @param string $pricingInfo
-     *
+     * @return mixed
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param mixed $tags
      * @return Event
      */
-    public function setPricingInfo($pricingInfo)
+    public function setTags($tags)
     {
-        $this->pricingInfo = $pricingInfo;
-
+        $this->tags = $tags;
         return $this;
     }
 
     /**
-     * Get pricingInfo
-     *
-     * @return string
+     * @return mixed
      */
     public function getPricingInfo()
     {
         return $this->pricingInfo;
     }
+
     /**
-     * Constructor
+     * @param mixed $pricingInfo
+     * @return Event
      */
-    public function __construct()
+    public function setPricingInfo($pricingInfo)
     {
-        $this->evtDates = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pricingInfo = $pricingInfo;
+        return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCreationDate()
+    {
+        return $this->creationDate;
+    }
+
+    /**
+     * @param mixed $creationDate
+     * @return Event
+     */
+    public function setCreationDate($creationDate)
+    {
+        $this->creationDate = $creationDate;
+        return $this;
+    }
+
 
     /**
      * Add evtDate
@@ -469,4 +486,24 @@ class Event
     {
         return $this->evtDates;
     }
+
+    /**
+     * @return User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param User $author
+     * @return Event
+     */
+    public function setAuthor(User $author)
+    {
+        $this->author = $author;
+        return $this;
+    }
+
+
 }

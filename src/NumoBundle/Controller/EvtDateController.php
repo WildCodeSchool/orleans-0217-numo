@@ -67,7 +67,7 @@ class EvtDateController extends Controller
     {
         $deleteForm = $this->createDeleteForm($evtDate);
 
-        return $this->render('evtdate/show.html.twig', array(
+        return $this->render('evtdate/showPublished.html.twig', array(
             'evtDate' => $evtDate,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -88,7 +88,9 @@ class EvtDateController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('evtdate_edit', array('id' => $evtDate->getId()));
+            return $this->redirectToRoute('evtdate_edit', array(
+                'id' => $evtDate->getId()
+            ));
         }
 
         return $this->render('evtdate/edit.html.twig', array(

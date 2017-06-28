@@ -1,14 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: fanny
- * Date: 31/05/17
- * Time: 10:29
- */
 
 namespace NumoBundle\Form;
 
-use NumoBundle\Entity\Adress;
 use NumoBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -22,22 +15,55 @@ class ProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', TextType::class, array('label' => 'Nom'));
-        $builder->add('firstname', TextType::class, array('label' => 'Prénom'));
-        $builder->add('description', TextareaType::class, array('label' => 'Description', 'required' => false));
-        $builder->add('imageUrl',FileType::class, array('data_class' => null, 'label' => 'Image', 'required' => false));
-        $builder->add('freeText',TextareaType::class, array('label' => 'Présentation', 'required' => false));
-        $builder->add('phone',TextType::class, array('label' => 'Téléphone', 'required' => false));
-        $builder->add('webSite',TextType::class, array('label' => 'Site Web', 'required' => false));
-        $builder->add('adress',AdressType::class, array('label' => 'Adresse', 'required' => false));
-        $builder->remove('username');
+        $builder
+            ->add('name', TextType::class, [
+                'label' => 'Nom',
+            ])
+            ->add('firstname', TextType::class, [
+                'label' => 'Prénom',
+            ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Description',
+                'required' => false,
+            ])
+            ->add('imageUrl',FileType::class, [
+                'data_class' => null,
+                'label' => 'Image',
+                'required' => false,
+            ])
+            ->add('freeText',TextareaType::class, [
+                'label' => 'Présentation',
+                'required' => false,
+            ])
+            ->add('phone',TextType::class, [
+                'label' => 'Téléphone',
+                'required' => false,
+            ])
+            ->add('webSite',TextType::class, [
+                'label' => 'Site Web',
+                'required' => false,
+            ])
+            ->add('facebook',TextType::class, [
+                'label' => 'Lien Facebook',
+                'required' => false,
+            ])
+            ->add('twitter',TextType::class, [
+                'label' => 'Lien Twitter',
+                'required' => false,
+            ])
+            ->add('linkedin',TextType::class, [
+                'label' => 'Lien Linkedin',
+                'required' => false,
+            ])
+
+            ->remove('username');
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => User::class
-        ));
+        $resolver->setDefaults([
+            'data_class' => User::class,
+        ]);
     }
 
     public function getParent()

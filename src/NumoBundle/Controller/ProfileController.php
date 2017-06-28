@@ -54,8 +54,6 @@ class ProfileController extends \FOS\UserBundle\Controller\ProfileController
         $formFactory = $this->get('fos_user.profile.form.factory');
 
         $form = $formFactory->createForm();
-        var_dump($user);
-        die();
         $form->setData($user);
 
         $form->handleRequest($request);
@@ -80,9 +78,9 @@ class ProfileController extends \FOS\UserBundle\Controller\ProfileController
             return $response;
         }
 
-        return $this->render('@FOSUser/Profile/edit.html.twig', array(
+        return $this->render('@FOSUser/Profile/edit.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
-        ));
+        ]);
     }
 }

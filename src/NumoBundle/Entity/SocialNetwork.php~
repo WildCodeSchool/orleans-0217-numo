@@ -35,8 +35,9 @@ class SocialNetwork
      */
     private $name;
 
+
     /**
-     * @ORM\ManyToMany(targetEntity="SnLink", inversedBy="socialNetworks")
+     * @ORM\ManyToMany(targetEntity="SocialNetworkLink", inversedBy="socialNetworks")
      *
      */
     protected $links;
@@ -99,5 +100,46 @@ class SocialNetwork
     {
         return $this->name;
     }
-}
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->links = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add link
+     *
+     * @param \NumoBundle\Entity\SnLink $link
+     *
+     * @return SocialNetwork
+     */
+    public function addLink(\NumoBundle\Entity\SnLink $link)
+    {
+        $this->links[] = $link;
+
+        return $this;
+    }
+
+    /**
+     * Remove link
+     *
+     * @param \NumoBundle\Entity\SnLink $link
+     */
+    public function removeLink(\NumoBundle\Entity\SnLink $link)
+    {
+        $this->links->removeElement($link);
+    }
+
+    /**
+     * Get links
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLinks()
+    {
+        return $this->links;
+    }
+}

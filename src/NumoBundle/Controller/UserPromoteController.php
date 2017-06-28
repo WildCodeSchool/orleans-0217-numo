@@ -36,9 +36,29 @@ class UserPromoteController extends Controller
 
         $users = $em->getRepository('NumoBundle:User')->findAll();
 
-        return $this->render('userpromote/index.html.twig', array(
+        return $this->render('userpromote/index.html.twig', [
             'users' => $users,
-        ));
+        ]);
+
+    }
+
+    /**
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/{id}", name="membertrust")
+     */
+    public function trustAction(User $user)
+    {
+        if ($user->getTrust() === 0){
+            $user->setTrust(1);
+        } else {
+            $user->setTrust(0);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return $this->redirectToRoute('memberstatus_index');
+
 
     }
 }

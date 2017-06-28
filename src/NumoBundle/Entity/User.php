@@ -108,7 +108,6 @@ class User extends BaseUser
     /**
      * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
      *
-     * @Assert\NotBlank(message="Entrez votre numéro de téléphone.", groups={"Registration", "Profile"})
      * @Assert\Length(
      *     min=3,
      *     max=50,
@@ -120,21 +119,85 @@ class User extends BaseUser
     protected $phone;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @ORM\ManyToOne(targetEntity="Adress", inversedBy="users")
+     * @ORM\Column(type="string", length=250, nullable=true, options={"default" : null})
      *
+     * @Assert\Length(
+     *     max=250,
+     *     maxMessage="L\'adresse saisie est trop longue"
+     * )
      */
-    protected $adress;
+    protected $address;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @ORM\OneToMany(targetEntity="SnLink", mappedBy="user")
+     * @ORM\Column(type="string", length=7, nullable=true, options={"default" : null})
+     *
+     * @Assert\Length(
+     *     min=5,
+     *     max=7,
+     *     minMessage="Le code postal est trop court.",
+     *     maxMessage="Le code postal est trop long."
+     * )
+     */
+    protected $postalCode;
+
+    /**
+     * @ORM\Column(type="string", length=250, nullable=true, options={"default" : null})
+     *
+     * @Assert\Length(
+     *     min=3,
+     *     max=250,
+     *     minMessage="Le texte saisi est trop court.",
+     *     maxMessage="Le texte saisi est trop long."
+     * )
+     */
+    protected $city;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
+     *
+     * @Assert\Length(
+     *     min=3,
+     *     minMessage="Le numéro est trop court.",
+     * )
+     */
+    protected $facebook;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
+     *
+     * @Assert\Length(
+     *     min=3,
+     *     minMessage="Le numéro est trop court.",
+     * )
+     */
+    protected $twitter;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
+     *
+     * @Assert\Length(
+     *     min=3,
+     *     minMessage="Le numéro est trop court.",
+     * )
+     */
+    protected $linkedin;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="author")
+     */
+    protected $events;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Published", mappedBy="author")
      *
      */
-    protected $snLinks;
+    protected $publications;
 
-
-
+    /**
+     * @ORM\OneToMany(targetEntity="Published", mappedBy="moderator")
+     *
+     */
+    protected $moderations;
 
     /**
      * @return mixed
@@ -233,7 +296,6 @@ class User extends BaseUser
     }
 
 
-
     /**
      * Set webSite
      *
@@ -307,60 +369,197 @@ class User extends BaseUser
     }
 
     /**
-     * Set adress
+     * @return mixed
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param mixed $address
+     * @return User
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param mixed $city
+     * @return User
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPostalCode()
+    {
+        return $this->postalCode;
+    }
+
+    /**
+     * @param mixed $postalCode
+     * @return User
+     */
+    public function setPostalCode($postalCode)
+    {
+        $this->postalCode = $postalCode;
+        return $this;
+    }
+
+    /**
+     * Add publication
      *
-     * @param \NumoBundle\Entity\Adress $adress
+     * @param \NumoBundle\Entity\Published $publication
      *
      * @return User
      */
-    public function setAdress(\NumoBundle\Entity\Adress $adress = null)
+    public function addPublication(\NumoBundle\Entity\Published $publication)
     {
-        $this->adress = $adress;
+        $this->publications[] = $publication;
 
         return $this;
     }
 
     /**
-     * Get adress
+     * Remove publication
      *
-     * @return \NumoBundle\Entity\Adress
+     * @param \NumoBundle\Entity\Published $publication
      */
-    public function getAdress()
+    public function removePublication(\NumoBundle\Entity\Published $publication)
     {
-        return $this->adress;
+        $this->publications->removeElement($publication);
     }
 
     /**
-     * Add snLink
-     *
-     * @param \NumoBundle\Entity\SnLink $snLink
-     *
-     * @return User
-     */
-    public function addSnLink(\NumoBundle\Entity\SnLink $snLink)
-    {
-        $this->snLinks[] = $snLink;
-
-        return $this;
-    }
-
-    /**
-     * Remove snLink
-     *
-     * @param \NumoBundle\Entity\SnLink $snLink
-     */
-    public function removeSnLink(\NumoBundle\Entity\SnLink $snLink)
-    {
-        $this->snLinks->removeElement($snLink);
-    }
-
-    /**
-     * Get snLinks
+     * Get publications
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSnLinks()
+    public function getPublications()
     {
-        return $this->snLinks;
+        return $this->publications;
+    }
+
+    /**
+     * Add moderation
+     *
+     * @param \NumoBundle\Entity\Published $moderation
+     *
+     * @return User
+     */
+    public function addModeration(\NumoBundle\Entity\Published $moderation)
+    {
+        $this->moderations[] = $moderation;
+
+        return $this;
+    }
+
+    /**
+     * Remove moderation
+     *
+     * @param \NumoBundle\Entity\Published $moderation
+     */
+    public function removeModeration(\NumoBundle\Entity\Published $moderation)
+    {
+        $this->moderations->removeElement($moderation);
+    }
+
+    /**
+     * Get moderations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getModerations()
+    {
+        return $this->moderations;
+    }
+
+
+    /**
+     * Set facebook
+     *
+     * @param string $facebook
+     *
+     * @return User
+     */
+    public function setFacebook($facebook)
+    {
+        $this->facebook = $facebook;
+
+        return $this;
+    }
+
+    /**
+     * Get facebook
+     *
+     * @return string
+     */
+    public function getFacebook()
+    {
+        return $this->facebook;
+    }
+
+    /**
+     * Set twitter
+     *
+     * @param string $twitter
+     *
+     * @return User
+     */
+    public function setTwitter($twitter)
+    {
+        $this->twitter = $twitter;
+
+        return $this;
+    }
+
+    /**
+     * Get twitter
+     *
+     * @return string
+     */
+    public function getTwitter()
+    {
+        return $this->twitter;
+    }
+
+    /**
+     * Set linkedin
+     *
+     * @param string $linkedin
+     *
+     * @return User
+     */
+    public function setLinkedin($linkedin)
+    {
+        $this->linkedin = $linkedin;
+
+        return $this;
+    }
+
+    /**
+     * Get linkedin
+     *
+     * @return string
+     */
+    public function getLinkedin()
+    {
+        return $this->linkedin;
     }
 }

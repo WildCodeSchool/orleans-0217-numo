@@ -3,6 +3,7 @@
 namespace NumoBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use NumoBundle\Entity\Company;
@@ -16,13 +17,41 @@ class CompanyType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('contactEmail', TextType::class, array('label' => 'Email'));
-        $builder->add('city', TextType::class, array('label' => 'Ville'));
-        $builder->add('postalCode', TextType::class, array('label' => 'Code Postal'));
-        $builder->add('adress', TextType::class, array('label' => 'Adresse'));
-        $builder->add('phone', TextType::class, array('label' => 'Téléphone'));
-//        $builder->add('imageUrl', FileType::class, array('label' => 'Image'));
-        $builder->add('pdf', FileType::class, array('label' => 'RIB (PDF File)'));
+        $builder
+            ->add('contactEmail', TextType::class, [
+                'label' => 'Email',
+            ])
+            ->add('phone', TextType::class, [
+                'label' => 'Téléphone',
+            ])
+            ->add('city', TextType::class, [
+                'label' => 'Ville',
+            ])
+            ->add('postalCode', TextType::class, [
+                'label' => 'Code Postal',
+            ])
+            ->add('address', TextType::class, [
+                'label' => 'Adresse',
+            ])
+            ->add('presentationTitle', TextType::class, [
+                'label' => 'Titre (présentation de l\'association)',
+            ])
+            ->add('presentationContent', TextareaType::class, [
+                'label' => 'Contenu (présentation de l\'association)',
+            ])
+            ->add('adherentTitle', TextType::class, [
+                'label' => 'Titre (adhésion à Num\'O)',
+            ])
+            ->add('adherentContent', TextareaType::class, [
+                'label' => 'Contenu (adhésion à Num\'O)',
+            ])
+            ->add('imageUrl', FileType::class, [
+                'label'=>'Modifier le logo de Num\'O',
+            ])
+            ->add('pdf', FileType::class, [
+                'label' => 'Modifier le RIB de l\'association',
+            ])
+            ;
     }
     
     /**
@@ -30,18 +59,18 @@ class CompanyType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Company::class,
-        ));
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+/*    public function getBlockPrefix()
     {
         return 'numobundle_company';
     }
-
+*/
 
 }

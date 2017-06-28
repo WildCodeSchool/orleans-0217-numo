@@ -3,13 +3,13 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}NUM'O{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
-            <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/summernote.css') }}">
             <link rel="stylesheet" href="{{ asset('https://fonts.googleapis.com/css?family=Lato:300') }}">
-            <link rel="stylesheet" href="{{ asset('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.css') }}">
-
+            <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         {% endblock %}
 
 
@@ -19,14 +19,18 @@
     <body id="page-top">
         {% block header %}{% endblock %}
 
-        {% block body %}{% endblock %}
+        {% block body %}
+        {% block fos_body %}
+            {% block fos_user_content %}
+            {% endblock %}
+        {% endblock %}
+        {% endblock %}
 
-        {% block footer %}{% endblock %}
+        {% block footer %}
+        {% endblock %}
 
         {% block javascripts %}
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-                    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-                    crossorigin="anonymous"></script>
+            <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap.js') }}"></script>
         {% endblock %}
     </body>

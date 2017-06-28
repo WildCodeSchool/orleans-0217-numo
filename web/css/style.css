@@ -1,3 +1,5 @@
+/* HEADER */
+
 header {
     margin-top:-1%;
     width: 100%;
@@ -23,7 +25,7 @@ header .header-content .header-content-inner h1 {
     margin-bottom: 0;
     font-size: 30px;
 }
-    header .header-content .header-content-inner hr {
+header .header-content .header-content-inner hr {
     margin: 30px auto;
 }
 header .header-content .header-content-inner p {
@@ -51,14 +53,14 @@ header .header-content .header-content-inner p {
         margin-right: auto;
     }
 }
-.navbar-logo {
-    width: 100px;
-}
 
 body {
     padding-top: 50px;
 }
-/* ---------------------------- */
+
+.navbar-logo {
+    width: 100px;
+}
 
 footer {
     height: 100px;
@@ -74,6 +76,13 @@ footer {
     background-position: center;
     height: 100px;
     padding-top: 500px;
+}
+
+div.separation {
+    margin: 20px 0px;
+    width: 100%;
+    height: 4px;
+    background-color: #CCCCCC;
 }
 
 .bg-1 {
@@ -114,11 +123,6 @@ footer {
     background-repeat: no-repeat;
     background-position: center;
     height: 220px !important;
-}
-
-.imageEvents{
-    width: 640px !important;
-    height:400px !important;
 }
 
 .bg-4 {
@@ -218,9 +222,6 @@ footer {
     border-color: red;
 }
 
-.companyBottom{
-    padding-bottom: 33px;
-}
 
 .footer{
     padding-bottom: 80px;
@@ -236,8 +237,13 @@ footer {
     margin-top: 5%;
 }
 
-/*
-style admin*/
+/*    ADMIN      */
+
+.logo-title{
+    margin-top: 10%;
+    margin-bottom: 10%;
+
+}
 
 .navadmin{
     font-weight: 500;
@@ -283,7 +289,9 @@ td{
     margin-top: 40px;
 }
 button{
+    margin-left: 2% !important;
 }
+
 .modifadmin{
     font-size: 1em;
     margin-top: 3%;
@@ -296,19 +304,17 @@ button{
 table{
     margin-bottom: 5%;
 }
-form{
-    margin-top: 5%;
-}
 .admin{
     margin-bottom: 10% !important;
     vertical-align: 5%;
 }
+thead{
+    height: 100px;
+}
 
-/*
-fin admin
-*/
+/*    COMPANY   */
 .company{
-    padding-bottom: 190px;
+    padding-bottom: 150px;
     padding-top: 50px;
 }
 
@@ -316,11 +322,14 @@ fin admin
     padding-top: 30px;
 }
 
+/*    COMTACT   */
+
 .contact{
-    padding-bottom:220px;
+    padding-bottom:120px;
     padding-top: 50px;
 }
 
+/*    MEMBER LIST   */
 
 .hrMembre{
     border-color: black;
@@ -330,6 +339,10 @@ fin admin
     padding-top: 20px;
     height:231px !important;
     /*width:210px !important;*/
+}
+
+.logo-sn-memberlist {
+    height: 35px;
 }
 
 
@@ -364,13 +377,58 @@ fin admin
     color: darkgray;
 }
 
-div.separation {
-    margin: 20px 0px;
-    width: 100%;
-    height: 4px;
-    background-color: #CCCCCC;
+/*    PROFIL   */
+
+.profileUser{
+    padding-top: 30px;
+}
+
+.iconContact{
+    padding-left: 50px;
+    padding-top: 30px;
 }
 
 .img-partner{
     height: 120px;
 }
+
+
+
+/*     HIDDEN TYPE FORM         */
+
+.form-hidden {
+    display: none;
+}
+
+/* ------- Agenda View ------- */
+/*#agendaView > table{*/
+    /*width: 100%;*/
+    /*min-height: 500px;*/
+    /*background: #FFF;*/
+
+/*}*/
+
+/*#agendaView .fc-agendaView-event-start,*/
+/*#agendaView .fc-agendaView-event-end{*/
+    /*width: 20%;*/
+/*}*/
+
+/*#agendaView .fc-agendaView-event-title{*/
+    /*width: 60%;*/
+/*}*/
+/*#agendaView th{*/
+    /*height: 30px;*/
+    /*font-size: 14px;*/
+    /*vertical-align: text-bottom;*/
+    /*font-weight: bold;*/
+    /*padding: 10px 0 0 10px;*/
+/*}*/
+
+/*#agendaView td{*/
+    /*height: 30px;*/
+    /*padding: 10px 0 0 10px;*/
+    /*font-size: 14px;*/
+    /*vertical-align: text-bottom;*/
+/*}*/
+
+

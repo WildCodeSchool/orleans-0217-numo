@@ -1,7 +1,5 @@
 <?php
 
-// --- src/NumoBundle/Services/Curl.php ---
-
 namespace NumoBundle\Services;
 
 

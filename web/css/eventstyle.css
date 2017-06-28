@@ -1,9 +1,24 @@
-
-/* --- web/css/eventstyle.css --- */
-
-
-
 /* --- Formulaires --- */
+h1 {
+    font-weight: bold;
+    font-size: 30px;
+}
+.grey-text {
+    color: lightgrey;
+}
+.strong-text {
+    font-weight: bold;
+    color: #0000F0;
+}
+a {
+    text-decoration: none !important;
+    color: black !important;
+    z-index: 10;
+}
+a:link, a:visited, a:active {
+}
+a:hover {
+}
 .bg-form {
     background-size: cover;
     background-position: center;
@@ -11,10 +26,6 @@
     text-align: center;
     color: white;
     padding: 40px 15px 60px;
-}
-h1 {
-    font-weight: bold;
-    font-size: 30px;
 }
 bg-img {
     text-shadow: 0 0 8px #000000;
@@ -25,12 +36,22 @@ bg-img {
     background-color: white;
     margin: 20px 0px;
 }
+.h-sep {
+    width: 30px;
+    height: 10px;
+    display: inline-block;
+}
 .in-line {
     display: inline;
 }
+.right-sep {
+    margin-right: 30px;
+}
+/* ------------------------------------- */
 .btn {
     text-transform: none;
 }
+/* ------------------------------------- */
 .dark-text {
     color: #444444;
 }
@@ -39,20 +60,35 @@ ul.evtdatelist {
     margin-left: 0;
     padding-left: 0;
 }
-.cachable {
+.showtrash {
     visibility: hidden;
 }
+.erreur, .red-error {
+    font-size: 16px;
+    font-weight: bold;
+}
+.erreur {
+    color: #CADB2A;
+}
+.red-error {
+    color: #FC0606;
+}
+.date-field {
+    width: 100px;
+    margin: 0 10px;
+}
+.category-field {
+    width: 300px;
+    margin: 0 30px 0 10px;
+}
 
-
-
-
+/* --- general --- */
 .erreur {
     font-size: 16px;
     font-weight: bold;
     color: #CADB2A;
+    text-shadow: 0 0 3px #000;
 }
-
-
 .ecart-haut {
     margin-top: 20px;
 }
@@ -69,15 +105,29 @@ div.separation {
     font-weight: bold;
     color: blue;
 }
-.twigerror ul li {
-    display: inline;
-    color: #ff0000;
-}
-
 div#mapzone {
     z-index: 0;
     width: 300px;
     height: 300px;
+    margin: -20px auto 0 auto;
+}
+div#closemap {
+    position: relative;
+    margin-left: 260px;
+    width: 40px;
+    height:20px;
+    z-index: 100;
+    color: white;
+    font-weight: bold;
+    background-color: red;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+div#map {
+    z-index: 0;
+    width: 100%;
+    height: 400px;
     margin: -20px auto 0 auto;
 }
 div#closemap {
@@ -96,7 +146,53 @@ div#closemap {
     height: 40px;
 
 }
+.mid-img {
+    max-height: 400px;
+    max-width: 300px;
+    border: 2px solid #FFFFFF;
+}
 .rs-button {
     margin: 0 20px;
     height: 30px;
+}
+.twigerror ul li {
+    display: inline;
+    color: red;
+}
+#calendar {
+    width: 100%;
+    padding-top: 30px;
+    padding-right: 20px;
+}
+
+.event-zone:hover {
+    background-color: #E5E5E5;
+}
+
+.event-imgsize {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+}
+.event-imgdiv{
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+}
+.event-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+.event-title {
+    font-size: 24px;
+    font-weight: bold;
+    padding-top:16px;
+}
+.empty-list {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 30px 0;
 }
