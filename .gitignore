@@ -8,7 +8,9 @@ var/sessions/*
 vendor/
 web/bundles/
 .idea/
+
 .web-server-pid
 web/uploads/event/*
 web/uploads/numo/*
 web/uploads/users/*
+web/tests/

@@ -4,99 +4,125 @@
 
     <div class="container-fluid profileUser">
 
-    <div class="col-xs-12 text-center">
-        <div class="separation"></div>
-        <h1>{{ user.name }} {{ user.firstname }}</h1>
-        <div class="separation"></div>
-    </div>
+        <div class="col-xs-12 text-center">
+            <div class="separation"></div>
+            <h1>{{ user.name }} {{ user.firstname }}</h1>
+            <div class="separation"></div>
+        </div>
 
-    <div class="row">
-        <div class="col-lg-offset-2 col-lg-2">
-            {% if user.imageUrl == null %}
-                <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" style="height: 231px">
-            {% else %}
-                <img src="{{ asset('uploads/users/' ~ user.imageUrl.filename) }}" alt="{{ user.name }}"
-                     style="height: 70px">
+        <div class="row">
+            <div class="col-lg-offset-1 col-lg-2">
+                {% if user.imageUrl == null %}
+                    <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" style="height: 231px">
+                {% else %}
+                    <img src="{{ asset('uploads/users/' ~ user.imageUrl.filename) }}" alt="{{ user.name }}"
+                         style="height: 70px">
+                {% endif %}
+            </div>
+
+            <div class="col-lg-5">
+                <div class="row">
+                    <h2>{{ user.website }}</h2>
+                    <p>{{ user.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row iconContact">
+            {% if user.facebook != null %}
+                <div class="col-lg-offset-1 col-lg-1">
+                    <a target="_blank" href="{{ user.facebook }}">
+                        <img src="{{ asset('/img/rs-facebook.png') }}" alt="facebook" class="rs-button"/>
+                    </a>
+                </div>
+                <div class="col-lg-1">
+                    <h3>{{ user.facebook }}</h3>
+                </div>
+            {% endif %}
+
+            {% if user.twitter != null %}
+                <div class="col-lg-offset-1 col-lg-1">
+                    <a href="{{ user.twitter }}" target="_blank">
+                        <img src="{{ asset('/img/rs-twitter.png') }}" alt="twitter" class="rs-button"/>
+                    </a>
+                </div>
+                <div class="col-lg-1">
+                    <h3><a href="{{ user.twitter }}" target="_blank"></a>{{ user.twitter }}</h3>
+                </div>
+            {% endif %}
+
+            {% if user.linkedin != null %}
+                <div class="col-lg-offset-1 col-lg-1">
+                    <a href="{{ user.linkedin }}" target="_blank">
+                        <img src="{{ asset('/img/rs-linkedin.png') }}" alt="linkedin" class="rs-button"/>
+                    </a>
+                </div>
+                <div class="col-lg-1">
+                    <h3>{{ user.linkedin }}</h3>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row iconContact">
+            {% if user.email != null %}
+                <div class="col-lg-offset-1 col-lg-1">
+                    <img src="{{ asset('/img/mail.png') }}" alt="email" class="rs-button"/>
+                </div>
+                <div class="col-lg-1">
+                    <h3>{{ user.email }}</h3>
+                </div>
+            {% endif %}
+
+            {% if user.phone != null %}
+                <div class="col-lg-offset-1 col-lg-1">
+                    <img src="{{ asset('/img/tel.png') }}" alt="telephone" class="rs-button"/>
+                </div>
+                <div class="col-lg-2">
+                    <h3>{{ user.phone }}</h3>
+                </div>
+            {% endif %}
+
+            {% if user.webSite != null %}
+                <div class="col-lg-offset-1 col-lg-1">
+                    <img src="{{ asset('/img/internet.png') }}" alt="site web" class="rs-button"/>
+                </div>
+                <div class="col-lg-2">
+                    <h3>{{ user.webSite }}</h3>
+                </div>
             {% endif %}
         </div>
 
-        <div class="col-lg-5">
-            <div class="row">
-                <h2>{{ user.website }}</h2>
-                <p>{{ user.description }}</p>
-            </div>
+        <div class="col-xs-12 text-center">
+            <div class="separation"></div>
         </div>
-    </div>
 
-    <div class="row iconContact">
-        <div class="col-lg-offset-2 col-lg-1">
-            <a name="fb_share" type="box_count" share_url="{{ app.request.uri }}" target="_blanc">
-                <img src="{{ asset('/img/rs-facebook.png') }}" alt="partager facebook" class="rs-button"/>
-            </a>
+        <div class="text-center">
+            <h2>Mes événements</h2>
         </div>
-        <div class="col-lg-1">
-            <h3>Facebook</h3>
-        </div>
-        <div class="col-lg-offset-1 col-lg-1">
-            <a href="https://twitter.com/share" target="_blanc">
-                <img src="{{ asset('/img/rs-twitter.png') }}" alt="partager twitter" class="rs-button"/>
-            </a>
-        </div>
-        <div class="col-lg-1">
-            <h3>Twitter</h3>
-        </div>
-        <div class="col-lg-offset-1 col-lg-1">
-            <a href="" target="_blanc">
-                <img src="{{ asset('/img/rs-linkedin.png') }}" alt="partager linkedin" class="rs-button"/>
-            </a>
-        </div>
-        <div class="col-lg-1">
-            <h3>Linkedin</h3>
-        </div>
-    </div>
-    <div class="row iconContact">
-        <div class="col-lg-offset-2 col-lg-1">
-            <img src="{{ asset('/img/mail.png') }}" alt="logo email adherent" class="rs-button"/>
-        </div>
-        <div class="col-lg-1">
-            <h3>{{ user.email }}</h3>
-        </div>
-        <div class="col-lg-offset-1 col-lg-1">
-            <img src="{{ asset('/img/tel.png') }}" alt="logo telephone adherent" class="rs-button"/>
-        </div>
-        <div class="col-lg-2">
-            <h3>06 06 06 06 06</h3>
-        </div>
-    </div>
-
-    <div class="col-xs-12 text-center">
-        <div class="separation"></div>
-    </div>
-
-    <div class="text-center">
-        <h2>Mes événements</h2>
-    </div>
-        <div class="container-fluid">
-            <div class="row no-gutter popup-gallery">
-                {% for event in user.events %}
-                    <div class="col-lg-4 col-sm-6">
-                        <a href="{{ path('event_show_published', {'id': event.id, 'published': event.status == 99}) }}" class="portfolio-box">
-                            <img class="imageEvents img-responsive" src="{{ user.event.image }}" class="img-responsive" alt="">
-                            <div class="portfolio-box-caption">
-                                <div class="portfolio-box-caption-content">
-                                    <div class="project-category text-faded">
-                                        <h2>{{ user.event.title }}</h2>
+        {% if user.events | length != 0 %}
+            <div class="container-fluid">
+                <div class="row no-gutter popup-gallery">
+                    {% for event in user.events %}
+                        <div class="col-lg-4 col-sm-6">
+                            <a href="{{ path('event_show_published', {'id': event.id}) }}"
+                               class="portfolio-box">
+                                <img class="imageEvents img-responsive" src="{{ user.event.image }}"
+                                     class="img-responsive" alt="">
+                                <div class="portfolio-box-caption">
+                                    <div class="portfolio-box-caption-content">
+                                        <div class="project-category text-faded">
+                                            <h2>{{ user.event.title }}</h2>
+                                        </div>
+                                        <div class="project-name">
+                                            {{ user.event.description }}
+                                        </div>
+                                        <p> {{ user.event.address }}</p>
                                     </div>
-                                    <div class="project-name">
-                                        {{ user.event.description }}
-                                    </div>
-                                    <p> {{ user.event.address }}</p>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
-                {% endfor %}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock %}

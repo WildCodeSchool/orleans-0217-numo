@@ -1,0 +1,12 @@
+.onoff{
+    width: 100px;
+    height: 40px;
+    border-radius: 10%;
+
+}
+.red{
+    background-color: #f70607;
+}
+.green{
+    background-color: #02a46f;
+}
