@@ -16,10 +16,11 @@ use NumoBundle\Entity\Company;
 use NumoBundle\Services\UserUploader;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class PdfUploadListener
+class CompanyUploadListener
 {
     private $uploader;
-    private $oldFile;
+    private $oldPdf;
+    private $oldImgUrl;
 
     public function __construct(UserUploader $fileUpload, RequestStack $requestStack)
     {
@@ -36,9 +37,13 @@ class PdfUploadListener
         }
         $masterRequest = $this->requestStack->getMasterRequest()->get('_route');
         if($masterRequest == 'company_edit'){
-            $this->oldFile=$entity->getPdf();
+            $this->oldPdf = $entity->getPdf();
+            $this->oldImgUrl = $entity->getImageUrl();
             if ($fileName = $entity->getPdf()) {
                 $entity->setPdf(new File($this->uploader->getTargetDir().'/'.$fileName));
+            }
+            if ($fileName = $entity->getImageUrl()) {
+                $entity->setImageUrl(new File($this->uploader->getTargetDir().'/'.$fileName));
             }
         }
     }
@@ -48,15 +53,24 @@ class PdfUploadListener
         $entity = $args->getEntity();
         $this->uploadFile($entity);
     }
+
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getEntity();
-        if ($this->oldFile) {
-            $entity->setPdf($this->oldFile);
 
-        } else {
-            $this->uploadFile($entity);
+        if (!$entity instanceof Company) {
+            return;
         }
+
+        $this->uploadFile($entity);
+
+        if ($this->oldPdf) {
+            $entity->setPdf($this->oldPdf);
+        } elseif($this->oldImgUrl) {
+            $entity->setImageUrl($this->oldImgUrl);
+        }
+
+
     }
 
     public function preRemove(LifecycleEventArgs $args)
@@ -68,6 +82,9 @@ class PdfUploadListener
         if(is_file($entity->getPdf())) {
             unlink($entity->getPdf());
         }
+        if(is_file($entity->getImageUrl())) {
+            unlink($entity->getImageUrl());
+        }
     }
     private function uploadFile($entity)
     {
@@ -76,14 +93,18 @@ class PdfUploadListener
             return;
         }
 
-        $file = $entity->getPdf();
+        $pdf = $entity->getPdf();
+        $imgUrl = $entity->getImageUrl();
 
         // only upload new files
-        if (!$file instanceof UploadedFile) {
-            return;
+        if ($pdf instanceof UploadedFile) {
+            $fileName = $this->uploader->upload($pdf);
+            $entity->setPdf($fileName);
         }
 
-        $fileName = $this->uploader->upload($file);
-        $entity->setPdf($fileName);
+        if ($imgUrl instanceof UploadedFile) {
+            $fileName = $this->uploader->upload($imgUrl);
+            $entity->setImageUrl($fileName);
+        }
     }
 }

@@ -46,10 +46,10 @@ class CompanyType extends AbstractType
                 'label' => 'Adhérer à Num\'O (contenu)',
             ])
             ->add('imageUrl', FileType::class, [
-                'label'=>'Modifier le logo de Num\'O',
+                'label'=>'Uploader le logo de Num\'O',
             ])
             ->add('pdf', FileType::class, [
-                'label' => 'Modifier le RIB de l\'association',
+                'label' => 'Uploader le RIB de l\'association',
             ])
             ;
     }
