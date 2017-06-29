@@ -2,6 +2,7 @@
 
 namespace NumoBundle\Controller;
 
+use NumoBundle\Entity\Event;
 use NumoBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
