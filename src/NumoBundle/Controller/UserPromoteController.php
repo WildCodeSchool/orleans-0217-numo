@@ -30,19 +30,25 @@ class UserPromoteController extends Controller
      * @Method({"POST", "GET"})
      */
 
-    public function indexAction(Request $request, User $user)
+    public function indexAction(Request $request)
     {
-        $form = $this->createForm('NumoBundle\Form\PromoteType', $user);
+        $form = $this->createForm('NumoBundle\Form\PromoteType');
         $form->handleRequest($request);
 
+        $em = $this->getDoctrine()->getManager();
+
         if ($form->isValid() && $form->isSubmitted()) {
-//            $em = $this->getDoctrine()->getManager();
-//            $user->addRole('ROLE_ADHERENT');
-//            $em->flush();
-            $this->getDoctrine()->getManager()->flush();
+            $data = $form->getData();
+            $role[] = $data['Roles'];
+            $id = $data['Id'];
+
+            $user = $em->getRepository('NumoBundle:User')->findOneById($id);
+
+            $user->setRoles($role);
+            $em->flush();
+
         }
 
-        $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository('NumoBundle:User')->findAll();
 
         return $this->render('userpromote/index.html.twig', [
@@ -70,16 +76,4 @@ class UserPromoteController extends Controller
         return $this->redirectToRoute('memberstatus_index');
     }
 
-    /**
-     *@Route("/{id}", name="memberpromote")
-     *
-     */
-    public function promoteAction(User $user)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $user->addRole('ROLE_ADHERENT');
-        $em->flush();
-
-        return $this->redirectToRoute('memberstatus_index');
-    }
 }
