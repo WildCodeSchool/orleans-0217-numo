@@ -44,7 +44,7 @@ class PublishedController extends Controller
         $form = $this->createForm('NumoBundle\Form\PublishedType', $published);
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
-        $company= $em->getRepository('NumoBundle:Company')->find(1);
+        $company= $em->getRepository('NumoBundle:Company')->findAll()[0];
         $events=$em->getRepository('NumoBundle:Event')->findAll();
 
 

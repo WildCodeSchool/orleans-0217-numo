@@ -82,7 +82,6 @@ div.separation {
     margin: 20px 0px;
     width: 100%;
     height: 4px;
-    background-color: #CCCCCC;
 }
 
 .bg-1 {
@@ -93,9 +92,9 @@ div.separation {
 }
 
 .btnOrange {
-    background-color:#FC0606 !important;
-    border-color:#FC0606 !important;
-    color: #FFFFFF !important;
+    background-color:#FC0606 ;
+    border-color:#FC0606 ;
+    color: #FFFFFF ;
 }
 
 .bg-2 {
@@ -108,9 +107,12 @@ div.separation {
 .btnwhite{
     color: #FC0606;
     background-color: white;
-    border-color: #FC0606 !important;
+    border-color: #FC0606 ;
 }
-
+.imageEvents{
+    width: 700px;
+    height: 350px;
+}
 
 
 .bg-3 {
@@ -392,7 +394,7 @@ thead{
 }
 
 .barreBlue{
-    background-color: #005897;
+    background-color: #005897 ;
 }
 
 .barreYellow{
@@ -462,15 +464,15 @@ div.separation {
 /*------------nav bar in hover------------*/
 
 
-a.hoverAssociation:hover {color: #FC0606 !important;}
-a.hoverAgenda:hover {color: #97258D !important;}
-a.hoverMembres:hover {color: #8CC63C !important;}
-a.hoverAdherer:hover {color: #005897 !important;}
-a.hoverContact:hover {color: #CADB2A !important;}
+.navbar-default .navbar-nav .hoverAssociation:hover {color: #FC0606;}
+.navbar-default .navbar-nav a.hoverAgenda:hover {color: #97258D ;}
+.navbar-default .navbar-nav a.hoverMembres:hover {color: #8CC63C ;}
+.navbar-default .navbar-nav a.hoverAdherer:hover {color: #005897 ;}
+.navbar-default .navbar-nav a.hoverContact:hover {color: #CADB2A ;}
 
 
-.navWhite{
-    background-color: white !important;
+ .navWhite{
+    background-color: white;
 
 }
 
@@ -482,20 +484,30 @@ a.hoverContact:hover {color: #CADB2A !important;}
     background-color:  #8CC63C !important;
 }
 .btnRed{
-    background-color: #FC0606 !important;
+    background-color: #FC0606 ;
 }
 
 .zoneRed{
-    background-color:  #FC0606 !important;
+    background-color:  #FC0606 ;
 }
 .textRed{
-    color:  #FC0606 !important;
+    color:  #FC0606 ;
 
 }
 
 .zoneBlue{
-    background-color: #005897 !important;
+    background-color: #005897 ;
 }
+
+.imagePlaceholder{
+    height: 231px;
+}
+
+
+.imageProfileMember{
+    height: 70px;
+}
+
 
 
 
