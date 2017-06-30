@@ -21,17 +21,6 @@ $(document).ready(function(){
 
 });
 
-// $('#AlphabetNavAll').click(function(evt) {
-//     evt.preventDefault();
-//
-//     var $navItem = $(this),
-//         $contacts = $('.showMember');
-//
-//     $navItem.removeClass('active');
-//     $contacts.show();
-// });
-
-
 $('.AlphabetNav a').click(function(evt){
     evt.preventDefault();
 
