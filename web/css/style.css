@@ -315,6 +315,13 @@ thead{
     height: 100px;
 }
 
+.imageadmin{
+    width: 500px;
+}
+.pdf{
+    height:400px;
+}
+
 /*    COMPANY   */
 .company{
     padding-bottom: 150px;

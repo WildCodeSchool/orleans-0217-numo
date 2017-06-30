@@ -14,15 +14,7 @@ services:
         arguments:
             $targetDir: '%upload_directory%'
 
-    NumoBundle\EventListener\PdfUploadListener:
-        tags:
-            - { name: doctrine.event_listener, event: prePersist }
-            - { name: doctrine.event_listener, event: preUpdate }
-            - { name: doctrine.event_listener, event: postLoad }
-            - { name: doctrine.event_listener, event: preRemove }
-
-
-    NumoBundle\EventListener\NumoUploadListener:
+    NumoBundle\EventListener\CompanyUploadListener:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: preUpdate }

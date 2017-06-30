@@ -1,77 +1,75 @@
 {% extends 'layoutAdmin.html.twig' %}
 {% form_theme edit_form 'bootstrap_3_layout.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/summernote.css') }}">
-{% endblock %}
-
 {% block body %}
-    <div class="container font-lato">
-        <h1 class="titreadmin font-lato">MODIFIER LES INFORMATIONS DE NUM'O</h1>
-        <hr>
-        <br/>
-        <a href="{{ path('company_show', { 'id': company.id }) }}">
-            <button type="button" value="PROFIL">RETOUR PAGE PROFIL</button>
-        </a>
+<div class="container font-lato">
+    <h1 class="titreadmin font-lato">MODIFIER LES INFORMATIONS DE NUM'O</h1>
+    <hr>
+    <br/>
+    <a href="{{ path('company_show', { 'id': company.id }) }}"><button type="button" value="PROFIL">RETOUR PAGE PROFIL</button></a>
 
 
-        {{ form_start(edit_form) }}
+    {{ form_start(edit_form) }}
 
-        {{ form_label(edit_form.contactEmail) }}
-        {{ form_widget(edit_form.contactEmail) }}
+    {{ form_label(edit_form.contactEmail) }}
+    {{ form_widget(edit_form.contactEmail) }}
+    {{ form_errors(edit_form.contactEmail) }}
 
-        {{ form_label(edit_form.phone) }}
-        {{ form_widget(edit_form.phone) }}
+    {{ form_label(edit_form.phone) }}
+    {{ form_widget(edit_form.phone) }}
+    {{ form_errors(edit_form.phone) }}
 
-        {{ form_label(edit_form.city) }}
-        {{ form_widget(edit_form.city) }}
+    {{ form_label(edit_form.city) }}
+    {{ form_widget(edit_form.city) }}
+    {{ form_errors(edit_form.city) }}
 
-        {{ form_label(edit_form.postalCode) }}
-        {{ form_widget(edit_form.postalCode) }}
+    {{ form_label(edit_form.postalCode) }}
+    {{ form_widget(edit_form.postalCode) }}
+    {{ form_errors(edit_form.postalCode) }}
 
-        {{ form_label(edit_form.address) }}
-        {{ form_widget(edit_form.address) }}
+    {{ form_label(edit_form.address) }}
+    {{ form_widget(edit_form.address) }}
+    {{ form_errors(edit_form.address) }}
 
-        {{ form_label(edit_form.presentationTitle) }}
-        {{ form_widget(edit_form.presentationTitle) }}
+    {{ form_label(edit_form.presentationTitle) }}
+    {{ form_widget(edit_form.presentationTitle) }}
+    {{ form_errors(edit_form.presentationTitle) }}
 
-        {{ form_label(edit_form.presentationContent) }}
-        {{ form_widget(edit_form.presentationContent) }}
+    {{ form_label(edit_form.presentationContent) }}
+    {{ form_widget(edit_form.presentationContent) }}
+    {{ form_errors(edit_form.presentationContent) }}
 
-        {{ form_label(edit_form.adherentTitle) }}
-        {{ form_widget(edit_form.adherentTitle) }}
+    {{ form_label(edit_form.adherentTitle) }}
+    {{ form_widget(edit_form.adherentTitle) }}
+    {{ form_errors(edit_form.adherentTitle) }}
 
-        {{ form_label(edit_form.adherentContent) }}
-        {{ form_widget(edit_form.adherentContent) }}
+    {{ form_label(edit_form.adherentContent) }}
+    {{ form_widget(edit_form.adherentContent) }}
+    {{ form_errors(edit_form.adherentContent) }}
 
+    {% if company.imageUrl.filename is defined %}
+        <p><img class="img-thumbnail imageadmin" src="{{ asset('uploads/users/' ~ company.imageUrl.filename ) }}"></p>
+        <p><a href="{{ path('company_delete_image', {'id' : company.id}) }}"><input type="button" value="Modifier le logo"></a></p>
+    {% else %}
         {{ form_label(edit_form.imageUrl) }}
-        {% if company.imageUrl.filename is defined %}
-            <p><img class="img-thumbnail" src="{{ asset('uploads/users/' ~ company.imageUrl.filename ) }}" alt="Num'O"
-                    width="300">
-                <a href="{{ path('company_delete_image', {'id' : company.id}) }}">Remplacer l'image</a>
-            </p>
-        {% else %}
-            {{ form_widget(edit_form.imageUrl) }}
-            {{ form_end(edit_form.imageUrl) }}
-        {% endif %}
+        {{ form_widget(edit_form.imageUrl) }}
+        {{ form_errors(edit_form.imageUrl) }}
+    {% endif %}
+
+    {% if company.pdf.filename is defined %}
+        <p><iframe src="{{ asset('uploads/users/' ~ company.pdf.filename ) }}" class="imageadmin pdf" alt="pdf"></iframe></p>
+        <p><a href="{{ path('company_delete_pdf', {'id' : company.id}) }}"><input type="button" value="Modifier le RIB"></a></p>
+    {% else %}
         {{ form_label(edit_form.pdf) }}
-        {% if company.pdf.filename is defined %}
-            <p>
-                <iframe src="{{ asset('uploads/users/' ~ company.pdf.filename ) }}"></iframe>
-                    <a href="{{ path('company_delete_image', {'id' : company.id}) }}">Remplacer l'image</a>
-            </p>
-        {% else %}
-            {{ form_widget(edit_form.pdf) }}
-            {{ form_end(edit_form.pdf) }}
-        {% endif %}
-
         {{ form_widget(edit_form.pdf) }}
+        {{ form_errors(edit_form.pdf) }}
+    {% endif %}
 
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="ENREGISTRER"/>
-        {{ form_end(edit_form) }}
-    </div>
+        <input type="submit" value="ENREGISTRER" />
+        {{ form_widget(edit_form._token) }}
+    </form>
+</div>
+>>>>>>> dev
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
