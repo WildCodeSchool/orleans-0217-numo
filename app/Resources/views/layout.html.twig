@@ -2,7 +2,7 @@
 
 
 {% block header %}
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navWhite">
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navWhite font-lato">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
 
@@ -42,15 +42,15 @@
                                 <a href="{{ path('fos_user_profile_show') }}" class="glyphicon glyphicon-user"> {{ app.user.name }} {{ app.user.firstname }}</a>
                             </li>
                             <li>
-                                <a href="{{ path('fos_user_security_logout') }}" class="glyphicon glyphicon-log-in"> Deconnexion</a>
+                                <a href="{{ path('fos_user_security_logout') }}" class="glyphicon glyphicon-log-in"><span class="font-lato">Deconnexion</span></a>
                             </li>
 
                             {% else %}
                             <li>
-                                <a href="{{ path('fos_user_security_login') }}" class="glyphicon glyphicon-log-in"> Connexion</a>
+                                <a href="{{ path('fos_user_security_login') }}" class="glyphicon glyphicon-log-in"><span class="font-lato"> Connexion</span></a>
                             </li>
                             <li>
-                                <a href="{{ path('fos_user_registration_register') }}" class="glyphicon glyphicon-user"> S'inscrire</a>
+                                <a href="{{ path('fos_user_registration_register') }}" class="glyphicon glyphicon-user"><span class="font-lato"> S'inscrire</span></a>
                             </li>
                             {%endif%}
                           </ul>
