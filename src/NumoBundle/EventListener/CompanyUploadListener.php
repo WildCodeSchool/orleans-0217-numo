@@ -16,17 +16,17 @@ use NumoBundle\Entity\Company;
 use NumoBundle\Services\UserUploader;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-
-
-class NumoUploadListener
+class CompanyUploadListener
 {
     private $uploader;
-    private $oldFile;
+    private $oldPdf;
+    private $oldImgUrl;
 
     public function __construct(UserUploader $fileUpload, RequestStack $requestStack)
     {
         $this->uploader = $fileUpload;
         $this->requestStack = $requestStack;
+
     }
 
     public function postLoad(LifecycleEventArgs $args)
@@ -37,12 +37,15 @@ class NumoUploadListener
         }
         $masterRequest = $this->requestStack->getMasterRequest()->get('_route');
         if($masterRequest == 'company_edit'){
-            $this->oldFile=$entity->getImageUrl();
+            $this->oldPdf = $entity->getPdf();
+            $this->oldImgUrl = $entity->getImageUrl();
+            if ($fileName = $entity->getPdf()) {
+                $entity->setPdf(new File($this->uploader->getTargetDir().'/'.$fileName));
+            }
             if ($fileName = $entity->getImageUrl()) {
-                $entity->setImageUrl(new File($this->uploader->getTargetDir() . '/' . $fileName));
+                $entity->setImageUrl(new File($this->uploader->getTargetDir().'/'.$fileName));
             }
         }
-
     }
 
     public function prePersist(LifecycleEventArgs $args)
@@ -50,27 +53,39 @@ class NumoUploadListener
         $entity = $args->getEntity();
         $this->uploadFile($entity);
     }
+
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getEntity();
-        if ($this->oldFile) {
-            $entity->setImageUrl($this->oldFile);
 
-        } else {
-            $this->uploadFile($entity);
+        if (!$entity instanceof Company) {
+            return;
         }
+
+        $this->uploadFile($entity);
+
+        if ($this->oldPdf) {
+            $entity->setPdf($this->oldPdf);
+        } elseif($this->oldImgUrl) {
+            $entity->setImageUrl($this->oldImgUrl);
+        }
+
+
     }
+
     public function preRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
         if (!$entity instanceof Company) {
             return;
         }
+        if(is_file($entity->getPdf())) {
+            unlink($entity->getPdf());
+        }
         if(is_file($entity->getImageUrl())) {
             unlink($entity->getImageUrl());
         }
     }
-
     private function uploadFile($entity)
     {
         // upload only works for Product entities
@@ -78,12 +93,18 @@ class NumoUploadListener
             return;
         }
 
-        $file = $entity->getImageUrl();
+        $pdf = $entity->getPdf();
+        $imgUrl = $entity->getImageUrl();
+
         // only upload new files
-        if (!$file instanceof UploadedFile) {
-            return;
+        if ($pdf instanceof UploadedFile) {
+            $fileName = $this->uploader->upload($pdf);
+            $entity->setPdf($fileName);
         }
-        $fileName = $this->uploader->upload($file);
-        $entity->setImageUrl($fileName);
+
+        if ($imgUrl instanceof UploadedFile) {
+            $fileName = $this->uploader->upload($imgUrl);
+            $entity->setImageUrl($fileName);
+        }
     }
 }
