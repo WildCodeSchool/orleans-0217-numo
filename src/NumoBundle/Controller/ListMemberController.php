@@ -15,7 +15,7 @@ class ListMemberController extends Controller
     public function showListMember()
     {
         $em = $this->getDoctrine()->getManager();
-        $members= $em->getRepository('NumoBundle:User')->findAll();
+        $members = $em->getRepository('NumoBundle:User')->findAll();
 
         return $this->render('NumoBundle:site:member.html.twig', [
             'members' => $members
@@ -28,11 +28,24 @@ class ListMemberController extends Controller
      */
     public function showProfilMember(User $user)
     {
-        return $this->render('NumoBundle:site:profilMember.html.twig', [
-            'user' => $user,
-        ]);
+        $api = $this->get('numo.apiopenagenda');
+        $events = $api->getEvents();
+        $em = $this->getDoctrine()->getManager();
+        $published = $em->getRepository('NumoBundle:Published')->findByAuthor($user);
+
+        $uids = [];
+        foreach ($published as $pub) {
+            $uids[] = $pub->getUid();
+
+            return $this->render('NumoBundle:site:profilMember.html.twig', [
+                'user' => $user,
+                'uids' => $uids,
+                'events' => $events,
+            ]);
+        }
     }
-
-
-
 }
+
+
+
+
