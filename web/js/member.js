@@ -33,7 +33,7 @@ $('.AlphabetNav a').click(function(evt){
     if ($navItem.hasClass('active')) {
         $navItem.removeClass('active');
     }
-        else {
+    else {
         $('.AlphabetNav a').removeClass('active');
         $navItem.addClass('active');
 
