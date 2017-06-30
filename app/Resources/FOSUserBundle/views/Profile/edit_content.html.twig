@@ -1,5 +1,3 @@
-{% extends 'layout.html.twig' %}
-
 {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
 
 {% trans_default_domain 'FOSUserBundle' %}
@@ -72,7 +70,7 @@
                  {% if is_granted('ROLE_ADHERENT') %}
                      <div class="form-group">
                          {{ form_label(form.freeText) }}
-                         <div class="col-sm-6">
+                         <div class="col-sm-6" id="summernote">
                              {{ form_widget(form.freeText) }}
                          </div>
                          {{ form_errors(form.freeText) }}
@@ -93,16 +91,80 @@
                          </div>
                          {{ form_errors(form.webSite) }}
                      </div>
+                     
+                     <div class="form-group">
+                         {{ form_label(form.facebook) }}
+                         <div class="col-sm-6">
+                             {{ form_widget(form.facebook) }}
+                         </div>
+                         {{ form_errors(form.facebook) }}
+                     </div>
 
-                     {# ---- corrigé dans un prochain pull request ---- #}
-                     {#<div class="form-group">#}
-                         {#{{ form_label(form.address) }}#}
-                         {#<div class="col-sm-6">#}
-                             {#{{ form_widget(form.address) }}#}
-                         {#</div>#}
-                         {#{{ form_errors(form.address) }}#}
-                     {#</div>#}
+                     <div class="form-group">
+                         {{ form_label(form.twitter) }}
+                         <div class="col-sm-6">
+                             {{ form_widget(form.twitter) }}
+                         </div>
+                         {{ form_errors(form.twitter) }}
+                     </div>
 
+                     <div class="form-group">
+                         {{ form_label(form.linkedin) }}
+                         <div class="col-sm-6">
+                             {{ form_widget(form.linkedin) }}
+                         </div>
+                         {{ form_errors(form.linkedin) }}
+                     </div>
+                 {% else %}
+                     <div class="form-hidden">
+                         <div class="form-group">
+                             {{ form_label(form.freeText) }}
+                             <div class="col-sm-6">
+                                 {{ form_widget(form.freeText) }}
+                             </div>
+                             {{ form_errors(form.freeText) }}
+                         </div>
+                         
+                         <div class="form-group">
+                             {{ form_label(form.phone) }}
+                             <div class="col-sm-6">
+                                 {{ form_widget(form.phone) }}
+                             </div>
+                             {{ form_errors(form.phone) }}
+                         </div>
+                         
+                         <div class="form-group">
+                             {{ form_label(form.webSite) }}
+                             <div class="col-sm-6">
+                                 {{ form_widget(form.webSite) }}
+                             </div>
+                             {{ form_errors(form.webSite) }}
+                         </div>
+                         
+                          <div class="form-group">
+                             {{ form_label(form.facebook) }}
+                             <div class="col-sm-6">
+                                 {{ form_widget(form.facebook) }}
+                             </div>
+                             {{ form_errors(form.facebook) }}
+                         </div>
+
+                         <div class="form-group">
+                             {{ form_label(form.twitter) }}
+                             <div class="col-sm-6">
+                                 {{ form_widget(form.twitter) }}
+                             </div>
+                             {{ form_errors(form.twitter) }}
+                         </div>
+
+                         <div class="form-group">
+                             {{ form_label(form.linkedin) }}
+                             <div class="col-sm-6">
+                                 {{ form_widget(form.linkedin) }}
+                             </div>
+                             {{ form_errors(form.linkedin) }}
+                         </div>
+                     </div>
                  {% endif %}
 
                 <div class="form-group">
@@ -129,4 +191,9 @@
 
 
 
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/summernote.js') }}"></script>
+    <script src="{{ asset('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js') }}"></script>
 {% endblock %}

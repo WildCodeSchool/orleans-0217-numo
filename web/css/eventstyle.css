@@ -1,4 +1,24 @@
 /* --- Formulaires --- */
+h1 {
+    font-weight: bold;
+    font-size: 30px;
+}
+.grey-text {
+    color: lightgrey;
+}
+.strong-text {
+    font-weight: bold;
+    color: #0000F0;
+}
+a {
+    text-decoration: none !important;
+    color: black !important;
+    z-index: 10;
+}
+a:link, a:visited, a:active {
+}
+a:hover {
+}
 .bg-form {
     background-size: cover;
     background-position: center;
@@ -6,10 +26,6 @@
     text-align: center;
     color: white;
     padding: 40px 15px 60px;
-}
-h1 {
-    font-weight: bold;
-    font-size: 30px;
 }
 bg-img {
     text-shadow: 0 0 8px #000000;
@@ -20,8 +36,16 @@ bg-img {
     background-color: white;
     margin: 20px 0px;
 }
+.h-sep {
+    width: 30px;
+    height: 10px;
+    display: inline-block;
+}
 .in-line {
     display: inline;
+}
+.right-sep {
+    margin-right: 30px;
 }
 /* ------------------------------------- */
 .btn {
@@ -49,11 +73,11 @@ ul.evtdatelist {
 .red-error {
     color: #FC0606;
 }
-.datefield {
-    width: 130px;
-    margin: 0 30px 0 10px;
+.date-field {
+    width: 100px;
+    margin: 0 10px;
 }
-.tagfield {
+.category-field {
     width: 300px;
     margin: 0 30px 0 10px;
 }
@@ -71,11 +95,11 @@ ul.evtdatelist {
 .ecart-bas {
     margin-bottom: 10px;
 }
+
 div.separation {
     margin: 20px 0px;
     width: 100%;
-    height: 4px;
-    background-color: #CCCCCC;
+    height: 1px;
 }
 .emphase {
     font-weight: bold;
@@ -141,6 +165,34 @@ div#closemap {
     padding-right: 20px;
 }
 
-.allEvents{
-    padding: 5px !important;
+.event-zone:hover {
+    background-color: #E5E5E5;
+}
+
+.event-imgsize {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+}
+.event-imgdiv{
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+}
+.event-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+.event-title {
+    font-size: 24px;
+    font-weight: bold;
+    padding-top:16px;
+}
+.empty-list {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 30px 0;
 }

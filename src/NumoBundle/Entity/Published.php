@@ -3,6 +3,7 @@
 namespace NumoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use NumoBundle\Entity\User;
 
 /**
  * Published
@@ -29,11 +30,47 @@ class Published
     private $uid;
 
     /**
+     * @ORM\Column(name="deleted", type="integer")
+     */
+    private $deleted;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="publications")
+     *
+     */
+    private $author;
+
+    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="publishedDate", type="datetime")
+     * @ORM\Column(name="authorUpdateDate", type="datetime")
      */
-    private $publishedDate;
+    private $authorUpdateDate;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="moderations")
+     *
+     */
+    private $moderator;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="moderatorUpdateDate", type="datetime")
+     */
+    private $moderatorUpdateDate;
+
+
+    public function __construct(Event $event, string $uid, $moderator)
+    {
+        $this
+            ->setDeleted(0)
+            ->setUid($uid)
+            ->setAuthor($event->getAuthor())
+            ->setAuthorUpdateDate($event->getCreationDate())
+            ->setModerator($moderator)
+            ->setModeratorUpdateDate(new \DateTime);
+    }
 
 
     /**
@@ -71,26 +108,94 @@ class Published
     }
 
     /**
-     * Set publishedDate
-     *
-     * @param \DateTime $publishedDate
-     *
+     * @return mixed
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param mixed $deleted
      * @return Published
      */
-    public function setPublishedDate($publishedDate)
+    public function setDeleted($deleted)
     {
-        $this->publishedDate = $publishedDate;
-
+        $this->deleted = $deleted;
         return $this;
     }
 
     /**
-     * Get publishedDate
-     *
+     * @return mixed
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param mixed $author
+     * @return Published
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthorUpdateDate()
+    {
+        return $this->authorUpdateDate;
+    }
+
+    /**
+     * @param mixed $authorUpdateDate
+     * @return Published
+     */
+    public function setAuthorUpdateDate($authorUpdateDate)
+    {
+        $this->authorUpdateDate = $authorUpdateDate;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getModerator()
+    {
+        return $this->moderator;
+    }
+
+    /**
+     * @param mixed $moderator
+     * @return Published
+     */
+    public function setModerator($moderator)
+    {
+        $this->moderator = $moderator;
+        return $this;
+    }
+
+    /**
      * @return \DateTime
      */
-    public function getPublishedDate()
+    public function getModeratorUpdateDate(): \DateTime
     {
-        return $this->publishedDate;
+        return $this->moderatorUpdateDate;
     }
+
+    /**
+     * @param \DateTime $moderatorUpdateDate
+     * @return Published
+     */
+    public function setModeratorUpdateDate(\DateTime $moderatorUpdateDate): Published
+    {
+        $this->moderatorUpdateDate = $moderatorUpdateDate;
+        return $this;
+    }
+
+
 }

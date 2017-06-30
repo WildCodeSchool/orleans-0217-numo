@@ -2,9 +2,8 @@
 {% block body %}
 
     <div class="col-xs-12 text-center">
-        <div class="separation"></div>
         <h1>Membres</h1>
-        <div class="separation"></div>
+        <div class="separation barreGreen"></div>
     </div>
 
     <div class="container-fluid text-center">
@@ -14,7 +13,7 @@
 
         <nav class="AlphabetNav">
             {%  for letter in 'A'..'Z' %}
-                <a>{{ letter }}</a>
+                <a href="">{{ letter }}</a>
             {% endfor %}
         </nav>
     </div>
@@ -47,19 +46,30 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-offset-0 col-xs-offset-1 col-lg-10">
-                            <h3 class="memberSite">{{ member.email }}</h3>
-                            <p class="memberDescription">{{ member.description }}</p>
+                            <h3>{{ member.email }}</h3>
+                            {% if member.roles.0 == 'ROLE_ADHERENT' %}
+                                {% if member.facebook != null %}
+                                    <a target="_blank" href="{{ member.facebook }}"><img src="{{ asset('img/rs-facebook.png') }}" alt="Facebook" class="logo-sn-memberlist"></a>
+                                {% endif %}
+                                {% if member.twitter != null %}
+                                     <a target="_blank" href="{{ member.twitter }}"><img src="{{ asset('img/rs-twitter.png') }}" alt="Twitter" class="logo-sn-memberlist"></a>
+                                {% endif %}
+                                {% if member.linkedin != null %}
+                                    <a target="_blank" href="{{ member.linkedin }}"><img src="{{ asset('img/rs-linkedin.png') }}" alt="Linkedin" class="logo-sn-memberlist"></a>
+                                {% endif %}
+                            {% endif %}
+                            <p>{{ member.description }}</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-offset-2 col-lg-8">
-                    <hr class="hrMembre">
+                    <div class="separation barreGreen"></div>
                 </div>
             </div>
         {% endfor %}
         <div class="container-fluid text-center">
-            <a id="next" class="btn btn-danger  btn-lg">Voir plus</a>
+            <a id="next" class="btn btn-success btnGreen btn-lg">Voir plus</a>
 
         </div>
 

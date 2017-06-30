@@ -8,6 +8,9 @@ use NumoBundle\Entity\OaEvent;
 
 class ApiOpenAgenda
 {
+    const WEBROOTURL = 'https://openagenda.com/';
+    const APIROOTURL = 'https://api.openagenda.com/v1/';
+
     private $curl;
     private $getFileContents;
     private $agendaSlug;
@@ -66,7 +69,7 @@ class ApiOpenAgenda
     public function getAgendaUid()
     {
         if (!isset($this->aUid)) {
-            $url = 'https://api.openagenda.com/v1/agendas/uid/'.$this->getAgendaSlug().'?key=' . $this->getPublicKey();
+            $url = self::APIROOTURL . 'agendas/uid/'.$this->getAgendaSlug().'?key=' . $this->getPublicKey();
             $this->getFileContents->setUrl($url);
             $data = $this->getFileContents->execute(true);
             if (false === $data) {
@@ -74,7 +77,7 @@ class ApiOpenAgenda
                 $this->setError('Lecture agenda : Erreur inconnue');
                 return false;
             } else {
-                $this->setAgendaUid($data->uid);
+                $this->setAgendaUid($data['data']->uid);
             }
         }
         return $this->aUid;
@@ -85,66 +88,12 @@ class ApiOpenAgenda
         $this->aUid = $aUid;
     }
 
-    private function initToken()
-    {
-//        $this->curl
-//            ->seturl('https://api.openagenda.com/v1/requestAccessToken')
-//            ->setPost([
-//                'grant_type' => 'authorization_code',
-//                'code' => $this->getSecretKey(),
-//            ]);
-//        $data = $this->curl->execute();
-//        if (false === $data) {
-//            $this->setErrorCode($this->curl->getHttpCode);
-//            $this->setError('curl/token : ' . $this->curl->getError);
-//            return false;
-//        } else {
-//            $this->setToken($data['access_token']);
-//            return true;
-//        }
-    }
-
-    private function getToken()
-    {
-        return $this->token;
-    }
-
-    private function setToken($token)
-    {
-        $this->token = $token;
-    }
-
-    public function publishLocation($nonce,$address)
-    {
-//        $this->curl
-//            ->setUrl("https://api.openagenda.com/v1/locations")
-//            ->setPost([
-//                'access_token' => $this->getToken(),
-//                'nonce' => $nonce,
-//                'data' => json_encode([
-//                    'placename' => $address->getPlacename(),
-//                    'address' => $address->getAddress(),
-//                    'latitude' => $address->getLatitude(),
-//                    'longitude' => $address->getLongitude(),
-//                ]),
-//            ]);
-//        $data = $this->curl->execute();
-//        if (false === $data) {
-//            $this->setErrorCode($this->curl->getHttpCode);
-//            $this->setError($this->curl->getError);
-//            return false;
-//        } else {
-//            return $data['uid'];
-//        }
-    }
-
     private function convertApi($event)
     {
         $newEvent = new OaEvent;
         $newEvent
-            ->setId($event->uid)
-            ->setStatus(99);
-        $link = 'http://openagenda.com/'.$this->getAgendaSlug().'/event/'.end(explode('/', $event->link));
+            ->setId($event->uid);
+        $link = self::WEBROOTURL . $this->getAgendaSlug().'/event/'.end(explode('/', $event->link));
         $newEvent
             ->setLink($link)
             ->setImage($event->image)
@@ -158,11 +107,27 @@ class ApiOpenAgenda
             ->setLongitude($event->locations[0]->longitude)
             ->setTicketLink($event->locations[0]->ticketLink)
             ->setPricingInfo($event->locations[0]->pricingInfo->fr);
-        $oaDates = [];
+        $oldDates = [];
+        $newDates = [];
+        $dateRef = new \DateTime();
         foreach ($event->location[0]->dates as $evtD) {
             $oaDates[] = ['evtDate' => $evtD->date, 'timeStart' => $evtd->timeStart, 'timeEnd' => $evtd->timeEnd]; // AAAA-MM-DD HH:MM:SS
         }
         $newEvent->setEvtDates($oaDates);
+        $newEvent->setEvtDates($oaDates);
+        $dateRef = new \DateTime();
+        $dateRef->format('Y-m-d');
+        foreach ($oaDates as $oaDate) {
+            // $evtD = AAAA-MM-DD HH:MM:SS
+            $evtDate = ['evtDate' => substr($evtD->start,0,10), 'timeStart' => substr($evtD->start,11,8), 'timeEnd' => substr($evtD->end,11,8)];
+            if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
+                $oldDates[] = $evtDate;
+            } else {
+                $newDates[] = $evtDate;
+            }
+        }
+        $newEvent->setOldDates($oldDates);
+        $newEvent->setNewDates($newDates);
         return $newEvent;
     }
 
@@ -171,7 +136,6 @@ class ApiOpenAgenda
         $newEvent = new OaEvent();
         $newEvent
             ->setId($event->uid)
-            ->setStatus(99)
             ->setLink($event->canonicalUrl)
             ->setTitle($event->title->fr)
             ->setPlacename($event->locationName)
@@ -184,22 +148,31 @@ class ApiOpenAgenda
         if (isset($event->keywords)) $newEvent->setTags(implode(', ',$event->keywords->fr));
         if (isset($event->registrationUrl)) $newEvent->setTicketLink($event->registrationUrl);
         if (isset($event->conditions)) $newEvent->setPricingInfo($event->conditions->fr);
-        $oaDates = [];
+        $oldDates = [];
+        $newDates = [];
+        $dateRef = new \DateTime();
         foreach ($event->timings as $evtD) {
-            $oaDates[] = ['evtDate' => substr($evtD->start,0,10), 'timeStart' => substr($evtD->start,11,8), 'timeEnd' => substr($evtD->end,11,8)]; // AAAA-MM-DD HH:MM:SS
+            // $evtD = AAAA-MM-DD HH:MM:SS
+            $evtDate = ['evtDate' => substr($evtD->start,0,10), 'timeStart' => substr($evtD->start,11,8), 'timeEnd' => substr($evtD->end,11,8)];
+            if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
+                $oldDates[] = $evtDate;
+            } else {
+                $newDates[] = $evtDate;
+            }
         }
-        $newEvent->setEvtDates($oaDates);
+        $newEvent->setOldDates($oldDates);
+        $newEvent->setNewDates($newDates);
         return $newEvent;
     }
 
-    public function getEventList(array $options=[], $api=true) : array
+    public function getEventList(array $options=[], bool $api=false) : array
     {
         if ($api) {
             // --- version avec l'api -------------------------------------------
-            $url = 'https://api.openagenda.com/v1/agendas/' . $this->getAgendaUid() . '/events?key=' . $this->getPublicKey() . '&';
+            $url = self::APIROOTURL . 'agendas/' . $this->getAgendaUid() . '/events?key=' . $this->getPublicKey() . '&';
         } else {
             // --- version avec le json (sans l'api) -----------------------------
-            $url = "https://openagenda.com/agendas/" . $this->getAgendaUid() . "/events.json";
+            $url = self::WEBROOTURL . 'agendas/' . $this->getAgendaUid() . '/events.json';
             if (count($options) > 0) {
                 $url .= '?';
             }
@@ -223,17 +196,17 @@ class ApiOpenAgenda
             $eventList = [];
             $eventDateList = [];
             if ($api) {
-                foreach ($data as $event) {
-                    $data = $this->convertApi($event);
-                    $eventList[] = $data;
+                foreach ($data['data'] as $event) {
+                    $oneEvent = $this->convertApi($event);
+                    $eventList[] = $oneEvent;
                 }
             } else {
-                foreach ($data as $event) {
-                    $data = $this->convertJson($event);
-                    $eventList[] = $data;
-                    $dates = $data->getEvtDates();
-                    $title = $data->getTitle();
-                    foreach ($dates as $date) {
+                foreach ($data['data'] as $event) {
+                    $oneEvent = $this->convertJson($event);
+                    $eventList[] = $oneEvent;
+                    if($oneEvent->getNewDates()){
+                        $date = $oneEvent->getNewDates()[0];
+                        $title = $oneEvent->getTitle();
                         $eventDateList[] = [
                             substr($date['evtDate'],8,2),
                             substr($date['evtDate'],5,2),
@@ -243,19 +216,19 @@ class ApiOpenAgenda
                     }
                 }
             }
-            return ['eventList' => $eventList, 'eventDateList' => $eventDateList];
+            return ['nbEvents' => $data['nbEvents'], 'eventList' => $eventList, 'eventDateList' => $eventDateList];
         }
 
     }
 
-    public function getEvent(int $uid, $api=true)
+    public function getEvent(int $uid, $api=false)
     {
         if ($api) {
             // --- version avec l'api -------------------------------------------
-            $url = "https://api.openagenda.com/v1/events/$uid?key=" . $this->getPublicKey();
+            $url = self::APIROOTURL . "events/$uid?key=" . $this->getPublicKey();
         } else {
             // --- version avec le json -----------------------------------
-            $url = "https://openagenda.com/agendas/".$this->getAgendaUid()."/events.json?oaq[uids][]=$uid";
+            $url = self::WEBROOTURL . 'agendas/'.$this->getAgendaUid()."/events.json?oaq[uids][]=$uid";
         }
         $this->getFileContents->setUrl($url);
         $data = $this->getFileContents->execute($api);
@@ -265,80 +238,141 @@ class ApiOpenAgenda
             return false;
         } else {
             if ($api) {
-                return $this->convertApi($data);
+                return $this->convertApi($data['data']);
             } else {
-                return $this->convertJson($data[0]);
+                return $this->convertJson($data['data'][0]);
             }
         }
     }
 
 
+    private function initToken()
+    {
+        $this->curl
+            ->seturl(self::APIROOTURL . 'requestAccessToken')
+            ->setPost([
+                'grant_type' => 'authorization_code',
+                'code' => $this->getSecretKey(),
+            ]);
+        $data = $this->curl->execute();
+        if (false === $data) {
+            $this->setErrorCode($this->curl->getHttpCode);
+            $this->setError('curl/token : ' . $this->curl->getError);
+            return false;
+        } else {
+            $this->setToken($data['access_token']);
+            return true;
+        }
+    }
 
+    private function getToken()
+    {
+        return $this->token;
+    }
 
+    private function setToken($token)
+    {
+        $this->token = $token;
+    }
 
-
+    public function publishLocation($nonce,$event)
+    {
+        $this->curl
+            ->setUrl(self::APIROOTURL . 'locations')
+            ->setPost([
+                'access_token' => $this->getToken(),
+                'nonce' => $nonce,
+                'data' => json_encode([
+                    'placename' => $event->getPlacename(),
+                    'address' => $event->getAddress(),
+                    'latitude' => $event->getLatitude(),
+                    'longitude' => $event->getLongitude(),
+                ]),
+            ]);
+        $data = $this->curl->execute();
+        if (false === $data) {
+            $this->setErrorCode($this->curl->getHttpCode);
+            $this->setError($this->curl->getError);
+            return false;
+        } else {
+            return $data['uid'];
+        }
+    }
 
     public function publishEvent(Event $event)
     {
-//        $nonce = random(10000); // nombre aleatoire pour valider l'ecriture;
-//        // NOTE : en cas d'echec (return false) l'erreur (texte) est dans $this->error et le code http dans $this->errorCode
-//        // --- creation du token pour ecriture
-//        if (false === $this->initToken()) {
-//            return false; // l'initialisation du token a echoue
-//        } else {
-//            // ecriture de l'adresse
-//            $location_uid = $this->publishLocation($nonce, $event->address[0]);
-//            if (false === $location_uid) {
-//                return false; // l'ecriture de l'adresse a echouee
-//            } else {
-//                // --- ecriture de l'event
-//                $eventData = [
-//                    'lang' => 'fr',
-//                    'title' => ['fr' => $event->getTitle()],
-//                    'description' => ['fr' => $event->getDescription()],
-//                    'freeText' => ['fr' => $event->getFreeText()],
-//                    'tags' => ['fr' => $event->getTags()],
-//                    'image' => '', // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< a mettre a jour
-////                    'publish' => false, // ne fonctionne pas
-//                    'thirdParties' => [],
-//                ];
+        $nonce = random_int(1,10000); // nombre aleatoire pour valider l'ecriture;
+        // NOTE : en cas d'echec (return false) l'erreur (texte) est dans $this->error et le code http dans $this->errorCode
 
+        // --- creation du token pour ecriture ----------------------------------------------------
+        if (false === $this->initToken()) {
+            return false; // l'initialisation du token a echoue
+        }
 
-                /////////////////////////////////////////// j'en suis là
-                // il faut initialiser locations et dates
-//                'locations' => [
-//                    [
-//                        'uid' => $location_uid,
-//                        'dates' => [
-//                            [
-//                                'date' => '2017-06-01',
-//                                'timeStart' => '18:00',
-//                                'timeEnd' => '20:00',
-//                            ],
-//                            [
-//                                'date' => '2017-06-02',
-//                                'timeStart' => '19:00',
-//                                'timeEnd' => '21:00',
-//                            ],
-//                        ],
-//                        'pricingInfo' => ['fr' => 'Gratuit pour les moins de 10 ans'],
-//                    ],
-//
-//                ],
-//
-                //if ... (ok)
-                // enregistrement de l'event
+        // --- ecriture de l'adresse --------------------------------------------------------------
+        $location_uid = $this->publishLocation($nonce, $event);
+        if (false === $location_uid) {
+            return false; // l'ecriture de l'adresse a echouee
+        }
 
-//
-//            }
-//        }
-//
-
-
-
-
-
-
+        // --- ecriture de l'evenement ------------------------------------------------------------
+        $eventData = [
+            'title' => ['fr' => $event->getTitle()],
+            'description' => ['fr' => $event->getDescription()],
+            'tags' => ['fr' => $event->getTags()->getName()],
+            'image' => $event->getImage(),
+            'locations' => [[
+                'uid' => $location_uid,
+                'dates' => [],
+                'pricingInfo' => ['fr' => $event->getPricingInfo()->getPricing()],
+            ]],
+            'thirdParties' => [],
+        ];
+        if ($event->getFreeText()) {
+            $eventData['freeText'] = ['fr' => $event->getFreeText()];
+        }
+        if ($event->getTicketLink()) {
+            $eventData['locations'][0]['ticketLink'] = $event->getFreeText();
+        }
+        $evtDates = $event->getEvtDates();
+        foreach ($evtDates as $evtDate) {
+            $eventData['locations'][0]['dates'][] = [
+                'date' => $evtDate->getEvtDate()->format('Y-m-d'),
+                'timeStart' => $evtDate->getTimeStart()->format('H:i'),
+                'timeEnd' => $evtDate->getTimeEnd()->format('H:i'),
+            ];
+        }
+        $this->curl->setUrl(self::APIROOTURL . 'events');
+        $this->curl->setPost([
+            'access_token' => $this->getToken(),
+            'nonce' => $nonce + 1,
+            'data' => json_encode($eventData),
+            'published' => false
+        ]);
+        $data = $this->curl->execute();
+        if (false === $data) {
+            $this->setErrorCode($this->curl->getHttpCode());
+            $this->setError('Erreur ecriture évènement : ' . $this->curl->getError());
+            return false;
+        }
+        $event_uid = $data['uid'];
+        // --- Referencement del'evenement dans l'agenda ------------------------------------------
+        $refData = [
+            'event_uid' => $event_uid,
+        ];
+        $this->curl->setUrl(self::APIROOTURL . 'agendas/' . $this->getAgendaUid() . '/events');
+        $this->curl->setPost([
+            'access_token' => $this->getToken(),
+            'nonce' => $nonce + 2,
+            'data' => json_encode($refData)
+        ]);
+        $data = $this->curl->execute();
+        if (false === $data) {
+            $this->setErrorCode($this->curl->getHttpCode());
+            $this->setError('Erreur référencement évènement : ' . $this->curl->getError());
+            return false;
+        }
+        return $event_uid;
     }
 
 

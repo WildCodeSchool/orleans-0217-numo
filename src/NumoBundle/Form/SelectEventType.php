@@ -9,7 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Test\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\CallbackValidator;
 
 class SelectEventType extends AbstractType
 {
@@ -19,17 +21,18 @@ class SelectEventType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->setMethod("GET")
             ->add('startDate', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
-                'invalid_message' => 'Date début invalide (format attendu : jj/mm/aaaa). ',
+                'invalid_message' => 'Date début de période invalide (format attendu : jj/mm/aaaa). ',
             ])
             ->add('endDate', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
-                'invalid_message' => 'Date fin invalide (format attendu : jj/mm/aaaa). ',
+                'invalid_message' => 'Date fin de période invalide (format attendu : jj/mm/aaaa). ',
             ])
             ->add('category', EntityType::class, [
                 'class' => 'NumoBundle:Category',
@@ -41,7 +44,7 @@ class SelectEventType extends AbstractType
                 'required' => false
             ]);
     }
-    
+
     /**
      * {@inheritdoc}
      */

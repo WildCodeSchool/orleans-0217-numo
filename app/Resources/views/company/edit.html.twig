@@ -1,6 +1,12 @@
 {% extends 'layoutAdmin.html.twig' %}
 {% form_theme edit_form 'bootstrap_3_layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.css">
+
+{% endblock %}
+
 {% block body %}
 <div class="container font-lato">
     <h1 class="titreadmin font-lato">MODIFIER LES INFORMATIONS DE NUM'O</h1>
@@ -10,8 +16,98 @@
 
 
     {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
+
+    {{ form_label(edit_form.contactEmail) }}
+    {{ form_widget(edit_form.contactEmail) }}
+    {{ form_errors(edit_form.contactEmail) }}
+
+    {{ form_label(edit_form.phone) }}
+    {{ form_widget(edit_form.phone) }}
+    {{ form_errors(edit_form.phone) }}
+
+    {{ form_label(edit_form.city) }}
+    {{ form_widget(edit_form.city) }}
+    {{ form_errors(edit_form.city) }}
+
+    {{ form_label(edit_form.postalCode) }}
+    {{ form_widget(edit_form.postalCode) }}
+    {{ form_errors(edit_form.postalCode) }}
+
+    {{ form_label(edit_form.address) }}
+    {{ form_widget(edit_form.address) }}
+    {{ form_errors(edit_form.address) }}
+
+    {{ form_label(edit_form.presentationTitle) }}
+    {{ form_widget(edit_form.presentationTitle) }}
+    {{ form_errors(edit_form.presentationTitle) }}
+
+    {{ form_label(edit_form.presentationContent) }}
+    {{ form_widget(edit_form.presentationContent) }}
+    {{ form_errors(edit_form.presentationContent) }}
+
+    {{ form_label(edit_form.adherentTitle) }}
+    {{ form_widget(edit_form.adherentTitle) }}
+    {{ form_errors(edit_form.adherentTitle) }}
+
+    {{ form_label(edit_form.adherentContent) }}
+    {{ form_widget(edit_form.adherentContent) }}
+    {{ form_errors(edit_form.adherentContent) }}
+
+    {% if company.imageUrl.filename is defined %}
+        <p><img class="img-thumbnail imageadmin" src="{{ asset('uploads/users/' ~ company.imageUrl.filename ) }}"></p>
+        <p><a href="{{ path('company_delete_image', {'id' : company.id}) }}"><input type="button" value="Modifier le logo"></a></p>
+    {% else %}
+        {{ form_label(edit_form.imageUrl) }}
+        {{ form_widget(edit_form.imageUrl) }}
+        {{ form_errors(edit_form.imageUrl) }}
+    {% endif %}
+
+    {% if company.pdf.filename is defined %}
+        <p><iframe src="{{ asset('uploads/users/' ~ company.pdf.filename ) }}" class="imageadmin pdf" alt="pdf"></iframe></p>
+        <p><a href="{{ path('company_delete_pdf', {'id' : company.id}) }}"><input type="button" value="Modifier le RIB"></a></p>
+    {% else %}
+        {{ form_label(edit_form.pdf) }}
+        {{ form_widget(edit_form.pdf) }}
+        {{ form_errors(edit_form.pdf) }}
+    {% endif %}
+
         <input type="submit" value="ENREGISTRER" />
-    {{ form_end(edit_form) }}
+        {{ form_widget(edit_form._token) }}
+    </form>
+
 </div>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#company_presentationContent').summernote({
+                height: 300,
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ]
+            });
+        });
+        $(document).ready(function () {
+            $('#company_adherentContent').summernote({
+                height: 300,
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ]
+            });
+        });
+
+    </script>
+{% endblock %}
+

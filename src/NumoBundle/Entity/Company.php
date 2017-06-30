@@ -55,7 +55,7 @@ class Company
      * @var string
      *
      * @ORM\Column(name="address", type="string", length=255)
-     * @Assert\NotBlank(message="L\'adresse doit être renseignée.")
+     * @Assert\NotBlank(message="L'adresse doit être renseignée.")
      */
     private $address;
 
@@ -103,9 +103,9 @@ class Company
     private $adherentContent;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="imageUrl", type="string", length=255, nullable=true)
+     *
+     * @Assert\Image
      *
      */
     private $imageUrl;
@@ -113,139 +113,104 @@ class Company
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Assert\NotBlank(message="Merci d'uploader un PDF")
      * @Assert\File(mimeTypes={ "application/pdf" })
      */
     private $pdf;
 
     /**
-     * Get id
-     *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * Set contactEmail
-     *
-     * @param string $contactEmail
-     *
-     * @return company
+     * @param int $id
      */
-    public function setContactEmail($contactEmail)
+    public function setId(int $id)
     {
-        $this->contactEmail = $contactEmail;
-
-        return $this;
+        $this->id = $id;
     }
 
     /**
-     * Get contactEmail
-     *
      * @return string
      */
-    public function getContactEmail()
+    public function getContactEmail(): string
     {
         return $this->contactEmail;
     }
 
     /**
-     * Set city
-     *
-     * @param string $city
-     *
-     * @return company
+     * @param string $contactEmail
      */
-    public function setCity($city)
+    public function setContactEmail(string $contactEmail)
     {
-        $this->city = $city;
-
-        return $this;
+        $this->contactEmail = $contactEmail;
     }
 
     /**
-     * Get city
-     *
      * @return string
      */
-    public function getCity()
+    public function getCity(): string
     {
         return $this->city;
     }
 
     /**
-     * Set postalCode
-     *
-     * @param string $postalCode
-     *
-     * @return company
+     * @param string $city
      */
-    public function setPostalCode($postalCode)
+    public function setCity(string $city)
     {
-        $this->postalCode = $postalCode;
-
-        return $this;
+        $this->city = $city;
     }
 
     /**
-     * Get postalCode
-     *
      * @return string
      */
-    public function getPostalCode()
+    public function getPostalCode(): string
     {
         return $this->postalCode;
     }
 
     /**
-     * Set address
-     *
-     * @param string $address
-     *
-     * @return company
+     * @param string $postalCode
      */
-    public function setAddress($address)
+    public function setPostalCode(string $postalCode)
     {
-        $this->address = $address;
-
-        return $this;
+        $this->postalCode = $postalCode;
     }
 
     /**
-     * Get address
-     *
      * @return string
      */
-    public function getAddress()
+    public function getAddress(): string
     {
         return $this->address;
     }
 
     /**
-     * Set phone
-     *
-     * @param string $phone
-     *
-     * @return company
+     * @param string $address
      */
-    public function setPhone($phone)
+    public function setAddress(string $address)
     {
-        $this->phone = $phone;
-
-        return $this;
+        $this->address = $address;
     }
 
     /**
-     * Get phone
-     *
      * @return string
      */
-    public function getPhone()
+    public function getPhone(): string
     {
         return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone(string $phone)
+    {
+        $this->phone = $phone;
     }
 
     /**
@@ -258,12 +223,10 @@ class Company
 
     /**
      * @param string $presentationTitle
-     * @return Company
      */
-    public function setPresentationTitle(string $presentationTitle): Company
+    public function setPresentationTitle(string $presentationTitle)
     {
         $this->presentationTitle = $presentationTitle;
-        return $this;
     }
 
     /**
@@ -276,12 +239,10 @@ class Company
 
     /**
      * @param string $presentationContent
-     * @return Company
      */
-    public function setPresentationContent(string $presentationContent): Company
+    public function setPresentationContent(string $presentationContent)
     {
         $this->presentationContent = $presentationContent;
-        return $this;
     }
 
     /**
@@ -294,12 +255,10 @@ class Company
 
     /**
      * @param string $adherentTitle
-     * @return Company
      */
-    public function setAdherentTitle(string $adherentTitle): Company
+    public function setAdherentTitle(string $adherentTitle)
     {
         $this->adherentTitle = $adherentTitle;
-        return $this;
     }
 
     /**
@@ -312,36 +271,26 @@ class Company
 
     /**
      * @param string $adherentContent
-     * @return Company
      */
-    public function setAdherentContent(string $adherentContent): Company
+    public function setAdherentContent(string $adherentContent)
     {
         $this->adherentContent = $adherentContent;
-        return $this;
     }
 
     /**
-     * Set imageUrl
-     *
-     * @param string $imageUrl
-     *
-     * @return company
-     */
-    public function setImageUrl($imageUrl)
-    {
-        $this->imageUrl = $imageUrl;
-
-        return $this;
-    }
-
-    /**
-     * Get imageUrl
-     *
      * @return string
      */
     public function getImageUrl()
     {
         return $this->imageUrl;
+    }
+
+    /**
+     * @param string $imageUrl
+     */
+    public function setImageUrl($imageUrl)
+    {
+        $this->imageUrl = $imageUrl;
     }
 
     /**
@@ -352,14 +301,13 @@ class Company
         return $this->pdf;
     }
 
-
+    /**
+     * @param mixed $pdf
+     */
     public function setPdf($pdf)
     {
         $this->pdf = $pdf;
-        return $this;
     }
-
-
 
 
 }
