@@ -105,7 +105,6 @@ class Company
     /**
      * @ORM\Column(name="imageUrl", type="string", length=255, nullable=true)
      *
-     * @Assert\NotBlank(message="Merci de charger une image")
      * @Assert\Image
      *
      */
@@ -114,7 +113,6 @@ class Company
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Assert\NotBlank(message="Merci d'uploader un PDF")
      * @Assert\File(mimeTypes={ "application/pdf" })
      */
     private $pdf;

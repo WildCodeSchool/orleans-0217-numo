@@ -2,9 +2,8 @@
 {% block body %}
 
     <div class="col-xs-12 text-center">
-        <div class="separation"></div>
         <h1>Membres</h1>
-        <div class="separation"></div>
+        <div class="separation barreGreen"></div>
     </div>
 
     <div class="container-fluid text-center">
@@ -14,7 +13,7 @@
 
         <nav class="AlphabetNav">
             {%  for letter in 'A'..'Z' %}
-                <a>{{ letter }}</a>
+                <a href="">{{ letter }}</a>
             {% endfor %}
         </nav>
     </div>
@@ -36,7 +35,7 @@
                     <div class="row">
                         <div class="col-lg-offset-0 col-xs-offset-4 col-lg-5">
                             <a href="{{ path('profilMember', { 'id': member.id }) }}">
-                                <h2>{{ member.name }} {{ member.firstname }}  </h2></a>
+                                <h2 class="memberName">{{ member.name }} {{ member.firstname }}  </h2></a>
                         </div>
 
                         <div class="col-lg-offset-4 col-xs-offset-4 col-lg-2">
@@ -65,12 +64,12 @@
                 </div>
 
                 <div class="col-lg-offset-2 col-lg-8">
-                    <hr class="hrMembre">
+                    <div class="separation barreGreen"></div>
                 </div>
             </div>
         {% endfor %}
         <div class="container-fluid text-center">
-            <a id="next" class="btn btn-danger  btn-lg">Voir plus</a>
+            <a id="next" class="btn btn-success btnGreen btn-lg">Voir plus</a>
 
         </div>
 
