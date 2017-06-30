@@ -19,7 +19,7 @@
                     <h1>{{ event.title }}</h1>
                         <a href="{{ event.link }}" class="btn btn-default right-sep" role="button" target="_blank">Voir sur Open Agenda</a>
                         <a href="{{ path('event_list_published') }}" class="btn btn-default right-sep" role="button">Retour à la liste</a>
-    {# --- provisoire --- #}
+    {# --- provisoire pour tester les fonctions --- #}
     <a href="{{ path('event_edit_published', {'id': event.id}) }}" class="btn btn-default right-sep" role="button"> edit </a>
     <a href="{{ path('event_delete_published', {'id': event.id}) }}" class="btn btn-default" role="button"> delete </a>
     {# ------------------ #}
