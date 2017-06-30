@@ -80,19 +80,7 @@ class CompanyController extends Controller
      */
     public function editAction(Request $request, Company $company)
     {
-        $oldimage = $company->getImageUrl();
-        $oldpdf = $company->getPdf();
 
-        if ($company->getImageUrl()){
-            $company->setImageUrl(
-                new File($company->getImageUrl())
-            );
-        }
-        if ($company->getPdf()){
-            $company->setPdf(
-                new File($company->getPdf())
-            );
-        }
         $deleteForm = $this->createDeleteForm($company);
         $editForm = $this->createForm('NumoBundle\Form\CompanyType', $company);
         $editForm->handleRequest($request);
@@ -100,12 +88,7 @@ class CompanyController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            if($oldimage){
-                $company->setImageUrl($oldimage);
-            }
-            if($oldpdf){
-                $company->setPdf($oldpdf);
-            }
+
 
             return $this->redirectToRoute('company_edit', ['id' => $company->getId()]);
         }
@@ -140,26 +123,39 @@ class CompanyController extends Controller
     /**
      * Deletes an image in company entity.
      *
-     * @Route("/{id}", name="company_delete_image")
-     * @Method("DELETE")
+     * @Route("/{id}/delete_image", name="company_delete_image")
+     * @Method({"GET", "POST"})
      */
-    public function deleteImageAction(Request $request, Company $company)
+    public function deleteImageAction(Company $company)
 
     {
-        $form = $this->createDeleteForm($company);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($company);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('company_index');
+        $path = $company->getImageUrl();
+        $em = $this->getDoctrine()->getManager();
+        $company->setImageUrl('');
+        $em->flush();
+        // effacement du fichier
+        unlink($this->getParameter('upload_directory') . '/' .
+            $path);
+        return $this->redirectToRoute('company_edit', array('id' => $company->getId()));
     }
 
-
-
+    /**
+     * Deletes a pdf in company entity.
+     *
+     * @Route("/{id}/delete_pdf", name="company_delete_pdf")
+     * @Method({"GET", "POST"})
+     */
+    public function deletePdfAction (Company $company)
+    {
+        $path = $company->getPdf();
+        $em = $this->getDoctrine()->getManager();
+        $company->setPdf('');
+        $em->flush();
+        // effacement du fichier
+        unlink($this->getParameter('upload_directory') . '/' .
+            $path);
+        return $this->redirectToRoute('company_edit', array('id' => $company->getId()));
+    }
     /**
      * Creates a form to delete a company entity.
      *

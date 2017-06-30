@@ -183,6 +183,11 @@ class User extends BaseUser
     protected $linkedin;
 
     /**
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="author")
+     */
+    protected $events;
+
+    /**
      * @ORM\OneToMany(targetEntity="Published", mappedBy="author")
      *
      */
@@ -556,5 +561,39 @@ class User extends BaseUser
     public function getLinkedin()
     {
         return $this->linkedin;
+    }
+
+    /**
+     * Add event
+     *
+     * @param \NumoBundle\Entity\Event $event
+     *
+     * @return User
+     */
+    public function addEvent(\NumoBundle\Entity\Event $event)
+    {
+        $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * Remove event
+     *
+     * @param \NumoBundle\Entity\Event $event
+     */
+    public function removeEvent(\NumoBundle\Entity\Event $event)
+    {
+        $this->events->removeElement($event);
+    }
+
+    /**
+     * Get events
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEvents()
+    {
+        return $this->events;
     }
 }
