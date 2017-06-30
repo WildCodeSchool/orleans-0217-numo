@@ -36,11 +36,6 @@ bg-img {
     background-color: white;
     margin: 20px 0px;
 }
-.h-sep {
-    width: 30px;
-    height: 10px;
-    display: inline-block;
-}
 .in-line {
     display: inline;
 }

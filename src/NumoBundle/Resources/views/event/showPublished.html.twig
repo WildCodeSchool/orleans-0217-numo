@@ -13,11 +13,16 @@
 
     {# --- titre --------------------------------------------------------------------------------#}
                 <div class="col-xs-12 text-center">
+
+
                     <div class="separation"></div>
                     <h1>{{ event.title }}</h1>
-                        <a href="{{ event.link }}" class="btn btn-default" role="button" target="_blanc">Voir sur Open Agenda</a>
-                        <div class="h-sep"></div>
-                        <a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Retour à la liste</a>
+                        <a href="{{ event.link }}" class="btn btn-default right-sep" role="button" target="_blank">Voir sur Open Agenda</a>
+                        <a href="{{ path('event_list_published') }}" class="btn btn-default right-sep" role="button">Retour à la liste</a>
+    {# --- provisoire --- #}
+    <a href="{{ path('event_edit_published', {'id': event.id}) }}" class="btn btn-default right-sep" role="button"> edit </a>
+    <a href="{{ path('event_delete_published', {'id': event.id}) }}" class="btn btn-default" role="button"> delete </a>
+    {# ------------------ #}
                     <div class="separation"></div>
                 </div>
 

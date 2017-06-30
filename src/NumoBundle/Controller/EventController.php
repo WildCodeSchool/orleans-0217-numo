@@ -192,17 +192,56 @@ class EventController extends Controller
     /**
      * Displays a form to edit an existing event entity.
      *
-     * @Route("/{id}/edit", name="event_edit")
+     * @Route("/editpublished/{id}", name="event_edit_published")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Event $event)
+    public function editAction(Request $request, $id)
     {
+        $error = '';
+        $api = $this->get('numo.apiopenagenda');
+        // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
+        $oaEvent = $api->getEvent($id);
+        if (false === $oaEvent) {
+            $oaEvent = null; // objet vide
+            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+        } else {
+            $event = new Event();
+            $event->hydrate($oaEvent);
+            $evtDate = new EvtDate();
+            foreach ($oaEvent->getOldDates() as $oaDate) {
+                $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
+                $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
+                $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
+                $event->getEvtDates()->add($evtDate);
+            }
+            foreach ($oaEvent->getNewDates() as $oaDate) {
+                $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
+                $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
+                $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
+                $event->getEvtDates()->add($evtDate);
+            }
+            $form = $this->createForm(EventType::class, $event);
+            $form->handleRequest($request);
+
+
+            // charger le formulaire avec ces infos
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+
+//                return $this->redirectToRoute('event_list_published');
+            }
+        }
+        return $this->render('NumoBundle:event:editPublished.html.twig', [
+        'error' => $error,
+        'form' => $form->createView(),
+        ]);
     }
 
     /**
      * Deletes a event entity.
      *
-     * @Route("/{id}", name="event_delete")
+     * @Route("/deletepublished/{id}", name="event_delete_published")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, Event $event)
