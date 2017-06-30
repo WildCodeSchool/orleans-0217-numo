@@ -505,7 +505,13 @@ div.separation {
 
  .navWhite{
     background-color: white;
+     font-weight: bold;
+     text-transform: uppercase;
+}
 
+.nav .navbar-nav .navbar-right li a {
+    font-size: 1.2em;
+    font-weight: normal;
 }
 
 
