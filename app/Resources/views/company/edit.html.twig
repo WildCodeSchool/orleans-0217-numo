@@ -1,6 +1,11 @@
 {% extends 'layoutAdmin.html.twig' %}
 {% form_theme edit_form 'bootstrap_3_layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/summernote.css') }}">
+{% endblock %}
+
 {% block body %}
 <div class="container font-lato">
     <h1 class="titreadmin font-lato">MODIFIER LES INFORMATIONS DE NUM'O</h1>
@@ -66,6 +71,21 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/summernote.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#company_presentationContent').summernote({
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']]
+                ]
+            });
+        });
+
+    </script>
 {% endblock %}
 

@@ -91,7 +91,4 @@ twig:
     form:
         resources: ['bootstrap_3_layout.html.twig']
 
-solilokiam_summernote:
-    db_driver: orm
-    asset_class: NumoBundle\Document\Asset
 
