@@ -1,16 +1,31 @@
-{% extends 'layout.html.twig' %}
 
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% block body %}
-    <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
-        <div>
-            <label for="username">{{ 'resetting.request.username'|trans }}</label>
-            <input type="text" id="username" name="username" required="required" />
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+
+                <h2 id="homeHeading">Réinitialiser le mot de passe</h2>
+                <hr>
+
+                <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-offset-3 control-label" for="username">Adresse email</label>
+                        <div class="col-sm-4">
+                            <input  class="form-control" type="text" id="username" name="username" required="required" />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-sm-offset-3 text-center">
+                        <input class="col-sm-offset-1 btn btn-default btn-xl sr-button btn-reset-password" type="submit" value="{{ 'resetting.request.submit'|trans }}" />
+                    </div>
+                </form>
+
+            </div>
         </div>
-        <div>
-            <input type="submit" value="{{ 'resetting.request.submit'|trans }}" />
-        </div>
-    </form>
+    </header>
+
+
 
 {% endblock %}

@@ -30,7 +30,8 @@ header .header-content .header-content-inner hr {
 }
 header .header-content .header-content-inner p {
     font-weight: 300;
-    color: rgba(255, 255, 255, 0.7);
+    /*color: rgba(255, 255, 255, 0.7);*/
+    color: white;
     font-size: 16px;
     margin-bottom: 50px;
 }
@@ -314,6 +315,13 @@ thead{
     height: 100px;
 }
 
+.imageadmin{
+    width: 500px;
+}
+.pdf{
+    height:400px;
+}
+
 /*    COMPANY   */
 .company{
     padding-bottom: 150px;
@@ -422,10 +430,31 @@ div.separation {
 
 
 
+
+
 /*     HIDDEN TYPE FORM         */
 
 .form-hidden {
     display: none;
+}
+
+/*     FORM FOS USER         */
+
+.btn-reset-password {
+    margin-top: 8px;
+}
+
+.forgot-password a{
+    color: white;
+    font-weight: bold;
+}
+
+.forgot-password {
+    margin-top: 15px;
+}
+
+.form-left-margin {
+    margin-left: 200px;
 }
 
 /* ------- Agenda View ------- */
