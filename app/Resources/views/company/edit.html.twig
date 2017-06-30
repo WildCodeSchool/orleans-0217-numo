@@ -1,6 +1,12 @@
 {% extends 'layoutAdmin.html.twig' %}
 {% form_theme edit_form 'bootstrap_3_layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.css">
+
+{% endblock %}
+
 {% block body %}
 <div class="container font-lato">
     <h1 class="titreadmin font-lato">MODIFIER LES INFORMATIONS DE NUM'O</h1>
@@ -68,14 +74,16 @@
         <input type="submit" value="ENREGISTRER" />
         {{ form_widget(edit_form._token) }}
     </form>
+
 </div>
->>>>>>> dev
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js"></script>
     <script>
         $(document).ready(function () {
             $('#company_presentationContent').summernote({
+                height: 300,
                 toolbar: [
                     // [groupName, [list of button]]
                     ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -83,7 +91,19 @@
                     ['fontsize', ['fontsize']],
                     ['color', ['color']],
                     ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']]
+                ]
+            });
+        });
+        $(document).ready(function () {
+            $('#company_adherentContent').summernote({
+                height: 300,
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
                 ]
             });
         });
