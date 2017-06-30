@@ -87,5 +87,35 @@ class PricingInfo
     }
 
 
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->events = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    /**
+     * Add event
+     *
+     * @param \NumoBundle\Entity\Event $event
+     *
+     * @return PricingInfo
+     */
+    public function addEvent(\NumoBundle\Entity\Event $event)
+    {
+        $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * Remove event
+     *
+     * @param \NumoBundle\Entity\Event $event
+     */
+    public function removeEvent(\NumoBundle\Entity\Event $event)
+    {
+        $this->events->removeElement($event);
+    }
+}

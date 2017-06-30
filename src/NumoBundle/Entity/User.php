@@ -562,4 +562,38 @@ class User extends BaseUser
     {
         return $this->linkedin;
     }
+
+    /**
+     * Add event
+     *
+     * @param \NumoBundle\Entity\Event $event
+     *
+     * @return User
+     */
+    public function addEvent(\NumoBundle\Entity\Event $event)
+    {
+        $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * Remove event
+     *
+     * @param \NumoBundle\Entity\Event $event
+     */
+    public function removeEvent(\NumoBundle\Entity\Event $event)
+    {
+        $this->events->removeElement($event);
+    }
+
+    /**
+     * Get events
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
 }

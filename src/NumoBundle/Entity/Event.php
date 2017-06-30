@@ -144,8 +144,12 @@ class Event
 
     public function __construct()
     {
-        $this->evtDates = new ArrayCollection();
-
+        $this
+            ->setRejected(0)
+            ->setFreeText('')
+            ->setImage('')
+            ->setTicketLink('')
+            ->evtDates = new ArrayCollection();
     }
 
     /**

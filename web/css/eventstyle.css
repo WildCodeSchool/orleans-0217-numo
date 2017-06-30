@@ -95,11 +95,11 @@ ul.evtdatelist {
 .ecart-bas {
     margin-bottom: 10px;
 }
+
 div.separation {
     margin: 20px 0px;
     width: 100%;
-    height: 4px;
-    background-color: #CCCCCC;
+    height: 1px;
 }
 .emphase {
     font-weight: bold;
