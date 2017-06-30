@@ -4,9 +4,18 @@
 
 {% block body %}
     {% block fos_user_content %}
-        <p>
-            {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
-        </p>
+        <header>
+            <div class="header-content">
+                <div class="header-content-inner">
+
+                <h2 id="homeHeading">Réinitialiser le mot de passe</h2>
+                <hr>
+                <p>
+                    {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
+                </p>
+                </div>
+            </div>
+        </header>
     {% endblock %}
 
 {% endblock %}
