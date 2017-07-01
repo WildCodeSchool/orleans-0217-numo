@@ -60,7 +60,16 @@
                     </div>
                     <div class="col-sm-9 text-center">
                         {{ form_widget(form.image, {'attr': {'class': 'form-control hidden', 'accept': '.jpg, .jpeg, .png'}}) }}
-                        <input type="text" id="imgname" class="form-control" value="" readonly="readonly" />
+
+
+
+                        {% if image %}
+                            <img src="{{ asset('tmp/' ~ image) }}" />
+                        {% endif %}
+
+                        {#<input type="text" id="imgname" class="form-control" value="" readonly="readonly" />#}
+
+
                     </div>
                 </div>
 

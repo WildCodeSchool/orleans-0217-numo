@@ -5,6 +5,7 @@
 namespace NumoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use \Doctrine\Common\Collections\ArrayCollection;
 
@@ -156,7 +157,6 @@ class Event
     {
         $this
             ->setRejected(0)
-            ->setImage($OaEvent->getImage())
             ->setTitle($OaEvent->getTitle())
             ->setDescription($OaEvent->getDescription())
             ->setFreeText($OaEvent->getFreeText())
@@ -167,6 +167,12 @@ class Event
             ->setLongitude($OaEvent->getLongitude())
             ->setTicketLink($OaEvent->getTicketLink())
             ->setPricingInfo($OaEvent->getPricingInfo());
+        if ($OaEvent->getImage()) {
+            $temp = explode('/', $OaEvent->getImage());
+            $filename = end($temp);
+            copy ($OaEvent->getImage(), "tmp/$filename");
+            $this->setImage(new File("tmp/$filename"));
+        }
     }
 
     /**

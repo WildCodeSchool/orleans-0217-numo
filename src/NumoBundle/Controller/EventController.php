@@ -207,6 +207,7 @@ class EventController extends Controller
         } else {
             $event = new Event();
             $event->hydrate($oaEvent);
+            $image = $event->getImage()->getFilename();
             $evtDate = new EvtDate();
             foreach ($oaEvent->getOldDates() as $oaDate) {
                 $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
@@ -234,6 +235,7 @@ class EventController extends Controller
         }
         return $this->render('NumoBundle:event:editPublished.html.twig', [
         'error' => $error,
+        'image' => $image,
         'form' => $form->createView(),
         ]);
     }
