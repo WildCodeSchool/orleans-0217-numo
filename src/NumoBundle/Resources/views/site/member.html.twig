@@ -13,7 +13,7 @@
 
         <nav class="AlphabetNav">
             {%  for letter in 'A'..'Z' %}
-                <a>{{ letter }}</a>
+                <a href="">{{ letter }}</a>
             {% endfor %}
         </nav>
     </div>
@@ -35,7 +35,7 @@
                     <div class="row">
                         <div class="col-lg-offset-0 col-xs-offset-4 col-lg-5">
                             <a href="{{ path('profilMember', { 'id': member.id }) }}">
-                                <h2>{{ member.name }} {{ member.firstname }}  </h2></a>
+                                <h2 class="memberName">{{ member.name }} {{ member.firstname }}  </h2></a>
                         </div>
 
                         <div class="col-lg-offset-4 col-xs-offset-4 col-lg-2">

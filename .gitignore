@@ -12,5 +12,7 @@ web/bundles/
 web/uploads/event/*
 web/uploads/numo/*
 web/uploads/users/*
+
+Entity/*~
 web/tests/
-src/NumoBundle/Entity/*.php~
+web/tmp/*
