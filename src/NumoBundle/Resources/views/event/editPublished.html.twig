@@ -54,22 +54,22 @@
                     </div>
                 </div>
 
+                {# --- image -------------------------------------------------------------------------- #}
                 <div class="form-group">
                     <div class="col-sm-3 control-label">
-                        {{ form_label(form.image, 'Charger une image', {'label_attr': {'class': 'btn btn-default btn-xs'}}) }}
+                        {{ form_label(form.image, 'Charger nouvelle image', {'label_attr': {'class': 'btn btn-default btn-xs btn-img'}}) }}
+                        <button id="resetimg" class="btn btn-default btn-xs btn-img">Supprimer nouvelle image</button>
                     </div>
                     <div class="col-sm-9 text-center">
                         {{ form_widget(form.image, {'attr': {'class': 'form-control hidden', 'accept': '.jpg, .jpeg, .png'}}) }}
-
-
-
-                        {% if image %}
-                            <img src="{{ asset('tmp/' ~ image) }}" />
-                        {% endif %}
-
-                        {#<input type="text" id="imgname" class="form-control" value="" readonly="readonly" />#}
-
-
+                        <div class="demi-img text-center">
+                            <img id="oldimage" class="little-img" src="{{ asset(form_widget(form.oldImage.vars.value)) }}" />
+                            <p>Image actuelle</p>
+                        </div>
+                        <div class="demi-img text-center">
+                            <img id="newimage" class="little-img" src="{{ asset(newImage) }}" />
+                            <p>Nouvelle image</p>
+                        </div>
                     </div>
                 </div>
 
@@ -146,12 +146,19 @@
 
                 <div class="row">
                     <div class="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 text-center">
-                        <button class="btn btn-default right-sep" type="submit">Enregistrer les modifications</button>
+                        <button class="btn btn-default right-sep" type="submit" name="submit">Enregistrer les modifications</button>
                         <a class="btn btn-default" href="{{ path('event_list_published') }}">Ne pas enregistrer</a>
                     </div>
                 </div>
 
                 {{ form_end(form) }}
+
+                {# --- formulaire d'upload d'image --- #}
+                <form id="upldimgform" method="post" enctype="multipart/form-data">
+                    <iput type="file" id="upload" name="upload" class="hidden" accept=".jpg, .jpeg, .png" />
+                    <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+                </form>
+
             </div>
         </div>
 
@@ -162,6 +169,62 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/newevent.js') }}"></script>
+
+    <script>
+
+        {#$('#numobundle_event_image').change(function(e) {#}
+            {#e.preventDefault();#}
+            {#$('#newimage').attr('src', '/img/attente.gif');#}
+            {#$('#upload').val($('#numobundle_event_image').val());#}
+{#//            var form = $('#upldimgform');#}
+            {#$.ajax({#}
+                {#type: "post",#}
+                {#url: "{{ path('upload_image') }}",#}
+{#//                data: new FormData(form),// the formData function is available in almost all new browsers.#}
+                {#data: $('#upldimgform').serialize(),#}
+                {#contentType: false,#}
+                {#processData: false,#}
+{#//                cache: false,#}
+                {#dataType: "json",#}
+                {#success: function (data) {#}
+                    {#console.log(data);#}
+                {#},#}
+                {#error: function (response, desc, err) {#}
+                    {#if (response.responseJSON && response.responseJSON.message) {#}
+                        {#console.log(response.responseJSON.message);#}
+                    {#}#}
+                    {#else {#}
+                        {#console.log(desc);#}
+                    {#}#}
+                    {#$('#newimage').attr('src', '/img/event-placeholder.png');#}
+                {#},#}
+                {#complete: function () {#}
+                    {#console.log("Request finished.");#}
+                {#}#}
+            {#});#}
+
+            {#console.log('GLOP GLOP');#}
+        {#});#}
+
+//        $('#my_form').find('input[name="image"]').on('change', function (e) {
+//            var files = $(this)[0].files;
+//
+//            if (files.length > 0) {
+//                // On part du principe qu'il n'y qu'un seul fichier
+//                // étant donné que l'on a pas renseigné l'attribut "multiple"
+//                var file = files[0],
+//                    $image_preview = $('#image_preview');
+//
+//                // Ici on injecte les informations recoltées sur le fichier pour l'utilisateur
+//                $image_preview.find('.thumbnail').removeClass('hidden');
+//                $image_preview.find('img').attr('src', window.URL.createObjectURL(file));
+//                $image_preview.find('h4').html(file.name);
+//                $image_preview.find('.caption p:first').html(file.size +' bytes');
+//            }
+//        });
+
+    </script>
+
+    {#<script src="{{ asset('js/newevent.js') }}"></script>#}
     <script>geocoder = new google.maps.Geocoder();</script>
 {% endblock %}

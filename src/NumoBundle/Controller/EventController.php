@@ -13,6 +13,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use NumoBundle\Form\EventType;
+use Symfony\Component\HttpFoundation\File\File;
+
 /**
  * Event controller.
  *
@@ -166,7 +168,7 @@ class EventController extends Controller
      * @Route("/showpublished/{id}", name="event_show_published")
      * @Method("GET")
      */
-    public function showAction($id)
+    public function showPublishedAction($id)
     {
         $error = '';
         $published = null;
@@ -195,47 +197,56 @@ class EventController extends Controller
      * @Route("/editpublished/{id}", name="event_edit_published")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, $id)
+    public function editPublishedAction(Request $request, $id)
     {
         $error = '';
-        $api = $this->get('numo.apiopenagenda');
-        // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
-        $oaEvent = $api->getEvent($id);
-        if (false === $oaEvent) {
-            $oaEvent = null; // objet vide
-            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
-        } else {
-            $event = new Event();
-            $event->hydrate($oaEvent);
-            $image = $event->getImage()->getFilename();
-            $evtDate = new EvtDate();
-            foreach ($oaEvent->getOldDates() as $oaDate) {
-                $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
-                $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
-                $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
-                $event->getEvtDates()->add($evtDate);
+        $event = new Event();
+        $newImage = '/img/event-placeholder.png';
+        if (!$request->request->has('submit')) {
+            // --- premier chargement de la page : on recupere l'evenement sur OpenAgenda
+            $api = $this->get('numo.apiopenagenda');
+            // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
+            $oaEvent = $api->getEvent($id);
+            if (false === $oaEvent) {
+                $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+            } else {
+                $event->hydrate($oaEvent);
+                if ($oaEvent->getImage()) {
+                    $fileName = explode('/', $oaEvent->getImage());
+                    $fileName = $this->getParameter('img_event_dir') . '/' . end($fileName);
+                    copy($oaEvent->getImage(), $fileName);
+                    $event->setImage(new File($fileName));
+                    $event->setOldImage($fileName);
+                }
+                $evtDate = new EvtDate();
+                foreach ($oaEvent->getOldDates() as $oaDate) {
+                    $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
+                    $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
+                    $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
+                    $event->getEvtDates()->add($evtDate);
+                }
+                foreach ($oaEvent->getNewDates() as $oaDate) {
+                    $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
+                    $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
+                    $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
+                    $event->getEvtDates()->add($evtDate);
+                }
             }
-            foreach ($oaEvent->getNewDates() as $oaDate) {
-                $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
-                $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
-                $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
-                $event->getEvtDates()->add($evtDate);
-            }
-            $form = $this->createForm(EventType::class, $event);
-            $form->handleRequest($request);
+        }
+        $form = $this->createForm(EventType::class, $event);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
 
 
-            // charger le formulaire avec ces infos
-
-            if ($form->isSubmitted() && $form->isValid()) {
 
 
-//                return $this->redirectToRoute('event_list_published');
-            }
+
+
+
         }
         return $this->render('NumoBundle:event:editPublished.html.twig', [
         'error' => $error,
-        'image' => $image,
+        'newImage' => $newImage,
         'form' => $form->createView(),
         ]);
     }
@@ -246,18 +257,8 @@ class EventController extends Controller
      * @Route("/deletepublished/{id}", name="event_delete_published")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, Event $event)
+    public function deletePublishedAction(Request $request, $id)
     {
     }
 
-    /**
-     * Creates a form to delete a event entity.
-     *
-     * @param Event $event The event entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Event $event)
-    {
-    }
 }

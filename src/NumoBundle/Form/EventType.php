@@ -5,6 +5,7 @@ namespace NumoBundle\Form;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -37,6 +38,9 @@ class EventType extends AbstractType
                 'required' => true,
             ])
             ->add('image', fileType::class, [
+                'required' => false,
+            ])
+            ->add('oldImage', HiddenType::class, [
                 'required' => false,
             ])
             ->add('placename', TextType::class, [

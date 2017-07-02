@@ -69,7 +69,7 @@ class ApiOpenAgenda
     public function getAgendaUid()
     {
         if (!isset($this->aUid)) {
-            $url = self::APIROOTURL . 'agendas/uid/'.$this->getAgendaSlug().'?key=' . $this->getPublicKey();
+            $url = self::APIROOTURL . 'agendas/uid/' . $this->getAgendaSlug() . '?key=' . $this->getPublicKey();
             $this->getFileContents->setUrl($url);
             $data = $this->getFileContents->execute(true);
             if (false === $data) {
@@ -93,7 +93,7 @@ class ApiOpenAgenda
         $newEvent = new OaEvent;
         $newEvent
             ->setId($event->uid);
-        $link = self::WEBROOTURL . $this->getAgendaSlug().'/event/'.end(explode('/', $event->link));
+        $link = self::WEBROOTURL . $this->getAgendaSlug() . '/event/' . end(explode('/', $event->link));
         $newEvent
             ->setLink($link)
             ->setImage($event->image)
@@ -119,7 +119,7 @@ class ApiOpenAgenda
         $dateRef->format('Y-m-d');
         foreach ($oaDates as $oaDate) {
             // $evtD = AAAA-MM-DD HH:MM:SS
-            $evtDate = ['evtDate' => substr($evtD->start,0,10), 'timeStart' => substr($evtD->start,11,8), 'timeEnd' => substr($evtD->end,11,8)];
+            $evtDate = ['evtDate' => substr($evtD->start, 0, 10), 'timeStart' => substr($evtD->start, 11, 8), 'timeEnd' => substr($evtD->end, 11, 8)];
             if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
                 $oldDates[] = $evtDate;
             } else {
@@ -145,7 +145,7 @@ class ApiOpenAgenda
         if (isset($event->image)) $newEvent->setImage($event->image);
         if (isset($event->description)) $newEvent->setDescription($event->description->fr);
         if (isset($event->longDescription)) $newEvent->setFreeText($event->longDescription->fr);
-        if (isset($event->keywords)) $newEvent->setTags(implode(', ',$event->keywords->fr));
+        if (isset($event->keywords)) $newEvent->setTags(implode(', ', $event->keywords->fr));
         if (isset($event->registrationUrl)) $newEvent->setTicketLink($event->registrationUrl);
         if (isset($event->conditions)) $newEvent->setPricingInfo($event->conditions->fr);
         $oldDates = [];
@@ -153,7 +153,7 @@ class ApiOpenAgenda
         $dateRef = new \DateTime();
         foreach ($event->timings as $evtD) {
             // $evtD = AAAA-MM-DD HH:MM:SS
-            $evtDate = ['evtDate' => substr($evtD->start,0,10), 'timeStart' => substr($evtD->start,11,8), 'timeEnd' => substr($evtD->end,11,8)];
+            $evtDate = ['evtDate' => substr($evtD->start, 0, 10), 'timeStart' => substr($evtD->start, 11, 8), 'timeEnd' => substr($evtD->end, 11, 8)];
             if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
                 $oldDates[] = $evtDate;
             } else {
@@ -165,7 +165,7 @@ class ApiOpenAgenda
         return $newEvent;
     }
 
-    public function getEventList(array $options=[], bool $api=false) : array
+    public function getEventList(array $options = [], bool $api = false): array
     {
         if ($api) {
             // --- version avec l'api -------------------------------------------
@@ -177,7 +177,7 @@ class ApiOpenAgenda
                 $url .= '?';
             }
         }
-        $i=0;
+        $i = 0;
         foreach ($options as $opt => $val) {
             $url .= "$opt=$val";
             $i++;
@@ -204,13 +204,13 @@ class ApiOpenAgenda
                 foreach ($data['data'] as $event) {
                     $oneEvent = $this->convertJson($event);
                     $eventList[] = $oneEvent;
-                    if($oneEvent->getNewDates()){
+                    if ($oneEvent->getNewDates()) {
                         $date = $oneEvent->getNewDates()[0];
                         $title = $oneEvent->getTitle();
                         $eventDateList[] = [
-                            substr($date['evtDate'],8,2),
-                            substr($date['evtDate'],5,2),
-                            substr($date['evtDate'],0,4),
+                            substr($date['evtDate'], 8, 2),
+                            substr($date['evtDate'], 5, 2),
+                            substr($date['evtDate'], 0, 4),
                             $title
                         ];
                     }
@@ -221,20 +221,20 @@ class ApiOpenAgenda
 
     }
 
-    public function getEvent(int $uid, $api=false)
+    public function getEvent(int $uid, $api = false)
     {
         if ($api) {
             // --- version avec l'api -------------------------------------------
             $url = self::APIROOTURL . "events/$uid?key=" . $this->getPublicKey();
         } else {
             // --- version avec le json -----------------------------------
-            $url = self::WEBROOTURL . 'agendas/'.$this->getAgendaUid()."/events.json?oaq[uids][]=$uid";
+            $url = self::WEBROOTURL . 'agendas/' . $this->getAgendaUid() . "/events.json?oaq[uids][]=$uid";
         }
         $this->getFileContents->setUrl($url);
         $data = $this->getFileContents->execute($api);
         if (false === $data) {
             $this->setErrorCode($this->getFileContents->getHttpCode());
-            $this->setError('Lecture agenda : ('.$uid.') '.$this->getFileContents->getError());
+            $this->setError('Lecture agenda : (' . $uid . ') ' . $this->getFileContents->getError());
             return false;
         } else {
             if ($api) {
@@ -275,7 +275,7 @@ class ApiOpenAgenda
         $this->token = $token;
     }
 
-    public function publishLocation($nonce,$event)
+    public function publishLocation($nonce, $event)
     {
         $this->curl
             ->setUrl(self::APIROOTURL . 'locations')
@@ -301,7 +301,7 @@ class ApiOpenAgenda
 
     public function publishEvent(Event $event)
     {
-        $nonce = random_int(1,10000); // nombre aleatoire pour valider l'ecriture;
+        $nonce = random_int(1, 10000); // nombre aleatoire pour valider l'ecriture;
         // NOTE : en cas d'echec (return false) l'erreur (texte) est dans $this->error et le code http dans $this->errorCode
 
         // --- creation du token pour ecriture ----------------------------------------------------

@@ -44,6 +44,12 @@ class Event
 
     /**
      * @var string
+     * @ORM\Column(name="oldimage", type="string", length=255)
+     */
+    private $oldImage;
+
+    /**
+     * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
      *
@@ -153,26 +159,20 @@ class Event
             ->evtDates = new ArrayCollection();
     }
 
-    public function hydrate(OaEvent $OaEvent)
+    public function hydrate(OaEvent $oaEvent)
     {
         $this
             ->setRejected(0)
-            ->setTitle($OaEvent->getTitle())
-            ->setDescription($OaEvent->getDescription())
-            ->setFreeText($OaEvent->getFreeText())
-            ->setTags($OaEvent->getTags())
-            ->setPlacename($OaEvent->getPlacename())
-            ->setAddress($OaEvent->getAddress())
-            ->setLatitude($OaEvent->getLatitude())
-            ->setLongitude($OaEvent->getLongitude())
-            ->setTicketLink($OaEvent->getTicketLink())
-            ->setPricingInfo($OaEvent->getPricingInfo());
-        if ($OaEvent->getImage()) {
-            $temp = explode('/', $OaEvent->getImage());
-            $filename = end($temp);
-            copy ($OaEvent->getImage(), "tmp/$filename");
-            $this->setImage(new File("tmp/$filename"));
-        }
+            ->setTitle($oaEvent->getTitle())
+            ->setDescription($oaEvent->getDescription())
+            ->setFreeText($oaEvent->getFreeText())
+            ->setTags($oaEvent->getTags())
+            ->setPlacename($oaEvent->getPlacename())
+            ->setAddress($oaEvent->getAddress())
+            ->setLatitude($oaEvent->getLatitude())
+            ->setLongitude($oaEvent->getLongitude())
+            ->setTicketLink($oaEvent->getTicketLink())
+            ->setPricingInfo($oaEvent->getPricingInfo());
     }
 
     /**
@@ -231,6 +231,24 @@ class Event
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOldImage(): string
+    {
+        return $this->oldImage;
+    }
+
+    /**
+     * @param string $oldImage
+     * @return Event
+     */
+    public function setOldImage(string $oldImage): Event
+    {
+        $this->oldImage = $oldImage;
+        return $this;
     }
 
     /**
