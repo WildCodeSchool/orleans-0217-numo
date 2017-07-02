@@ -70,7 +70,11 @@
                                     <div class="col-xs-4">
                                         <div class="event-imgsize">
                                             <div class="event-imgdiv">
-                                                <img class="event-img" src="{{ event.image }}" alt="image {{ event.title }}">
+                                                {% if event.image|length > 0 %}
+                                                    <img src="{{ event.image }}" alt="image {{ event.title }}" class="event-img" />
+                                                {% else %}
+                                                    <img src="{{ asset('img/event_placeholder.png') }}" alt="image {{ event.title }}" class="event-img" />
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
