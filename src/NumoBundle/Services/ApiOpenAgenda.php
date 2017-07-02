@@ -245,6 +245,50 @@ class ApiOpenAgenda
         }
     }
 
+    public function getEvents(array $uids, $api=false)
+    {
+        $eventList = [];
+        if ($api) {
+            // --- version avec l'api -------------------------------------------
+            // il faut autant de requetes que d'evenements a recuperer
+            foreach ($uids as $uid) {
+                $event = getEvent($uid, true);
+                if ($event) {
+                    $eventList[] = $event;
+                }
+            }
+            if (empty($eventList) && !$event) {
+                return false;
+            } else {
+                return $eventList;
+            }
+        } else {
+            // --- version avec le json (sans l'api) -----------------------------
+            // on peut recuperer tous les events en une seule requete
+            $url = self::WEBROOTURL . 'agendas/'.$this->getAgendaUid().'/events.json?';
+            $first = true;
+            foreach ($uids as $uid) {
+                if (!$first) {
+                    $url .= '&';
+                }
+                $url .= "oaq[uids][]=$uid";
+                $first = false;
+            }
+            $this->getFileContents->setUrl($url);
+            $data = $this->getFileContents->execute($api);
+            if (false === $data) {
+                $this->setErrorCode($this->getFileContents->getHttpCode());
+                $this->setError('Lecture agenda : ('.$uid.') '.$this->getFileContents->getError());
+                return false;
+            } else {
+                // --- mise au bon format des donnees recuperees
+                foreach ($data['data'] as $event) {
+                    $eventList[] = $this->convertJson($event);
+                }
+                return $eventList;
+            }
+        }
+    }
 
     private function initToken()
     {
