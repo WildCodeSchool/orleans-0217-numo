@@ -93,5 +93,4 @@ class UserPromoteController extends Controller
 
         return $this->redirectToRoute('memberstatus_index');
     }
-
 }

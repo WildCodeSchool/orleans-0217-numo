@@ -23,9 +23,11 @@
                 <th class="text-center">NOM</th>
                 <th class="text-center">PRENOM</th>
                 <th class="text-center">MEMBRE DE CONFIANCE</th>
+                <th class="text-center">MAIL</th>
                 <th class="text-center">STATUT</th>
                 <th class="text-center">ACTION</th>
                 <th class="text-center">DESACTIVER</th>
+
             </tr>
             </thead>
             <tbody>
@@ -42,6 +44,18 @@
                         <a href="{{ path('member_trust', {'id': user.id}) }}">
                             <button class="onoff {{ trustcolor }}"></button></a>
                     </td>
+
+                    <td class="admin">
+                        {% if user.moderator == 0 %}
+                            {% set trustcolor='red' %}
+                        {% else %}
+                            {% set trustcolor = 'green' %}
+                        {% endif %}
+                        <a href="{{ path('moderatorMail', {'id': user.id}) }}">
+                            <button class="onoff {{ trustcolor }}"></button></a>
+                    </td>
+
+
 
                     <td class="admin">{{ user.roles.0 }}</td>
                     <td class="admin">
