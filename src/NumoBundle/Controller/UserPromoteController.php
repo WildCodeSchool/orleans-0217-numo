@@ -20,7 +20,7 @@ use NumoBundle\Repository\UserRepository;
 /**
  * User Promote controller.
  *
- * @Route("memberstatus")
+ * @Route("/memberstatus")
  */
 
 class UserPromoteController extends Controller
@@ -39,25 +39,7 @@ class UserPromoteController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-//
-//        $userRole = $em->getRepository('NumoBundle:User')->findByRoles($roles);
-//
-//        var_dump($userRole);
-//        die();
-
-//        $em=$this->getDoctrine()->getManager();
-//        $repository2=$em->getRepository('NumoBundle:User');
-//        $roles='ROLE_MODERATOR';
-//        $users2=$repository2->findByRoles(array('roles'=>$roles));
-
         $users = $em->getRepository('NumoBundle:User')->findAll();
-
-        $role = 'ROLE_MODERATOR';
-
-        if ($users->hasRole('ROLE_MODERATOR')){
-            var_dump($users);
-            die('a');
-        }
 
         if ($form->isValid() && $form->isSubmitted()) {
             $data = $form->getData();
@@ -81,7 +63,7 @@ class UserPromoteController extends Controller
     /**
      * @param User $user
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/{id}", name="membertrust")
+     * @Route("/trust/{id}", name="member_trust")
      */
     public function trustAction(User $user)
     {
@@ -96,6 +78,22 @@ class UserPromoteController extends Controller
         return $this->redirectToRoute('memberstatus_index');
     }
 
+    /**
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/enabled/{id}", name="member_enabled")
+     */
+    public function enabledAction(User $user)
+    {
+        if ($user->isEnabled() === true){
+            $user->setEnabled(false);
+        } else {
+            $user->setEnabled(true);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
 
+        return $this->redirectToRoute('memberstatus_index');
+    }
 
 }
