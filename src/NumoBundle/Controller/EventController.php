@@ -157,7 +157,7 @@ class EventController extends Controller
                 }
                 // --- creationde l'enregistrement "published"
                 $published = new Published($event, $uid, $curentUser);
-                $published->setTitle($event)->getTitle();
+                $published->setTitle($event->getTitle());
                 $em->persist($published);
                 $em->flush();
             } else {

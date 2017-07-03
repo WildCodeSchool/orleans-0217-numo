@@ -16,7 +16,16 @@
             <tbody>
             {% for publishedadmin in publishedadmins %}
                 <tr>
-                    <td class="admin">{{ publishedadmin.title }}</td>
+                    <td class="admin"><p class="moderate">{{ publishedadmin.title }}</td>
+                    <td class="admin">{{ publishedadmin.moderatorUpdateDate|date('d/m/Y') }}</td>
+                    <td class="admin">{{ publishedadmin.moderator }}</td>
+                    {%  if publishedadmin.deleted == 0 %}
+                    <td class="admin">Publié</td>
+                    {% endif %}
+                    <td><a href="{{ path('event_edit_published', {'id' : publishedadmin.id}) }}"><button type="button" value="MODIFIER">MODIFIER</button></a>
+                    <a href="{{ path('event_delete_published', {'id' : publishedadmin.id}) }}"><button type="button" class="moderate" value="MODIFIER">SUPPRIMER</button></a></td>
+
+            {% endfor %}
             </tbody>
         </table>
     </div>

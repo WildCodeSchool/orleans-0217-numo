@@ -314,6 +314,9 @@ table{
     margin-bottom: 10% !important;
     vertical-align: 5%;
 }
+.moderate{
+    margin-top: 10%;
+}
 thead{
     height: 100px;
 }
