@@ -66,6 +66,11 @@ class ApiOpenAgenda
         return $this->secretKey;
     }
 
+    private function getRandom()
+    {
+        return random_int(1000, 999999);
+    }
+
     public function getAgendaUid()
     {
         if (!isset($this->aUid)) {
@@ -245,6 +250,50 @@ class ApiOpenAgenda
         }
     }
 
+    public function getEvents(array $uids, $api=false)
+    {
+        $eventList = [];
+        if ($api) {
+            // --- version avec l'api -------------------------------------------
+            // il faut autant de requetes que d'evenements a recuperer
+            foreach ($uids as $uid) {
+                $event = getEvent($uid, true);
+                if ($event) {
+                    $eventList[] = $event;
+                }
+            }
+            if (empty($eventList) && !$event) {
+                return false;
+            } else {
+                return $eventList;
+            }
+        } else {
+            // --- version avec le json (sans l'api) -----------------------------
+            // on peut recuperer tous les events en une seule requete
+            $url = self::WEBROOTURL . 'agendas/'.$this->getAgendaUid().'/events.json?';
+            $first = true;
+            foreach ($uids as $uid) {
+                if (!$first) {
+                    $url .= '&';
+                }
+                $url .= "oaq[uids][]=$uid";
+                $first = false;
+            }
+            $this->getFileContents->setUrl($url);
+            $data = $this->getFileContents->execute($api);
+            if (false === $data) {
+                $this->setErrorCode($this->getFileContents->getHttpCode());
+                $this->setError('Lecture agenda : ('.$uid.') '.$this->getFileContents->getError());
+                return false;
+            } else {
+                // --- mise au bon format des donnees recuperees
+                foreach ($data['data'] as $event) {
+                    $eventList[] = $this->convertJson($event);
+                }
+                return $eventList;
+            }
+        }
+    }
 
     private function initToken()
     {
@@ -275,13 +324,13 @@ class ApiOpenAgenda
         $this->token = $token;
     }
 
-    public function publishLocation($nonce,$event)
+    public function publishLocation($event)
     {
         $this->curl
             ->setUrl(self::APIROOTURL . 'locations')
             ->setPost([
                 'access_token' => $this->getToken(),
-                'nonce' => $nonce,
+                'nonce' => $this->getRandom(),
                 'data' => json_encode([
                     'placename' => $event->getPlacename(),
                     'address' => $event->getAddress(),
@@ -301,7 +350,6 @@ class ApiOpenAgenda
 
     public function publishEvent(Event $event)
     {
-        $nonce = random_int(1,10000); // nombre aleatoire pour valider l'ecriture;
         // NOTE : en cas d'echec (return false) l'erreur (texte) est dans $this->error et le code http dans $this->errorCode
 
         // --- creation du token pour ecriture ----------------------------------------------------
@@ -310,7 +358,7 @@ class ApiOpenAgenda
         }
 
         // --- ecriture de l'adresse --------------------------------------------------------------
-        $location_uid = $this->publishLocation($nonce, $event);
+        $location_uid = $this->publishLocation($event);
         if (false === $location_uid) {
             return false; // l'ecriture de l'adresse a echouee
         }
@@ -345,7 +393,7 @@ class ApiOpenAgenda
         $this->curl->setUrl(self::APIROOTURL . 'events');
         $this->curl->setPost([
             'access_token' => $this->getToken(),
-            'nonce' => $nonce + 1,
+            'nonce' => $this->getRandom(),
             'data' => json_encode($eventData),
             'published' => false
         ]);
@@ -363,7 +411,7 @@ class ApiOpenAgenda
         $this->curl->setUrl(self::APIROOTURL . 'agendas/' . $this->getAgendaUid() . '/events');
         $this->curl->setPost([
             'access_token' => $this->getToken(),
-            'nonce' => $nonce + 2,
+            'nonce' => $this->getRandom(),
             'data' => json_encode($refData)
         ]);
         $data = $this->curl->execute();
@@ -373,6 +421,29 @@ class ApiOpenAgenda
             return false;
         }
         return $event_uid;
+    }
+
+    public function deleteEvent($uid)
+    {
+        // NOTE : en cas d'echec (return false) l'erreur (texte) est dans $this->error et le code http dans $this->errorCode
+
+        // --- creation du token pour ecriture ----------------------------------------------------
+        if (false === $this->initToken()) {
+            return false; // l'initialisation du token a echoue
+        }
+        // --- suppression objet
+        $this->curl->setUrl(self::APIROOTURL . "events/$uid");
+        $this->curl->setOpt(CURLOPT_CUSTOMREQUEST, 'DELETE');
+        $this->curl->setPost([
+            'access_token' => $this->getToken(),
+            'nonce' => $this->getRandom(),
+        ]);
+        $data = $this->curl->execute();
+        if (false === $data) {
+            $this->setErrorCode($this->curl->getHttpCode());
+            $this->setError('Erreur suppression évènement : ' . $this->curl->getError());
+            return false;
+        }
     }
 
 
