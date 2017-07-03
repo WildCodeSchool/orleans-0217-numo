@@ -32,7 +32,7 @@ class ListMemberController extends Controller
     {
         $api = $this->get('numo.apiopenagenda');
         $em = $this->getDoctrine()->getManager();
-        $published = $em->getRepository('NumoBundle:Published')->findByAuthor($user);
+        $published = $em->getRepository('NumoBundle:Published')->findBy(['author' => $user->getId(), 'deleted' => 0]);
         $uids = [];
         foreach ($published as $pub) {
             $uids[] = $pub->getUid();
