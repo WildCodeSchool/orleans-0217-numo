@@ -25,6 +25,7 @@
                 <th class="text-center">MEMBRE DE CONFIANCE</th>
                 <th class="text-center">STATUT</th>
                 <th class="text-center">ACTION</th>
+                <th class="text-center">DESACTIVER</th>
             </tr>
             </thead>
             <tbody>
@@ -38,7 +39,7 @@
                         {% else %}
                         {% set trustcolor = 'green' %}
                         {% endif %}
-                        <a href="{{ path('membertrust', {'id': user.id}) }}">
+                        <a href="{{ path('member_trust', {'id': user.id}) }}">
                             <button class="onoff {{ trustcolor }}"></button></a>
                     </td>
 
@@ -48,7 +49,15 @@
                                 data-id="{{ user.id }}" data-name="{{ user.name }}"
                                 data-firstname="{{ user.firstname }}">PROMOUVOIR</button>
                     </td>
-
+                    <td class="admin">
+                        {% if user.enabled == false %}
+                            {% set enabledcolor= 'red' %}
+                        {% else %}
+                            {% set enabledcolor = 'green' %}
+                        {% endif %}
+                        <a href="{{ path('member_enabled', {'id': user.id}) }}">
+                            <button class="onoff {{ enabledcolor }}"></button></a>
+                    </td>
                 </tr>
             {% endfor %}
             <hr>
@@ -78,21 +87,18 @@
         </div>
     </div>
 
-    <div id="summernote"><p>Hello Summernote</p></div>
-
-
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script>
         $('#exampleModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget)
-            var id = button.data('id')
-            var name = button.data('name')
-            var firstname = button.data('firstname')
-            var modal = $(this)
-            modal.find('.modal-title').text('Promouvoir  ' + name + ' ' + firstname)
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var name = button.data('name');
+            var firstname = button.data('firstname');
+            var modal = $(this);
+            modal.find('.modal-title').text('Promouvoir  ' + name + ' ' + firstname);
             modal.find('#numobundle_promote_Id').val(id)
         })
     </script>
