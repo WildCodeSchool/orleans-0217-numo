@@ -11,6 +11,7 @@ use NumoBundle\Form\SelectEventType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use NumoBundle\Form\EventType;
 /**
@@ -202,21 +203,52 @@ class EventController extends Controller
     /**
      * Deletes a event entity.
      *
-     * @Route("/{id}", name="event_delete")
-     * @Method("DELETE")
+     * @Route("/deletepublished/{id}", name="event_delete_published")
+     * @Method({"GET","POST"})
      */
-    public function deleteAction(Request $request, Event $event)
+    public function deletePublishedAction(Request $request, $id)
     {
+        $error = '';
+        $api = $this->get('numo.apiopenagenda');
+        $form = $this
+            ->createFormBuilder()
+            ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // --- suppression de l'évènement sur OpenAgenda
+            $result = $api->deleteEvent($id);
+            if (false === $result) {
+                $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+            } else {
+                // --- Mise a jour des infos complementaires
+                $em = $this->getDoctrine()->getManager();
+                $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+                if ($published) {
+                    $published->setDeleted(1);
+                    $published->setModerator($this->getUser());
+                    $published->setModeratorUpdateDate(new \DateTime);
+                    $em->flush();
+                }
+                return $this->redirectToRoute('event_list_published');
+            }
+        }
+        // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
+        $oaEvent = $api->getEvent($id);
+        if (false === $oaEvent) {
+            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+        } else {
+            // --- lecture des infos complementaires
+            $em = $this->getDoctrine()->getManager();
+            $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+        }
+        return $this->render('NumoBundle:event:deletePublished.html.twig', [
+            'agendaSlug' => $api->getAgendaSlug(),
+            'event' => $oaEvent,
+            'published' => $published,
+            'form' => $form->createView(),
+            'error' => $error,
+        ]);
     }
 
-    /**
-     * Creates a form to delete a event entity.
-     *
-     * @param Event $event The event entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Event $event)
-    {
-    }
 }
