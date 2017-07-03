@@ -31,19 +31,19 @@ class ListMemberController extends Controller
     public function showProfilMember(User $user)
     {
         $api = $this->get('numo.apiopenagenda');
-        $events = $api->getEvent($id);
         $em = $this->getDoctrine()->getManager();
         $published = $em->getRepository('NumoBundle:Published')->findByAuthor($user);
-
         $uids = [];
         foreach ($published as $pub) {
             $uids[] = $pub->getUid();
 
         }
+        $oaevents = $api->getEvents($uids);
+
         return $this->render('NumoBundle:site:profilMember.html.twig', [
             'user' => $user,
             'uids' => $uids,
-            'events' => $events,
+            'oaevents' => $oaevents,
         ]);
     }
 

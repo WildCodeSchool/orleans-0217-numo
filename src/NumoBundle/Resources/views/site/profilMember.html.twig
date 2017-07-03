@@ -15,7 +15,8 @@
                 {% if user.imageUrl == null %}
                     <img class="imagePlaceholder" src="{{ asset('img/person_placeholder.png') }}" alt="placeholder">
                 {% else %}
-                    <img class="imageProfileMember" src="{{ asset('uploads/users/' ~ user.imageUrl.filename) }}" alt="{{ user.name }}">
+                    <img class="imageProfileMember" src="{{ asset('uploads/users/' ~ user.imageUrl.filename) }}"
+                         alt="{{ user.name }}">
                 {% endif %}
             </div>
 
@@ -99,8 +100,8 @@
         </div>
         {% if user.events | length != 0 %}
             <div class="container-fluid">
-                <div class="row no-gutter popup-gallery">
-                    {% for event in user.events %}
+                {% for event in user.events %}
+                    <div class="row no-gutter popup-gallery">
                         <div class="col-lg-4 col-sm-6">
                             <a href="{{ path('event_show_published', {'id': event.id}) }}"
                                class="portfolio-box">
@@ -119,9 +120,35 @@
                                 </div>
                             </a>
                         </div>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
         {% endif %}
+    {% if oaevents is not empty %}
+        <div class="container-fluid">
+            <div class="row no-gutter popup-gallery">
+                {% for oaevent in oaevents %}
+                    <div class="col-lg-4 col-sm-6">
+                        <a href="{{ path('event_show_published', {'id': oaevent.id}) }}"
+                           class="portfolio-box">
+                            <img class="imageEvents img-responsive" src="{{ oaevent.image }}"
+                                 class="img-responsive" alt="">
+                            <div class="portfolio-box-caption">
+                                <div class="portfolio-box-caption-content">
+                                    <div class="project-category text-faded">
+                                        <h2>{{ oaevent.title }}</h2>
+                                    </div>
+                                    <div class="project-name">
+                                        {{ oaevent.description }}
+                                    </div>
+                                    <p> {{ oaevent.address }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
     </div>
 {% endblock %}
