@@ -312,6 +312,10 @@ thead{
     height: 100px;
 }
 
+.button-admin {
+    margin-bottom: 10px;
+}
+
 /*    COMPANY   */
 .company{
     padding-bottom: 150px;

@@ -34,11 +34,7 @@
                     <td class="admin memberName">{{ user.name }}</td>
                     <td class="admin">{{ user.firstname }}</td>
                     <td class="admin">
-                        {% if user.trust == 0 %}
-                        {% set trustcolor='red' %}
-                        {% else %}
-                        {% set trustcolor = 'green' %}
-                        {% endif %}
+
                         <a href="{{ path('member_trust', {'id': user.id}) }}">
                             <button class="onoff {{ user.trust == 0 ? 'red' : 'green' }}">
                                 {{ user.trust == 0 ? 'NON' : 'OUI' }}
@@ -47,7 +43,7 @@
 
                     <td class="admin">{{ user.roles.0 }}</td>
                     <td class="admin">
-                        <button type="button" class="pull-right" data-toggle="modal" data-target="#exampleModal"
+                        <button type="button" class="button-admin" data-toggle="modal" data-target="#exampleModal"
                                 data-id="{{ user.id }}" data-name="{{ user.name }}"
                                 data-firstname="{{ user.firstname }}">PROMOUVOIR</button>
                     </td>
