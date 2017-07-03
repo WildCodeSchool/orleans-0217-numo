@@ -123,11 +123,12 @@ class EventController extends Controller
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
-        $userManager = $this->get('fos_user.user_manager');
-        $users = $userManager->findUsers();
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $userManager = $this->get('fos_user.user_manager');
+            $users = $userManager->findUsers();
+
             $file = $event->getImage();
             $fileName = $this->getParameter('server_url') . '/' . $this->getParameter('img_event_dir') . '/' . uniqid() . '.' . $file->guessExtension();
             $file->move(
@@ -149,8 +150,7 @@ class EventController extends Controller
                     ->setFrom($company->getContactEmail());
                 foreach ($users as $user) {
                     if (in_array('ROLE_MODERATOR', $user->getRoles())) {
-                        $confirmation = \Swift_Message::newInstance()
-                            ->setTo($user->getEmail());
+                        $confirmation->setTo($user->getEmail());
                     }
                 }
 
@@ -169,20 +169,22 @@ class EventController extends Controller
                 // --- sinon enregistrement de l'evenement dans la database
                 $em->persist($event);
                 $em->flush();
+
+                $confirmation = \Swift_Message::newInstance()
+                    ->setSubject('Un adhérent à posté un événement')
+                    ->setBody('Bonjour, Un adhérent à posté un événement, veuillez aller sur www.numo.fr pour confirmer')
+                    ->setFrom($company->getContactEmail());
+                foreach ($users as $user) {
+                    if (in_array('ROLE_MODERATOR', $user->getRoles())) {
+                        $confirmation->setTo($user->getEmail());
+                    }
+                }
+                $this->get('mailer')->send($confirmation);
             }
             // --- on envoie une notification au(x) moderateur(s)
             // A creer
-            $confirmation = \Swift_Message::newInstance()
-                ->setSubject('Un adhérent à posté un événement')
-                ->setBody('Bonjour, Un adhérent à posté un événement, veuillez aller sur www.numo.fr pour confirmer')
-                ->setFrom($company->getContactEmail());
-            foreach ($users as $user) {
-                if (in_array('ROLE_MODERATOR', $user->getRoles())) {
-                    $confirmation = \Swift_Message::newInstance()
-                        ->setTo($user->getEmail());
-                }
-            }
-            $this->get('mailer')->send($confirmation);
+
+
 
 
             return $this->redirectToRoute('event_list_published');

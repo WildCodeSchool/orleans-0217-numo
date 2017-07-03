@@ -77,6 +77,17 @@ class User extends BaseUser
      */
     protected $trust;
 
+
+    /**
+     * @ORM\Column(type="integer", options={"default" : 0})
+     *
+     * @Assert\NotBlank(groups={"Registration", "Profile"})
+     */
+    protected $moderator;
+
+
+
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
      *
@@ -595,5 +606,29 @@ class User extends BaseUser
     public function getEvents()
     {
         return $this->events;
+    }
+
+    /**
+     * Set moderator
+     *
+     * @param integer $moderator
+     *
+     * @return User
+     */
+    public function setModerator($moderator)
+    {
+        $this->moderator = $moderator;
+
+        return $this;
+    }
+
+    /**
+     * Get moderator
+     *
+     * @return integer
+     */
+    public function getModerator()
+    {
+        return $this->moderator;
     }
 }
