@@ -30,6 +30,11 @@ class Published
     private $uid;
 
     /**
+     * @ORM\Column(name="title", type="string", length=255)
+     *
+     */
+    private $title;
+    /**
      * @ORM\Column(name="deleted", type="integer")
      */
     private $deleted;
@@ -106,6 +111,26 @@ class Published
     {
         return $this->uid;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param mixed $title
+     * @return Published
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+
 
     /**
      * @return mixed

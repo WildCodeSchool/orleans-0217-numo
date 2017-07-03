@@ -1,0 +1,23 @@
+{% extends 'layoutAdmin.html.twig' %}
+
+{% block body %}
+    <div class="container font-lato">
+        <h1 class="titreadmin font-lato">EVENEMENTS</h1>
+        <table>
+            <thead>
+            <tr class="text-center admin">
+                <th class="text-center">NOM DE L'EVENEMENT</th>
+                <th class="text-center">DATE</th>
+                <th class="text-center">PROPOSE PAR</th>
+                <th class="text-center">STATUT</th>
+                <th class="text-center">ACTION</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for publishedadmin in publishedadmins %}
+                <tr>
+                    <td class="admin">{{ publishedadmin.title }}</td>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

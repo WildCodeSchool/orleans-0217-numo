@@ -106,6 +106,21 @@ class EventController extends Controller
     }
 
     /**
+     * Lists all published events.
+     *
+     * @Route("/events", name="events_index")
+     * @Method("GET")
+     *
+     */
+
+    public function listEventsAction(Request $request)
+    {
+
+
+        return $this->render('events/index.html.twig');
+    }
+
+    /**
      * Creates a new event, and register locally.
      *
      * @Route("/new", name="event_new")
@@ -142,6 +157,7 @@ class EventController extends Controller
                 }
                 // --- creationde l'enregistrement "published"
                 $published = new Published($event, $uid, $curentUser);
+                $published->setTitle($event)->getTitle();
                 $em->persist($published);
                 $em->flush();
             } else {
@@ -189,6 +205,8 @@ class EventController extends Controller
             'error' => $error,
         ]);
     }
+
+
 
     /**
      * Displays a form to edit an existing event entity.

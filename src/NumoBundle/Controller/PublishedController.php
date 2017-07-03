@@ -31,6 +31,22 @@ class PublishedController extends Controller
             'publisheds' => $publisheds,
         ));
     }
+    /**
+     * Lists all published entities in admin for edition by the moderator.
+     *
+     * @Route("/published_events", name="published_events_index")
+     * @Method("GET")
+     */
+
+    public function indexPublishedAdminAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $publishedadmins = $em->getRepository('NumoBundle:Published')->findAll();
+
+        return $this->render('events/index.html.twig', array(
+            'publishedadmins' => $publishedadmins,
+        ));
+    }
 
     /**
      * Creates a new published entity.
