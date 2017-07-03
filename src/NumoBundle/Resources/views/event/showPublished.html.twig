@@ -31,7 +31,7 @@
                 <div class="col-xs-12 col-md-8">
                     <p>Mots-clé : {{ event.tags }}</p>
                     <p>
-                        {% if event.image|length > 0 %}
+                        {% if event.image is not empty %}
                             <img src="{{ event.image }}" alt="image {{ event.title }}" class="img-responsive" />
                         {% else %}
                             <img src="{{ asset('img/event_placeholder.png') }}" alt="image {{ event.title }}" class="img-responsive" />
