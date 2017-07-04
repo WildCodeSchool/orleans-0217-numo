@@ -4,11 +4,12 @@
     border-radius: 34px;
     font-weight: bold;
 }
-.red{
+
+.grey{
     background-color: #ccc;
     color: black;
 }
 .green{
-    background-color: #02a46f;
+    background-color: #8CC63C;
     color: white;
 }

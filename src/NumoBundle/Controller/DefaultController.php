@@ -39,6 +39,8 @@ class DefaultController extends Controller
             'events' => $events,
             'error' => $error,
             'partners' => $partners,
+            'mailChimpApi' => $this->getParameter('mail_chimp_api')
+
         ]);
     }
 
