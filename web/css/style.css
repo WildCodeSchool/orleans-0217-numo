@@ -81,12 +81,6 @@ footer {
     padding-top: 500px;
 }
 
-div.separation {
-    margin: 20px 0px;
-    width: 100%;
-    height: 4px;
-}
-
 .bg-1 {
     height: 830px;
     background-image: url("../img/header.jpg");
@@ -149,7 +143,7 @@ div.separation {
     color: white;
     opacity: 0;
     display: block;
-    background: #97258D ;
+    background: #CADB2A ;
     position: absolute;
     bottom: 0;
     text-align: center;
@@ -403,7 +397,7 @@ thead{
     background-color: #FC0606;
 }
 
-.barrePurple{
+.separation.barrePurple{
     background-color: #97258D;
 }
 
@@ -552,6 +546,21 @@ div.separation {
 .imageProfileMember{
     height: 231px;
 }
+
+.messageOk{
+    padding-top: 5px;
+    background-color: #8CC63C;
+    height: 30px;
+}
+
+.messageNo{
+    padding-top: 5px;
+    background-color: red;
+    height: 30px;
+}
+
+
+
 
 
 #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; width:100%;}

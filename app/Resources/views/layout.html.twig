@@ -59,7 +59,15 @@
 
         </div>
         <!-- /.container-fluid -->
+
     </nav>
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }} messageOk text-center">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
 
 {% endblock %}
 

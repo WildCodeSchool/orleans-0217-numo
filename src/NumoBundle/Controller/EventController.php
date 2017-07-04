@@ -132,6 +132,11 @@ class EventController extends Controller
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->addFlash(
+                'notice',
+                'Vous avez crée un événement'
+            );
             $userManager = $this->get('fos_user.user_manager');
             $users = $userManager->findUsers();
 
@@ -229,6 +234,11 @@ class EventController extends Controller
 
         if($form->isSubmitted() && $form->isValid()) {
 
+            $this->addFlash(
+                'messageContact',
+                'Votre mail de contact a bien été envoyé'
+            );
+
             $commentaire = \Swift_Message::newInstance()
                 ->setSubject($contact->getSujet())
                 ->setFrom($contact->getEmail())
@@ -238,6 +248,13 @@ class EventController extends Controller
             $this->get('mailer')->send($commentaire);
         }
 
+        if($form->isSubmitted() != $form->isValid() ){
+
+            $this->addFlash(
+                'messageNoContact',
+                'une erreur est survenu lors de votre envois de mail'
+            );
+        }
 
         return $this->render('NumoBundle:event:showPublished.html.twig', [
             'agendaSlug' => $api->getAgendaSlug(),
