@@ -21,23 +21,22 @@ $(document).ready(function(){
 
 });
 
+$('#AlphabetNavAll').click(function(evt){
+    $contacts.show();
+});
+
 $('.AlphabetNav a').click(function(evt){
     evt.preventDefault();
 
     var $navItem = $(this),
-        $contacts = $('.showMember'),
-        $all = $('#AlphabetNavAll');
+        $contacts = $('.showMember');
 
-    $contacts.show();
-
-    if ($all.hasClass('active')) {
-        $contacts.show();
-    }
 
     if ($navItem.hasClass('active')) {
         $navItem.removeClass('active');
     }
         else {
+        $contacts.show();
         $('.AlphabetNav a').removeClass('active');
         $navItem.addClass('active');
 

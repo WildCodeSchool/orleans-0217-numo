@@ -167,7 +167,8 @@ div#closemap {
 }
 
 .event-zone:hover {
-    background-color: #E5E5E5;
+    background-color: #97258D;
+    opacity: 0.85;
 }
 
 .event-imgsize {

@@ -71,18 +71,14 @@ footer {
     /*color: whitesmoke;*/
 }
 
+
+
 .imgHeader{
     background-image: url("../img/NUMOmedium.png");
     background-repeat: no-repeat;
     background-position: center;
     height: 100px;
     padding-top: 500px;
-}
-
-div.separation {
-    margin: 20px 0px;
-    width: 100%;
-    height: 4px;
 }
 
 .bg-1 {
@@ -147,7 +143,7 @@ div.separation {
     color: white;
     opacity: 0;
     display: block;
-    background: cornflowerblue;
+    background: #CADB2A ;
     position: absolute;
     bottom: 0;
     text-align: center;
@@ -178,7 +174,7 @@ div.separation {
     font-size: 18px;
 }
 .portfolio-box:hover .portfolio-box-caption {
-    opacity: 0.9;
+    opacity: 0.7;
 }
 .portfolio-box:focus {
     outline: none;
@@ -327,9 +323,14 @@ thead{
     height: 100px;
 }
 
+.button-admin {
+    margin-bottom: 10px;
+}
+
 .imageadmin{
     width: 500px;
 }
+
 .pdf{
     height:400px;
 }
@@ -405,7 +406,7 @@ thead{
     background-color: #FC0606;
 }
 
-.barrePurple{
+.separation.barrePurple{
     background-color: #97258D;
 }
 
@@ -552,8 +553,39 @@ div.separation {
 
 
 .imageProfileMember{
-    height: 70px;
+    height: 231px;
 }
+
+.messageOk{
+    padding-top: 5px;
+    background-color: #8CC63C;
+    height: 30px;
+}
+
+.messageNo{
+    padding-top: 5px;
+    background-color: red;
+    height: 30px;
+}
+
+
+
+
+
+#mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; width:100%;}
+
+.mailChimpStyle{
+    position: absolute; left: -5000px;
+}
+
+.mailChimp{
+    height: 150px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    background-color: #fff;
+}
+
+
 
 
 

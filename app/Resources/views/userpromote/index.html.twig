@@ -9,6 +9,7 @@
         <h1 class="titreadmin font-lato">MEMBRES</h1>
 
         <div class="text-center">
+
             <nav class="AlphabetNav">
                 <a id="AlphabetNavAll" href="">TOUS</a>
                 {%  for letter in 'A'..'Z' %}
@@ -34,29 +35,22 @@
                     <td class="admin memberName">{{ user.name }}</td>
                     <td class="admin">{{ user.firstname }}</td>
                     <td class="admin">
-                        {% if user.trust == 0 %}
-                        {% set trustcolor='red' %}
-                        {% else %}
-                        {% set trustcolor = 'green' %}
-                        {% endif %}
-                        <a href="{{ path('member_trust', {'id': user.id}) }}">
-                            <button class="onoff {{ trustcolor }}"></button></a>
+                       <a href="{{ path('member_trust', {'id': user.id}) }}">
+                            <button class="onoff {{ user.trust == 0 ? 'grey' : 'green' }}">
+                                {{ user.trust == 0 ? 'NON' : 'OUI' }}
+                            </button></a>
                     </td>
-
                     <td class="admin">{{ user.roles.0 }}</td>
                     <td class="admin">
-                        <button type="button" class="pull-right" data-toggle="modal" data-target="#exampleModal"
+                        <button type="button" class="button-admin" data-toggle="modal" data-target="#exampleModal"
                                 data-id="{{ user.id }}" data-name="{{ user.name }}"
                                 data-firstname="{{ user.firstname }}">PROMOUVOIR</button>
                     </td>
                     <td class="admin">
-                        {% if user.enabled == false %}
-                            {% set enabledcolor= 'red' %}
-                        {% else %}
-                            {% set enabledcolor = 'green' %}
-                        {% endif %}
                         <a href="{{ path('member_enabled', {'id': user.id}) }}">
-                            <button class="onoff {{ enabledcolor }}"></button></a>
+                            <button class="onoff {{ user.enabled == false ? 'grey' : 'green' }}">
+                                {{ user.enabled == false ? 'NON' : 'OUI' }}
+                            </button></a>
                     </td>
                 </tr>
             {% endfor %}

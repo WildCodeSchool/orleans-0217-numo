@@ -98,7 +98,8 @@ class ApiOpenAgenda
         $newEvent = new OaEvent;
         $newEvent
             ->setId($event->uid);
-        $link = self::WEBROOTURL . $this->getAgendaSlug().'/event/'.end(explode('/', $event->link));
+        $temp = explode('/', $event->link);
+        $link = self::WEBROOTURL . $this->getAgendaSlug().'/event/'.end($temp);
         $newEvent
             ->setLink($link)
             ->setImage($event->image)
@@ -253,46 +254,20 @@ class ApiOpenAgenda
     public function getEvents(array $uids, $api=false)
     {
         $eventList = [];
-        if ($api) {
-            // --- version avec l'api -------------------------------------------
-            // il faut autant de requetes que d'evenements a recuperer
-            foreach ($uids as $uid) {
-                $event = getEvent($uid, true);
-                if ($event) {
-                    $eventList[] = $event;
-                }
-            }
-            if (empty($eventList) && !$event) {
-                return false;
+        // il faut autant de requetes que d'evenements a recuperer
+        foreach ($uids as $uid) {
+            if ($api) {
+                // --- version avec l'api -------------------------------------------
+                $event = $this->getEvent($uid, true);
             } else {
-                return $eventList;
+                // --- version avec le json ------------------------------------------
+                $event = $this->getEvent($uid);
             }
-        } else {
-            // --- version avec le json (sans l'api) -----------------------------
-            // on peut recuperer tous les events en une seule requete
-            $url = self::WEBROOTURL . 'agendas/'.$this->getAgendaUid().'/events.json?';
-            $first = true;
-            foreach ($uids as $uid) {
-                if (!$first) {
-                    $url .= '&';
-                }
-                $url .= "oaq[uids][]=$uid";
-                $first = false;
-            }
-            $this->getFileContents->setUrl($url);
-            $data = $this->getFileContents->execute($api);
-            if (false === $data) {
-                $this->setErrorCode($this->getFileContents->getHttpCode());
-                $this->setError('Lecture agenda : ('.$uid.') '.$this->getFileContents->getError());
-                return false;
-            } else {
-                // --- mise au bon format des donnees recuperees
-                foreach ($data['data'] as $event) {
-                    $eventList[] = $this->convertJson($event);
-                }
-                return $eventList;
+            if ($event) {
+                $eventList[] = $event;
             }
         }
+        return $eventList;
     }
 
     private function initToken()
