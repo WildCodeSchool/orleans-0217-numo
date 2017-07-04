@@ -2,9 +2,12 @@
 
 namespace NumoBundle\Form;
 
+use NumoBundle\Entity\Partner;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PartnerType extends AbstractType
 {
@@ -16,7 +19,7 @@ class PartnerType extends AbstractType
         $builder
             ->add('name')
             ->add('webUrl')
-            ->add('imageUrl')
+            ->add('imageUrl', fileType::class, array('label' => 'ImageUrl(Image file)'))
             ->add('active');
     }
     
@@ -26,7 +29,7 @@ class PartnerType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'NumoBundle\Entity\Partner',
+            'data_class' => Partner::class,
         ]);
     }
 

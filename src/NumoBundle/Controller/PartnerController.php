@@ -5,7 +5,9 @@ namespace NumoBundle\Controller;
 use NumoBundle\Entity\Partner;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use NumoBundle\Form\PartnerType;
 
 /**
  * Partner controller.
@@ -40,10 +42,17 @@ class PartnerController extends Controller
     public function newAction(Request $request)
     {
         $partner = new Partner();
-        $form = $this->createForm('NumoBundle\Form\PartnerType', $partner);
+        $form = $this->createForm(PartnerType::class, $partner);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $partner->getImageUrl();
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $file ->move(
+                $this->getParameter('upload_directory_partnaire'),
+                $fileName
+            );
+            $partner->setImageUrl($fileName);
             $em = $this->getDoctrine()->getManager();
             $em->persist($partner);
             $em->flush();
