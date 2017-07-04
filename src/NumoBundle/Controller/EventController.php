@@ -15,6 +15,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use NumoBundle\Form\EventType;
+use NumoBundle\Entity\Contact;
+use NumoBundle\Form\ContactType;
+
 
 /**
  * Event controller.
@@ -47,6 +50,7 @@ class EventController extends Controller
 // ---------------------------------------------------------------------------
 
     {
+
         $error = '';
         // --- initialisation des parametres de lecture par defaut de la liste des evenements
         $options = [
@@ -104,6 +108,7 @@ class EventController extends Controller
             'events' => $events,
             'dates' => $dates,
             'error' => $error,
+            'googleMapApi' => $this->getParameter('google_map_api')
         ]);
     }
 
@@ -205,9 +210,9 @@ class EventController extends Controller
      * Finds and displays a published event.
      *
      * @Route("/showpublished/{id}", name="event_show_published")
-     * @Method("GET")
+     * @Method({"GET", "POST" })
      */
-    public function showAction($id)
+    public function showAction(Request $request, $id)
     {
         $error = '';
         $published = null;
@@ -222,12 +227,45 @@ class EventController extends Controller
             $em = $this->getDoctrine()->getManager();
             $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
         }
+        $contact = new Contact();
+        $form = $this->createForm(ContactType::class, $contact);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+
+            $this->addFlash(
+                'messageContact',
+                'Votre mail de contact a bien été envoyé'
+            );
+
+            $commentaire = \Swift_Message::newInstance()
+                ->setSubject($contact->getSujet())
+                ->setFrom($contact->getEmail())
+                ->setTo($published->getAuthor()->getEmail())
+                ->setBody($contact->getCommentaire());
+
+            $this->get('mailer')->send($commentaire);
+        }
+
+        if($form->isSubmitted() != $form->isValid() ){
+
+            $this->addFlash(
+                'messageNoContact',
+                'une erreur est survenu lors de votre envois de mail'
+            );
+        }
+
         return $this->render('NumoBundle:event:showPublished.html.twig', [
             'agendaSlug' => $api->getAgendaSlug(),
             'event' => $event,
             'published' => $published,
             'error' => $error,
+            'form'=>$form->createView(),
+            'googleMapApi' => $this->getParameter('google_map_api')
+
         ]);
+
     }
 
     /**
@@ -290,5 +328,4 @@ class EventController extends Controller
             'error' => $error,
         ]);
     }
-
 }
