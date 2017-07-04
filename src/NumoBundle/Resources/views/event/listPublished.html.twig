@@ -41,6 +41,7 @@
                     <button class="btn btn-default" type="submit" name="select">Appliquer</button>
                     <a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Effacer</a>
 
+
                     <p class="red-error">
                         {{ form_errors(selectForm.startDate)|striptags }}
                         {{ form_errors(selectForm.endDate)|striptags }}
@@ -268,7 +269,7 @@
         }
     </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5FbMBpVejJw6o_4r3eHkUQQde6vlDItg&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ googleMapApi }}=initMap"
             async defer></script>
 
 {% endblock %}

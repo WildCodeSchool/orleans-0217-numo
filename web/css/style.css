@@ -71,6 +71,8 @@ footer {
     /*color: whitesmoke;*/
 }
 
+
+
 .imgHeader{
     background-image: url("../img/NUMOmedium.png");
     background-repeat: no-repeat;
@@ -147,7 +149,7 @@ div.separation {
     color: white;
     opacity: 0;
     display: block;
-    background: cornflowerblue;
+    background: #97258D ;
     position: absolute;
     bottom: 0;
     text-align: center;
@@ -178,7 +180,7 @@ div.separation {
     font-size: 18px;
 }
 .portfolio-box:hover .portfolio-box-caption {
-    opacity: 0.9;
+    opacity: 0.7;
 }
 .portfolio-box:focus {
     outline: none;
@@ -318,9 +320,14 @@ thead{
     height: 100px;
 }
 
+.button-admin {
+    margin-bottom: 10px;
+}
+
 .imageadmin{
     width: 500px;
 }
+
 .pdf{
     height:400px;
 }
@@ -546,6 +553,19 @@ div.separation {
     height: 231px;
 }
 
+
+#mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; width:100%;}
+
+.mailChimpStyle{
+    position: absolute; left: -5000px;
+}
+
+.mailChimp{
+    height: 150px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    background-color: #fff;
+}
 
 
 
