@@ -4,6 +4,7 @@ namespace NumoBundle\Controller;
 
 use NumoBundle\Entity\Company;
 use NumoBundle\Entity\Published;
+use NumoBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -32,20 +33,23 @@ class PublishedController extends Controller
         ));
     }
     /**
-     * Lists all published entities in admin for edition by the moderator.
+     * List of all events in admin available for edition and moderation by the moderator.
      *
-     * @Route("/published_events", name="published_events_index")
-     * @Method("GET")
+     * @Route("/index_events", name="events_index")
+     * @Method({"GET","POST"})
      */
 
-    public function indexPublishedAdminAction()
+    public function filterAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $publishedadmins = $em->getRepository('NumoBundle:Published')->findAll();
+        $events = $em->getRepository('NumoBundle:Event') ->findAll();
+        $publishedevents = $em->getRepository('NumoBundle:Published') ->findAll();
 
-        return $this->render('events/index.html.twig', array(
-            'publishedadmins' => $publishedadmins,
+        return $this -> render('events/index.html.twig', array(
+            'events'=> $events,
+            'publishedevents' =>$publishedevents
         ));
+
     }
 
     /**

@@ -3,30 +3,77 @@
 {% block body %}
     <div class="container font-lato">
         <h1 class="titreadmin font-lato">EVENEMENTS</h1>
-        <table>
-            <thead>
-            <tr class="text-center admin">
-                <th class="text-center">NOM DE L'EVENEMENT</th>
-                <th class="text-center">DATE</th>
-                <th class="text-center">PROPOSE PAR</th>
-                <th class="text-center">STATUT</th>
-                <th class="text-center">ACTION</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for publishedadmin in publishedadmins %}
-                <tr>
-                    <td class="admin"><p class="moderate">{{ publishedadmin.title }}</td>
-                    <td class="admin">{{ publishedadmin.moderatorUpdateDate|date('d/m/Y') }}</td>
-                    <td class="admin">{{ publishedadmin.moderator }}</td>
-                    {%  if publishedadmin.deleted == 0 %}
-                    <td class="admin">Publié</td>
-                    {% endif %}
-                    <td><a href="{{ path('event_edit_published', {'id' : publishedadmin.id}) }}"><button type="button" value="MODIFIER">MODIFIER</button></a>
-                    <a href="{{ path('event_delete_published', {'id' : publishedadmin.id}) }}"><button type="button" class="moderate" value="MODIFIER">SUPPRIMER</button></a></td>
 
-            {% endfor %}
-            </tbody>
-        </table>
+        <div class="row">
+            <table>
+                <thead>
+                <h2>Evénements à modérer</h2>
+                <hr>
+                <tr class="text-center admin">
+                    <th class="text-center">NOM DE L'EVENEMENT</th>
+                    <th class="text-center">CREE LE</th>
+                    <th class="text-center">PROPOSE PAR</th>
+                    <th class="text-center">VOIR LE DETAIL</th>
+                    <th class="text-center">ACTION</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for event in events %}
+                <tr>
+                    <td class="admin"><p class="moderate">{{ event.title }}</td>
+                    <td class="admin">{{ event.creationDate|date('d/m/Y') }}</td>
+                    <td class="admin">{{ event.author }}</td>
+                    <td><a href="{{ path('event_delete_published', {'id' : event.id}) }}">
+                            <button type="button" value="MODIFIER"><span class="glyphicon glyphicon-eye-open"></span>
+                            </button>
+                        </a>
+                    <td><a href="{{ path('event_delete_published', {'id' : event.id}) }}">
+                            <button type="button" value="MODIFIER">PUBLIER</button>
+                        </a>
+                        <a href="{{ path('event_delete_published', {'id' : event.id}) }}">
+                            <button type="button" class="moderate" value="MODIFIER">REFUSER</button>
+                        </a></td>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+
+        </div>
+        <div class="row">
+            <table>
+                <thead>
+                <h2>Evénements publiés</h2>
+                <hr>
+                <tr class="text-center admin">
+                    <th class="text-center">NOM DE L'EVENEMENT</th>
+                    <th class="text-center">DERNIERE MODIFICATION</th>
+                    <th class="text-center">PROPOSE PAR</th>
+                    <th class="text-center">STATUT</th>
+                    <th class="text-center">ACTION</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for publishedevent in publishedevents %}
+                <tr>
+                    <td class="admin"><p class="moderate">{{ publishedevent.title }}</td>
+                    <td class="admin">{{ publishedevent.moderatorUpdateDate|date('d/m/Y') }}</td>
+                    <td class="admin">{{ publishedevent.moderator }}</td>
+                    {% if publishedevent.deleted == 0 %}
+                        <td class="admin">Publié</td>
+                    {% endif %}
+                    <td><a href="{{ path('event_delete_published', {'id' : publishedevent.id}) }}">
+                            <button type="button" value="MODIFIER">MODIFIER</button>
+                        </a>
+                        <a href="{{ path('event_delete_published', {'id' : publishedevent.id}) }}">
+                            <button type="button" class="moderate" value="MODIFIER">SUPPRIMER</button>
+                        </a></td>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+        </div>
+
     </div>
 {% endblock %}

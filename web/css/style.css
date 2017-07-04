@@ -293,6 +293,12 @@ td{
     background-color: #a70050!important;
     border: none !important;
     margin-top: 40px;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+.btn-filter{
+    margin-top: 5%!important;
 }
 button{
     margin-left: 2% !important;
