@@ -43,7 +43,7 @@ class EvtDate
     private $timeEnd;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Event", inversedBy="evtDates")
+     * @ORM\ManyToOne(targetEntity="Event", inversedBy="evtDates", cascade={"all"})
      */
     private $event;
 

@@ -16,17 +16,20 @@
                 <div class="col-xs-12 text-center">
                     <div class="separation"></div>
                     <h1>{{ event.title }}</h1>
-                    <a href="{{ event.link }}" class="btn btn-default" role="button" target="_blanc">Voir sur Open
-                        Agenda</a>
-                    <div class="h-sep"></div>
-                    <a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Retour à la
-                        liste</a>
+                    <a href="{{ event.link }}" class="btn btn-default btn-txt btn-sep" role="button" target="_blanc">
+                        Voir sur Open Agenda
+                    </a>
+                    <a href="{{ path('event_list_published') }}" class="btn btn-default btn-txt btn-sep" role="button">
+                        Retour à la liste
+                    </a>
 
                     {# --- provisoire pour test --- #}
-                    <div class="h-sep"></div>
-                    <a href="{{ path('event_delete_published', {'id': event.id}) }}" class="btn btn-default"
-                       role="button">Supprimer</a>
-                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Contacter l'organisateur</button>
+                    <a href="{{ path('event_delete_published', {'id': event.id}) }}" class="btn btn-default btn-txt btn-sep" role="button">
+                        Supprimer
+                    </a>
+                    <button type="button" class="btn btn-default btn-txt" data-toggle="modal" data-target="#myModal">
+                        Contacter l'organisateur
+                    </button>
                     <div class="modal fade" id="myModal" role="dialog">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -51,14 +54,14 @@
                 </div>
 
                 {# --- partie gauche (image + descriptif) -------------------------------------------------- #}
-                <div class="col-xs-12 col-md-8">
-                    <p>Mots-clé : {{ event.tags }}</p>
+                <div class="col-xs-12 col-md-8 text-center">
+                    <p>Catégorie : {{ event.tags }}</p>
                     <p>
                         {% if event.image is not empty %}
-                            <img src="{{ event.image }}" alt="image {{ event.title }}" class="img-responsive"/>
+                            <img src="{{ event.image }}" alt="image {{ event.title }}" class="img-responsive center-block"/>
                         {% else %}
                             <img src="{{ asset('img/event_placeholder.png') }}" alt="image {{ event.title }}"
-                                 class="img-responsive"/>
+                                 class="img-responsive center-block"/>
                         {% endif %}
                     </p>
                     <p>{{ event.description }}</p>
@@ -176,7 +179,7 @@
 
             <div class="col-xs-12 text-center">
                 <div class="separation"></div>
-                <p><a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Retour à la
+                <p><a href="{{ path('event_list_published') }}" class="btn btn-default btn-txt" role="button">Retour à la
                         liste</a></p>
             </div>
 

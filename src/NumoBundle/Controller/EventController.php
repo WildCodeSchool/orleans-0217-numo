@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use NumoBundle\Form\EventType;
 use NumoBundle\Entity\Contact;
@@ -113,7 +114,7 @@ class EventController extends Controller
     }
 
     /**
-     * Creates a new event, and register locally.
+     * Creates a new event, and register (locally or on OpenAgenda).
      *
      * @Route("/new", name="event_new")
      * @Method({"GET", "POST"})
@@ -177,10 +178,11 @@ class EventController extends Controller
                 $em->persist($published);
                 $em->flush();
             } else {
-                // --- sinon enregistrement de l'evenement dans la database
+                // --- enregistrement de l'evenement dans la database
                 $em->persist($event);
                 $em->flush();
 
+                // --- on envoie une notification aux moderateurs
                 $confirmation = \Swift_Message::newInstance()
                     ->setSubject('Un adhérent à posté un événement')
                     ->setBody('Bonjour, Un adhérent à posté un événement, veuillez aller sur www.numo.fr pour confirmer')
@@ -192,14 +194,10 @@ class EventController extends Controller
                 }
                 $this->get('mailer')->send($confirmation);
             }
-            // --- on envoie une notification au(x) moderateur(s)
-            // A creer
-
-
-
 
             return $this->redirectToRoute('event_list_published');
         }
+
         return $this->render('NumoBundle:event:new.html.twig', [
             'error' => $error,
             'form' => $form->createView(),
@@ -207,7 +205,36 @@ class EventController extends Controller
     }
 
     /**
-     * Finds and displays a published event.
+     * Displays an awaiting event.
+     *
+     * @Route("/showawait/{id}", name="event_show_await")
+     * @Method("GET")
+     */
+    public function showAwaitAction(Event $event)
+    {
+        $oldDates = $newDates = [];
+        $dateRef = new \DateTime();
+        foreach ($event->getEvtDates() as $evtD) {
+            $evtDate = [
+                'evtDate' => $evtD->getEvtDate()->format('Y-m-d'),
+                'timeStart' => $evtD->getTimeStart()->format('H:i'),
+                'timeEnd' => $evtD->getTimeEnd()->format('H:i')
+            ];
+            if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
+                $oldDates[] = $evtDate;
+            } else {
+                $newDates[] = $evtDate;
+            }
+        }
+        return $this->render('NumoBundle:event:showAwait.html.twig', [
+            'event' => $event,
+            'oldDates' => $oldDates,
+            'newDates' => $newDates,
+        ]);
+    }
+
+    /**
+     * Displays a published event.
      *
      * @Route("/showpublished/{id}", name="event_show_published")
      * @Method({"GET", "POST" })
@@ -269,7 +296,66 @@ class EventController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing event entity.
+     * Edit an awaiting event.
+     *
+     * @Route("/editawait/{id}", name="event_edit_await")
+     * @Method({"GET", "POST"})
+     */
+    public function editAwitAction(Request $request, Event $event)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $newImage = '/img/event_placeholder.png';
+        $temp = explode('/', $event->getImage());
+        $oldImage = $this->getParameter('img_event_dir') . '/' . end($temp);
+        $event->setImage(new File($oldImage));
+        $form = $this->createForm(EventType::class, $event);
+        $form->handleRequest($request);
+
+        if ($request->request->get('image')) {
+            $newImage = $request->request->get('image')->getFilename();
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // --- gestion de l'image
+            $file = $event->getImage();
+            if ($file) {
+                // --- nouvelle image en remplacement de l'ancienne
+                $fileName = uniqid().'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('upload_directory_event'),
+                    $this->getParameter('img_event_dir') . '/' . $fileName
+                );
+                // --- effacement de l'ancienne image
+                if (file_exists($oldImage)) {
+                    unlink($oldImage);
+                }
+            } else {
+                $event->setImage(new file($oldImage));
+            }
+            $event
+                ->setAuthor($this->getUser())
+                ->setCreationDate(new \datetime());
+            $em->flush();
+
+            return $this->redirectToRoute('event_show_await', ['id' => $event->getId()]);
+        }
+
+        return $this->render('NumoBundle:event:editAwait.html.twig', [
+            'eventId' => $event->getId(),
+            'oldImage' => $oldImage,
+            'newImage' => $newImage,
+            'form' => $form->createView(),
+        ]);
+
+
+
+
+
+
+    }
+
+    /**
+     * Edit a published event.
      *
      * @Route("/{id}/edit", name="event_edit")
      * @Method({"GET", "POST"})
@@ -279,7 +365,18 @@ class EventController extends Controller
     }
 
     /**
-     * Deletes a event entity.
+     * Deletes an awaiting event.
+     *
+     * @Route("/deleteawait/{id}", name="event_delete_await")
+     * @Method({"GET","POST"})
+     */
+    public function deleteawaitAction(Request $request, $id)
+    {
+
+    }
+
+    /**
+     * Deletes a published event.
      *
      * @Route("/deletepublished/{id}", name="event_delete_published")
      * @Method({"GET","POST"})

@@ -137,7 +137,7 @@ class Event
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"all"})
      */
     private $evtDates;
 
