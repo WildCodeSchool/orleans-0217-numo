@@ -51,10 +51,10 @@
                 <div class="form-group">
                     <label class="col-sm-2" style="margin-left: 10px">Image actuelle</label>
                     <div class="col-sm-1">
-                        {% if user.imageUrl == null %}
+                        {% if app.user.imageUrl == null %}
                             <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" style="height: 70px">
                         {% else %}
-                            <img src="{{ asset('uploads/users/' ~ user.imageUrl.filename) }}" alt="{{ user.name }}" style="height: 70px">
+                            <img src="{{ asset('uploads/users/' ~ app.user.imageUrl.filename) }}" alt="{{ app.user.name }}" style="height: 70px">
                         {% endif %}
                     </div>
                 </div>
@@ -187,13 +187,5 @@
         </div>
     </header>
 
-
-
-
-
 {% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('js/summernote.js') }}"></script>
-    <script src="{{ asset('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js') }}"></script>
-{% endblock %}
+
