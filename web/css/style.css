@@ -143,7 +143,7 @@ footer {
     color: white;
     opacity: 0;
     display: block;
-    background: #97258D ;
+    background: #CADB2A ;
     position: absolute;
     bottom: 0;
     text-align: center;
@@ -397,7 +397,7 @@ thead{
     background-color: #FC0606;
 }
 
-.barrePurple{
+.separation.barrePurple{
     background-color: #97258D;
 }
 
@@ -546,6 +546,21 @@ div.separation {
 .imageProfileMember{
     height: 231px;
 }
+
+.messageOk{
+    padding-top: 5px;
+    background-color: #8CC63C;
+    height: 30px;
+}
+
+.messageNo{
+    padding-top: 5px;
+    background-color: red;
+    height: 30px;
+}
+
+
+
 
 
 #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; width:100%;}
