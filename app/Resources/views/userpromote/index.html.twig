@@ -42,7 +42,9 @@
                         {% set trustcolor = 'green' %}
                         {% endif %}
                         <a href="{{ path('member_trust', {'id': user.id}) }}">
-                            <button class="onoff {{ trustcolor }}"></button></a>
+                            <button class="onoff {{ user.trust == 0 ? 'red' : 'green' }}">
+                                {{ user.trust == 0 ? 'NON' : 'OUI' }}
+                            </button></a>
                     </td>
 
                     <td class="admin">
@@ -64,13 +66,10 @@
                                 data-firstname="{{ user.firstname }}">PROMOUVOIR</button>
                     </td>
                     <td class="admin">
-                        {% if user.enabled == false %}
-                            {% set enabledcolor= 'red' %}
-                        {% else %}
-                            {% set enabledcolor = 'green' %}
-                        {% endif %}
                         <a href="{{ path('member_enabled', {'id': user.id}) }}">
-                            <button class="onoff {{ enabledcolor }}"></button></a>
+                            <button class="onoff {{ user.enabled == false ? 'red' : 'green' }}">
+                                {{ user.enabled == false ? 'NON' : 'OUI' }}
+                            </button></a>
                     </td>
                 </tr>
             {% endfor %}
