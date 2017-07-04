@@ -61,24 +61,13 @@
         <!-- /.container-fluid -->
 
     </nav>
-    {% for message in app.flashes('notice') %}
-        <div class="flash-notice text-center messageOk">
-            {{ message }}
-        </div>
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }} messageOk text-center">
+                {{ message }}
+            </div>
+        {% endfor %}
     {% endfor %}
-
-    {% for message in app.flashes('messageContact') %}
-        <div class="flash-notice text-center messageOk">
-            {{ message }}
-        </div>
-    {% endfor %}
-
-    {% for message in app.flashes('messageNoContact') %}
-        <div class="flash-notice text-center messageNo">
-            {{ message }}
-        </div>
-    {% endfor %}
-
 
 {% endblock %}
 
