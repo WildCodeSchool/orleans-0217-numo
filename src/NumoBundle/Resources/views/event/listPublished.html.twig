@@ -12,7 +12,6 @@
         {# --- Titre de la page --- #}
         <div class="row">
             <div class="col-xs-12 text-center">
-                <div class="separation"></div>
                 <h1>Agenda</h1>
                 {# --- bouton "créer nouvel évènement --- #}
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -48,7 +47,7 @@
 
                 {{ form_end(selectForm) }}
 
-                <div class="separation"></div>
+                <div class="separation barrePurple"></div>
             </div>
         </div>
 

@@ -147,7 +147,7 @@ div.separation {
     color: white;
     opacity: 0;
     display: block;
-    background: cornflowerblue;
+    background: #CADB2A ;
     position: absolute;
     bottom: 0;
     text-align: center;
@@ -396,7 +396,7 @@ thead{
     background-color: #FC0606;
 }
 
-.barrePurple{
+.separation.barrePurple{
     background-color: #97258D;
 }
 
