@@ -2,6 +2,7 @@
 
 namespace NumoBundle\Controller;
 
+use NumoBundle\Entity\Company;
 use NumoBundle\Entity\Event;
 use NumoBundle\Entity\OaEvent;
 use NumoBundle\Entity\EvtDate;
@@ -104,7 +105,7 @@ class EventController extends Controller
             'selectForm' => $selectForm->createView(),
             'agendaSlug' => $api->getAgendaSlug(),
             'events' => $events,
-            'dates'=> $dates,
+            'dates' => $dates,
             'error' => $error,
         ]);
     }
@@ -124,9 +125,16 @@ class EventController extends Controller
         $event->getEvtDates()->add($evtDate0);
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
+
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $userManager = $this->get('fos_user.user_manager');
+            $users = $userManager->findUsers();
+
             $file = $event->getImage();
-            $fileName = $this->getParameter('server_url').'/'.$this->getParameter('img_event_dir').'/'.uniqid().'.'.$file->guessExtension();
+            $fileName = $this->getParameter('server_url') . '/' . $this->getParameter('img_event_dir') . '/' . uniqid() . '.' . $file->guessExtension();
             $file->move(
                 $this->getParameter('upload_directory_event'),
                 $fileName
@@ -139,6 +147,19 @@ class EventController extends Controller
             $em = $this->getDoctrine()->getManager();
             if ($curentUser->getTrust() == 1) {
                 // --- si utilisateur de confiance, on publie directement
+
+                $confirmation = \Swift_Message::newInstance()
+                    ->setSubject('Un membre de confiance à posté un événement')
+                    ->setBody('Bonjour, Un membre de confiance à posté un événement, veuillez aller sur www.numo.fr pour le voir')
+                    ->setFrom($company->getContactEmail());
+                foreach ($users as $user) {
+                    if (in_array('ROLE_MODERATOR', $user->getRoles())) {
+                        $confirmation->setTo($user->getEmail());
+                    }
+                }
+
+                $this->get('mailer')->send($confirmation);
+
                 $api = $this->get('numo.apiopenagenda');
                 $uid = $api->publishEvent($event);
                 if (false === $uid) {
@@ -152,9 +173,22 @@ class EventController extends Controller
                 // --- sinon enregistrement de l'evenement dans la database
                 $em->persist($event);
                 $em->flush();
+
+                $confirmation = \Swift_Message::newInstance()
+                    ->setSubject('Un adhérent à posté un événement')
+                    ->setBody('Bonjour, Un adhérent à posté un événement, veuillez aller sur www.numo.fr pour confirmer')
+                    ->setFrom($company->getContactEmail());
+                foreach ($users as $user) {
+                    if (in_array('ROLE_MODERATOR', $user->getRoles())) {
+                        $confirmation->setTo($user->getEmail());
+                    }
+                }
+                $this->get('mailer')->send($confirmation);
             }
             // --- on envoie une notification au(x) moderateur(s)
-                // A creer
+            // A creer
+
+
 
 
             return $this->redirectToRoute('event_list_published');

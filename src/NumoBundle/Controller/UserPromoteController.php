@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * User Promote controller.
  *
- * @Route("memberstatus")
+ * @Route("/memberstatus")
  */
 
 class UserPromoteController extends Controller
@@ -61,7 +61,7 @@ class UserPromoteController extends Controller
     /**
      * @param User $user
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/{id}", name="membertrust")
+     * @Route("/trust/{id}", name="member_trust")
      */
     public function trustAction(User $user)
     {
@@ -76,4 +76,21 @@ class UserPromoteController extends Controller
         return $this->redirectToRoute('memberstatus_index');
     }
 
+    /**
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/enabled/{id}", name="member_enabled")
+     */
+    public function enabledAction(User $user)
+    {
+        if ($user->isEnabled() === true){
+            $user->setEnabled(false);
+        } else {
+            $user->setEnabled(true);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return $this->redirectToRoute('memberstatus_index');
+    }
 }
