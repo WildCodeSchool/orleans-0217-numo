@@ -7,6 +7,17 @@
 {% block body %}
     <div class="container font-lato">
         <h1 class="titreadmin font-lato">MEMBRES</h1>
+
+        <div class="text-center">
+
+            <nav class="AlphabetNav">
+                <a id="AlphabetNavAll" href="">TOUS</a>
+                {%  for letter in 'A'..'Z' %}
+                    <a href="">{{ letter }}</a>
+                {% endfor %}
+            </nav>
+        </div>
+
         <table>
             <thead>
             <tr class="text-center admin">
@@ -15,30 +26,32 @@
                 <th class="text-center">MEMBRE DE CONFIANCE</th>
                 <th class="text-center">STATUT</th>
                 <th class="text-center">ACTION</th>
+                <th class="text-center">DESACTIVER</th>
             </tr>
             </thead>
             <tbody>
             {% for user in users %}
-                <tr>
-                    <td class="admin">{{ user.name }}</td>
+                <tr class="showMember">
+                    <td class="admin memberName">{{ user.name }}</td>
                     <td class="admin">{{ user.firstname }}</td>
                     <td class="admin">
-                        {% if user.trust == 0 %}
-                        {% set trustcolor='red' %}
-                        {% else %}
-                        {% set trustcolor = 'green' %}
-                        {% endif %}
-                        <a href="{{ path('membertrust', {'id': user.id}) }}">
-                            <button class="onoff {{ trustcolor }}"></button></a>
+                       <a href="{{ path('member_trust', {'id': user.id}) }}">
+                            <button class="onoff {{ user.trust == 0 ? 'grey' : 'green' }}">
+                                {{ user.trust == 0 ? 'NON' : 'OUI' }}
+                            </button></a>
                     </td>
-
                     <td class="admin">{{ user.roles.0 }}</td>
                     <td class="admin">
-                        <button type="button" class="pull-right" data-toggle="modal" data-target="#exampleModal"
+                        <button type="button" class="button-admin" data-toggle="modal" data-target="#exampleModal"
                                 data-id="{{ user.id }}" data-name="{{ user.name }}"
                                 data-firstname="{{ user.firstname }}">PROMOUVOIR</button>
                     </td>
-
+                    <td class="admin">
+                        <a href="{{ path('member_enabled', {'id': user.id}) }}">
+                            <button class="onoff {{ user.enabled == false ? 'grey' : 'green' }}">
+                                {{ user.enabled == false ? 'NON' : 'OUI' }}
+                            </button></a>
+                    </td>
                 </tr>
             {% endfor %}
             <hr>
@@ -72,17 +85,19 @@
 
 {% block javascripts %}
     {{ parent() }}
-
     <script>
-    $('#exampleModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var id = button.data('id')
-        var name = button.data('name')
-        var firstname = button.data('firstname')
-        var modal = $(this)
-        modal.find('.modal-title').text('Promouvoir  ' + name + ' ' + firstname)
-        modal.find('#numobundle_promote_Id').val(id)
-    })
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var name = button.data('name');
+            var firstname = button.data('firstname');
+            var modal = $(this);
+            modal.find('.modal-title').text('Promouvoir  ' + name + ' ' + firstname);
+            modal.find('#numobundle_promote_Id').val(id)
+        })
     </script>
+    <script src="{{ asset('js/member.js') }}"></script>
 
 {% endblock %}
+
+

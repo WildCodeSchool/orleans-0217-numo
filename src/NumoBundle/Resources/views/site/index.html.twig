@@ -1,12 +1,31 @@
 {% extends 'layout.html.twig' %}
 {% block body %}
-
     <div class="container-fluid bg-1 text-center">
+
+
+
         <h3 class="margin"></h3>
         <div class="row imgHeader">
-            <a href="{{ path('event_list_published') }}" class="btn btn-default btn-lg btnOrange btnRed">Consulter les événements</a>
+            <a href="{{ path('event_list_published') }}" class="btn btn-default btn-lg btnOrange btnRed">Consulter les
+                événements</a>
 
         </div>
+    </div>
+    <div class="container-fluid mailChimp">
+        <!-- Begin MailChimp Signup Form -->
+        <div id="mc_embed_signup">
+            <form action="//num-o.us16.list-manage.com/subscribe/post?u={{ mailChimpApi }};id=de68ca6632" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                <div id="mc_embed_signup_scroll">
+                    <label for="mce-EMAIL">S'inscrire à nos newsletters</label>
+                    <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+                    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                    <div class="mailChimpStyle"aria-hidden="true"><input type="text" name="b_116816a1a91c3fc902cbe3388_de68ca6632" tabindex="-1" value=""></div>
+                    <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+                </div>
+            </form>
+        </div>
+        <!--End mc_embed_signup-->
+
     </div>
 
     <div class="container-fluid bg-2 text-center zoneRed">
@@ -22,11 +41,13 @@
         </div>
     </div>
 
-    <div class="container-fluid">
+
+<div class="container-fluid">
         <div class="row no-gutter popup-gallery">
             {% for event in events %}
                 <div class="col-lg-4 col-sm-6">
-                    <a href="{{ path('event_show_published', {'id': event.id, 'published': event.status == 99}) }}" class="portfolio-box">
+                    <a href="{{ path('event_show_published', {'id': event.id, 'published': event.status == 99}) }}"
+                       class="portfolio-box">
                         <img class="imageEvents img-responsive" src="{{ event.image }}" class="img-responsive" alt="">
                         <div class="portfolio-box-caption">
                             <div class="portfolio-box-caption-content">
@@ -71,7 +92,7 @@
                         {% for partner in partners %}
                             <div class="col-lg-offset-2  col-lg-2">
                                 <a href="{{ partner.webUrl }}"><img src="{{ asset('img/' ~ partner.imageUrl) }}"
-                                    class="img-partner" alt="{{ partner.name }}"></a>
+                                                                    class="img-partner" alt="{{ partner.name }}"></a>
                             </div>
                         {% endfor %}
                     </div>

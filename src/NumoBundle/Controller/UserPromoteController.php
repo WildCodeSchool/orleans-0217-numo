@@ -14,11 +14,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+use NumoBundle\Repository\UserRepository;
+
 
 /**
  * User Promote controller.
  *
- * @Route("memberstatus")
+ * @Route("/memberstatus")
  */
 
 class UserPromoteController extends Controller
@@ -37,6 +39,8 @@ class UserPromoteController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        $users = $em->getRepository('NumoBundle:User')->findAll();
+
         if ($form->isValid() && $form->isSubmitted()) {
             $data = $form->getData();
             $role[] = $data['Roles'];
@@ -49,8 +53,6 @@ class UserPromoteController extends Controller
 
         }
 
-        $users = $em->getRepository('NumoBundle:User')->findAll();
-
         return $this->render('userpromote/index.html.twig', [
             'users' => $users,
             'form' => $form->createView(),
@@ -61,7 +63,7 @@ class UserPromoteController extends Controller
     /**
      * @param User $user
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/{id}", name="membertrust")
+     * @Route("/trust/{id}", name="member_trust")
      */
     public function trustAction(User $user)
     {
@@ -69,6 +71,24 @@ class UserPromoteController extends Controller
             $user->setTrust(1);
         } else {
             $user->setTrust(0);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return $this->redirectToRoute('memberstatus_index');
+    }
+
+    /**
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/enabled/{id}", name="member_enabled")
+     */
+    public function enabledAction(User $user)
+    {
+        if ($user->isEnabled() === true){
+            $user->setEnabled(false);
+        } else {
+            $user->setEnabled(true);
         }
         $em = $this->getDoctrine()->getManager();
         $em->flush();
