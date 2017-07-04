@@ -3,9 +3,8 @@
 
     {# --- titre ---#}
     <div class="col-xs-12 text-center">
-        <div class="separation"></div>
         <h1>L'association</h1>
-        <div class="separation"></div>
+        <div class="separation barreRed"></div>
     </div>
 
     <div class="container-fluid company">
@@ -27,8 +26,7 @@
                 <p>{{ company.city }} {{ company.postalCode }}</p>
                 <p>{{ company.address }}</p>
                 <p>{{ company.contactEmail }}</p>
-                {#<img src="{{ company.imageUrl }}" alt="Numo" style="width:200px">#}
-                <img src="{{ asset('img/NUMOsmall.png') }}" class="img-responsive" alt="numo logo" style="width: 200px">
+                <img src="{{ asset('img/NUMOsmall.png') }}" class="img-responsive" alt="numo logo">
 
             </div>
         </div>

@@ -14,6 +14,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+use NumoBundle\Repository\UserRepository;
+
 
 /**
  * User Promote controller.
@@ -37,6 +39,8 @@ class UserPromoteController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        $users = $em->getRepository('NumoBundle:User')->findAll();
+
         if ($form->isValid() && $form->isSubmitted()) {
             $data = $form->getData();
             $role[] = $data['Roles'];
@@ -48,8 +52,6 @@ class UserPromoteController extends Controller
             $em->flush();
 
         }
-
-        $users = $em->getRepository('NumoBundle:User')->findAll();
 
         return $this->render('userpromote/index.html.twig', [
             'users' => $users,

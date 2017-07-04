@@ -2,13 +2,17 @@
 
 namespace NumoBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use NumoBundle\Entity\Category;
+use NumoBundle\Entity\PricingInfo;
 
 class EventType extends AbstractType
 {
@@ -27,8 +31,10 @@ class EventType extends AbstractType
             ->add('freeText', TextareaType::class, [
                 'required' => false,
             ])
-            ->add('tags', TextType::class, [
-                'required' => false,
+            ->add('tags', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'required' => true,
             ])
             ->add('image', fileType::class, [
                 'required' => false,
@@ -48,8 +54,10 @@ class EventType extends AbstractType
             ->add('ticketLink', TextType::class, [
                 'required' => false,
             ])
-            ->add('pricingInfo', TextType::class, [
-                'required' => false,
+            ->add('pricingInfo', EntityType::class, [
+                'class' => PricingInfo::Class,
+                'choice_label' => 'pricing',
+                'required' => true,
             ])
             ->add('evtDates', CollectionType::class, [
                 'entry_type' => EvtDateCollectionType::class,

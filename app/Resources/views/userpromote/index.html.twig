@@ -26,6 +26,7 @@
                 <th class="text-center">STATUT</th>
                 <th class="text-center">ACTION</th>
                 <th class="text-center">DESACTIVER</th>
+
             </tr>
             </thead>
             <tbody>
@@ -36,7 +37,7 @@
                     <td class="admin">
 
                         <a href="{{ path('member_trust', {'id': user.id}) }}">
-                            <button class="onoff {{ user.trust == 0 ? 'red' : 'green' }}">
+                            <button class="onoff {{ user.trust == 0 ? 'grey' : 'green' }}">
                                 {{ user.trust == 0 ? 'NON' : 'OUI' }}
                             </button></a>
                     </td>
@@ -49,7 +50,7 @@
                     </td>
                     <td class="admin">
                         <a href="{{ path('member_enabled', {'id': user.id}) }}">
-                            <button class="onoff {{ user.enabled == false ? 'red' : 'green' }}">
+                            <button class="onoff {{ user.enabled == false ? 'grey' : 'green' }}">
                                 {{ user.enabled == false ? 'NON' : 'OUI' }}
                             </button></a>
                     </td>
