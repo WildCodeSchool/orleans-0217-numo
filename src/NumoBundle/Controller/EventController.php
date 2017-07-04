@@ -245,6 +245,8 @@ class EventController extends Controller
             'published' => $published,
             'error' => $error,
             'form'=>$form->createView(),
+            'googleMapApi' => $this->getParameter('google_map_api')
+
         ]);
 
     }
