@@ -1,12 +1,14 @@
 .onoff{
-    width: 100px;
+    width: 80px;
     height: 40px;
-    border-radius: 10%;
-
+    border-radius: 34px;
+    font-weight: bold;
 }
 .red{
-    background-color: #f70607;
+    background-color: #ccc;
+    color: black;
 }
 .green{
     background-color: #02a46f;
+    color: white;
 }

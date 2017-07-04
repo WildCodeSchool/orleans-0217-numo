@@ -3,9 +3,7 @@
  */
 $(document).ready(function() {
     $('#company_presentationContent').summernote({
-/*
         minHeight: 300,
-*/
         toolbar: [
             ['style', ['bold', 'italic', 'underline']],
             ['fontsize', ['fontsize']],

@@ -2,16 +2,20 @@
 
 namespace NumoBundle\Controller;
 
+use NumoBundle\Entity\Company;
 use NumoBundle\Entity\Event;
 use NumoBundle\Entity\OaEvent;
 use NumoBundle\Entity\EvtDate;
+use NumoBundle\Entity\Published;
 use NumoBundle\Entity\SelectEvent;
 use NumoBundle\Form\SelectEventType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use NumoBundle\Form\EventType;
+
 /**
  * Event controller.
  *
@@ -98,15 +102,13 @@ class EventController extends Controller
             'selectForm' => $selectForm->createView(),
             'agendaSlug' => $api->getAgendaSlug(),
             'events' => $events,
-            'dates'=> $dates,
+            'dates' => $dates,
             'error' => $error,
         ]);
     }
 
-
-
     /**
-     * Creates a new event entity.
+     * Creates a new event, and register locally.
      *
      * @Route("/new", name="event_new")
      * @Method({"GET", "POST"})
@@ -120,20 +122,73 @@ class EventController extends Controller
         $event->getEvtDates()->add($evtDate0);
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
+
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $userManager = $this->get('fos_user.user_manager');
+            $users = $userManager->findUsers();
+
             $file = $event->getImage();
-            $fileName = $this->getParameter('server_url').'/'.$this->getParameter('img_event_dir').'/'.uniqid().'.'.$file->guessExtension();
+            $fileName = $this->getParameter('server_url') . '/' . $this->getParameter('img_event_dir') . '/' . uniqid() . '.' . $file->guessExtension();
             $file->move(
                 $this->getParameter('upload_directory_event'),
                 $fileName
             );
-            $event->setImage($fileName);
+            $curentUser = $this->getUser();
+            $event
+                ->setImage($fileName)
+                ->setAuthor($curentUser)
+                ->setCreationDate(new \DateTime);
             $em = $this->getDoctrine()->getManager();
+            if ($curentUser->getTrust() == 1) {
+                // --- si utilisateur de confiance, on publie directement
 
-            $em->persist($event);
-            $em->flush();
+                $confirmation = \Swift_Message::newInstance()
+                    ->setSubject('Un membre de confiance à posté un événement')
+                    ->setBody('Bonjour, Un membre de confiance à posté un événement, veuillez aller sur www.numo.fr pour le voir')
+                    ->setFrom($company->getContactEmail());
+                foreach ($users as $user) {
+                    if (in_array('ROLE_MODERATOR', $user->getRoles())) {
+                        $confirmation->setTo($user->getEmail());
+                    }
+                }
 
-            return $this->redirectToRoute('event_list');
+                $this->get('mailer')->send($confirmation);
+
+                $api = $this->get('numo.apiopenagenda');
+                $uid = $api->publishEvent($event);
+                if (false === $uid) {
+                    // gerer erreur si ecriture foireuse
+                }
+                // --- creationde l'enregistrement "published"
+                $published = new Published($event, $uid, $curentUser);
+                $em->persist($published);
+                $em->flush();
+            } else {
+                // --- sinon enregistrement de l'evenement dans la database
+                $em->persist($event);
+                $em->flush();
+
+                $confirmation = \Swift_Message::newInstance()
+                    ->setSubject('Un adhérent à posté un événement')
+                    ->setBody('Bonjour, Un adhérent à posté un événement, veuillez aller sur www.numo.fr pour confirmer')
+                    ->setFrom($company->getContactEmail());
+                foreach ($users as $user) {
+                    if (in_array('ROLE_MODERATOR', $user->getRoles())) {
+                        $confirmation->setTo($user->getEmail());
+                    }
+                }
+                $this->get('mailer')->send($confirmation);
+            }
+            // --- on envoie une notification au(x) moderateur(s)
+            // A creer
+
+
+
+
+            return $this->redirectToRoute('event_list_published');
         }
         return $this->render('NumoBundle:event:new.html.twig', [
             'error' => $error,
@@ -183,21 +238,52 @@ class EventController extends Controller
     /**
      * Deletes a event entity.
      *
-     * @Route("/{id}", name="event_delete")
-     * @Method("DELETE")
+     * @Route("/deletepublished/{id}", name="event_delete_published")
+     * @Method({"GET","POST"})
      */
-    public function deleteAction(Request $request, Event $event)
+    public function deletePublishedAction(Request $request, $id)
     {
+        $error = '';
+        $api = $this->get('numo.apiopenagenda');
+        $form = $this
+            ->createFormBuilder()
+            ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // --- suppression de l'évènement sur OpenAgenda
+            $result = $api->deleteEvent($id);
+            if (false === $result) {
+                $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+            } else {
+                // --- Mise a jour des infos complementaires
+                $em = $this->getDoctrine()->getManager();
+                $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+                if ($published) {
+                    $published->setDeleted(1);
+                    $published->setModerator($this->getUser());
+                    $published->setModeratorUpdateDate(new \DateTime);
+                    $em->flush();
+                }
+                return $this->redirectToRoute('event_list_published');
+            }
+        }
+        // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
+        $oaEvent = $api->getEvent($id);
+        if (false === $oaEvent) {
+            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+        } else {
+            // --- lecture des infos complementaires
+            $em = $this->getDoctrine()->getManager();
+            $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+        }
+        return $this->render('NumoBundle:event:deletePublished.html.twig', [
+            'agendaSlug' => $api->getAgendaSlug(),
+            'event' => $oaEvent,
+            'published' => $published,
+            'form' => $form->createView(),
+            'error' => $error,
+        ]);
     }
 
-    /**
-     * Creates a form to delete a event entity.
-     *
-     * @param Event $event The event entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Event $event)
-    {
-    }
 }

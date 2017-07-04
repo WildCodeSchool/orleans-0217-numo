@@ -2,7 +2,7 @@
 
 
 {% block header %}
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navWhite font-lato">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
 
@@ -19,39 +19,41 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a class="page-scroll" href="{{ path('association') }}">Association</a>
+                            <a class="page-scroll hoverAssociation" href="{{ path('association') }}">Association</a>
 
                         </li>
                         <li>
-                            <a class="page-scroll" href="{{ path('event_list_published') }}">Agenda</a>
+                            <a class="page-scroll hoverAgenda" href="{{ path('event_list_published') }}">Agenda</a>
                         </li>
                         <li>
-                            <a class="page-scroll" href="{{ path('members') }}" >Membres</a>
+                            <a class="page-scroll hoverMembres" href="{{ path('members') }}" >Membres</a>
                         </li>
                         <li>
-                            <a class="page-scroll" href="{{ path('become_adherent') }}" >Devenez Adhérent</a>
+                            <a class="page-scroll hoverAdherer" href="{{ path('become_adherent') }}" >Devenez Adhérent</a>
                         </li>
                         <li>
-                            <a class="page-scroll" href="{{ path('contact') }}">Contact</a>
+                            <a class="page-scroll hoverContact" href="{{ path('contact') }}">Contact</a>
                         </li>
-                        <li>
-                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        </li>
-                        <li>
-                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                <span class="glyphicon glyphicon-bell navbar-right" aria-hidden="true"></span>
-                                <span class="glyphicon glyphicon-cog navbar-right" aria-hidden="true"></span>
-                                <p>{{ app.user.name }} {{ app.user.firstname }}</p>
-                                <a href="{{ path('fos_user_security_logout') }}" class="btn btn-default navbar-right">Deconnexion</a>
-                                <a href="{{ path('fos_user_profile_show') }}" class="btn btn-default navbar-right">Profil</a>
-                            {% else %}
-                                <a href="{{ path('fos_user_security_login') }}" class="btn btn-default">Connexion</a>
-                        </li>
-                        <li>
-                                <a href="{{ path('fos_user_registration_register') }}" class="btn btn-default inscription">S'inscrire</a>
-                        </li>
-                            {%endif%}
+
                     </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <li>
+                                <a href="{{ path('fos_user_profile_show') }}" class="glyphicon glyphicon-user"> {{ app.user.name }} {{ app.user.firstname }}</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('fos_user_security_logout') }}" class="glyphicon glyphicon-log-in"><span class="font-lato"> Deconnexion</span></a>
+                            </li>
+
+                            {% else %}
+                            <li>
+                                <a href="{{ path('fos_user_security_login') }}" class="glyphicon glyphicon-log-in"><span class="font-lato"> Connexion</span></a>
+                            </li>
+                            <li>
+                                <a href="{{ path('fos_user_registration_register') }}" class="glyphicon glyphicon-user"><span class="font-lato"> S'inscrire</span></a>
+                            </li>
+                            {%endif%}
+                          </ul>
                 </div>
         </div>
         <!-- /.container-fluid -->

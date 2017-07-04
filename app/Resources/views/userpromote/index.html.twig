@@ -24,8 +24,11 @@
                 <th class="text-center">NOM</th>
                 <th class="text-center">PRENOM</th>
                 <th class="text-center">MEMBRE DE CONFIANCE</th>
+                <th class="text-center">MAIL</th>
                 <th class="text-center">STATUT</th>
                 <th class="text-center">ACTION</th>
+                <th class="text-center">DESACTIVER</th>
+
             </tr>
             </thead>
             <tbody>
@@ -39,9 +42,23 @@
                         {% else %}
                         {% set trustcolor = 'green' %}
                         {% endif %}
-                        <a href="{{ path('membertrust', {'id': user.id}) }}">
+                        <a href="{{ path('member_trust', {'id': user.id}) }}">
+                            <button class="onoff {{ user.trust == 0 ? 'red' : 'green' }}">
+                                {{ user.trust == 0 ? 'NON' : 'OUI' }}
+                            </button></a>
+                    </td>
+
+                    <td class="admin">
+                        {% if user.moderator == 0 %}
+                            {% set trustcolor='red' %}
+                        {% else %}
+                            {% set trustcolor = 'green' %}
+                        {% endif %}
+                        <a href="{{ path('moderatorMail', {'id': user.id}) }}">
                             <button class="onoff {{ trustcolor }}"></button></a>
                     </td>
+
+
 
                     <td class="admin">{{ user.roles.0 }}</td>
                     <td class="admin">
@@ -49,7 +66,12 @@
                                 data-id="{{ user.id }}" data-name="{{ user.name }}"
                                 data-firstname="{{ user.firstname }}">PROMOUVOIR</button>
                     </td>
-
+                    <td class="admin">
+                        <a href="{{ path('member_enabled', {'id': user.id}) }}">
+                            <button class="onoff {{ user.enabled == false ? 'red' : 'green' }}">
+                                {{ user.enabled == false ? 'NON' : 'OUI' }}
+                            </button></a>
+                    </td>
                 </tr>
             {% endfor %}
             <hr>
@@ -79,21 +101,18 @@
         </div>
     </div>
 
-    <div id="summernote"><p>Hello Summernote</p></div>
-
-
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script>
         $('#exampleModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget)
-            var id = button.data('id')
-            var name = button.data('name')
-            var firstname = button.data('firstname')
-            var modal = $(this)
-            modal.find('.modal-title').text('Promouvoir  ' + name + ' ' + firstname)
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var name = button.data('name');
+            var firstname = button.data('firstname');
+            var modal = $(this);
+            modal.find('.modal-title').text('Promouvoir  ' + name + ' ' + firstname);
             modal.find('#numobundle_promote_Id').val(id)
         })
     </script>

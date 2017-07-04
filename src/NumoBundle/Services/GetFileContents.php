@@ -45,7 +45,7 @@ class GetFileContents
         } else {
             $info = file_get_contents($this->url);
             if (false === $info) {
-                $this->setErrorCode(999);
+                $this->setHttpCode(999);
                 $this->setError('GetFileContents : Erreur inconnue');
                 return false;
             } else {
@@ -53,7 +53,7 @@ class GetFileContents
                 if ($api) {
                     // --- version api ----------
                     if (false === $data->success) {
-                        $this->setErrorCode($data->code);
+                        $this->setHttpCode($data->code);
                         $this->setError('GetFileContents : ' . $data->message);
                         return false;
                     } else {
@@ -63,7 +63,7 @@ class GetFileContents
                 } else {
                     // --- version json -------
                     if (isset($data->message)) {
-                        $this->setErrorCode(0);
+                        $this->setHttpCode(0);
                         $this->setError('GetFileContents : ' . $data->message);
                         return false;
                     } else {

@@ -2,6 +2,7 @@
 
 namespace NumoBundle\Controller;
 
+use NumoBundle\Entity\Company;
 use NumoBundle\Entity\Published;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -47,6 +48,7 @@ class PublishedController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($published);
             $em->flush();
+
 
             return $this->redirectToRoute('published_show', array('id' => $published->getId()));
         }

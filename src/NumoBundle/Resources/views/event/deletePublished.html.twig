@@ -3,32 +3,31 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/fullcalendar.min.css') }}">
 {% endblock %}
 
 {% block body %}
     <div class="container">
+
+            {# --- titre --------------------------------------------------------------------------------#}
         <div class="row">
+            <div class="col-xs-12 text-center">
+                <h1>Suppression d'un évènement</h1>
+                <div class="separation"></div>
+                {{ form_start(form) }}
+                {{ form_widget(form.delete, {'attr': {'class': 'btn btn-default btn-sep'}}) }}
+                <a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Ne pas supprimer</a>
+                {{ form_end(form) }}
+                <div class="separation"></div>
+            </div>
+        </div>
+
+        <div class="row">
+
             {% if error == '' %}
-
-    {# --- titre --------------------------------------------------------------------------------#}
-                <div class="col-xs-12 text-center">
-                    <div class="separation"></div>
-                    <h1>{{ event.title }}</h1>
-                        <a href="{{ event.link }}" class="btn btn-default" role="button" target="_blanc">Voir sur Open Agenda</a>
-                        <div class="h-sep"></div>
-                        <a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Retour à la liste</a>
-
-{# --- provisoire pour test --- #}
-<div class="h-sep"></div>
-<a href="{{ path('event_delete_published', {'id': event.id}) }}" class="btn btn-default" role="button">Supprimer</a>
-{# ---------------------------- #}
-
-                    <div class="separation"></div>
-                </div>
 
     {# --- partie gauche (image + descriptif) -------------------------------------------------- #}
                 <div class="col-xs-12 col-md-8">
+                    <h2>{{ event.title }}</h2>
                     <p>Mots-clé : {{ event.tags }}</p>
                     <p>
                         {% if event.image is not empty %}
@@ -38,8 +37,6 @@
                         {% endif %}
                     </p>
                     <p>{{ event.description }}</p>
-                    <p>{{ event.freeText }}</p>
-
                 </div>
 
     {# --- partie droite (date + geoloc + ...  ------------------------------------------------- #}
@@ -89,35 +86,6 @@
                     <p>{{ event.placename }}</p>
                     <p>{{ event.address }}</p>
 
-                    {# --- map ----------------------------------------------------------------- #}
-                    <div class="separation"></div>
-                    <div id="closemap" class="text-center cursor-pointer" onclick="closeMap();">X</div>
-                    <div id="mapzone"></div>
-
-                    {# --- billetterie --- #}
-                    <div class="separation"></div>
-                    <h3>Billetterie / inscription</h3>
-                    <p>{{ event.pricingInfo }}</p>
-                    {% if event.ticketLink > '' %}
-                        <p><a href="{{ event.ticketLink }}" class="btn btn-default" role="button" target="_blanc">Accéder à la billetterie</a></p>
-                    {% endif %}
-
-                    {# --- reseaux sociaux ----------------------------------------------------- #}
-                        <div class="separation"></div>
-                        <h3>Partager sur</h3>
-                        {# --- facebook --- #}
-                        <a name="fb_share" type="box_count" share_url="{{ app.request.uri }}" target="_blanc">
-                            <img src="{{ asset('/img/rs-facebook.png') }}" alt="partager facebook" class="rs-button" />
-                        </a>
-                    {# --- twitter --- #}
-                        <a href="https://twitter.com/share" target="_blanc">
-                            <img src="{{ asset('/img/rs-twitter.png') }}" alt="partager twitter" class="rs-button" />
-                        </a>
-                    {# --- linkedin ------------------------------------------------------------ #}
-                        <a href="" target="_blanc">
-                            <img src="{{ asset('/img/rs-linkedin.png') }}" alt="partager linkedin" class="rs-button" />
-                        </a>
-
                     {# --- organisateur -------------------------------------------------------- #}
                     <div class="separation"></div>
                     <h3>Organisé par</h3>
@@ -139,38 +107,8 @@
 
             {% endif %}
 
-            <div class="col-xs-12 text-center">
-                <div class="separation"></div>
-                <p><a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Retour à la liste</a></p>
-            </div>
-
         </div>
     </div>
 
 {% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('js/showevent.js') }}"></script>
-    <script>
-
-        function initMap(){
-            var centerMap = new google.maps.LatLng('{{ event.latitude }}', '{{ event.longitude }}');
-            var optionsMap = {
-                zoom: 14,
-                center: centerMap,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
-            var myMap = new google.maps.Map(document.getElementById("mapzone"), optionsMap);
-            var optionsMarqueur = {
-                position: centerMap,
-                map: myMap,
-                title: "{{ event.placename }}"
-            }
-            var marqueur = new google.maps.Marker(optionsMarqueur);
-        }
-
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5FbMBpVejJw6o_4r3eHkUQQde6vlDItg&callback=initMap" async defer></script>
-    <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
-{% endblock %}
