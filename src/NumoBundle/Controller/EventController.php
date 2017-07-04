@@ -127,6 +127,11 @@ class EventController extends Controller
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->addFlash(
+                'notice',
+                'Vous avez crée un événement'
+            );
             $userManager = $this->get('fos_user.user_manager');
             $users = $userManager->findUsers();
 

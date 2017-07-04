@@ -546,6 +546,21 @@ div.separation {
     height: 231px;
 }
 
+.messageOk{
+    padding-top: 5px;
+    background-color: #8CC63C;
+    height: 30px;
+}
+
+.messageNo{
+    padding-top: 5px;
+    background-color: red;
+    height: 30px;
+}
+
+
+
+
 
 
 
