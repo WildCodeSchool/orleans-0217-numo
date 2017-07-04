@@ -50,6 +50,7 @@ class EventController extends Controller
 // ---------------------------------------------------------------------------
 
     {
+
         $error = '';
         // --- initialisation des parametres de lecture par defaut de la liste des evenements
         $options = [
@@ -107,6 +108,7 @@ class EventController extends Controller
             'events' => $events,
             'dates' => $dates,
             'error' => $error,
+            'googleMapApi' => $this->getParameter('google_map_api')
         ]);
     }
 
