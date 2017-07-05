@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
     var list = $(".list .showMember");
-    var numToShow = 3;
+    var numToShow = 10;
     var button = $("#next");
     var numInList = list.length;
     list.hide();

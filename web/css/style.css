@@ -589,9 +589,14 @@ div.separation {
     background-color: #fff;
 }
 
+li{
+    list-style-type:none;
 
+}
 
-
-
-
+.mentionLegaleTitle{
+    padding-bottom: 5px;
+    padding-top: 20px;
+    Font-Weight: Bold;
+}
 
