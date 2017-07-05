@@ -281,17 +281,23 @@ td{
     to {opacity : 1}
 }
 .jumbotron{
-    background-color: transparent !important;
+    background-color: transparent;
     animation-name: appear;
     animation-duration: 2s;
 }
 .btn-admin{
-    background-color: #a70050!important;
-    border: none !important;
+    background-color: #a70050;
+    border: none ;
     margin-top: 40px;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+.btn-filter{
+    margin-top: 5%;
 }
 button{
-    margin-left: 2% !important;
+    margin-left: 2%;
 }
 
 .modifadmin{
@@ -307,8 +313,11 @@ table{
     margin-bottom: 5%;
 }
 .admin{
-    margin-bottom: 10% !important;
+    margin-bottom: 10%;
     vertical-align: 5%;
+}
+.moderate{
+    margin-top: 10%;
 }
 thead{
     height: 100px;
@@ -433,7 +442,11 @@ div.separation {
 }
 
 
+/*     PLACEHOLDER PROFIL SHOW        */
 
+.placeholder-show-profile {
+    height: 231px;
+}
 
 
 /*     HIDDEN TYPE FORM         */
