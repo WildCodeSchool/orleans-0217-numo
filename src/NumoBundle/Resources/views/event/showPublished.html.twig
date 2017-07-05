@@ -147,12 +147,13 @@
                     <a href="https://twitter.com/share" target="_blanc">
                         <img src="{{ asset('/img/rs-twitter.png') }}" alt="partager twitter" class="rs-button"/>
                     </a>
-                    {# --- linkedin ------------------------------------------------------------ #}
-                    <a href="" target="_blanc">
-                        <img src="{{ asset('/img/rs-linkedin.png') }}" alt="partager linkedin" class="rs-button"/>
-                    </a>
 
+                    {# --- linkedin ------------------------------------------------------------ #}
+                    <div class="separation"></div>
+                    <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: fr_FR</script>
+                    <script type="IN/Share" data-url="http://num-o.fr/event/showpublished/{{ event.id }}" data-counter="top"></script>
                     {# --- organisateur -------------------------------------------------------- #}
+
                     <div class="separation"></div>
                     <h3>Organisé par</h3>
                     <p>
