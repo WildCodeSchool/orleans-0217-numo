@@ -318,4 +318,23 @@ class EventController extends Controller
             'error' => $error,
         ]);
     }
+
+    /**
+     * Deletes an image in event entity.
+     *
+     * @Route("/{id}/delete_image", name="event_delete_image")
+     * @Method({"GET", "POST"})
+     */
+    public function deleteImageAction(Event $event)
+
+    {
+        $path = $event->getImage();
+        $em = $this->getDoctrine()->getManager();
+        $event->setImage('');
+        $em->flush();
+        // effacement du fichier
+        unlink($this->getParameter('upload_directory') . '/' .
+            $path);
+        return $this->redirectToRoute('event_edit', array('id' => $event->getId()));
+    }
 }

@@ -61,11 +61,11 @@ class User extends BaseUser
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Assert\File(
-     *     maxSize = "2024k",
+     * @Assert\Image(
+     *     maxSize = "1024k",
      *     maxSizeMessage="L'image est trop lourde.",
-     *     mimeTypes = {"application/jpg", "application/jpeg", "application/png", "application/gif"},
-     *     mimeTypesMessage = "Merci d'uploader une image valide"
+     *     allowLandscape = false,
+     *     allowLandscapeMessage = "Les formats paysages ne sont pas autorisés"
      * )
      */
     protected $imageUrl;
