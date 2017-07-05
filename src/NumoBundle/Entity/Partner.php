@@ -45,12 +45,8 @@ class Partner
      *
      * @ORM\Column(name="imageUrl", type="string", length=255)
      *
-     * @Assert\File(
-     *     maxSize = "2024k",
-     *     maxSizeMessage="L'image est trop lourde.",
-     *     mimeTypes = {"application/jpg", "application/jpeg", "application/png", "application/gif"},
-     *     mimeTypesMessage = "Merci d'uploader une image valide"
-     * )
+     * @Assert\Image
+     *
      */
     private $imageUrl;
 
