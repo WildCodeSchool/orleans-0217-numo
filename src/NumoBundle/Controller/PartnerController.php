@@ -5,7 +5,10 @@ namespace NumoBundle\Controller;
 use NumoBundle\Entity\Partner;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use NumoBundle\Form\PartnerType;
+use NumoBundle\Services\UserUploader;
 
 /**
  * Partner controller.
@@ -67,7 +70,7 @@ class PartnerController extends Controller
     {
         $deleteForm = $this->createDeleteForm($partner);
 
-        return $this->render('partner/showPublished.html.twig', [
+        return $this->render('partner/show.html.twig', [
             'partner' => $partner,
             'delete_form' => $deleteForm->createView(),
         ]);
@@ -116,6 +119,24 @@ class PartnerController extends Controller
         }
 
         return $this->redirectToRoute('partner_index');
+    }
+
+    /**
+     * Deletes an image in partner entity.
+     *
+     * @Route("/{id}/delete_image", name="partner_delete_image")
+     * @Method({"GET", "POST"})
+     */
+    public function deleteImageAction(Partner $partner)
+    {
+        $path = $partner->getImageUrl();
+        $em = $this->getDoctrine()->getManager();
+        $partner->setImageUrl('');
+        $em->flush();
+        // effacement du fichier
+        unlink($this->getParameter('upload_directory') . '/' .
+            $path);
+        return $this->redirectToRoute('partner_edit', array('id' => $partner->getId()));
     }
 
     /**
