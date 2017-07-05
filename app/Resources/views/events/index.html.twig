@@ -53,9 +53,9 @@
                     <th class="text-center">ACTION</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody class="list">
                 {% for publishedevent in publishedevents %}
-                <tr>
+                <tr class="showPublished">
                     <td class="admin"><p class="moderate">{{ publishedevent.title }}</td>
                     <td class="admin">{{ publishedevent.moderatorUpdateDate|date('d/m/Y') }}</td>
                     <td class="admin">{{ publishedevent.moderator }}</td>
@@ -72,8 +72,13 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <a id="next" class="btn btn-success btnGreen btn-lg" >Voir plus</a>
             <hr>
         </div>
 
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/published.js') }}"></script>
 {% endblock %}
