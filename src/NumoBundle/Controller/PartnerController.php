@@ -128,7 +128,6 @@ class PartnerController extends Controller
      * @Method({"GET", "POST"})
      */
     public function deleteImageAction(Partner $partner)
-
     {
         $path = $partner->getImageUrl();
         $em = $this->getDoctrine()->getManager();
