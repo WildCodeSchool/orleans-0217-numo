@@ -128,7 +128,6 @@ class PartnerController extends Controller
      * @Method({"GET", "POST"})
      */
     public function deleteImageAction(Partner $partner)
-
     {
         $path = $partner->getImageUrl();
         $em = $this->getDoctrine()->getManager();
@@ -152,7 +151,6 @@ class PartnerController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('partner_delete', ['id' => $partner->getId()]))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
     }
 }
