@@ -115,7 +115,22 @@ class EventController extends Controller
     }
 
     /**
-     * Creates a new event, and register (locally or on OpenAgenda).
+     * Lists all published events.
+     *
+     * @Route("/events", name="events_index")
+     * @Method("GET")
+     *
+     */
+
+    public function listEventsAction(Request $request)
+    {
+
+
+        return $this->render('events/index.html.twig');
+    }
+
+    /**
+     * Creates a new event, and register locally.
      *
      * @Route("/new", name="event_new")
      * @Method({"GET", "POST"})
@@ -143,15 +158,8 @@ class EventController extends Controller
             $userManager = $this->get('fos_user.user_manager');
             $users = $userManager->findUsers();
 
-            $file = $event->getImage();
-            $fileName = $this->getParameter('server_url') . '/' . $this->getParameter('img_event_dir') . '/' . uniqid() . '.' . $file->guessExtension();
-            $file->move(
-                $this->getParameter('upload_directory_event'),
-                $fileName
-            );
             $curentUser = $this->getUser();
             $event
-                ->setImage($fileName)
                 ->setAuthor($curentUser)
                 ->setCreationDate(new \DateTime);
             if ($curentUser->getTrust() == 1) {
@@ -176,6 +184,7 @@ class EventController extends Controller
                 }
                 // --- creationde l'enregistrement "published"
                 $published = new Published($event, $uid, $curentUser);
+                $published->setTitle($event->getTitle());
                 $em->persist($published);
                 $em->flush();
             } else {
@@ -294,6 +303,8 @@ class EventController extends Controller
         ]);
 
     }
+
+
 
     /**
      * Edit an awaiting event.
@@ -467,5 +478,24 @@ class EventController extends Controller
             'form' => $form->createView(),
             'error' => $error,
         ]);
+    }
+
+    /**
+     * Deletes an image in event entity.
+     *
+     * @Route("/{id}/delete_image", name="event_delete_image")
+     * @Method({"GET", "POST"})
+     */
+    public function deleteImageAction(Event $event)
+
+    {
+        $path = $event->getImage();
+        $em = $this->getDoctrine()->getManager();
+        $event->setImage('');
+        $em->flush();
+        // effacement du fichier
+        unlink($this->getParameter('upload_directory') . '/' .
+            $path);
+        return $this->redirectToRoute('event_edit', array('id' => $event->getId()));
     }
 }
