@@ -2,6 +2,7 @@
 
 namespace NumoBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use NumoBundle\Entity\Company;
 use NumoBundle\Entity\Event;
 use NumoBundle\Entity\OaEvent;
@@ -125,6 +126,7 @@ class EventController extends Controller
         $event = new Event();
         $evtDate0 = new EvtDate();
         $evtDate0->setEvtDate(new \DateTime());
+        $evtDate0->setEvent($event);
         $event->getEvtDates()->add($evtDate0);
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
@@ -152,7 +154,6 @@ class EventController extends Controller
                 ->setImage($fileName)
                 ->setAuthor($curentUser)
                 ->setCreationDate(new \DateTime);
-            $em = $this->getDoctrine()->getManager();
             if ($curentUser->getTrust() == 1) {
                 // --- si utilisateur de confiance, on publie directement
 
@@ -181,7 +182,6 @@ class EventController extends Controller
                 // --- enregistrement de l'evenement dans la database
                 $em->persist($event);
                 $em->flush();
-
                 // --- on envoie une notification aux moderateurs
                 $confirmation = \Swift_Message::newInstance()
                     ->setSubject('Un adhérent à posté un événement')
@@ -239,7 +239,7 @@ class EventController extends Controller
      * @Route("/showpublished/{id}", name="event_show_published")
      * @Method({"GET", "POST" })
      */
-    public function showAction(Request $request, $id)
+    public function showPublishedAction(Request $request, $id)
     {
         $error = '';
         $published = null;
@@ -308,6 +308,10 @@ class EventController extends Controller
         $temp = explode('/', $event->getImage());
         $oldImage = $this->getParameter('img_event_dir') . '/' . end($temp);
         $event->setImage(new File($oldImage));
+        $originalEvtDates = new ArrayCollection();
+        foreach ($event->getEvtDates() as $evtDate) {
+            $originalEvtDates->add($evtDate);
+        }
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
@@ -331,6 +335,12 @@ class EventController extends Controller
                 }
             } else {
                 $event->setImage(new file($oldImage));
+            }
+            // --- adaptation de la liste des dates
+            foreach ($originalEvtDates as $evtDate){
+                if (false === $event->getEvtDates()->contains($evtDate)) {
+                    $em->remove($evtDate);
+                }
             }
             $event
                 ->setAuthor($this->getUser())
@@ -357,10 +367,10 @@ class EventController extends Controller
     /**
      * Edit a published event.
      *
-     * @Route("/{id}/edit", name="event_edit")
+     * @Route("/editpublished/{id}", name="event_edit_published")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Event $event)
+    public function editPublishedAction(Request $request, $id)
     {
     }
 

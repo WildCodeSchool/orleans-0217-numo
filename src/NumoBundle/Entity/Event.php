@@ -466,8 +466,9 @@ class Event
      */
     public function addEvtDate(\NumoBundle\Entity\EvtDate $evtDate)
     {
-        $this->evtDates[] = $evtDate;
-
+//        $this->evtDates[] = $evtDate;
+        $evtDate->setEvent($this);
+        $this->getEvtDates()->add($evtDate);
         return $this;
     }
 
