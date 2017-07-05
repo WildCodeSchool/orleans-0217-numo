@@ -115,21 +115,6 @@ class EventController extends Controller
     }
 
     /**
-     * Lists all published events.
-     *
-     * @Route("/events", name="events_index")
-     * @Method("GET")
-     *
-     */
-
-    public function listEventsAction(Request $request)
-    {
-
-
-        return $this->render('events/index.html.twig');
-    }
-
-    /**
      * Creates a new event, and register locally.
      *
      * @Route("/new", name="event_new")
@@ -147,7 +132,6 @@ class EventController extends Controller
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
-
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -191,6 +175,7 @@ class EventController extends Controller
                 // --- enregistrement de l'evenement dans la database
                 $em->persist($event);
                 $em->flush();
+
                 // --- on envoie une notification aux moderateurs
                 $confirmation = \Swift_Message::newInstance()
                     ->setSubject('Un adhérent à posté un événement')
@@ -221,6 +206,7 @@ class EventController extends Controller
      */
     public function showAwaitAction(Event $event)
     {
+        $imgDir = $this->getParameter('img_event_dir');
         $oldDates = $newDates = [];
         $dateRef = new \DateTime();
         foreach ($event->getEvtDates() as $evtD) {
@@ -236,6 +222,7 @@ class EventController extends Controller
             }
         }
         return $this->render('NumoBundle:event:showAwait.html.twig', [
+            'imgDir' => $imgDir,
             'event' => $event,
             'oldDates' => $oldDates,
             'newDates' => $newDates,
@@ -299,12 +286,8 @@ class EventController extends Controller
             'error' => $error,
             'form'=>$form->createView(),
             'googleMapApi' => $this->getParameter('google_map_api')
-
         ]);
-
     }
-
-
 
     /**
      * Edit an awaiting event.
@@ -314,11 +297,9 @@ class EventController extends Controller
      */
     public function editAwitAction(Request $request, Event $event)
     {
+        $imgDir = $this->getParameter('img_event_dir');
         $em = $this->getDoctrine()->getManager();
-        $newImage = '/img/event_placeholder.png';
-        $temp = explode('/', $event->getImage());
-        $oldImage = $this->getParameter('img_event_dir') . '/' . end($temp);
-        $event->setImage(new File($oldImage));
+        $oldImage = $event->getImage();
         $originalEvtDates = new ArrayCollection();
         foreach ($event->getEvtDates() as $evtDate) {
             $originalEvtDates->add($evtDate);
@@ -326,27 +307,7 @@ class EventController extends Controller
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
-        if ($request->request->get('image')) {
-            $newImage = $request->request->get('image')->getFilename();
-        }
-
         if ($form->isSubmitted() && $form->isValid()) {
-            // --- gestion de l'image
-            $file = $event->getImage();
-            if ($file) {
-                // --- nouvelle image en remplacement de l'ancienne
-                $fileName = uniqid().'.'.$file->guessExtension();
-                $file->move(
-                    $this->getParameter('upload_directory_event'),
-                    $this->getParameter('img_event_dir') . '/' . $fileName
-                );
-                // --- effacement de l'ancienne image
-                if (file_exists($oldImage)) {
-                    unlink($oldImage);
-                }
-            } else {
-                $event->setImage(new file($oldImage));
-            }
             // --- adaptation de la liste des dates
             foreach ($originalEvtDates as $evtDate){
                 if (false === $event->getEvtDates()->contains($evtDate)) {
@@ -362,17 +323,11 @@ class EventController extends Controller
         }
 
         return $this->render('NumoBundle:event:editAwait.html.twig', [
+            'imgDir' => $imgDir,
             'eventId' => $event->getId(),
             'oldImage' => $oldImage,
-            'newImage' => $newImage,
             'form' => $form->createView(),
         ]);
-
-
-
-
-
-
     }
 
     /**
@@ -398,34 +353,52 @@ class EventController extends Controller
             ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
             ->getForm();
         $form->handleRequest($request);
+        // --- generation du tableau dates pour affichage
+        $oldDates = $newDates = [];
+        $dateRef = new \DateTime();
+        foreach ($event->getEvtDates() as $evtD) {
+            $evtDate = [
+                'evtDate' => $evtD->getEvtDate()->format('Y-m-d'),
+                'timeStart' => $evtD->getTimeStart()->format('H:i'),
+                'timeEnd' => $evtD->getTimeEnd()->format('H:i')
+            ];
+            if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
+                $oldDates[] = $evtDate;
+            } else {
+                $newDates[] = $evtDate;
+            }
+        }
+        // --- definition de la route de retour
+        if ($this->getUser()->getRoles()[0] == 'ROLE_MODERATOR') {
+            // --- Si moderateur ou admin -> retour sur page admin
+            $goBack = 'events_index';
+        } else {
+            // --- Sinon retour sur page profil de l'utilisateur
+            $goBack = 'fos_user_profile_show';
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
+//            // --- suppression de l'image associee a l'evenement
+//
+//
+//     var_dump($event->getImage());die();
+//
+//
+//
+//            if (file_exists($event->getImage()->filename)) {
+//                unlink($event->getImage()->filename);
+//            }
             // --- suppression de l'évènement en base de donnees
             $em = $this->getDoctrine()->getManager();
             $em->remove($event);
-            $curentUser = $this->getUser();
-            if ($curentUser->getRoles()[0] == 'ROLE_MODERATOR') {
-                // --- Si moderateur ou admin -> retour sur page admin
-                return $this->redirectToRoute('events_index');
-            } else {
-                // --- Sinon retour sur page profil de l'utilisateur
-                return $this->redirectToRoute('fos_user_profile_show');
-            }
+            return $this->redirectToRoute($goBack);
         }
-        // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
-        $oaEvent = $api->getEvent($id);
-        if (false === $oaEvent) {
-            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
-        } else {
-            // --- lecture des infos complementaires
-            $em = $this->getDoctrine()->getManager();
-            $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
-        }
-        return $this->render('NumoBundle:event:deletePublished.html.twig', [
-            'agendaSlug' => $api->getAgendaSlug(),
-            'event' => $oaEvent,
-            'published' => $published,
+        return $this->render('NumoBundle:event:deleteAwait.html.twig', [
+            'event' => $event,
             'form' => $form->createView(),
-            'error' => $error,
+            'goBack' => $goBack,
+            'oldDates' => $oldDates,
+            'newDates' => $newDates,
         ]);
     }
 

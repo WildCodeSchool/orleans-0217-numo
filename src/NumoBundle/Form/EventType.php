@@ -36,8 +36,9 @@ class EventType extends AbstractType
                 'choice_label' => 'name',
                 'required' => true,
             ])
-            ->add('image', fileType::class, [
+            ->add('image', FileType::class, [
                 'required' => false,
+                'data_class' => null,
             ])
             ->add('placename', TextType::class, [
                 'required' => false,

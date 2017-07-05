@@ -228,7 +228,7 @@ class ApiOpenAgenda
 
     }
 
-    public function getEvent(int $uid, $api = false)
+    public function getEvent($uid, $api = false)
     {
         if ($api) {
             // --- version avec l'api -------------------------------------------

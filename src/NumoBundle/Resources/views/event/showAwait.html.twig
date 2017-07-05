@@ -26,7 +26,11 @@
             <div class="col-xs-12 col-md-8 text-center">
                 <p>Catégorie : {{ event.tags.name }}</p>
                 <p>
-                    <img src="{{ asset(event.image) }}" alt="image {{ event.title }}" class="img-responsive center-block" />
+                    {% if event.image is empty %}
+                        <img src="{{ asset('/img/event_placeholder.png') }}" alt="" class="img-responsive center-block" />
+                    {% else %}
+                        <img src="{{ asset(imgDir ~ event.image) }}" alt="image {{ event.title }}" class="img-responsive center-block" />
+                    {% endif %}
                 </p>
                 <p>{{ event.description }}</p>
                 <p>{{ event.freeText }}</p>

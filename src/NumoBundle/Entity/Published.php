@@ -4,6 +4,7 @@ namespace NumoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use NumoBundle\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Published
@@ -64,6 +65,15 @@ class Published
      * @ORM\Column(name="moderatorUpdateDate", type="datetime")
      */
     private $moderatorUpdateDate;
+
+    /**
+     * @var string
+     *
+     * @Assert\Image()
+     *
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     */
+    private $image;
 
 
     public function __construct(Event $event, string $uid, $moderator)
@@ -219,6 +229,24 @@ class Published
     public function setModeratorUpdateDate(\DateTime $moderatorUpdateDate): Published
     {
         $this->moderatorUpdateDate = $moderatorUpdateDate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     * @return Published
+     */
+    public function setImage(string $image): Published
+    {
+        $this->image = $image;
         return $this;
     }
 

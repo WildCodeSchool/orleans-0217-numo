@@ -11,11 +11,10 @@
             {# --- titre --------------------------------------------------------------------------------#}
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h1>Suppression d'un évènement publié</h1>
-                <div class="separation"></div>
+                <h1>Suppression d'un évènement non publié</h1>
                 {{ form_start(form) }}
-                {{ form_widget(form.delete, {'attr': {'class': 'btn btn-default btn-sep'}}) }}
-                <a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Ne pas supprimer</a>
+                {{ form_widget(form.delete, {'attr': {'class': 'btn btn-default btn-txt btn-sep'}}) }}
+                <a href="{{ path(goBack) }}" class="btn btn-default btn-txt" role="button">Ne pas supprimer</a>
                 {{ form_end(form) }}
                 <div class="separation"></div>
             </div>
@@ -23,18 +22,12 @@
 
         <div class="row">
 
-            {% if error == '' %}
-
     {# --- partie gauche (image + descriptif) -------------------------------------------------- #}
-                <div class="col-xs-12 col-md-8">
+                <div class="col-xs-12 col-md-8 text-center">
                     <h2>{{ event.title }}</h2>
-                    <p>Mots-clé : {{ event.tags }}</p>
+                    <p>Catégorie : {{ event.tags.name }}</p>
                     <p>
-                        {% if event.image is not empty %}
-                            <img src="{{ event.image }}" alt="image {{ event.title }}" class="img-responsive" />
-                        {% else %}
-                            <img src="{{ asset('img/event_placeholder.png') }}" alt="image {{ event.title }}" class="img-responsive" />
-                        {% endif %}
+                        <img src="{{ event.image }}" alt="image {{ event.title }}" class="img-responsive center-block" />
                     </p>
                     <p>{{ event.description }}</p>
                 </div>
@@ -43,27 +36,28 @@
                 <div class="col-xs-12 col-md-4 text-center">
 
                     {# --- date(s) --- #}
-                    <h3>Date{% if event.oldDates|length > 1 %}s{% endif %}</h3>
+                    {%  set nbDates = oldDates|length + newDates|length %}
+                    <h3>{{ nbDates }} Date{% if nbDates > 1 %}s{% endif %}</h3>
 
                     <table class="table">
                         <tbody>
                             {# --- dates passees --------------------------------------------------- #}
-                            {% if event.oldDates|length > 1 %}
+                            {% if oldDates|length > 1 %}
                                 <tr><td class="text-left grey-text">...</td><td></td></tr>
                             {% endif %}
-                            {% if event.oldDates|length > 0 %}
+                            {% if oldDates is not empty %}
                                 <tr>
                                     <td class="text-left grey-text">
-                                        {{ event.oldDates|last.evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}
+                                        {{ oldDates|last.evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}
                                     </td>
                                     <td class="text-right grey-text">
-                                        {{ event.oldDates|last.timeStart|localizeddate("medium", "none", null, null, "HH'h'mm") }}
-                                        à {{ event.oldDates|last.timeEnd|localizeddate("medium", "none", null, null, "HH'h'mm") }}
+                                        {{ oldDates|last.timeStart|localizeddate("medium", "none", null, null, "HH'h'mm") }}
+                                        à {{ oldDates|last.timeEnd|localizeddate("medium", "none", null, null, "HH'h'mm") }}
                                     </td>
                                 </tr>
                             {% endif %}
                             {# --- Prochaines dates ------------------------------------------------ #}
-                            {% for evtDate in event.newDates|slice(0, 4) %}
+                            {% for evtDate in newDates|slice(0, 4) %}
                                 <tr>
                                     <td class="text-left {% if loop.index == 1 %} strong-text {% endif %}">
                                         {{ evtDate.evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}
@@ -74,7 +68,7 @@
                                     </td>
                                 </tr>
                             {% endfor %}
-                            {% if event.newDates|length > 5 %}
+                            {% if newDates|length > 5 %}
                                 <tr><td class="text-left">...</td><td></td></tr>
                             {% endif %}
                         </tbody>
@@ -90,22 +84,12 @@
                     <div class="separation"></div>
                     <h3>Organisé par</h3>
                     <p>
-                        {% if published and published.author %}
-                            <img class="little-img" src="{{ published.author.imageUrl }}" alt="image organisateur {{ published.author.name }}" />
-                            {{ published.author.name }} {{ published.author.firstname }}
-                        {% else %}
-                            Information non disponible.
+                        {% if event.author.imageUrl is not empty %}
+                            <img class="little-img" src="{{ event.author.imageUrl }}" alt="image organisateur {{ event.author.name }}" />
                         {% endif %}
+                        {{ event.author.name }} {{ event.author.firstname }}
                     </p>
                 </div>
-
-            {% else %}
-
-                <div class="col-xs-12 erreur text-center">
-                    {{ error }}
-                </div>
-
-            {% endif %}
 
         </div>
     </div>
