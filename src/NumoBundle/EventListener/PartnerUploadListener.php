@@ -17,7 +17,6 @@ use NumoBundle\Services\UserUploader;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 
-
 class PartnerUploadListener
 {
     private $uploader;
@@ -36,8 +35,8 @@ class PartnerUploadListener
             return;
         }
         $masterRequest = $this->requestStack->getMasterRequest()->get('_route');
-        if($masterRequest == 'partner_edit'){
-            $this->oldFile=$entity->getImageUrl();
+        if ($masterRequest == 'partner_edit') {
+            $this->oldFile = $entity->getImageUrl();
             if ($fileName = $entity->getImageUrl()) {
                 $entity->setImageUrl(new File($this->uploader->getTargetDir() . '/' . $fileName));
             }
@@ -50,23 +49,30 @@ class PartnerUploadListener
         $entity = $args->getEntity();
         $this->uploadFile($entity);
     }
+
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getEntity();
+
+        if (!$entity instanceof Partner){
+            return;
+        }
+
+        $this->uploadFile($entity);
+
         if ($this->oldFile) {
             $entity->setImageUrl($this->oldFile);
 
-        } else {
-            $this->uploadFile($entity);
         }
     }
+
     public function preRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
         if (!$entity instanceof Partner) {
             return;
         }
-        if(is_file($entity->getImageUrl())) {
+        if (is_file($entity->getImageUrl())) {
             unlink($entity->getImageUrl());
         }
     }
@@ -80,10 +86,10 @@ class PartnerUploadListener
 
         $file = $entity->getImageUrl();
         // only upload new files
-        if (!$file instanceof UploadedFile) {
-            return;
+        if ($file instanceof UploadedFile) {
+            $fileName = $this->uploader->upload($file);
+            $entity->setImageUrl($fileName);
         }
-        $fileName = $this->uploader->upload($file);
-        $entity->setImageUrl($fileName);
+
     }
 }

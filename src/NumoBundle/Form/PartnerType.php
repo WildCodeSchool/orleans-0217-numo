@@ -19,7 +19,7 @@ class PartnerType extends AbstractType
         $builder
             ->add('name')
             ->add('webUrl')
-            ->add('imageUrl', fileType::class, array('label' => 'ImageUrl(Image file)'))
+            ->add('imageUrl', FileType::class, ['label' => 'ImageUrl(Image file)'])
             ->add('active');
     }
     
