@@ -380,9 +380,42 @@ class EventController extends Controller
      * @Route("/deleteawait/{id}", name="event_delete_await")
      * @Method({"GET","POST"})
      */
-    public function deleteawaitAction(Request $request, $id)
+    public function deleteAwaitAction(Request $request, Event $event)
     {
-
+        $form = $this
+            ->createFormBuilder()
+            ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // --- suppression de l'évènement en base de donnees
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($event);
+            $curentUser = $this->getUser();
+            if ($curentUser->getRoles()[0] == 'ROLE_MODERATOR') {
+                // --- Si moderateur ou admin -> retour sur page admin
+                return $this->redirectToRoute('events_index');
+            } else {
+                // --- Sinon retour sur page profil de l'utilisateur
+                return $this->redirectToRoute('fos_user_profile_show');
+            }
+        }
+        // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
+        $oaEvent = $api->getEvent($id);
+        if (false === $oaEvent) {
+            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+        } else {
+            // --- lecture des infos complementaires
+            $em = $this->getDoctrine()->getManager();
+            $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+        }
+        return $this->render('NumoBundle:event:deletePublished.html.twig', [
+            'agendaSlug' => $api->getAgendaSlug(),
+            'event' => $oaEvent,
+            'published' => $published,
+            'form' => $form->createView(),
+            'error' => $error,
+        ]);
     }
 
     /**
