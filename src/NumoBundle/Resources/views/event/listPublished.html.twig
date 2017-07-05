@@ -57,14 +57,14 @@
         <div class="row">
             {% if error == '' %}
 
-                <div class="col-xs-12 col-md-7 col-lg-5 col-lg-offset-2 text-center">
+                <div class="col-xs-12 col-md-7 col-lg-5 col-lg-offset-2 text-center textA">
 
                     {% if events|length == 0 %}
                         <div class="empty-list text-center">
                             Cette liste est vide
                         </div>
                     {% else %}
-                        {% for event in events %}
+                        {% for event in pages %}
                             <a href="{{ path('event_show_published', {'id': event.id}) }}">
                                 <div class="row event-zone">
                                     <div class="col-xs-4">
@@ -114,6 +114,9 @@
 
         </div>
 
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pages) }}
+        </div>
     </div>
 {% endblock %}
 

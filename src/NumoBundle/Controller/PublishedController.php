@@ -8,6 +8,7 @@ use NumoBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use NumoBundle\Repository\PublishedRepository;
 
 /**
  * Published controller.
@@ -43,7 +44,7 @@ class PublishedController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $events = $em->getRepository('NumoBundle:Event') ->findAll();
-        $publishedevents = $em->getRepository('NumoBundle:Published') ->findAll();
+        $publishedevents = $em->getRepository('NumoBundle:Published')->findBy(array(), array('authorUpdateDate'=> 'DESC'));
 
         return $this -> render('events/index.html.twig', array(
             'events'=> $events,

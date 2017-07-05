@@ -7,15 +7,36 @@
     <h1 class="titreadmin font-lato">MODIFIER UN PARTENAIRE</h1>
     <hr>
     <br/>
-    <a href="{{ path('partner_index') }}"><button type="button" value="PROFIL">RETOUR A LA LISTE/button></a>
+    <a href="{{ path('partner_index') }}"><button type="button" value="PROFIL">RETOUR A LA LISTE</button></a>
 
     {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="ENREGISTRER" />
-    {{ form_end(edit_form) }}
-    {{ form_start(delete_form) }}
-        <input type="submit" value="SUPPRIMER">
-    {{ form_end(delete_form) }}
 
+    {{ form_label(edit_form.name) }}
+    {{ form_widget(edit_form.name) }}
+    {{ form_errors(edit_form.name) }}
+
+    {{ form_label(edit_form.webUrl) }}
+    {{ form_widget(edit_form.webUrl) }}
+    {{ form_errors(edit_form.webUrl) }}
+
+    {% if partner.imageUrl.filename is defined %}
+    <p><img class="img-thumbnail imageadmin" src="{{ asset('uploads/users/' ~ partner.imageUrl.filename ) }}"></p>
+    <p><a href="{{ path('partner_delete_image', {'id' : partner.id}) }}"><input type="button" value="Modifier l'image"></a></p>
+    {% else %}
+    {{ form_label(edit_form.imageUrl) }}
+    {{ form_widget(edit_form.imageUrl) }}
+    {{ form_errors(edit_form.imageUrl) }}
+    {%  endif %}
+
+    {{ form_label(edit_form.active) }}
+    {{ form_widget(edit_form.active) }}
+    {{ form_errors(edit_form.active) }}
+
+
+        <input type="submit" value="ENREGISTRER" />
+    {{ form_widget(edit_form._token) }}
+
+    </form>
 </div>
+
 {% endblock %}

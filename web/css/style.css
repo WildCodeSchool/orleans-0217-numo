@@ -199,16 +199,18 @@ footer {
     background-color: #FC0606;
 }
 
-.carousel-control.right, .carousel-control.left {
-    background-image: none !important;
-    color: #FC0606 !important;
+.partnaireImg{
+    height: 165px !important;
+    width: 250px !important;
 }
-.carousel-indicators li {
-    border-color: #FC0606 !important;
+
+.partnaire{
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
-.carousel-indicators li.active {
-    background-color: #FC0606;
-}
+
+
+
 .item h4 {
     font-size: 19px;
     line-height: 1.375em;
@@ -562,13 +564,11 @@ div.separation {
 
 .messageOk{
     padding-top: 5px;
-    background-color: #8CC63C;
     height: 30px;
 }
 
 .messageNo{
     padding-top: 5px;
-    background-color: red;
     height: 30px;
 }
 
@@ -589,9 +589,14 @@ div.separation {
     background-color: #fff;
 }
 
+li{
+    list-style-type:none;
 
+}
 
-
-
-
+.mentionLegaleTitle{
+    padding-bottom: 5px;
+    padding-top: 20px;
+    Font-Weight: Bold;
+}
 

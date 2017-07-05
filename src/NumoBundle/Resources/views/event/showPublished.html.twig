@@ -71,7 +71,7 @@
 
                     {# --- date(s) --- #}
                     <h3>{% transchoice event.oldDates|length %}
-                        {0} No date|{1} One date|]1,Inf[ %count% dates
+                        {0} Aucune date|{1} 1 date|]1,Inf[ %count% dates
                         {% endtranschoice %}</h3>
 
 
@@ -140,19 +140,20 @@
                     <div class="separation"></div>
                     <h3>Partager sur</h3>
                     {# --- facebook --- #}
-                    <a name="fb_share" type="box_count" share_url="{{ app.request.uri }}" target="_blanc">
+                    <a name="fb_share" type="box_count" href="https://www.facebook.com/sharer/sharer.php?u=example.org" share_url="{{ app.request.uri }}" target="_blanc">
                         <img src="{{ asset('/img/rs-facebook.png') }}" alt="partager facebook" class="rs-button"/>
                     </a>
                     {# --- twitter --- #}
                     <a href="https://twitter.com/share" target="_blanc">
                         <img src="{{ asset('/img/rs-twitter.png') }}" alt="partager twitter" class="rs-button"/>
                     </a>
-                    {# --- linkedin ------------------------------------------------------------ #}
-                    <a href="" target="_blanc">
-                        <img src="{{ asset('/img/rs-linkedin.png') }}" alt="partager linkedin" class="rs-button"/>
-                    </a>
 
+                    {# --- linkedin ------------------------------------------------------------ #}
+                    <div class="separation"></div>
+                    <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: fr_FR</script>
+                    <script type="IN/Share" data-url="http://num-o.fr/event/showpublished/{{ event.id }}" data-counter="top"></script>
                     {# --- organisateur -------------------------------------------------------- #}
+
                     <div class="separation"></div>
                     <h3>Organisé par</h3>
                     <p>
