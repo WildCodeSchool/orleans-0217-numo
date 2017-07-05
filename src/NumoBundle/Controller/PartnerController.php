@@ -151,7 +151,6 @@ class PartnerController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('partner_delete', ['id' => $partner->getId()]))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
     }
 }
