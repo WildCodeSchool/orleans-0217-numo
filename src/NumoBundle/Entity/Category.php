@@ -70,7 +70,7 @@ class Category
      *
      * @return string
      */
-    public function getname()
+    public function getName()
     {
         return $this->name;
     }
