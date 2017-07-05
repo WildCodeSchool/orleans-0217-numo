@@ -140,15 +140,8 @@ class EventController extends Controller
             $userManager = $this->get('fos_user.user_manager');
             $users = $userManager->findUsers();
 
-            $file = $event->getImage();
-            $fileName = $this->getParameter('server_url') . '/' . $this->getParameter('img_event_dir') . '/' . uniqid() . '.' . $file->guessExtension();
-            $file->move(
-                $this->getParameter('upload_directory_event'),
-                $fileName
-            );
             $curentUser = $this->getUser();
             $event
-                ->setImage($fileName)
                 ->setAuthor($curentUser)
                 ->setCreationDate(new \DateTime);
             $em = $this->getDoctrine()->getManager();
@@ -195,9 +188,6 @@ class EventController extends Controller
             }
             // --- on envoie une notification au(x) moderateur(s)
             // A creer
-
-
-
 
             return $this->redirectToRoute('event_list_published');
         }
@@ -331,5 +321,24 @@ class EventController extends Controller
             'form' => $form->createView(),
             'error' => $error,
         ]);
+    }
+
+    /**
+     * Deletes an image in event entity.
+     *
+     * @Route("/{id}/delete_image", name="event_delete_image")
+     * @Method({"GET", "POST"})
+     */
+    public function deleteImageAction(Event $event)
+
+    {
+        $path = $event->getImage();
+        $em = $this->getDoctrine()->getManager();
+        $event->setImage('');
+        $em->flush();
+        // effacement du fichier
+        unlink($this->getParameter('upload_directory') . '/' .
+            $path);
+        return $this->redirectToRoute('event_edit', array('id' => $event->getId()));
     }
 }

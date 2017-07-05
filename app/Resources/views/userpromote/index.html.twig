@@ -48,8 +48,8 @@
                     </td>
                     <td class="admin">
                         <a href="{{ path('member_enabled', {'id': user.id}) }}">
-                            <button class="onoff {{ user.enabled == false ? 'grey' : 'green' }}">
-                                {{ user.enabled == false ? 'NON' : 'OUI' }}
+                            <button class="onoff {{ user.enabled == false ? 'green' : 'grey' }}">
+                                {{ user.enabled == false ? 'OUI' : 'NON' }}
                             </button></a>
                     </td>
                 </tr>

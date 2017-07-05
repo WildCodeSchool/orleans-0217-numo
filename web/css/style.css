@@ -442,7 +442,11 @@ div.separation {
 }
 
 
+/*     PLACEHOLDER PROFIL SHOW        */
 
+.placeholder-show-profile {
+    height: 231px;
+}
 
 
 /*     HIDDEN TYPE FORM         */
