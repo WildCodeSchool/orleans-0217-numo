@@ -104,8 +104,8 @@ class Company
 
     /**
      * @ORM\Column(name="imageUrl", type="string", length=255, nullable=true)
-     * @Asert\File(
-     *     maxSize = "1024k",
+     * @Assert\File(
+     *     maxSize = "1024k")
      * @Assert\Image
      *
      */
@@ -115,6 +115,7 @@ class Company
      * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @Assert\File(mimeTypes={ "application/pdf" })
+     *
      */
     private $pdf;
 
