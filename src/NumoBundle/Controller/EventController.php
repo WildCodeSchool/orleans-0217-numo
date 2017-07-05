@@ -101,6 +101,14 @@ class EventController extends Controller
             $events = [];
             $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
         }
+
+        $paginator = $this->get('knp_paginator');
+        $pages = $paginator->paginate(
+            $events,
+            $request->query->getInt('page', 1)/*page number*/,
+            $request->query->getInt('limit', 7)/*limit per page*/
+        );
+
         // --- affichage
         return $this->render('NumoBundle:event:listPublished.html.twig', [
             'selectForm' => $selectForm->createView(),
@@ -108,6 +116,8 @@ class EventController extends Controller
             'events' => $events,
             'dates' => $dates,
             'error' => $error,
+            'nbEvents' => $nbEvents,
+            'pages' => $pages,
             'googleMapApi' => $this->getParameter('google_map_api')
         ]);
     }
