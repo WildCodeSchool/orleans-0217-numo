@@ -43,7 +43,7 @@ class PublishedController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $events = $em->getRepository('NumoBundle:Event') ->findAll();
-        $publishedevents = $em->getRepository('NumoBundle:Published') ->findAll();
+        $publishedevents = $em->getRepository('NumoBundle:Published') ->findByUid(['uid'=>'DESC'], 10,0);
 
         return $this -> render('events/index.html.twig', array(
             'events'=> $events,

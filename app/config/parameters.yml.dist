@@ -19,14 +19,14 @@ parameters:
     upload_directory_pdf: '%kernel.root_dir%/../web/uploads/numo'
     upload_directory_event: '%kernel.root_dir%/../web/uploads/event'
 
-    agenda_slug: ~
-    public_key: ~
-    secret_key: ~
+    agenda_slug: duri-wild
+    public_key: 1F6bZ8wy4X1IU7Myf7lJxcwwE5UdnBFo
+    secret_key: Tx8z8g8B0UQNMFRoKfIv370XaaDzc5nD
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
 
-    server_url: ~
+    server_url: 'http://localhost:8000'
     img_event_dir: 'uploads/event'
-    mail_chimp_api: ~
-    google_map_api: ~
+    mail_chimp_api: 116816a1a91c3fc902cbe3388&amp
+    google_map_api: AIzaSyD5FbMBpVejJw6o_4r3eHkUQQde6vlDItg&callback

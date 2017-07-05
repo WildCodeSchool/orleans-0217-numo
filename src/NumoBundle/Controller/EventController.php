@@ -113,21 +113,6 @@ class EventController extends Controller
     }
 
     /**
-     * Lists all published events.
-     *
-     * @Route("/events", name="events_index")
-     * @Method("GET")
-     *
-     */
-
-    public function listEventsAction(Request $request)
-    {
-
-
-        return $this->render('events/index.html.twig');
-    }
-
-    /**
      * Creates a new event, and register locally.
      *
      * @Route("/new", name="event_new")
@@ -294,6 +279,7 @@ class EventController extends Controller
      */
     public function editAction(Request $request, Event $event)
     {
+
     }
 
     /**

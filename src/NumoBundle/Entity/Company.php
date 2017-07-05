@@ -104,7 +104,8 @@ class Company
 
     /**
      * @ORM\Column(name="imageUrl", type="string", length=255, nullable=true)
-     *
+     * @Asert\File(
+     *     maxSize = "1024k",
      * @Assert\Image
      *
      */
