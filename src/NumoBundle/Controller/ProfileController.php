@@ -8,7 +8,10 @@
 
 namespace NumoBundle\Controller;
 
+use NumoBundle\Entity\User;
 use FOS\UserBundle\Model\UserInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Controller\ProfileController as BaseController;
 
@@ -42,5 +45,24 @@ class ProfileController extends BaseController
             'oaevents' => $oaevents,
             'events' => $events,
         ));
+    }
+
+    /**
+     * Deletes an image in user entity.
+     *
+     * @Route("/{id}/delete_image", name="user_delete_image")
+     * @Method({"GET", "POST"})
+     */
+    public function deleteImageAction(User $user)
+
+    {
+        $path = $user->getImageUrl();
+        $em = $this->getDoctrine()->getManager();
+        $user->setImageUrl('');
+        $em->flush();
+        // effacement du fichier
+        unlink($this->getParameter('upload_directory') . '/' .
+            $path);
+        return $this->redirectToRoute('fos_user_profile_edit', array('id' => $user->getId()));
     }
 }
