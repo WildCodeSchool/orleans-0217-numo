@@ -5,6 +5,7 @@
 namespace NumoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use \Doctrine\Common\Collections\ArrayCollection;
 
@@ -37,7 +38,7 @@ class Event
      *
      * @Assert\Image()
      *
-     * @ORM\Column(name="image", type="string", length=255)
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
     private $image;
 
@@ -137,7 +138,7 @@ class Event
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"all"})
      */
     private $evtDates;
 
@@ -147,7 +148,6 @@ class Event
         $this
             ->setRejected(0)
             ->setFreeText('')
-            ->setImage('')
             ->setTicketLink('')
             ->evtDates = new ArrayCollection();
     }
@@ -203,7 +203,7 @@ class Event
     /**
      * Get image
      *
-     * @return string
+     * @return File
      */
     public function getImage()
     {
@@ -466,8 +466,8 @@ class Event
      */
     public function addEvtDate(\NumoBundle\Entity\EvtDate $evtDate)
     {
-        $this->evtDates[] = $evtDate;
-
+        $evtDate->setEvent($this);
+        $this->getEvtDates()->add($evtDate);
         return $this;
     }
 
