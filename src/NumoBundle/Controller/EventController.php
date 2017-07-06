@@ -482,17 +482,35 @@ class EventController extends Controller
         $em = $this->getDoctrine()->getManager();
         $event = $em->getRepository('NumoBundle:Event')->findOneBy(['id' => $id]);
 
-        $author = $event->getAuthor()->getUsername();
+        if ($event->getImage() == null){
+            $event->setImage(' ');
+        }
+
+        $author = $event->getAuthor();
+
+        if ($event)
 
         $api = $this->get('numo.apiopenagenda');
         $uid = $api->publishEvent($event);
+
+        $eventUid = $uid['eventUid'];
+
         if (false === $uid) {
             // gerer erreur si ecriture foireuse
         }
         // --- creationde l'enregistrement "published"
-        $published = new Published($event, $uid, $author);
+        $published = new Published($event, $eventUid, $author);
         $published->setTitle($event->getTitle());
         $em->persist($published);
+        $em->remove($event);
         $em->flush();
+
+        $events = $em->getRepository('NumoBundle:Event') ->findAll();
+        $publishedevents = $em->getRepository('NumoBundle:Published')->findBy(array(), array('authorUpdateDate'=> 'DESC'));
+
+        return $this -> render('events/index.html.twig', array(
+            'events'=> $events,
+            'publishedevents' =>$publishedevents
+        ));
     }
 }
