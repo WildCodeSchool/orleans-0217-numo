@@ -57,6 +57,7 @@ header .header-content .header-content-inner p {
 
 body {
     padding-top: 50px;
+    font-size: 1.4em;
 }
 
 .navbar-logo {
@@ -68,24 +69,22 @@ footer {
     padding-top: 30px;
     padding-bottom: 20px;
     background-color: whitesmoke; /* Black Gray */
-    /*color: whitesmoke;*/
 }
-
-
 
 .imgHeader{
     background-image: url("../img/NUMOmedium.png");
     background-repeat: no-repeat;
     background-position: center;
-    height: 100px;
-    padding-top: 500px;
+    height: 200px;
+    padding-top: 300px;
 }
 
 .bg-1 {
-    height: 830px;
-    background-image: url("../img/header.jpg");
+    height: 530px;
+    /*background-image: url("../img/header.jpg");*/
     background-repeat: no-repeat;
     background-position: center;
+    border-bottom: solid #FC0606 2px;
 }
 
 .btnOrange {
@@ -106,27 +105,18 @@ footer {
     background-color: white;
     border-color: #FC0606 ;
 }
+
+.index_list-events {
+    margin-top: 20px;
+}
+
 .imageEvents{
     width: 700px;
-    height: 350px;
+    height: 400px;
 }
 
-
-.bg-3 {
-    background-color: #ffffff; /* White */
-    color: #555555;
-}
-
-.category {
-    /*background-image: url("../img/category.png");*/
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 220px !important;
-}
-
-.bg-4 {
-    background-color: #2f2f2f; /* Black Gray */
-    color: #fff;
+.thumbnail > img {
+    height: 250px;
 }
 
 .no-gutter > [class*='col-'] {
@@ -543,6 +533,7 @@ div.separation {
 
 .zoneRed{
     background-color:  #FC0606 ;
+    font-size: 1.4em;
 }
 .textRed{
     color:  #FC0606 ;

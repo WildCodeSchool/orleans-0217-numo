@@ -5,9 +5,8 @@
 
         <h3 class="margin"></h3>
         <div class="row imgHeader">
-            <a href="{{ path('event_list_published') }}" class="btn btn-default btn-lg btnOrange btnRed">Consulter les
+            <a href="{{ path('event_list_published') }}" class="btn btn-default btn-lg btnOrange">Consulter les
                 événements</a>
-
         </div>
     </div>
     <div class="container-fluid mailChimp">
@@ -18,13 +17,13 @@
                   novalidate>
                 <div id="mc_embed_signup_scroll">
                     <label for="mce-EMAIL">S'inscrire à nos newsletters</label>
-                    <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address"
+                    <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Adresse email"
                            required>
                     <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
                     <div class="mailChimpStyle" aria-hidden="true"><input type="text"
                                                                           name="b_116816a1a91c3fc902cbe3388_de68ca6632"
                                                                           tabindex="-1" value=""></div>
-                    <div class="clear"><input type="submit" value="Subscribe" name="subscribe"
+                    <div class="clear"><input type="submit" value="Inscription" name="subscribe"
                                               id="mc-embedded-subscribe" class="button"></div>
                 </div>
             </form>
@@ -40,33 +39,31 @@
                 et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
                 aliquip ex ea commodo consequat.
             </p>
-            <a href="/register/" class="btn btn-lg btnwhite">
-                <span class="glyphicon glyphicon-search textRed"></span> Devenez membre
+            <a href="{{ path('become_adherent') }}" class="btn btn-lg btnwhite">
+                <span class="glyphicon glyphicon-search textRed"></span> Devenez adherent
             </a>
         </div>
     </div>
 
 
     <div class="container-fluid">
-        <div class="row no-gutter popup-gallery">
+        <div class="row index_list-events">
             {% for event in events %}
-                <div class="col-lg-4 col-sm-6">
-                    <a href="{{ path('event_show_published', {'id': event.id, 'published': event.status == 99}) }}"
-                       class="portfolio-box">
-                        <img class="imageEvents img-responsive" src="{{ event.image }}" class="img-responsive" alt="">
-                        <div class="portfolio-box-caption">
-                            <div class="portfolio-box-caption-content">
-                                <div class="project-category text-faded">
-                                    <h2>{{ event.title }}</h2>
+                {% if loop.index < 7 %}
+                    <div class="col-lg-4 col-sm-6">
+                        <a href="{{ path('event_show_published', {'id': event.id}) }}">
+                            <div class="thumbnail">
+                                <img class="imageEvents" src="{{ event.image }}" alt="{{ event.title }}">
+                                <div class="caption">
+                                    <h3>{{ event.title }}</h3>
+                                    <h4>{{ event.newDates[0].evtDate|localizeddate("medium", "none", "locale", null, "cccc d LLLL yyyy") }}</h4>
+                                    <p>{{ event.description }}</p>
+                                    <p>{{ event.address }}</p>
                                 </div>
-                                <div class="project-name">
-                                    {{ event.description }}
-                                </div>
-                                <p> {{ event.address }}</p>
                             </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
     </div>
