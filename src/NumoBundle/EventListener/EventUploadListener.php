@@ -64,11 +64,11 @@ class EventUploadListener
     {
         $entity = $args->getEntity();
 
-        if (!$entity instanceof Event) {
-            return;
-        }
-        if(is_file($entity->getImage())) {
-            unlink($entity->getImage());
+        if ($entity instanceof Event) {
+            $filePath = $this->uploader->getTargetDir() . '/' . $entity->getImage();
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
         }
     }
 
@@ -87,6 +87,7 @@ class EventUploadListener
         }
 
         $fileName = $this->uploader->upload($file);
+
         $entity->setImage($fileName);
     }
 }

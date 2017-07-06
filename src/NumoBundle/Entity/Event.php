@@ -5,6 +5,7 @@
 namespace NumoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use \Doctrine\Common\Collections\ArrayCollection;
 
@@ -147,7 +148,6 @@ class Event
         $this
             ->setRejected(0)
             ->setFreeText('')
-            ->setImage('')
             ->setTicketLink('')
             ->evtDates = new ArrayCollection();
     }
@@ -203,7 +203,7 @@ class Event
     /**
      * Get image
      *
-     * @return string
+     * @return File
      */
     public function getImage()
     {

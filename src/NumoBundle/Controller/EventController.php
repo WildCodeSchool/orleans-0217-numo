@@ -318,7 +318,51 @@ class EventController extends Controller
      */
     public function deleteAwaitAction(Request $request, Event $event)
     {
+        $imgDir = $this->getParameter('img_event_dir');
+        $form = $this
+            ->createFormBuilder()
+            ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
+            ->getForm();
+        $form->handleRequest($request);
+        // --- generation des tableaux dates pour affichage
+        $oldDates = $newDates = [];
+        $dateRef = new \DateTime();
+        foreach ($event->getEvtDates() as $evtD) {
+            $evtDate = [
+                'evtDate' => $evtD->getEvtDate()->format('Y-m-d'),
+                'timeStart' => $evtD->getTimeStart()->format('H:i'),
+                'timeEnd' => $evtD->getTimeEnd()->format('H:i')
+            ];
+            if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
+                $oldDates[] = $evtDate;
+            } else {
+                $newDates[] = $evtDate;
+            }
+        }
+        // --- definition de la route de retour
+        if ($this->getUser()->getRoles()[0] == 'ROLE_MODERATOR') {
+            // --- Si moderateur ou admin -> retour sur page admin
+            $goBack = 'events_index';
+        } else {
+            // --- Sinon retour sur page profil de l'utilisateur
+            $goBack = 'fos_user_profile_show';
+        }
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            // --- suppression de l'évènement en base de donnees
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($event);
+            $em->flush();
+            return $this->redirectToRoute($goBack);
+        }
+        return $this->render('NumoBundle:event:deleteAwait.html.twig', [
+            'imgDir' => $imgDir,
+            'event' => $event,
+            'form' => $form->createView(),
+            'goBack' => $goBack,
+            'oldDates' => $oldDates,
+            'newDates' => $newDates,
+        ]);
     }
 
     /**
