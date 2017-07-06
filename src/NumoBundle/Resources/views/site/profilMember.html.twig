@@ -5,9 +5,8 @@
     <div class="container-fluid profileUser">
 
         <div class="col-xs-12 text-center">
-            <div class="separation"></div>
-            <h1>{{ user.name }} {{ user.firstname }}</h1>
-            <div class="separation"></div>
+            <h1 class="title-view">{{ user.name }} {{ user.firstname }}</h1>
+            <div class="separation barreGreen"></div>
         </div>
 
         <div class="row">
@@ -95,10 +94,12 @@
             <div class="separation"></div>
         </div>
 
+    {% if oaevents is not empty %}
         <div class="text-center">
             <h2>Mes événements</h2>
+            <div class="separation barreGreen"></div>
         </div>
-    {% if oaevents is not empty %}
+
         <div class="container-fluid">
             <div class="row no-gutter popup-gallery">
                 {% for oaevent in oaevents %}

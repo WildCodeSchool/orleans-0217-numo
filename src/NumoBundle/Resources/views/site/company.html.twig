@@ -3,7 +3,7 @@
 
     {# --- titre ---#}
     <div class="col-xs-12 text-center">
-        <h1>L'association</h1>
+        <h1 class="title-view">L'association</h1>
         <div class="separation barreRed"></div>
     </div>
 
@@ -11,8 +11,8 @@
 
         <div class="row">
             <div class="col-lg-offset-2 col-lg-5">
-                <h2>{{ company.presentationTitle }} <hr> </h2>
-                <p>{{ company.presentationContent }}</p>
+                <h2 class="sub-title-view">{{ company.presentationTitle }} <hr> </h2>
+                <p class="content-view">{{ company.presentationContent }}</p>
                 <div class="row companyBottom">
                     <div class="col-lg-offset-4">
                         <a href="{{ path('fos_user_registration_register') }}" type="button" class="btn btn-default btn-lg btnOrange btnRed">S'inscrire</a>
@@ -20,8 +20,8 @@
                 </div>
             </div>
 
-            <div class="col-lg-offset-1 col-lg-2">
-                <h2>Coordonnées <hr> </h2>
+            <div class="col-lg-offset-1 col-lg-2 contact-view">
+                <h2 class="sub-title-view">Coordonnées <hr> </h2>
                 <p>{{ company.phone }}</p>
                 <p>{{ company.city }} {{ company.postalCode }}</p>
                 <p>{{ company.address }}</p>

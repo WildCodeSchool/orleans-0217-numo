@@ -1,8 +1,5 @@
 /* --- Formulaires --- */
-h1 {
-    font-weight: bold;
-    font-size: 30px;
-}
+
 .grey-text {
     color: lightgrey;
 }
@@ -164,11 +161,6 @@ div#closemap {
     width: 100%;
     padding-top: 30px;
     padding-right: 20px;
-}
-
-.event-zone:hover {
-    background-color: #97258D;
-    opacity: 0.85;
 }
 
 .event-imgsize {
