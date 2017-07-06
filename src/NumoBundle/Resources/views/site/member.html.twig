@@ -36,7 +36,7 @@
                     <div class="row">
                         <div class="col-lg-offset-0 col-xs-offset-4 col-lg-5">
                             {% if member.roles.0 == 'ROLE_ADHERENT' %}
-                            <a href="{{ path('profilMember', { 'id': member.id }) }}">
+                                <a href="{{ path('profilMember', { 'id': member.id }) }}">
                                 <h2 class="memberName">{{ member.name }} {{ member.firstname }}  </h2>
                             </a>
                             {% else %}
@@ -55,6 +55,8 @@
                         <div class="col-lg-offset-0 col-xs-offset-1 col-lg-10">
                             <h3>{{ member.email }}</h3>
                             {% if member.roles.0 == 'ROLE_ADHERENT' %}
+                            {#{% if (member.roles.0 == 'ROLE_ADHERENT') or (member.roles.0 == 'ROLE_MODERATOR') or (member.roles.0 == 'ROLE_ADMIN')  %}#}
+                            {#{% if is_granted('ROLE_ADHERENT', member) %}#}
                                 {% if member.facebook != null %}
                                     <a target="_blank" href="{{ member.facebook }}"><img src="{{ asset('img/rs-facebook.png') }}" alt="Facebook" class="logo-sn-memberlist"></a>
                                 {% endif %}
