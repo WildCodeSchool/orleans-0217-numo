@@ -6,6 +6,7 @@ use NumoBundle\Entity\Company;
 use NumoBundle\Entity\ModerationRefusal;
 use NumoBundle\Entity\Published;
 use NumoBundle\Entity\Event;
+use NumoBundle\Form\ModerationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -47,28 +48,31 @@ class PublishedController extends Controller
     public function filterAction(Request $request)
     {
         $refusal = new ModerationRefusal();
+        $form = $this->createForm(ModerationType::class, $refusal);
+        $form->handleRequest($request);
+
         $em = $this->getDoctrine()->getManager();
         $events = $em->getRepository('NumoBundle:Event') ->findAll();
         $publishedevents = $em->getRepository('NumoBundle:Published')->findBy([], ['authorUpdateDate'=> 'DESC']);
-        $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
+
+          $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
 
 
-        $form = $this->createForm('NumoBundle\Form\ModerationType');
-        $form->handleRequest($request);
+
         if ($form->isValid() && $form->isSubmitted()) {
-
-            $this->addFlash(
-                'messageContact',
-                'Votre mail de contact a bien été envoyé'
-            );
-
-            $comment = (new \Swift_Message())
+            $comment = \Swift_Message::newInstance()
                 ->setSubject($refusal->getTitle(). 'a été refusé')
                 ->setTo($refusal->getContactEmail())
                 ->setFrom($company ->getContactEmail())
                 ->setBody($refusal->getComment());
 
+            $id = $refusal->getEventId();
             $this->get('mailer')->send($comment);
+
+            $event = $em->getRepository('NumoBundle:Event')->findOneBy(['id'=>$id]);
+            $event->setRejected(1);
+            $em->flush();
+
             return $this-> redirectToRoute('events_index');
 
         }

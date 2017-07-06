@@ -41,7 +41,13 @@ class ModerationRefusal
      * @ORM\Column(name="comment", type="text")
      */
     private $comment;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="eventId", type="integer")
+     */
 
+    private $eventId;
 
     /**
      * Get id
@@ -124,5 +130,23 @@ class ModerationRefusal
     {
         return $this->comment;
     }
+
+    /**
+     * @return int
+     */
+    public function getEventId()
+    {
+        return $this->eventId;
+    }
+
+    /**
+     * @param int $eventId
+     */
+    public function setEventId(int $eventId)
+    {
+        $this->eventId = $eventId;
+    }
+
+
 }
 

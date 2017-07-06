@@ -92,15 +92,18 @@
                 </div>
                 <div class="modal-body font-lato">
                     {{ form_start(form) }}
+                    {{ form_label(form.title) }}
                     {{ form_widget(form.title) }}
+                    {{ form_errors(form.title) }}
                     {{ form_label(form.comment) }}
                     {{ form_widget(form.comment) }}
+                    {{ form_errors(form.comment) }}
+                    {{ form_label(form.contactEmail) }}
                     {{ form_widget(form.contactEmail) }}
-                    {{ form_widget(form.id) }}
+                    <input type="submit" class="btn btn-default btn-send"/>
                     {{ form_end(form) }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-send" data-dismiss="modal">Fermer</button>
                 </div>
             </div>
         </div>
@@ -116,9 +119,12 @@
             var title = button.data('title');
             var email = button.data('email');
             var modal = $(this);
-            modal.find('.modal-title').text('Refuser l\'événement  ' + title);
-            modal.find('#moderation_Id').val(id)
-            modal.find('.btn-send').text ('Envoyer à '+ email);
+            modal.find('#moderation_eventId').val(id)
+            modal.find('.modal-title').text('Refuser l\'événement ' + title);
+            modal.find('#moderation_title').val(title);
+            modal.find('.btn-send').val('Envoyer à '+ email);
+            modal.find('#moderation_contactEmail').val(email);
+
         })
     </script>
 
