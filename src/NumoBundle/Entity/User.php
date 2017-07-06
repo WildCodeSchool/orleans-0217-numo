@@ -598,4 +598,13 @@ class User extends BaseUser
         return $this->events;
     }
 
+    /**
+     * Check if a user as a defined role
+     *
+     */
+    public function isGranted($role)
+    {
+        return in_array($role, $this->getRoles());
+    }
+
 }

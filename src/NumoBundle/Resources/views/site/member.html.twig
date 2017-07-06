@@ -35,10 +35,10 @@
                 <div class="col-lg-7">
                     <div class="row">
                         <div class="col-lg-offset-0 col-xs-offset-4 col-lg-5">
-                            {% if member.roles.0 == 'ROLE_ADHERENT' %}
+                            {% if member.granted('ROLE_ADHERENT') %}
                                 <a href="{{ path('profilMember', { 'id': member.id }) }}">
-                                <h2 class="memberName">{{ member.name }} {{ member.firstname }}  </h2>
-                            </a>
+                                    <h2 class="memberName">{{ member.name }} {{ member.firstname }}  </h2>
+                                </a>
                             {% else %}
                                 <h2 class="memberName">{{ member.name }} {{ member.firstname }}  </h2>
                             {% endif %}
@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="col-lg-offset-4 col-xs-offset-4 col-lg-2">
-                            {% if member.roles.0 == 'ROLE_ADHERENT' %}
+                            {% if member.granted('ROLE_ADHERENT') %}
                                 <img src="{{ asset('img/NUMOsmall.png') }}" alt="Numo" style="height:20px">
                             {% endif %}
                         </div>
@@ -54,9 +54,7 @@
                     <div class="row">
                         <div class="col-lg-offset-0 col-xs-offset-1 col-lg-10">
                             <h3>{{ member.email }}</h3>
-                            {% if member.roles.0 == 'ROLE_ADHERENT' %}
-                            {#{% if (member.roles.0 == 'ROLE_ADHERENT') or (member.roles.0 == 'ROLE_MODERATOR') or (member.roles.0 == 'ROLE_ADMIN')  %}#}
-                            {#{% if is_granted('ROLE_ADHERENT', member) %}#}
+                            {% if member.granted('ROLE_ADHERENT') %}
                                 {% if member.facebook != null %}
                                     <a target="_blank" href="{{ member.facebook }}"><img src="{{ asset('img/rs-facebook.png') }}" alt="Facebook" class="logo-sn-memberlist"></a>
                                 {% endif %}
