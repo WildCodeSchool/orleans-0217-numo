@@ -11,13 +11,13 @@
             {# --- titre --------------------------------------------------------------------------------#}
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h1>Suppression d'un évènement</h1>
-                <div class="separation"></div>
+                <h1 class="title-view">Suppression d'un évènement</h1>
+                <div class="separation barreRed"></div>
                 {{ form_start(form) }}
                 {{ form_widget(form.delete, {'attr': {'class': 'btn btn-default btn-sep'}}) }}
                 <a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Ne pas supprimer</a>
                 {{ form_end(form) }}
-                <div class="separation"></div>
+                <div class="separation barreRed"></div>
             </div>
         </div>
 
@@ -86,13 +86,13 @@
                     </table>
 
                     {# --- adresse ------------------------------------------------------------- #}
-                    <div class="separation"></div>
+                    <div class="separation barreRed"></div>
                     <h3>Lieu</h3>
                     <p>{{ event.placename }}</p>
                     <p>{{ event.address }}</p>
 
                     {# --- organisateur -------------------------------------------------------- #}
-                    <div class="separation"></div>
+                    <div class="separation barreRed"></div>
                     <h3>Organisé par</h3>
                     <p>
                         {% if published and published.author %}
