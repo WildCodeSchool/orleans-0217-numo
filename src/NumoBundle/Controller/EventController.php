@@ -31,7 +31,7 @@ class EventController extends Controller
     /**
      * Lists all published events.
      *
-     * @Route("/listpublished", name="event_list_published")
+     * @Route("/list-published", name="event_list_published")
      * @Method("GET")
      * -- Liste les évènements -------------------------------------------------------------------------------------
      *      - par défaut : liste tous les évènements publiés à venir (provenance OpenAgenda)
@@ -211,7 +211,7 @@ class EventController extends Controller
     /**
      * Displays an awaiting event.
      *
-     * @Route("/showawait/{id}", name="event_show_await")
+     * @Route("/show-await/{id}", name="event_show_await")
      * @Method("GET")
      */
     public function showAwaitAction(Event $event)
@@ -242,10 +242,10 @@ class EventController extends Controller
     /**
      * displays a published event.
      *
-     * @Route("/showpublished/{id}", name="event_show_published")
+     * @Route("/show-published/{id}", name="event_show_published")
      * @Method({"GET", "POST" })
      */
-    public function showAction(Request $request, $id)
+    public function showPublishedAction(Request $request, $id)
     {
         $error = '';
         $published = null;
@@ -304,7 +304,7 @@ class EventController extends Controller
     /**
      * Edit an awaiting event.
      *
-     * @Route("/editawait/{id}", name="event_edit_await")
+     * @Route("/edit-await/{id}", name="event_edit_await")
      * @Method({"GET", "POST"})
      */
     public function editAwitAction(Request $request, Event $event)
@@ -354,7 +354,6 @@ class EventController extends Controller
     {
         $error = '';
         $event = new Event();
-//        $newImage = '/img/event_placeholder.png';
         $api = $this->get('numo.apiopenagenda');
         if (!$request->request->has('enregistrer')) {
             // --- premier chargement de la page : on recupere l'evenement sur OpenAgenda
@@ -364,7 +363,6 @@ class EventController extends Controller
                 $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
             } else {
                 $event->hydrate($oaEvent);
-                // note : dans $event, image reste vide
                 // --- recuperation et initialisation des dates et heures
                 $evtDate = new EvtDate();
                 // --- dates passées
@@ -381,52 +379,52 @@ class EventController extends Controller
                     $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
                     $event->getEvtDates()->add($evtDate);
                 }
-                // --- recup infos supplementaires
             }
         }
+        // --- recup infos supplementaires
         $em = $this->getDoctrine()->getManager();
         $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+        $event->setImage($published->getImage());
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
-        if ($request->request->get('image')) {
-            $newImage = $request->request->get('image')->getFilename();
-        }
+//        if ($request->request->get('image')) {
+//            $newImage = $request->request->get('image')->getFilename();
+//        }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // --- gestion de l'image
-            $file = $event->getImage();
-            if ($file) {
-                // --- nouvelle image en remplacement de l'ancienne
-                $fileName = uniqid().'.'.$file->guessExtension();
-                $file->move(
-                    $this->getParameter('upload_directory_event'),
-                    $this->getParameter('img_event_dir') . '/' . $fileName
-                );
-                // --- mise a jour de $published
-                if (file_exists($published->getImage())) {
-                    unlink($published->getImage());
-                }
-                $published->setImage($this->getParameter('img_event_dir') . '/' . $fileName);
-            } else {
-                $event->setImage($published->getImage());
-            }
+//            // --- gestion de l'image
+//            $file = $event->getImage();
+//            if ($file) {
+//                // --- nouvelle image en remplacement de l'ancienne
+//                $fileName = uniqid().'.'.$file->guessExtension();
+//                $file->move(
+//                    $this->getParameter('upload_directory_event'),
+//                    $this->getParameter('img_event_dir') . '/' . $fileName
+//                );
+//                // --- mise a jour de $published
+//                if (file_exists($published->getImage())) {
+//                    unlink($published->getImage());
+//                }
+//                $published->setImage($this->getParameter('img_event_dir') . '/' . $fileName);
+//            } else {
+//                $event->setImage($published->getImage());
+//            }
             // --- on effectue les mises a jour sur OpenAgenda
             $api->updateEvent($event, $published);
             // --- on finit la mise a jour de published et on l'enregistre
             $published
                 ->setModerator($this->getUser())
                 ->setModeratorUpdateDate(new \datetime())
-                ->setTitle($event->getTitle());
+                ->setTitle($event->getTitle())
+                ->setImage($event->getImage());
             $em->flush();
 
-
-//            return $this->redirectToRoute('event_show_published');
             return $this->redirectToRoute('event_show_published', ['id' => $id]);
         }
 
         return $this->render('NumoBundle:event:editPublished.html.twig', [
             'error' => $error,
-            'newImage' => $newImage,
+//            'newImage' => $newImage,
             'form' => $form->createView(),
             'published' => $published,
         ]);
@@ -435,7 +433,7 @@ class EventController extends Controller
         /**
      * Deletes an awaiting event.
      *
-     * @Route("/deleteawait/{id}", name="event_delete_await")
+     * @Route("/delete-await/{id}", name="event_delete_await")
      * @Method({"GET","POST"})
      */
     public function deleteAwaitAction(Request $request, Event $event)
@@ -491,7 +489,7 @@ class EventController extends Controller
     /**
      * Deletes a published event.
      *
-     * @Route("/deletepublished/{id}", name="event_delete_published")
+     * @Route("/delete-published/{id}", name="event_delete_published")
      * @Method({"GET","POST"})
      */
     public function deletePublishedAction(Request $request, $id)
@@ -542,7 +540,7 @@ class EventController extends Controller
     /**
      * Deletes an image in event entity.
      *
-     * @Route("/{id}/delete_image", name="event_delete_image")
+     * @Route("/delete_image", name="event_delete_image")
      * @Method({"GET", "POST"})
      */
     public function deleteImageAction(Event $event)

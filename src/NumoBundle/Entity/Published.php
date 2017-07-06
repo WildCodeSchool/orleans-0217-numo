@@ -65,6 +65,19 @@ class Published
      */
     private $moderatorUpdateDate;
 
+    /**
+     * @var string
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="locationUid", type="string", length=15)
+     */
+    private $locationUid;
+
 
     public function __construct(Event $event, string $uid, $moderator)
     {
@@ -76,7 +89,6 @@ class Published
             ->setModerator($moderator)
             ->setModeratorUpdateDate(new \DateTime);
     }
-
 
     /**
      * Get id
@@ -219,6 +231,24 @@ class Published
     public function setModeratorUpdateDate(\DateTime $moderatorUpdateDate): Published
     {
         $this->moderatorUpdateDate = $moderatorUpdateDate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     * @return Published
+     */
+    public function setImage(string $image): Published
+    {
+        $this->image = $image;
         return $this;
     }
 
