@@ -134,10 +134,10 @@ class EventController extends Controller
         // --- Note : les images sont gerees par des eventlisteners
         $error = '';
         $event = new Event();
-        $evtDate0 = new EvtDate();
-        $evtDate0->setEvtDate(new \DateTime());
-        $evtDate0->setEvent($event);
-        $event->getEvtDates()->add($evtDate0);
+        $firstEvtDate = new EvtDate();
+        $firstEvtDate->setEvtDate(new \DateTime());
+        $firstEvtDate->setEvent($event);
+        $event->getEvtDates()->add($firstEvtDate);
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
