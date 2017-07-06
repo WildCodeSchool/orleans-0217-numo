@@ -12,7 +12,7 @@
         {# --- Titre de la page --- #}
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h1>Agenda</h1>
+                <h1 class="title-view">Agenda</h1>
                 {# --- bouton "créer nouvel évènement --- #}
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <p><a href="{{ path('event_new') }}" class="btn btn-default btn-xs" role="button">Créer un nouvel

@@ -5,21 +5,21 @@
 
     {# --- titre ---#}
     <div class="col-xs-12 text-center">
-            <h1>Contact</h1>
+            <h1 class="title-view">Contact</h1>
         <div class="separation barreYellow "></div>
     </div>
 
     <div class="container-fluid contact">
         <div class="col-lg-offset-2 col-lg-5">
-            <h2>Laissez votre commentaire <hr></h2>
+            <h2 class="sub-title-view">Laissez nous un commentaire <hr></h2>
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <input type="submit" class="btn btn-default btn-lg  btnYellow" value="Envoyer"/>
             {{ form_end(form) }}
         </div>
 
-        <div class="col-lg-offset-1 col-lg-2">
-            <h2>Coordonnées <hr></h2>
+        <div class="col-lg-offset-1 col-lg-2 contact-view">
+            <h2 class="sub-title-view">Coordonnées <hr></h2>
             <p>{{ company.phone }}</p>
             <p>{{ company.city }} {{ company.postalCode }}</p>
             <p>{{ company.address }}</p>

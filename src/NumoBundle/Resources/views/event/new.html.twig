@@ -10,14 +10,15 @@
     <div class="container-fluid bg-form">
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h2>Nouvel évènement</h2>
+                <h2 class="title-view">Nouvel évènement</h2>
                 <a href="{{ path('event_list_published') }}" class="btn btn-default btn-xs" type="button">Retour à la liste</a>
+                <div class="separation barreGreen"></div>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3">
 
-                <div class="sep"></div>
+                <div class="sep barreGreen"></div>
 
                 {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
 
@@ -133,12 +134,14 @@
 
                 <p><input type="button" class="btn btn-default" id="adddate" value="Ajoute une date" onclick="addDate();"/></p>
 
-                <div class="sep"></div>
+                <div class="sep barreGreen"></div>
 
                 <div class="row">
                     <div class="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 text-center">
-                        <button class="btn btn-default right-sep" type="submit">Créer l'évènement</button>
-                        <a class="btn btn-default" href="{{ path('event_list_published') }}">Abandonner</a>
+                        <button class="btn btn-default" type="submit">Créer l'évènement</button>
+                        <a href="{{ path('event_list_published') }}">
+                            <button class="btn btn-default">Abandonner</button>
+                        </a>
                     </div>
                 </div>
 

@@ -2,13 +2,11 @@
 
 {% block body %}
 
-
     <div class="container-fluid profileUser">
 
         <div class="col-xs-12 text-center">
-            <div class="separation"></div>
-            <h1>{{ user.name }} {{ user.firstname }}</h1>
-            <div class="separation"></div>
+            <h1 class="title-view">{{ user.name }} {{ user.firstname }}</h1>
+            <div class="separation barreGreen"></div>
         </div>
 
         <div class="row">
@@ -27,7 +25,6 @@
                     <p>{{ user.description }}</p>
                     <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-default">Editer</a>
                     <a href="{{ path('fos_user_change_password') }}" class="btn btn-default">Modifier le mot de passe</a>
-
                     {% if not is_granted('ROLE_ADHERENT') %}
                         <a href="" class="btn btn-default">Devenir Adhérent</a>
                     {% endif %}
@@ -106,7 +103,13 @@
 
             <div class="text-center">
                 <h2>Mes événements</h2>
+                <div class="separation barreGreen"></div>
             </div>
+
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <p><a href="{{ path('event_new') }}" class="btn btn-default btn-xs" role="button">Créer un nouvel
+                        évènement</a></p>
+            {% endif %}
 
             <h3 class="col-lg-offset-1">Evènements en attente</h3>
 
