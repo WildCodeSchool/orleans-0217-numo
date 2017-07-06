@@ -149,18 +149,34 @@ class ApiOpenAgenda
             ->setAddress($event->address)
             ->setLatitude($event->latitude)
             ->setLongitude($event->longitude);
-        if (isset($event->image)) $newEvent->setImage($event->image);
-        if (isset($event->description)) $newEvent->setDescription($event->description->fr);
-        if (isset($event->longDescription)) $newEvent->setFreeText($event->longDescription->fr);
-        if (isset($event->keywords)) $newEvent->setTags(implode(', ', $event->keywords->fr));
-        if (isset($event->registrationUrl)) $newEvent->setTicketLink($event->registrationUrl);
-        if (isset($event->conditions)) $newEvent->setPricingInfo($event->conditions->fr);
+        if (isset($event->image)) {
+            $newEvent->setImage($event->image);
+        }
+        if (isset($event->description)) {
+            $newEvent->setDescription($event->description->fr);
+        }
+        if (isset($event->longDescription)) {
+            $newEvent->setFreeText($event->longDescription->fr);
+        }
+        if (isset($event->keywords)) {
+            $newEvent->setTags(implode(', ', $event->keywords->fr));
+        }
+        if (isset($event->registrationUrl)) {
+            $newEvent->setTicketLink($event->registrationUrl);
+        }
+        if (isset($event->conditions)) {
+            $newEvent->setPricingInfo($event->conditions->fr);
+        }
         $oldDates = [];
         $newDates = [];
         $dateRef = new \DateTime();
-        foreach ($event->timings as $evtD) {
-            // $evtD = AAAA-MM-DD HH:MM:SS
-            $evtDate = ['evtDate' => substr($evtD->start, 0, 10), 'timeStart' => substr($evtD->start, 11, 8), 'timeEnd' => substr($evtD->end, 11, 8)];
+        foreach ($event->timings as $strDate) {
+            // $strDate = 'AAAA-MM-DD HH:MM:SS' (en vrai '2017-06-01T12:00:00.000Z')
+            $evtDate = [
+                'evtDate' => substr($strDate->start, 0, 10),
+                'timeStart' => substr($strDate->start, 11, 8),
+                'timeEnd' => substr($strDate->end, 11, 8)
+            ];
             if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
                 $oldDates[] = $evtDate;
             } else {
@@ -214,14 +230,9 @@ class ApiOpenAgenda
                     $oneEvent = $this->convertJson($event);
                     $eventList[] = $oneEvent;
                     if ($oneEvent->getNewDates()) {
-                        $date = $oneEvent->getNewDates()[0];
+                        $date = \DateTime::createFromFormat('Y-m-d',$oneEvent->getNewDates()[0]['evtDate']);
                         $title = $oneEvent->getTitle();
-                        $eventDateList[] = [
-                            substr($date['evtDate'], 8, 2),
-                            substr($date['evtDate'], 5, 2),
-                            substr($date['evtDate'], 0, 4),
-                            $title
-                        ];
+                        $eventDateList[] = [$date->format('d'), $date->format('m'), $date->format('Y'), $title];
                     }
                 }
 //            }

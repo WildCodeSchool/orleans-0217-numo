@@ -36,14 +36,6 @@ class EventUploadListener
 
     public function preUpdate(PreUpdateEventArgs $args)
     {
-//                $entity = $args->getEntity();
-//                if ($this->oldFile) {
-//                    $entity->setImage($this->oldFile);
-//                } else {
-//                    $this->uploadFile($entity);
-//                }
-
-
         $entity = $args->getEntity();
         if ($entity instanceof Event) {
             $masterRequest = $this->requestStack->getMasterRequest()->get('_route');
@@ -56,7 +48,6 @@ class EventUploadListener
             }
         }
     }
-
 
     public function postLoad(LifecycleEventArgs $args)
     {
