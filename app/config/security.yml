@@ -34,6 +34,7 @@ security:
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, role: ROLE_MODERATOR }
         - { path: ^/published/index_events, role: ROLE_MODERATOR }
+        - { path: ^/event_show_awaits, role: ROLE_MODERATOR }
         - { path: ^/company/, role: ROLE_ADMIN }
         - { path: ^/memberstatus/, role: ROLE_ADMIN }
         - { path: ^/partner/, role: ROLE_ADMIN }
