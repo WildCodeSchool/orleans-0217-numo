@@ -61,6 +61,7 @@ class EventType extends AbstractType
             ])
             ->add('evtDates', CollectionType::class, [
                 'entry_type' => EvtDateCollectionType::class,
+                'by_reference' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
             ]);
