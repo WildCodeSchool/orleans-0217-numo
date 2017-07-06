@@ -189,7 +189,7 @@ class EventController extends Controller
 
                 $confirmation = \Swift_Message::newInstance()
                     ->setSubject('Un adhérent à posté un événement')
-                    ->setBody('Bonjour, Un adhérent à posté un événement, veuillez aller sur www.numo.fr pour confirmer')
+                    ->setBody('Bonjour, Un adhérent à posté un événement, veuillez aller sur www.numo.fr pour confirmer.')
                     ->setFrom($company->getContactEmail());
                 foreach ($users as $user) {
                     if (in_array('ROLE_MODERATOR', $user->getRoles())) {
@@ -469,5 +469,30 @@ class EventController extends Controller
         unlink($this->getParameter('upload_directory') . '/' .
             $path);
         return $this->redirectToRoute('event_edit_await', array('id' => $event->getId()));
+    }
+
+    /**
+     * Publish an event approved by a moderator.
+     *
+     * @Route("/approved/{id}", name="event_approved")
+     * @Method({"GET","POST"})
+     */
+    public function ApprovedAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $event = $em->getRepository('NumoBundle:Event')->findOneBy(['id' => $id]);
+
+        $author = $event->getAuthor()->getUsername();
+
+        $api = $this->get('numo.apiopenagenda');
+        $uid = $api->publishEvent($event);
+        if (false === $uid) {
+            // gerer erreur si ecriture foireuse
+        }
+        // --- creationde l'enregistrement "published"
+        $published = new Published($event, $uid, $author);
+        $published->setTitle($event->getTitle());
+        $em->persist($published);
+        $em->flush();
     }
 }
