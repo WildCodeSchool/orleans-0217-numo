@@ -342,10 +342,97 @@ class EventController extends Controller
             'oldImage' => $oldImage,
             'form' => $form->createView(),
         ]);
-
     }
 
     /**
+     * Edit a published event.
+     *
+     * @Route("/edit-published/{id}", name="event_edit_published")
+     * @Method({"GET", "POST"})
+     */
+    public function editPublishedAction(Request $request, $id)
+    {
+        $error = '';
+        $event = new Event();
+//        $newImage = '/img/event_placeholder.png';
+        $api = $this->get('numo.apiopenagenda');
+        if (!$request->request->has('enregistrer')) {
+            // --- premier chargement de la page : on recupere l'evenement sur OpenAgenda
+            // --- lecture de l'évènement via json sur OpenAgenda
+            $oaEvent = $api->getEvent($id);
+            if (false === $oaEvent) {
+                $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+            } else {
+                $event->hydrate($oaEvent);
+                // note : dans $event, image reste vide
+                // --- recuperation et initialisation des dates et heures
+                $evtDate = new EvtDate();
+                // --- dates passées
+                foreach ($oaEvent->getOldDates() as $oaDate) {
+                    $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
+                    $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
+                    $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
+                    $event->getEvtDates()->add($evtDate);
+                }
+                // --- dates a venir
+                foreach ($oaEvent->getNewDates() as $oaDate) {
+                    $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
+                    $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
+                    $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
+                    $event->getEvtDates()->add($evtDate);
+                }
+                // --- recup infos supplementaires
+            }
+        }
+        $em = $this->getDoctrine()->getManager();
+        $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+        $form = $this->createForm(EventType::class, $event);
+        $form->handleRequest($request);
+        if ($request->request->get('image')) {
+            $newImage = $request->request->get('image')->getFilename();
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // --- gestion de l'image
+            $file = $event->getImage();
+            if ($file) {
+                // --- nouvelle image en remplacement de l'ancienne
+                $fileName = uniqid().'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('upload_directory_event'),
+                    $this->getParameter('img_event_dir') . '/' . $fileName
+                );
+                // --- mise a jour de $published
+                if (file_exists($published->getImage())) {
+                    unlink($published->getImage());
+                }
+                $published->setImage($this->getParameter('img_event_dir') . '/' . $fileName);
+            } else {
+                $event->setImage($published->getImage());
+            }
+            // --- on effectue les mises a jour sur OpenAgenda
+            $api->updateEvent($event, $published);
+            // --- on finit la mise a jour de published et on l'enregistre
+            $published
+                ->setModerator($this->getUser())
+                ->setModeratorUpdateDate(new \datetime())
+                ->setTitle($event->getTitle());
+            $em->flush();
+
+
+//            return $this->redirectToRoute('event_show_published');
+            return $this->redirectToRoute('event_show_published', ['id' => $id]);
+        }
+
+        return $this->render('NumoBundle:event:editPublished.html.twig', [
+            'error' => $error,
+            'newImage' => $newImage,
+            'form' => $form->createView(),
+            'published' => $published,
+        ]);
+    }
+
+        /**
      * Deletes an awaiting event.
      *
      * @Route("/deleteawait/{id}", name="event_delete_await")
