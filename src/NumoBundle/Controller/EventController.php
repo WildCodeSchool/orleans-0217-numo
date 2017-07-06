@@ -270,18 +270,6 @@ class EventController extends Controller
     }
 
 
-
-    /**
-     * Displays a form to edit an existing event entity.
-     *
-     * @Route("/{id}/edit", name="event_edit")
-     * @Method({"GET", "POST"})
-     */
-    public function editAction(Request $request, Event $event)
-    {
-
-    }
-
     /**
      * Deletes a event entity.
      *

@@ -3,12 +3,15 @@
 namespace NumoBundle\Controller;
 
 use NumoBundle\Entity\Company;
+use NumoBundle\Entity\ModerationRefusal;
 use NumoBundle\Entity\Published;
 use NumoBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
 use NumoBundle\Repository\PublishedRepository;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 
 /**
  * Published controller.
@@ -29,6 +32,7 @@ class PublishedController extends Controller
 
         $publisheds = $em->getRepository('NumoBundle:Published')->findAll();
 
+
         return $this->render('published/index.html.twig', array(
             'publisheds' => $publisheds,
         ));
@@ -40,15 +44,39 @@ class PublishedController extends Controller
      * @Method({"GET","POST"})
      */
 
-    public function filterAction()
+    public function filterAction(Request $request)
     {
+        $refusal = new ModerationRefusal();
         $em = $this->getDoctrine()->getManager();
         $events = $em->getRepository('NumoBundle:Event') ->findAll();
-        $publishedevents = $em->getRepository('NumoBundle:Published')->findBy(array(), array('authorUpdateDate'=> 'DESC'));
+        $publishedevents = $em->getRepository('NumoBundle:Published')->findBy([], ['authorUpdateDate'=> 'DESC']);
+        $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
+
+
+        $form = $this->createForm('NumoBundle\Form\ModerationType');
+        $form->handleRequest($request);
+        if ($form->isValid() && $form->isSubmitted()) {
+
+            $this->addFlash(
+                'messageContact',
+                'Votre mail de contact a bien été envoyé'
+            );
+
+            $comment = (new \Swift_Message())
+                ->setSubject($refusal->getTitle(). 'a été refusé')
+                ->setTo($refusal->getContactEmail())
+                ->setFrom($company ->getContactEmail())
+                ->setBody($refusal->getComment());
+
+            $this->get('mailer')->send($comment);
+            return $this-> redirectToRoute('events_index');
+
+        }
 
         return $this -> render('events/index.html.twig', array(
             'events'=> $events,
-            'publishedevents' =>$publishedevents
+            'publishedevents' => $publishedevents,
+            'form' => $form->createView()
         ));
 
     }
