@@ -137,7 +137,7 @@ class Event
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="EvtDate", mappedBy="event", cascade={"all"})
      */
     private $evtDates;
 
@@ -466,8 +466,8 @@ class Event
      */
     public function addEvtDate(\NumoBundle\Entity\EvtDate $evtDate)
     {
-        $this->evtDates[] = $evtDate;
-
+        $evtDate->setEvent($this);
+        $this->getEvtDates()->add($evtDate);
         return $this;
     }
 

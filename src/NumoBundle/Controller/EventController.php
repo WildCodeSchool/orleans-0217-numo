@@ -134,6 +134,7 @@ class EventController extends Controller
         $event = new Event();
         $evtDate0 = new EvtDate();
         $evtDate0->setEvtDate(new \DateTime());
+        $evtDate0->setEvent($event);
         $event->getEvtDates()->add($evtDate0);
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
@@ -154,7 +155,6 @@ class EventController extends Controller
             $event
                 ->setAuthor($curentUser)
                 ->setCreationDate(new \DateTime);
-            $em = $this->getDoctrine()->getManager();
             if ($curentUser->getTrust() == 1) {
                 // --- si utilisateur de confiance, on publie directement
 
@@ -196,8 +196,6 @@ class EventController extends Controller
                 }
                 $this->get('mailer')->send($confirmation);
             }
-            // --- on envoie une notification au(x) moderateur(s)
-            // A creer
 
             return $this->redirectToRoute('event_list_published');
         }
