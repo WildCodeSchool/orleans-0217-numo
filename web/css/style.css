@@ -84,7 +84,6 @@ footer {
     /*background-image: url("../img/header.jpg");*/
     background-repeat: no-repeat;
     background-position: center;
-    border-bottom: solid #FC0606 2px;
 }
 
 .btnOrange {
@@ -98,6 +97,12 @@ footer {
     color: white;
     height: 250px;
     padding-top: 30px;
+}
+
+.bg-3 {
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .btnwhite{
@@ -474,7 +479,7 @@ div.separation {
 }
 
 .forgot-password a{
-    color: white;
+    color: #8CC63C;
     font-weight: bold;
 }
 
@@ -598,6 +603,7 @@ div.separation {
     padding-top: 30px;
     padding-bottom: 20px;
     background-color: #fff;
+    border-top: solid #FC0606 2px;
 }
 
 li{
