@@ -37,25 +37,28 @@ class EventUploadListener
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getEntity();
-        if ($this->oldFile) {
-            $entity->setImageUrl($this->oldFile);
-
-        } else {
-            $this->uploadFile($entity);
+        if ($entity instanceof Event) {
+            $masterRequest = $this->requestStack->getMasterRequest()->get('_route');
+            if ($masterRequest == 'event_edit_await') {
+                if ($this->oldFile) {
+                    $entity->setImage($this->oldFile);
+                } else {
+                    $this->uploadFile($entity);
+                }
+            }
         }
     }
 
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if (!$entity instanceof Event) {
-            return;
-        }
-        $masterRequest = $this->requestStack->getMasterRequest()->get('_route');
-        if($masterRequest == 'event_edit'){
-            $this->oldFile=$entity->getImage();
-            if ($fileName = $entity->getImage()) {
-                $entity->setImage(new File($this->uploader->getTargetDir() . '/' . $fileName));
+        if ($entity instanceof Event) {
+            $masterRequest = $this->requestStack->getMasterRequest()->get('_route');
+            if ($masterRequest == 'event_edit_await') {
+                $this->oldFile = $entity->getImage();
+                if ($fileName = $entity->getImage()) {
+                    $entity->setImage(new File($this->uploader->getTargetDir() . '/' . $fileName));
+                }
             }
         }
     }
@@ -64,11 +67,11 @@ class EventUploadListener
     {
         $entity = $args->getEntity();
 
-        if (!$entity instanceof Event) {
-            return;
-        }
-        if(is_file($entity->getImage())) {
-            unlink($entity->getImage());
+        if ($entity instanceof Event) {
+            $filePath = $this->uploader->getTargetDir() . '/' . $entity->getImage();
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
         }
     }
 
@@ -87,6 +90,7 @@ class EventUploadListener
         }
 
         $fileName = $this->uploader->upload($file);
+
         $entity->setImage($fileName);
     }
 }
