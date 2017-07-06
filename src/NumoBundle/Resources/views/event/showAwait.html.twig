@@ -42,7 +42,11 @@
 
                 {# --- date(s) --- #}
                 {% set nbDates = oldDates|length + newDates|length %}
-                <h3>{{ nbDates }} Date{% if nbDates > 1 %}s{% endif %}</h3>
+                <h3>
+                    {% transchoice nbDates %}
+                        {0} Aucune date prévue|{1} 1 date|]1,Inf] %nbDates% Dates
+                    {% endtranschoice %}
+                </h3>
 
                 <table class="table">
                     <tbody>

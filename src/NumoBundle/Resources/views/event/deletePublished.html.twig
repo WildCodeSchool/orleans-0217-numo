@@ -28,7 +28,7 @@
     {# --- partie gauche (image + descriptif) -------------------------------------------------- #}
                 <div class="col-xs-12 col-md-8">
                     <h2>{{ event.title }}</h2>
-                    <p>Mots-clé : {{ event.tags }}</p>
+                    <p>Catégorie : {{ event.tags }}</p>
                     <p>
                         {% if event.image is not empty %}
                             <img src="{{ event.image }}" alt="image {{ event.title }}" class="img-responsive" />
@@ -43,7 +43,12 @@
                 <div class="col-xs-12 col-md-4 text-center">
 
                     {# --- date(s) --- #}
-                    <h3>Date{% if event.oldDates|length > 1 %}s{% endif %}</h3>
+                    {% set nbDates = event.oldDates|length + event.newDates|length %}
+                    <h3>
+                        {% transchoice nbDates %}
+                        {0} Aucune date prévue|{1} 1 date|]1,Inf] %nbDates% Dates
+                        {% endtranschoice %}
+                    </h3>
 
                     <table class="table">
                         <tbody>

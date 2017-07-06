@@ -58,7 +58,7 @@
                 <div class="form-group">
                     {% if event.image.filename is defined %}
                         <p><img class="img-thumbnail little-img" src="{{ asset(imgDir ~ event.image.filename ) }}" ></p>
-                        <p><a href="{{ path('event_delete_image', {'id' : eventId}) }}"><input type="button" value="Modifier l'image"></a></p>
+                        <p><a href="{{ path('event_delete-image', {'id' : eventId}) }}"><input type="button" value="Modifier l'image"></a></p>
                     {% else %}
                         <div class="form-group">
                             {{ form_label(form.image) }}
@@ -121,14 +121,14 @@
                         <li class="form-group">
 
                             {{ form_label(evtDate.evtDate, 'Date : ', {'label_attr': {'class': 'in-line'}}) }}
-                            {{ form_widget(evtDate.evtDate, {'attr': {'class': 'in-line dark-text'}}) }}
-                            &nbsp;&nbsp;&nbsp;
+                            {{ form_widget(evtDate.evtDate, {'attr': {'class': 'in-line dark-text btn-sep'}}) }}
+
                             {{ form_label(evtDate.timeStart, 'Heure début : ', {'label_attr': {'class': 'in-line'}}) }}
-                            {{ form_widget(evtDate.timeStart, {'attr': {'class': 'in-line dark-text'}}) }}
-                            &nbsp;&nbsp;&nbsp;
+                            {{ form_widget(evtDate.timeStart, {'attr': {'class': 'in-line dark-text btn-sep'}}) }}
+
                             {{ form_label(evtDate.timeEnd, 'Heure fin : ', {'label_attr': {'class': 'in-line'}}) }}
-                            {{ form_widget(evtDate.timeEnd, {'attr': {'class': 'in-line dark-text'}}) }}
-                            &nbsp;&nbsp;&nbsp;
+                            {{ form_widget(evtDate.timeEnd, {'attr': {'class': 'in-line dark-text btn-sep'}}) }}
+
                             <button type="button" class="btn btn-default showtrash" id="_{{ loop.index0 }}_" onclick="delDate(this);">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </button>

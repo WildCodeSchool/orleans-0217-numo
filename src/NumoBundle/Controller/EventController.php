@@ -134,10 +134,10 @@ class EventController extends Controller
         // --- Note : les images sont gerees par des eventlisteners
         $error = '';
         $event = new Event();
-        $evtDate0 = new EvtDate();
-        $evtDate0->setEvtDate(new \DateTime());
-        $evtDate0->setEvent($event);
-        $event->getEvtDates()->add($evtDate0);
+        $firstEvtDate = new EvtDate();
+        $firstEvtDate->setEvtDate(new \DateTime());
+        $firstEvtDate->setEvent($event);
+        $event->getEvtDates()->add($firstEvtDate);
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
@@ -448,11 +448,11 @@ class EventController extends Controller
         // --- generation des tableaux dates pour affichage
         $oldDates = $newDates = [];
         $dateRef = new \DateTime();
-        foreach ($event->getEvtDates() as $evtD) {
+        foreach ($event->getEvtDates() as $eventDate) {
             $evtDate = [
-                'evtDate' => $evtD->getEvtDate()->format('Y-m-d'),
-                'timeStart' => $evtD->getTimeStart()->format('H:i'),
-                'timeEnd' => $evtD->getTimeEnd()->format('H:i')
+                'evtDate' => $eventDate->getEvtDate()->format('Y-m-d'),
+                'timeStart' => $eventDate->getTimeStart()->format('H:i'),
+                'timeEnd' => $eventDate->getTimeEnd()->format('H:i')
             ];
             if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
                 $oldDates[] = $evtDate;
@@ -461,7 +461,7 @@ class EventController extends Controller
             }
         }
         // --- definition de la route de retour
-        if ($this->getUser()->getRoles()[0] == 'ROLE_MODERATOR') {
+        if (in_array('ROLE_MODERATOR', $this->getUser()->getRoles())) {
             // --- Si moderateur ou admin -> retour sur page admin
             $goBack = 'events_index';
         } else {
@@ -540,7 +540,7 @@ class EventController extends Controller
     /**
      * Deletes an image in event entity.
      *
-     * @Route("/delete_image", name="event_delete_image")
+     * @Route("/delete-image/{id}", name="event_delete_image")
      * @Method({"GET", "POST"})
      */
     public function deleteImageAction(Event $event)
