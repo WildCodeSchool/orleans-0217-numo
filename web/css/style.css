@@ -232,6 +232,11 @@ thead{
     width: 500px;
 }
 
+.moderation-modal{
+    width:500px;
+    height: 500px;
+}
+
 .pdf{
     height:400px;
 }

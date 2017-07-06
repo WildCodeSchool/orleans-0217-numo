@@ -3,12 +3,16 @@
 namespace NumoBundle\Controller;
 
 use NumoBundle\Entity\Company;
+use NumoBundle\Entity\ModerationRefusal;
 use NumoBundle\Entity\Published;
 use NumoBundle\Entity\Event;
+use NumoBundle\Form\ModerationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
 use NumoBundle\Repository\PublishedRepository;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 
 /**
  * Published controller.
@@ -29,6 +33,7 @@ class PublishedController extends Controller
 
         $publisheds = $em->getRepository('NumoBundle:Published')->findAll();
 
+
         return $this->render('published/index.html.twig', array(
             'publisheds' => $publisheds,
         ));
@@ -40,15 +45,42 @@ class PublishedController extends Controller
      * @Method({"GET","POST"})
      */
 
-    public function filterAction()
+    public function filterAction(Request $request)
     {
+        $refusal = new ModerationRefusal();
+        $form = $this->createForm(ModerationType::class, $refusal);
+        $form->handleRequest($request);
+
         $em = $this->getDoctrine()->getManager();
         $events = $em->getRepository('NumoBundle:Event') ->findAll();
-        $publishedevents = $em->getRepository('NumoBundle:Published')->findBy(array(), array('authorUpdateDate'=> 'DESC'));
+        $publishedevents = $em->getRepository('NumoBundle:Published')->findBy([], ['authorUpdateDate'=> 'DESC']);
+
+          $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
+
+
+
+        if ($form->isValid() && $form->isSubmitted()) {
+            $comment = \Swift_Message::newInstance()
+                ->setSubject($refusal->getTitle(). 'a été refusé')
+                ->setTo($refusal->getContactEmail())
+                ->setFrom($company ->getContactEmail())
+                ->setBody($refusal->getComment());
+
+            $id = $refusal->getEventId();
+            $this->get('mailer')->send($comment);
+
+            $event = $em->getRepository('NumoBundle:Event')->findOneBy(['id'=>$id]);
+            $event->setRejected(1);
+            $em->flush();
+
+            return $this-> redirectToRoute('events_index');
+
+        }
 
         return $this -> render('events/index.html.twig', array(
             'events'=> $events,
-            'publishedevents' =>$publishedevents
+            'publishedevents' => $publishedevents,
+            'form' => $form->createView()
         ));
 
     }
