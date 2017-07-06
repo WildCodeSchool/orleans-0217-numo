@@ -2,6 +2,7 @@
 
 namespace NumoBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use NumoBundle\Entity\Company;
 use NumoBundle\Entity\Event;
 use NumoBundle\Entity\OaEvent;
@@ -130,6 +131,7 @@ class EventController extends Controller
      */
     public function newAction(Request $request)
     {
+        // --- Note : les images sont gerees par des eventlisteners
         $error = '';
         $event = new Event();
         $evtDate0 = new EvtDate();
@@ -307,6 +309,39 @@ class EventController extends Controller
      */
     public function editAwitAction(Request $request, Event $event)
     {
+        // --- Note : les images sont gerees par des eventlisteners
+        $imgDir = $this->getParameter('img_event_dir');
+        $em = $this->getDoctrine()->getManager();
+        $oldImage = $event->getImage();
+        $originalEvtDates = new ArrayCollection();
+        foreach ($event->getEvtDates() as $evtDate) {
+            $originalEvtDates->add($evtDate);
+        }
+        $form = $this->createForm(EventType::class, $event);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // --- adaptation de la liste des dates
+            foreach ($originalEvtDates as $evtDate){
+                if (false === $event->getEvtDates()->contains($evtDate)) {
+                    $em->remove($evtDate);
+                }
+            }
+            $event
+                ->setAuthor($this->getUser())
+                ->setCreationDate(new \datetime());
+            $em->flush();
+
+            return $this->redirectToRoute('event_show_await', ['id' => $event->getId()]);
+        }
+
+        return $this->render('NumoBundle:event:editAwait.html.twig', [
+            'event' => $event,
+            'imgDir' => $imgDir,
+            'eventId' => $event->getId(),
+            'oldImage' => $oldImage,
+            'form' => $form->createView(),
+        ]);
 
     }
 
@@ -318,6 +353,7 @@ class EventController extends Controller
      */
     public function deleteAwaitAction(Request $request, Event $event)
     {
+        // --- Note : les images sont gerees par des eventlisteners
         $imgDir = $this->getParameter('img_event_dir');
         $form = $this
             ->createFormBuilder()
@@ -432,6 +468,6 @@ class EventController extends Controller
         // effacement du fichier
         unlink($this->getParameter('upload_directory') . '/' .
             $path);
-        return $this->redirectToRoute('event_edit', array('id' => $event->getId()));
+        return $this->redirectToRoute('event_edit_await', array('id' => $event->getId()));
     }
 }
