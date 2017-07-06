@@ -169,15 +169,16 @@ class ApiOpenAgenda
         }
         $oldDates = [];
         $newDates = [];
-        $dateRef = new \DateTime();
+        $refDate = new \DateTime();
         foreach ($event->timings as $strDate) {
             // $strDate = 'AAAA-MM-DD HH:MM:SS' (en vrai '2017-06-01T12:00:00.000Z')
+            $curDate = new \DateTime($strDate->start);
             $evtDate = [
-                'evtDate' => substr($strDate->start, 0, 10),
-                'timeStart' => substr($strDate->start, 11, 8),
-                'timeEnd' => substr($strDate->end, 11, 8)
+                'evtDate' => $curDate->format('Y-m-d'),
+                'timeStart' => $curDate->format('H:i:s'),
+                'timeEnd' => (new \DateTime($strDate->end))->format('H:i:s'),
             ];
-            if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
+            if ($curDate < $refDate) {
                 $oldDates[] = $evtDate;
             } else {
                 $newDates[] = $evtDate;
