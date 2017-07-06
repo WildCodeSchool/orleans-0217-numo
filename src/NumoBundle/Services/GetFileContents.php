@@ -36,7 +36,7 @@ class GetFileContents
         return $this->error;
     }
 
-    public function execute(bool $api)
+    public function execute(bool $api = false)
     {
         if (!isset($this->url) || $this->url == '') {
             $this->setHttpCode(404);

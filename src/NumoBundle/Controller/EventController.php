@@ -123,7 +123,7 @@ class EventController extends Controller
     }
 
     /**
-     * Creates a new event, and register locally.
+     * Creates a new event, and register (locally or on OpenAgenda).
      *
      * @Route("/new", name="event_new")
      * @Method({"GET", "POST"})
@@ -207,8 +207,40 @@ class EventController extends Controller
         ]);
     }
 
+
     /**
-     * Finds and displays a published event.
+     * Displays an awaiting event.
+     *
+     * @Route("/showawait/{id}", name="event_show_await")
+     * @Method("GET")
+     */
+    public function showAwaitAction(Event $event)
+    {
+        $imgDir = $this->getParameter('img_event_dir');
+        $oldDates = $newDates = [];
+        $dateRef = new \DateTime();
+        foreach ($event->getEvtDates() as $evtD) {
+            $evtDate = [
+                'evtDate' => $evtD->getEvtDate()->format('Y-m-d'),
+                'timeStart' => $evtD->getTimeStart()->format('H:i'),
+                'timeEnd' => $evtD->getTimeEnd()->format('H:i')
+            ];
+            if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
+                $oldDates[] = $evtDate;
+            } else {
+                $newDates[] = $evtDate;
+            }
+        }
+        return $this->render('NumoBundle:event:showAwait.html.twig', [
+            'imgDir' => $imgDir,
+            'event' => $event,
+            'oldDates' => $oldDates,
+            'newDates' => $newDates,
+        ]);
+    }
+
+    /**
+     * displays a published event.
      *
      * @Route("/showpublished/{id}", name="event_show_published")
      * @Method({"GET", "POST" })
@@ -269,21 +301,30 @@ class EventController extends Controller
 
     }
 
-
-
     /**
-     * Displays a form to edit an existing event entity.
+     * Edit an awaiting event.
      *
-     * @Route("/{id}/edit", name="event_edit")
+     * @Route("/editawait/{id}", name="event_edit_await")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Event $event)
+    public function editAwitAction(Request $request, Event $event)
     {
 
     }
 
     /**
-     * Deletes a event entity.
+     * Deletes an awaiting event.
+     *
+     * @Route("/deleteawait/{id}", name="event_delete_await")
+     * @Method({"GET","POST"})
+     */
+    public function deleteAwaitAction(Request $request, Event $event)
+    {
+
+    }
+
+    /**
+     * Deletes a published event.
      *
      * @Route("/deletepublished/{id}", name="event_delete_published")
      * @Method({"GET","POST"})
