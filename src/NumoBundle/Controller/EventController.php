@@ -2,6 +2,7 @@
 
 namespace NumoBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use NumoBundle\Entity\Company;
 use NumoBundle\Entity\Event;
 use NumoBundle\Entity\OaEvent;
@@ -30,7 +31,7 @@ class EventController extends Controller
     /**
      * Lists all published events.
      *
-     * @Route("/listpublished", name="event_list_published")
+     * @Route("/list-published", name="event_list_published")
      * @Method("GET")
      * -- Liste les évènements -------------------------------------------------------------------------------------
      *      - par défaut : liste tous les évènements publiés à venir (provenance OpenAgenda)
@@ -130,12 +131,13 @@ class EventController extends Controller
      */
     public function newAction(Request $request)
     {
+        // --- Note : les images sont gerees par des eventlisteners
         $error = '';
         $event = new Event();
-        $evtDate0 = new EvtDate();
-        $evtDate0->setEvtDate(new \DateTime());
-        $evtDate0->setEvent($event);
-        $event->getEvtDates()->add($evtDate0);
+        $firstEvtDate = new EvtDate();
+        $firstEvtDate->setEvtDate(new \DateTime());
+        $firstEvtDate->setEvent($event);
+        $event->getEvtDates()->add($firstEvtDate);
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
@@ -209,7 +211,7 @@ class EventController extends Controller
     /**
      * Displays an awaiting event.
      *
-     * @Route("/showawait/{id}", name="event_show_await")
+     * @Route("/show-await/{id}", name="event_show_await")
      * @Method("GET")
      */
     public function showAwaitAction(Event $event)
@@ -240,10 +242,10 @@ class EventController extends Controller
     /**
      * displays a published event.
      *
-     * @Route("/showpublished/{id}", name="event_show_published")
+     * @Route("/show-published/{id}", name="event_show_published")
      * @Method({"GET", "POST" })
      */
-    public function showAction(Request $request, $id)
+    public function showPublishedAction(Request $request, $id)
     {
         $error = '';
         $published = null;
@@ -302,22 +304,56 @@ class EventController extends Controller
     /**
      * Edit an awaiting event.
      *
-     * @Route("/editawait/{id}", name="event_edit_await")
+     * @Route("/edit-await/{id}", name="event_edit_await")
      * @Method({"GET", "POST"})
      */
     public function editAwitAction(Request $request, Event $event)
     {
+        // --- Note : les images sont gerees par des eventlisteners
+        $imgDir = $this->getParameter('img_event_dir');
+        $em = $this->getDoctrine()->getManager();
+        $oldImage = $event->getImage();
+        $originalEvtDates = new ArrayCollection();
+        foreach ($event->getEvtDates() as $evtDate) {
+            $originalEvtDates->add($evtDate);
+        }
+        $form = $this->createForm(EventType::class, $event);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // --- adaptation de la liste des dates
+            foreach ($originalEvtDates as $evtDate){
+                if (false === $event->getEvtDates()->contains($evtDate)) {
+                    $em->remove($evtDate);
+                }
+            }
+            $event
+                ->setAuthor($this->getUser())
+                ->setCreationDate(new \datetime());
+            $em->flush();
+
+            return $this->redirectToRoute('event_show_await', ['id' => $event->getId()]);
+        }
+
+        return $this->render('NumoBundle:event:editAwait.html.twig', [
+            'event' => $event,
+            'imgDir' => $imgDir,
+            'eventId' => $event->getId(),
+            'oldImage' => $oldImage,
+            'form' => $form->createView(),
+        ]);
 
     }
 
     /**
      * Deletes an awaiting event.
      *
-     * @Route("/deleteawait/{id}", name="event_delete_await")
+     * @Route("/delete-await/{id}", name="event_delete_await")
      * @Method({"GET","POST"})
      */
     public function deleteAwaitAction(Request $request, Event $event)
     {
+        // --- Note : les images sont gerees par des eventlisteners
         $imgDir = $this->getParameter('img_event_dir');
         $form = $this
             ->createFormBuilder()
@@ -327,11 +363,11 @@ class EventController extends Controller
         // --- generation des tableaux dates pour affichage
         $oldDates = $newDates = [];
         $dateRef = new \DateTime();
-        foreach ($event->getEvtDates() as $evtD) {
+        foreach ($event->getEvtDates() as $eventDate) {
             $evtDate = [
-                'evtDate' => $evtD->getEvtDate()->format('Y-m-d'),
-                'timeStart' => $evtD->getTimeStart()->format('H:i'),
-                'timeEnd' => $evtD->getTimeEnd()->format('H:i')
+                'evtDate' => $eventDate->getEvtDate()->format('Y-m-d'),
+                'timeStart' => $eventDate->getTimeStart()->format('H:i'),
+                'timeEnd' => $eventDate->getTimeEnd()->format('H:i')
             ];
             if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
                 $oldDates[] = $evtDate;
@@ -340,7 +376,7 @@ class EventController extends Controller
             }
         }
         // --- definition de la route de retour
-        if ($this->getUser()->getRoles()[0] == 'ROLE_MODERATOR') {
+        if (in_array('ROLE_MODERATOR', $this->getUser()->getRoles())) {
             // --- Si moderateur ou admin -> retour sur page admin
             $goBack = 'events_index';
         } else {
@@ -368,7 +404,7 @@ class EventController extends Controller
     /**
      * Deletes a published event.
      *
-     * @Route("/deletepublished/{id}", name="event_delete_published")
+     * @Route("/delete-published/{id}", name="event_delete_published")
      * @Method({"GET","POST"})
      */
     public function deletePublishedAction(Request $request, $id)
@@ -419,7 +455,7 @@ class EventController extends Controller
     /**
      * Deletes an image in event entity.
      *
-     * @Route("/{id}/delete_image", name="event_delete_image")
+     * @Route("/delete-image/{id}", name="event_delete_image")
      * @Method({"GET", "POST"})
      */
     public function deleteImageAction(Event $event)
@@ -432,6 +468,6 @@ class EventController extends Controller
         // effacement du fichier
         unlink($this->getParameter('upload_directory') . '/' .
             $path);
-        return $this->redirectToRoute('event_edit', array('id' => $event->getId()));
+        return $this->redirectToRoute('event_edit_await', array('id' => $event->getId()));
     }
 }

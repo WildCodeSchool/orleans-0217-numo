@@ -38,7 +38,7 @@ class GetFileContents
 
     public function execute(bool $api = false)
     {
-        if (!isset($this->url) || $this->url == '') {
+        if (empty($this->url)) {
             $this->setHttpCode(404);
             $this->setError('GetFileContents : URL non définie');
             return false;
