@@ -99,7 +99,6 @@ class EventController extends Controller
         $data = $api->getEventList($options);
         $events = $data['eventList'];
         $nbEvents = $data['nbEvents'];
-        $dates = $data['eventDateList'];
         if (false === $events) {
             $events = [];
             $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
@@ -507,10 +506,17 @@ class EventController extends Controller
      * @Route("/approved/{id}", name="event_approved")
      * @Method({"GET","POST"})
      */
-    public function ApprovedAction($id)
+    public function ApprovedAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $event = $em->getRepository('NumoBundle:Event')->findOneBy(['id' => $id]);
+        $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
+
+
+        $refusal = new ModerationRefusal();
+        $form = $this->createForm(ModerationType::class, $refusal);
+        $form->handleRequest($request);
+
 
         if ($event->getImage() == null){
             $event->setImage(' ');
@@ -535,12 +541,32 @@ class EventController extends Controller
         $em->remove($event);
         $em->flush();
 
+        if ($form->isValid() && $form->isSubmitted()) {
+            $comment = \Swift_Message::newInstance()
+                ->setSubject($refusal->getTitle(). 'a été refusé')
+                ->setTo($refusal->getContactEmail())
+                ->setFrom($company ->getContactEmail())
+                ->setBody($refusal->getComment());
+
+            $id = $refusal->getEventId();
+            $this->get('mailer')->send($comment);
+
+            $event = $em->getRepository('NumoBundle:Event')->findOneBy(['id'=>$id]);
+            $event->setRejected(1);
+            $em->flush();
+
+            return $this-> redirectToRoute('events_index');
+
+        }
+
+
         $events = $em->getRepository('NumoBundle:Event') ->findAll();
         $publishedevents = $em->getRepository('NumoBundle:Published')->findBy(array(), array('authorUpdateDate'=> 'DESC'));
 
         return $this -> render('events/index.html.twig', array(
             'events'=> $events,
-            'publishedevents' =>$publishedevents
+            'publishedevents' =>$publishedevents,
+            'form' => $form->createView()
         ));
     }
 }

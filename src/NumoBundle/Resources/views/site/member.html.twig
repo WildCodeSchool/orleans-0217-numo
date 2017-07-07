@@ -27,7 +27,7 @@
                     {% if member.imageUrl == null %}
                         <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" class="imgMember">
                     {% else %}
-                        <img src="{{ asset('uploads/users/' ~ member.imageUrl.filename) }}" alt="{{ member.name }}"
+                        <img src="{{ asset('uploads/users/' ~ member.imageUrl) }}" alt="{{ member.name }}"
                              class="imgMember">
                     {% endif %}
                 </div>

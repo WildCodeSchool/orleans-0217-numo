@@ -54,29 +54,41 @@
                 <hr>
                 <tr class="text-center admin">
                     <th class="text-center">NOM DE L'EVENEMENT</th>
-                    <th class="text-center">DERNIERE MODIFICATION</th>
+                    <th class="text-center">DATE DE L'EVENEMENT</th>
                     <th class="text-center">PROPOSE PAR</th>
                     <th class="text-center">STATUT</th>
                     <th class="text-center">ACTION</th>
                 </tr>
                 </thead>
                 <tbody class="list">
-                {% for publishedevent in publishedevents %}
-                <tr class="showPublished">
-                    <td class="admin"><p class="moderate">{{ publishedevent.title }}</td>
-                    <td class="admin">{{ publishedevent.moderatorUpdateDate|date('d/m/Y') }}</td>
-                    <td class="admin">{{ publishedevent.moderator }}</td>
-                    {% if publishedevent.deleted == 0 %}
-                        <td class="admin">Publié</td>
-                    {% endif %}
-                    <td><a href="{{ path('event_delete_published', {'id' : publishedevent.id}) }}">
-                            <button type="button" value="MODIFIER">MODIFIER</button>
-                        </a>
-                        <a href="{{ path('event_delete_published', {'id' : publishedevent.id}) }}">
-                            <button type="button" class="moderate" value="MODIFIER">SUPPRIMER</button>
-                        </a></td>
+                {% for event in eventlist %}
+                    <tr class="showPublished">
+                        <td class="admin"><p class="moderate">{{ event.event.title }}</p></td>
+                        <td class="admin">
+                            {% if event.event.newdates is not empty %}
+                               {{ event.event.newDates[0].evtDate|localizeddate("medium", "none", "locale", null, "cccc d LLLL yyyy") }}
+                            {% else %}
+                                Cet évènement est passé
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if event.published %}
+                                {{ event.published.author.name }}
+                                {{ event.published.author.firstname }}
+                            {% else %}
+                                Le nom n'est pas disponible
+                            {% endif %}
+                        </td>
 
-                    {% endfor %}
+                        <td class="admin">Publié</td>
+                        <td><a href="{{ path('event_delete_published', {'id' : event.event.id}) }}">
+                                <button type="button" value="MODIFIER">MODIFIER</button>
+                            </a>
+                            <a href="{{ path('event_delete_published', {'id' : event.event.id}) }}">
+                                <button type="button" class="moderate" value="MODIFIER">SUPPRIMER</button>
+                            </a></td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
             <a id="next" class="btn btn-success btnGreen btn-lg">Voir plus</a>
