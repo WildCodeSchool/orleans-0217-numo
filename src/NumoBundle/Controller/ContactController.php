@@ -31,8 +31,8 @@ class ContactController extends DefaultController
         if($form->isSubmitted() && $form->isValid()) {
 
             $this->addFlash(
-                'messageContact',
-                'Votre mail de contact a bien été envoyé'
+                'success',
+                'Votre message à bien été envoyé'
             );
 
             $commentaire = \Swift_Message::newInstance()
@@ -48,8 +48,8 @@ class ContactController extends DefaultController
         if($form->isSubmitted() != $form->isValid() ){
 
             $this->addFlash(
-                'messageNoContact',
-                'Une erreur est survenue lors de votre envoi de mail'
+                'danger',
+                'Une erreur est survenue lors de l\'envoi de votre message'
             );
         }
 
