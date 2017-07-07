@@ -84,11 +84,10 @@ class PublishedController extends Controller
         ));
 
     }
-
     /**
      * Creates a new published entity.
      *
-     * @Route("/new", name="published_new")
+     * @Route("/", name="published_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
