@@ -98,6 +98,7 @@ class EventController extends Controller
         $api = $this->get('numo.apiopenagenda');
         $data = $api->getEventList($options);
         $events = $data['eventList'];
+        $dates = $data['eventDateList'];
         $nbEvents = $data['nbEvents'];
         if (false === $events) {
             $events = [];
@@ -517,14 +518,11 @@ class EventController extends Controller
         $form = $this->createForm(ModerationType::class, $refusal);
         $form->handleRequest($request);
 
-
-        if ($event->getImage() == null){
+/*        if ($event->getImage() == null){
             $event->setImage(' ');
-        }
+        }*/
 
         $author = $event->getAuthor();
-
-        if ($event)
 
         $api = $this->get('numo.apiopenagenda');
         $uid = $api->publishEvent($event);
@@ -540,6 +538,27 @@ class EventController extends Controller
         $em->persist($published);
         $em->remove($event);
         $em->flush();
+
+        $options = [
+            'search[passed]' => 0,
+            'offset' => 0,
+        ];
+
+
+        $data = $api->getEventList($options);
+        $publishedevents = $data['eventList'];
+        $eventlist=[];
+        $repo = $em->getRepository('NumoBundle:Published');
+
+        foreach ($publishedevents as $publishedevent){
+            if(!empty($publishedevent->getNewDates())){
+                $eventlist[]=[
+                    'event' => $publishedevent,
+                    'published' => $repo->findOneBy(['uid' => $publishedevent->getId()])
+                ];
+            }
+        }
+
 
         if ($form->isValid() && $form->isSubmitted()) {
             $comment = \Swift_Message::newInstance()
@@ -566,7 +585,8 @@ class EventController extends Controller
         return $this -> render('events/index.html.twig', array(
             'events'=> $events,
             'publishedevents' =>$publishedevents,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'eventlist' => $eventlist
         ));
     }
 }
