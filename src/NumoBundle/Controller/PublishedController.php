@@ -53,9 +53,26 @@ class PublishedController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $events = $em->getRepository('NumoBundle:Event') ->findAll();
-        $publishedevents = $em->getRepository('NumoBundle:Published')->findBy([], ['authorUpdateDate'=> 'DESC']);
+        $options = [
+            'search[passed]' => 0,
+            'offset' => 0,
+        ];
 
-          $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
+        $api = $this->get('numo.apiopenagenda');
+        $data = $api->getEventList($options);
+        $publishedevents = $data['eventList'];
+        $eventlist=[];
+        $repo = $em->getRepository('NumoBundle:Published');
+
+        foreach ($publishedevents as $publishedevent){
+            if(!empty($publishedevent->getNewDates())){
+                $eventlist[]=[
+                    'event' => $publishedevent,
+                    'published' => $repo->findOneBy(['uid' => $publishedevent->getId()])
+                ];
+            }
+        }
+        $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
 
 
 
@@ -77,18 +94,17 @@ class PublishedController extends Controller
 
         }
 
-        return $this -> render('events/index.html.twig', array(
+        return $this -> render('events/index.html.twig', [
             'events'=> $events,
-            'publishedevents' => $publishedevents,
+            'eventlist' => $eventlist,
             'form' => $form->createView()
-        ));
+        ]);
 
     }
-
     /**
      * Creates a new published entity.
      *
-     * @Route("/new", name="published_new")
+     * @Route("/", name="published_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
