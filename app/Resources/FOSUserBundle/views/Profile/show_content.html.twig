@@ -162,8 +162,8 @@
                         <td>{{ oaevent.title }}</td>
                         <td>{{ oaevent.description }}</td>
                         <td>{{ oaevent.address }}</td>
-                        <td><a href=""><button type="button" class="btn btn-submit">OUI</button></a></td>
-                        <td><a href=""><button type="button" class="btn btn-submit">OUI</button></a></td>
+                        <td><a href="{{ path('event_edit_published') }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
+                        <td><a href="{{ path('event_delete_published') }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
