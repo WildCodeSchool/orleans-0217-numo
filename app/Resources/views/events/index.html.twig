@@ -26,11 +26,12 @@
                     <td class="admin"><p class="moderate">{{ event.title }}</td>
                     <td class="admin">{{ event.creationDate|date('d/m/Y') }}</td>
                     <td class="admin">{{ event.author }}</td>
-                    <td><a href="{{ path('event_delete_published', {'id' : event.id}) }}">
+                    <td><a href="{{ path('event_show_await', {'id' : event.id}) }}">
                             <button type="button" value="MODIFIER"><span class="glyphicon glyphicon-eye-open"></span>
                             </button>
                         </a>
-                    <td><a href="{{ path('event_delete_published', {'id' : event.id}) }}">
+                    <td>
+                        <a href="{{ path('event_approved', {'id' : event.id}) }}">
                             <button type="button" value="MODIFIER">PUBLIER</button>
                         </a>
                         <button type="button" class="button-admin" data-toggle="modal" data-target="#exampleModal"
