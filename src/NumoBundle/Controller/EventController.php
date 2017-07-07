@@ -309,7 +309,7 @@ class EventController extends Controller
      * @Route("/edit-await/{id}", name="event_edit_await")
      * @Method({"GET", "POST"})
      */
-    public function editAwitAction(Request $request, Event $event)
+    public function editAwaitAction(Request $request, Event $event)
     {
         // --- Note : les images sont gerees par des eventlisteners
         $imgDir = $this->getParameter('img_event_dir');

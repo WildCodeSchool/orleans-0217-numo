@@ -137,8 +137,8 @@
                                 Refusé
                             {% endif %}
                         </td>
-                        <td><a href=""><button type="button" class="btn btn-submit">OUI</button></a></td>
-                        <td><a href=""><button type="button" class="btn btn-submit">OUI</button></a></td>
+                        <td><a href="{{ path('event_edit_await') }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
+                        <td><a href="{{ path('event_delete_await') }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
