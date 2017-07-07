@@ -30,6 +30,11 @@ class ContactController extends DefaultController
 
         if($form->isSubmitted() && $form->isValid()) {
 
+            $this->addFlash(
+                'success',
+                'Votre message à bien été envoyé'
+            );
+
             $commentaire = \Swift_Message::newInstance()
                 ->setSubject($contact->getSujet())
                 ->setTo($company->getContactEmail())
@@ -38,6 +43,14 @@ class ContactController extends DefaultController
 
             $this->get('mailer')->send($commentaire);
             return $this-> redirectToRoute('contact');
+        }
+
+        if($form->isSubmitted() != $form->isValid() ){
+
+            $this->addFlash(
+                'danger',
+                'Une erreur est survenue lors de l\'envoi de votre message'
+            );
         }
 
         return $this->render('NumoBundle:site:pageContact.html.twig', [

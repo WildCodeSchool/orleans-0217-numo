@@ -1,0 +1,119 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+            {# --- titre --------------------------------------------------------------------------------#}
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <h1 class="title-view">Suppression d'un évènement</h1>
+                <div class="separation barreRed"></div>
+                {{ form_start(form) }}
+                {{ form_widget(form.delete, {'attr': {'class': 'btn btn-default btn-sep'}}) }}
+                <a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Ne pas supprimer</a>
+                {{ form_end(form) }}
+                <div class="separation barreRed"></div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            {% if error == '' %}
+
+    {# --- partie gauche (image + descriptif) -------------------------------------------------- #}
+                <div class="col-xs-12 col-md-8">
+                    <h2>{{ event.title }}</h2>
+                    <p>Catégorie : {{ event.tags }}</p>
+                    <p>
+                        {% if event.image is not empty %}
+                            <img src="{{ event.image }}" alt="image {{ event.title }}" class="img-responsive" />
+                        {% else %}
+                            <img src="{{ asset('img/event_placeholder.png') }}" alt="image {{ event.title }}" class="img-responsive" />
+                        {% endif %}
+                    </p>
+                    <p>{{ event.description }}</p>
+                </div>
+
+    {# --- partie droite (date + geoloc + ...  ------------------------------------------------- #}
+                <div class="col-xs-12 col-md-4 text-center">
+
+                    {# --- date(s) --- #}
+                    {% set nbDates = event.oldDates|length + event.newDates|length %}
+                    <h3>
+                        {% transchoice nbDates %}
+                        {0} Aucune date prévue|{1} 1 date|]1,Inf] %nbDates% Dates
+                        {% endtranschoice %}
+                    </h3>
+
+                    <table class="table">
+                        <tbody>
+                            {# --- dates passees --------------------------------------------------- #}
+                            {% if event.oldDates|length > 1 %}
+                                <tr><td class="text-left grey-text">...</td><td></td></tr>
+                            {% endif %}
+                            {% if event.oldDates|length > 0 %}
+                                <tr>
+                                    <td class="text-left grey-text">
+                                        {{ event.oldDates|last.evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}
+                                    </td>
+                                    <td class="text-right grey-text">
+                                        {{ event.oldDates|last.timeStart|localizeddate("medium", "none", null, null, "HH'h'mm") }}
+                                        à {{ event.oldDates|last.timeEnd|localizeddate("medium", "none", null, null, "HH'h'mm") }}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            {# --- Prochaines dates ------------------------------------------------ #}
+                            {% for evtDate in event.newDates|slice(0, 4) %}
+                                <tr>
+                                    <td class="text-left {% if loop.index == 1 %} strong-text {% endif %}">
+                                        {{ evtDate.evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}
+                                    </td>
+                                    <td class="text-right {% if loop.index == 1 %} strong-text {% endif %}">
+                                        {{ evtDate.timeStart|localizeddate("medium", "none", null, null, "HH'h'mm") }}
+                                        à {{ evtDate.timeEnd|localizeddate("medium", "none", null, null, "HH'h'mm") }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            {% if event.newDates|length > 5 %}
+                                <tr><td class="text-left">...</td><td></td></tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+
+                    {# --- adresse ------------------------------------------------------------- #}
+                    <div class="separation barreRed"></div>
+                    <h3>Lieu</h3>
+                    <p>{{ event.placename }}</p>
+                    <p>{{ event.address }}</p>
+
+                    {# --- organisateur -------------------------------------------------------- #}
+                    <div class="separation barreRed"></div>
+                    <h3>Organisé par</h3>
+                    <p>
+                        {% if published and published.author %}
+                            <img class="little-img" src="{{ published.author.imageUrl }}" alt="image organisateur {{ published.author.name }}" />
+                            {{ published.author.name }} {{ published.author.firstname }}
+                        {% else %}
+                            Information non disponible.
+                        {% endif %}
+                    </p>
+                </div>
+
+            {% else %}
+
+                <div class="col-xs-12 erreur text-center">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock %}
+

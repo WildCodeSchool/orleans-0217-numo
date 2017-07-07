@@ -4,14 +4,15 @@
 
 {% block body %}
 
-    <header>
-        <div class="header-content">
-            <div class="header-content-inner">
+    <div class="container-fluid bg-3 text-center">
 
-                <h2 id="homeHeading">Modifier le profil</h2>
-                <hr>
+        <h3 class="margin"></h3>
+        <div class="row">
 
-                <div style="margin-left: 160px">
+                <h2 class="title-view">Modifier le profil</h2>
+                <div class="separation barrePurple"></div>
+
+                <div class="form-left-margin">
                 {{ form_start(form, {
                     'action': path('fos_user_profile_edit'),
                     'attr': { 'class': 'fos_user_profile_edit' }}) }}
@@ -48,24 +49,18 @@
                     {{ form_errors(form.description) }}
                 </div>
 
-                <div class="form-group">
-                    <label class="col-sm-2" style="margin-left: 10px">Image actuelle</label>
-                    <div class="col-sm-1">
-                        {% if user.imageUrl == null %}
-                            <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" style="height: 70px">
-                        {% else %}
-                            <img src="{{ asset('uploads/users/' ~ user.imageUrl.filename) }}" alt="{{ user.name }}" style="height: 70px">
-                        {% endif %}
+                {% if app.user.imageUrl.filename is defined %}
+                    <p><img class="img-thumbnail" src="{{ asset('uploads/users/' ~ app.user.imageUrl.filename ) }}" style="height: 100px"></p>
+                    <p><a href="{{ path('user_delete_image', {'id' : app.user.id}) }}"><input type="button" value="Modifier l'image"></a></p>
+                {% else %}
+                    <div class="form-group">
+                        {{ form_label(form.imageUrl) }}
+                        <div class="col-sm-6">
+                            {{ form_widget(form.imageUrl) }}
+                        </div>
+                        {{ form_errors(form.imageUrl) }}
                     </div>
-                </div>
-
-                <div class="form-group">
-                    {{ form_label(form.imageUrl) }}
-                    <div class="col-sm-6">
-                        {{ form_widget(form.imageUrl) }}
-                    </div>
-                    {{ form_errors(form.imageUrl) }}
-                </div>
+                {% endif %}
 
                  {% if is_granted('ROLE_ADHERENT') %}
                      <div class="form-group">
@@ -180,20 +175,14 @@
                 <div class="col-sm-6 col-sm-offset-2 text-center">
                     <input type="submit" value="{{ 'Valider'|trans }}" class="col-sm-offset-1 btn btn-default btn-xl sr-button"/>
                 </div>
-                {{ form_end(form) }}
+
+                    {{ form_widget(form._token) }}
+                </form>
                 </div>
 
-            </div>
         </div>
-    </header>
-
-
-
+    </div>
 
 
 {% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('js/summernote.js') }}"></script>
-    <script src="{{ asset('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js') }}"></script>
-{% endblock %}
+

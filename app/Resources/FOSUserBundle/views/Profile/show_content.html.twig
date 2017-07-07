@@ -2,21 +2,19 @@
 
 {% block body %}
 
-
     <div class="container-fluid profileUser">
 
         <div class="col-xs-12 text-center">
-            <div class="separation"></div>
-            <h1>{{ user.name }} {{ user.firstname }}</h1>
-            <div class="separation"></div>
+            <h1 class="title-view">{{ user.name }} {{ user.firstname }}</h1>
+            <div class="separation barreGreen"></div>
         </div>
 
         <div class="row">
             <div class="col-lg-offset-1 col-lg-2">
                 {% if user.imageUrl == null %}
-                    <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" style="height: 231px">
+                    <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" class="placeholder-show-profile">
                 {% else %}
-                    <img src="{{ asset('uploads/users/' ~ user.imageUrl.filename) }}" alt="{{ user.name }}"
+                    <img src="{{ asset('uploads/users/' ~ user.imageUrl) }}" alt="{{ user.name }}"
                          style="height: 70px">
                 {% endif %}
             </div>
@@ -27,7 +25,6 @@
                     <p>{{ user.description }}</p>
                     <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-default">Editer</a>
                     <a href="{{ path('fos_user_change_password') }}" class="btn btn-default">Modifier le mot de passe</a>
-
                     {% if not is_granted('ROLE_ADHERENT') %}
                         <a href="" class="btn btn-default">Devenir Adhérent</a>
                     {% endif %}
@@ -106,33 +103,71 @@
 
             <div class="text-center">
                 <h2>Mes événements</h2>
+                <div class="separation barreGreen"></div>
             </div>
-            {% if user.events | length != 0 %}
-                <div class="container-fluid">
-                    <div class="row no-gutter popup-gallery">
-                        {% for event in user.events %}
-                            <div class="col-lg-4 col-sm-6">
-                                <a href="{{ path('event_show_published', {'id': event.id}) }}"
-                                   class="portfolio-box">
-                                    <img class="imageEvents img-responsive" src="{{ user.event.image }}"
-                                        alt="">
-                                    <div class="portfolio-box-caption">
-                                        <div class="portfolio-box-caption-content">
-                                            <div class="project-category text-faded">
-                                                <h2>{{ user.event.title }}</h2>
-                                            </div>
-                                            <div class="project-name">
-                                                {{ user.event.description }}
-                                            </div>
-                                            <p> {{ user.event.address }}</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
+
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <p><a href="{{ path('event_new') }}" class="btn btn-default btn-xs" role="button">Créer un nouvel
+                        évènement</a></p>
             {% endif %}
+
+            <h3 class="col-lg-offset-1">Evènements en attente</h3>
+
+            <table class="text-center">
+                <thead>
+                <tr>
+                    <th>TITRE</th>
+                    <th>DESCRIPTION</th>
+                    <th>ADRESSE</th>
+                    <th>STATUS</th>
+                    <th>MODIFIER</th>
+                    <th>SUPPRIMER</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for event in events %}
+                    <tr>
+                        <td>{{ event.title }}</td>
+                        <td>{{ event.description }}</td>
+                        <td>{{ event.address }}</td>
+                        <td>
+                            {% if event.rejected == 0 %}
+                                Attente
+                            {% else %}
+                                Refusé
+                            {% endif %}
+                        </td>
+                        <td><a href="{{ path('event_edit_await') }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
+                        <td><a href="{{ path('event_delete_await') }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <h3 class="col-lg-offset-1">Evènements Publiés</h3>
+
+            <table class="text-center">
+                <thead>
+                <tr>
+                    <th>TITRE</th>
+                    <th>DESCRIPTION</th>
+                    <th>ADRESSE</th>
+                    <th>MODIFIER</th>
+                    <th>SUPPRIMER</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for oaevent in oaevents %}
+                    <tr>
+                        <td>{{ oaevent.title }}</td>
+                        <td>{{ oaevent.description }}</td>
+                        <td>{{ oaevent.address }}</td>
+                        <td><a href="{{ path('event_edit_published') }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
+                        <td><a href="{{ path('event_delete_published') }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
         {% endif %}
 

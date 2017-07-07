@@ -42,7 +42,7 @@
                                 <a href="{{ path('fos_user_profile_show') }}" class="glyphicon glyphicon-user"> {{ app.user.name }} {{ app.user.firstname }}</a>
                             </li>
                             <li>
-                                <a href="{{ path('fos_user_security_logout') }}" class="glyphicon glyphicon-log-in"><span class="font-lato">Deconnexion</span></a>
+                                <a href="{{ path('fos_user_security_logout') }}" class="glyphicon glyphicon-log-in"><span class="font-lato"> Deconnexion</span></a>
                             </li>
 
                             {% else %}
@@ -54,10 +54,21 @@
                             </li>
                             {%endif%}
                           </ul>
+
                 </div>
+
         </div>
         <!-- /.container-fluid -->
+
     </nav>
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} alert-dismissable text-center">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
 
 {% endblock %}
 

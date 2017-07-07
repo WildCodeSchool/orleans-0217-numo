@@ -61,11 +61,11 @@ class User extends BaseUser
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Assert\File(
-     *     maxSize = "2024k",
+     * @Assert\Image(
+     *     maxSize = "1024k",
      *     maxSizeMessage="L'image est trop lourde.",
-     *     mimeTypes = {"application/jpg", "application/jpeg", "application/png", "application/gif"},
-     *     mimeTypesMessage = "Merci d'uploader une image valide"
+     *     allowLandscape = false,
+     *     allowLandscapeMessage = "Les formats paysages ne sont pas autorisés"
      * )
      */
     protected $imageUrl;
@@ -76,6 +76,7 @@ class User extends BaseUser
      * @Assert\NotBlank(groups={"Registration", "Profile"})
      */
     protected $trust;
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
@@ -596,4 +597,14 @@ class User extends BaseUser
     {
         return $this->events;
     }
+
+    /**
+     * Check if a user as a defined role
+     *
+     */
+    public function isGranted($role)
+    {
+        return in_array($role, $this->getRoles());
+    }
+
 }

@@ -1,0 +1,197 @@
+{% extends 'layoutAdmin.html.twig' %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/fullcalendar.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+
+    {# --- titre --------------------------------------------------------------------------------#}
+            <div class="col-xs-12 text-center">
+                <h1 class="title-view">{{ event.title }}</h1>
+
+{# --- provisoire pour tester les fonctions --- #}
+                <a href="{{ path('events_index') }}" class="btn btn-default btn-txt btn-sep" role="button">RETOUR A LA LISTE</a>
+                <a href="{{ path('event_edit_await', {'id': event.id}) }}" class="btn btn-default btn-txt btn-sep" role="button">EDITER</a>
+                <button type="button" class="btn btn-default btn-txt btn-sep" data-toggle="modal" data-target="#exampleModal"
+                        data-id="{{ event.id }}" data-title="{{ event.title }}" data-email="{{ event.author.email }}">REFUSER
+                </button>
+                <a href="{{ path('event_approved', {'id' : event.id}) }}">
+                    <button type="button" class="btn btn-default btn-txt btn-sep" value="MODIFIER">PUBLIER</button>
+                </a>
+
+                {# ------------------ #}
+
+                <div class="separation barreGreen"></div>
+            </div>
+
+    {# --- partie gauche (image + descriptif) -------------------------------------------------- #}
+            <div class="col-xs-12 col-md-8 text-center">
+                <h2>Catégorie : {{ event.tags.name }}</h2>
+                <p>
+                    {% if event.image is empty %}
+                        <img src="{{ asset('/img/event_placeholder.png') }}" alt="" class="img-responsive center-block" />
+                    {% else %}
+                        <img src="{{ asset('uploads/users/' ~ event.image) }}" alt="image {{ event.title }}" class="img-responsive center-block" />
+                    {% endif %}
+                </p>
+                <p class="content-view">{{ event.description }}</p>
+                <p class="content-view">{{ event.freeText }}</p>
+
+            </div>
+
+    {# --- partie droite (date + geoloc + ...  ------------------------------------------------- #}
+            <div class="col-xs-12 col-md-4 text-center">
+
+                {# --- date(s) --- #}
+                {% set nbDates = oldDates|length + newDates|length %}
+                <h3>
+                    {% transchoice nbDates %}
+                        {0} Aucune date prévue|{1} 1 date|]1,Inf] %nbDates% Dates
+                    {% endtranschoice %}
+                </h3>
+
+                <table class="table">
+                    <tbody>
+                        {# --- dates passees --------------------------------------------------- #}
+                        {% if oldDates|length > 1 %}
+                            <tr><td class="text-left grey-text">...</td><td></td></tr>
+                        {% endif %}
+                        {% if oldDates is not empty %}
+                            <tr>
+                                <td class="text-left grey-text">
+                                    {{ oldDates|last.evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}
+                                </td>
+                                <td class="text-right grey-text">
+                                    {{ oldDates|last.timeStart|localizeddate("medium", "none", null, null, "HH'h'mm") }}
+                                    à {{ oldDates|last.timeEnd|localizeddate("medium", "none", null, null, "HH'h'mm") }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {# --- Prochaines dates ------------------------------------------------ #}
+                        {% for evtDate in newDates|slice(0, 4) %}
+                            <tr>
+                                <td class="text-left {% if loop.index == 1 %} strong-text {% endif %}">
+                                    {{ evtDate.evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}
+                                </td>
+                                <td class="text-right {% if loop.index == 1 %} strong-text {% endif %}">
+                                    {{ evtDate.timeStart|localizeddate("medium", "none", null, null, "HH'h'mm") }}
+                                    à {{ evtDate.timeEnd|localizeddate("medium", "none", null, null, "HH'h'mm") }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% if newDates|length > 5 %}
+                            <tr><td class="text-left">...</td><td></td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+
+                {# --- adresse ------------------------------------------------------------- #}
+                <div class="separation"></div>
+                <h3>Lieu</h3>
+                <p>{{ event.placename }}</p>
+                <p>{{ event.address }}</p>
+
+                {# --- map ----------------------------------------------------------------- #}
+                <div class="separation"></div>
+                <div id="closemap" class="text-center cursor-pointer" onclick="closeMap();">X</div>
+                <div id="mapzone"></div>
+
+                {# --- billetterie --- #}
+                <div class="separation"></div>
+                <h3>Billetterie / inscription</h3>
+                <p>{{ event.pricinginfo.pricing }}</p>
+                {% if event.ticketLink > '' %}
+                    <p><a href="{{ event.ticketLink }}" class="btn btn-default" role="button" target="_blanc">Accéder à la billetterie</a></p>
+                {% endif %}
+
+                {# --- organisateur -------------------------------------------------------- #}
+                <div class="separation"></div>
+                <h3>Organisé par</h3>
+                <p>
+                    {% if event.author.imageUrl is not empty %}
+                       <img class="little-img" src="{{ event.author.imageUrl }}" alt="image organisateur {{ event.author.name }}" />
+                    {% endif %}
+                    {{ event.author.name }} {{ event.author.firstname }}
+                </p>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal">
+        <div class="modal-dialog modal-sm text-center moderation-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title font-lato"></h4>
+                </div>
+                <div class="modal-body font-lato">
+                    {{ form_start(form) }}
+                    {{ form_label(form.title) }}
+                    {{ form_widget(form.title) }}
+                    {{ form_errors(form.title) }}
+                    {{ form_label(form.comment) }}
+                    {{ form_widget(form.comment) }}
+                    {{ form_errors(form.comment) }}
+                    {{ form_label(form.contactEmail) }}
+                    {{ form_widget(form.contactEmail) }}
+                    <input type="submit" class="btn btn-default btn-send"/>
+                    {{ form_end(form) }}
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/showevent.js') }}"></script>
+    <script src="{{ asset('js/published.js') }}"></script>
+    <script>
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var title = button.data('title');
+            var email = button.data('email');
+            var modal = $(this);
+            modal.find('#moderation_eventId').val(id)
+            modal.find('.modal-title').text('Refuser l\'événement ' + title);
+            modal.find('#moderation_title').val(title);
+            modal.find('.btn-send').val('Envoyer à '+ email);
+            modal.find('#moderation_contactEmail').val(email);
+
+        })
+    </script>
+
+    <script>
+
+        function initMap(){
+            var centerMap = new google.maps.LatLng('{{ event.latitude }}', '{{ event.longitude }}');
+            var optionsMap = {
+                zoom: 14,
+                center: centerMap,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            var myMap = new google.maps.Map(document.getElementById("mapzone"), optionsMap);
+            var optionsMarqueur = {
+                position: centerMap,
+                map: myMap,
+                title: "{{ event.placename }}"
+            }
+            var marqueur = new google.maps.Marker(optionsMarqueur);
+        }
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5FbMBpVejJw6o_4r3eHkUQQde6vlDItg&callback=initMap" async defer></script>
+    <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
+{% endblock %}

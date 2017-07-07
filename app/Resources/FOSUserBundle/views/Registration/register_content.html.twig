@@ -4,14 +4,14 @@
 
 {% block body %}
 
-    <header>
-        <div class="header-content">
-            <div class="header-content-inner">
+    <div class="container-fluid bg-1 text-center">
 
-                <h2 id="homeHeading">Inscription</h2>
-                <hr>
+        <h3 class="margin"></h3>
+        <div class="row ">
+            <h2 class="title-view">Inscription</h2>
+            <div class="separation barrePurple"></div>
 
-                <div style="margin-left: 160px">
+            <div class="form-left-margin">
                 {{ form_start(form, {
                     'method': 'post',
                     'action': path('fos_user_registration_register'),
@@ -76,18 +76,15 @@
 
                 {{ form_widget(form.trust, {'value' : '0'}) }}
 
-                    {{ form_rest(form) }}
+                {{ form_rest(form) }}
 
                 <div class="col-sm-6 col-sm-offset-2 text-center">
                     <input type="submit" class="col-sm-offset-1 btn btn-default btn-xl sr-button" value="{{ 'registration.submit'|trans }}" />
                 </div>
 
                 {{ form_end(form) }}
-                </div>
             </div>
         </div>
-    </header>
-
-
+    </div>
 
 {% endblock %}

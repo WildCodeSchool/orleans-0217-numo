@@ -20,7 +20,7 @@
             <tr>
                 <td>{{ partner.name }}</td>
                 <td>{{ partner.webUrl }}</td>
-                <td>{{ partner.imageUrl }}</td>
+                <td><img class="img-thumbnail imageadmin" src="{{ asset('uploads/users/' ~ partner.imageUrl ) }}"></td>
                 <td>{{ partner.active }}</td>
                 <td>
                     <a href="{{ path('partner_show', { 'id': partner.id }) }}"><button type="button" value="VOIR L\'ARTICLE">VOIR DETAILS</button></a><br/><br/>

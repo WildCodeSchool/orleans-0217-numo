@@ -28,3 +28,5 @@ parameters:
 
     server_url: 'http://localhost:8000'
     img_event_dir: 'uploads/event'
+    mail_chimp_api: 116816a1a91c3fc902cbe3388&amp
+    google_map_api: AIzaSyD5FbMBpVejJw6o_4r3eHkUQQde6vlDItg&callback

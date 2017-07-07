@@ -28,6 +28,22 @@ services:
             - { name: doctrine.event_listener, event: postLoad }
             - { name: doctrine.event_listener, event: preRemove }
 
+    NumoBundle\EventListener\EventUploadListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postLoad }
+            - { name: doctrine.event_listener, event: preRemove }
+
+
+    NumoBundle\EventListener\PartnerUploadListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postLoad }
+            - { name: doctrine.event_listener, event: preRemove }
+
+
 
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl

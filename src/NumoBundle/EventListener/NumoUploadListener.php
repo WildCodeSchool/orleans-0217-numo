@@ -16,8 +16,6 @@ use NumoBundle\Entity\Company;
 use NumoBundle\Services\UserUploader;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-
-
 class NumoUploadListener
 {
     private $uploader;
@@ -50,6 +48,7 @@ class NumoUploadListener
         $entity = $args->getEntity();
         $this->uploadFile($entity);
     }
+
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getEntity();

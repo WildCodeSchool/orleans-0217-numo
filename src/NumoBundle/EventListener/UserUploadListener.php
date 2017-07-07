@@ -14,41 +14,50 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use NumoBundle\Entity\User;
 use NumoBundle\Services\UserUploader;
-
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class UserUploadListener
 {
     private $uploader;
+    private $oldFile;
 
-    public function __construct(UserUploader $uploader)
+    public function __construct(UserUploader $uploader, RequestStack $requestStack)
     {
         $this->uploader = $uploader;
+        $this->requestStack = $requestStack;
     }
 
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-
         $this->uploadFile($entity);
     }
 
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getEntity();
+        if ($this->oldFile) {
+            $entity->setImageUrl($this->oldFile);
 
-        $this->uploadFile($entity);
+        } else {
+            $this->uploadFile($entity);
+        }
     }
 
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-
         if (!$entity instanceof User) {
             return;
         }
-        if ($fileName = $entity->getImageUrl()) {
-            $entity->setImageUrl(new File($this->uploader->getTargetDir().'/'.$fileName));
+        $masterRequest = $this->requestStack->getMasterRequest()->get('_route');
+        if($masterRequest == 'fos_user_profile_edit'){
+            $this->oldFile=$entity->getImageUrl();
+            if ($fileName = $entity->getImageUrl()) {
+                $entity->setImageUrl(new File($this->uploader->getTargetDir() . '/' . $fileName));
+            }
         }
+
     }
 
     public function preRemove(LifecycleEventArgs $args)
@@ -58,7 +67,6 @@ class UserUploadListener
         if (!$entity instanceof User) {
             return;
         }
-
         if(is_file($entity->getImageUrl())) {
             unlink($entity->getImageUrl());
         }

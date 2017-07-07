@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
     var list = $(".list .showMember");
-    var numToShow = 3;
+    var numToShow = 10;
     var button = $("#next");
     var numInList = list.length;
     list.hide();
@@ -21,6 +21,9 @@ $(document).ready(function(){
 
 });
 
+$('#AlphabetNavAll').click(function(evt){
+    $contacts.show();
+});
 
 $('.AlphabetNav a').click(function(evt){
     evt.preventDefault();
@@ -28,12 +31,12 @@ $('.AlphabetNav a').click(function(evt){
     var $navItem = $(this),
         $contacts = $('.showMember');
 
-    $contacts.show();
 
     if ($navItem.hasClass('active')) {
         $navItem.removeClass('active');
     }
         else {
+        $contacts.show();
         $('.AlphabetNav a').removeClass('active');
         $navItem.addClass('active');
 
@@ -41,8 +44,6 @@ $('.AlphabetNav a').click(function(evt){
             var $contact = $(contact),
                 $contactName = $contact.find('.memberName'),
                 $nameArr = $contactName.text().split(' ');
-
-            //console.log($nameArr[0].split('')[0].toLowerCase());
 
             if ($nameArr[0].split('')[0].toLowerCase() !== $navItem.text().toLowerCase()) {
                 $contact.hide();
