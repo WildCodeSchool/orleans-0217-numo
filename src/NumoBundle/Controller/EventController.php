@@ -147,8 +147,8 @@ class EventController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             $this->addFlash(
-                'notice',
-                'Vous avez crée un événement'
+                'info',
+                'Vous avez créé un évènement'
             );
             $userManager = $this->get('fos_user.user_manager');
             $users = $userManager->findUsers();
@@ -162,7 +162,8 @@ class EventController extends Controller
 
                 $confirmation = \Swift_Message::newInstance()
                     ->setSubject('Un membre de confiance à posté un événement')
-                    ->setBody('Bonjour, Un membre de confiance à posté un événement, veuillez aller sur www.numo.fr pour le voir')
+                    ->setBody('Bonjour, 
+                            Un membre de confiance à posté un événement, vous pouvez aller sur www.num-o.fr pour le voir.')
                     ->setFrom($company->getContactEmail());
                 foreach ($users as $user) {
                     if (in_array('ROLE_MODERATOR', $user->getRoles())) {
@@ -188,8 +189,9 @@ class EventController extends Controller
                 $em->flush();
 
                 $confirmation = \Swift_Message::newInstance()
-                    ->setSubject('Un adhérent à posté un événement')
-                    ->setBody('Bonjour, Un adhérent à posté un événement, veuillez aller sur www.numo.fr pour confirmer.')
+                    ->setSubject('Un membre à posté un événement')
+                    ->setBody('Bonjour, 
+                            Un membre à posté un événement, vous pouvez aller sur www.num-o.fr pour le moderer.')
                     ->setFrom($company->getContactEmail());
                 foreach ($users as $user) {
                     if (in_array('ROLE_MODERATOR', $user->getRoles())) {
@@ -268,8 +270,8 @@ class EventController extends Controller
         if($form->isSubmitted() && $form->isValid()) {
 
             $this->addFlash(
-                'messageContact',
-                'Votre mail de contact a bien été envoyé'
+                'success',
+                'Votre message à bien été envoyé'
             );
 
             $commentaire = \Swift_Message::newInstance()
@@ -284,8 +286,8 @@ class EventController extends Controller
         if($form->isSubmitted() != $form->isValid() ){
 
             $this->addFlash(
-                'messageNoContact',
-                'une erreur est survenu lors de votre envois de mail'
+                'danger',
+                'Une erreur est survenue lors de l\'envoi de votre message'
             );
         }
 
@@ -488,16 +490,11 @@ class EventController extends Controller
 
         $author = $event->getAuthor();
 
-        if ($event)
-
         $api = $this->get('numo.apiopenagenda');
         $uid = $api->publishEvent($event);
 
         $eventUid = $uid['eventUid'];
 
-        if (false === $uid) {
-            // gerer erreur si ecriture foireuse
-        }
         // --- creationde l'enregistrement "published"
         $published = new Published($event, $eventUid, $author);
         $published->setTitle($event->getTitle());
