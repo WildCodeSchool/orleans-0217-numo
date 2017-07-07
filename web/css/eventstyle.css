@@ -204,3 +204,13 @@ div#closemap {
 .btn-sep {
     margin-right: 30px;
 }
+.demi-img {
+    width: 48%;
+    float: left;
+}
+.little-img {
+    height: 100px;
+}
+.btn-img {
+    margin: 10px auto;
+}

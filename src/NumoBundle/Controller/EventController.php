@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use NumoBundle\Form\EventType;
 use NumoBundle\Entity\Contact;
@@ -140,9 +141,9 @@ class EventController extends Controller
         $event->getEvtDates()->add($firstEvtDate);
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
+
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
-
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -159,7 +160,20 @@ class EventController extends Controller
                 ->setCreationDate(new \DateTime);
             if ($curentUser->getTrust() == 1) {
                 // --- si utilisateur de confiance, on publie directement
+                $api = $this->get('numo.apiopenagenda');
+                $ids = $api->publishEvent($event);
+                if (false === $ids) {
+                    // gerer erreur si ecriture foireuse
+                }
+                // --- creation de l'enregistrement "published"
+                $uid = $ids['eventUid'];
+                $locationUid = $ids['locationUid'];
+                $published = new Published($event, $uid, $locationUid, $curentUser);
+                $published->setTitle($event->getTitle());
+                $em->persist($published);
+                $em->flush();
 
+                // --- envoi de la notification
                 $confirmation = \Swift_Message::newInstance()
                     ->setSubject('Un membre de confiance à posté un événement')
                     ->setBody('Bonjour, Un membre de confiance à posté un événement, veuillez aller sur www.numo.fr pour le voir')
@@ -169,19 +183,7 @@ class EventController extends Controller
                         $confirmation->setTo($user->getEmail());
                     }
                 }
-
                 $this->get('mailer')->send($confirmation);
-
-                $api = $this->get('numo.apiopenagenda');
-                $uid = $api->publishEvent($event);
-                if (false === $uid) {
-                    // gerer erreur si ecriture foireuse
-                }
-                // --- creationde l'enregistrement "published"
-                $published = new Published($event, $uid, $curentUser);
-                $published->setTitle($event->getTitle());
-                $em->persist($published);
-                $em->flush();
             } else {
                 // --- sinon enregistrement de l'evenement dans la database
                 $em->persist($event);
@@ -216,7 +218,7 @@ class EventController extends Controller
      */
     public function showAwaitAction(Event $event)
     {
-        $imgDir = $this->getParameter('img_event_dir');
+        $imgDir = $this->getParameter('img_event_dir') . '/';
         $oldDates = $newDates = [];
         $dateRef = new \DateTime();
         foreach ($event->getEvtDates() as $evtD) {
@@ -307,10 +309,10 @@ class EventController extends Controller
      * @Route("/edit-await/{id}", name="event_edit_await")
      * @Method({"GET", "POST"})
      */
-    public function editAwitAction(Request $request, Event $event)
+    public function editAwaitAction(Request $request, Event $event)
     {
         // --- Note : les images sont gerees par des eventlisteners
-        $imgDir = $this->getParameter('img_event_dir');
+        $imgDir = $this->getParameter('img_event_dir') . '/';
         $em = $this->getDoctrine()->getManager();
         $oldImage = $event->getImage();
         $originalEvtDates = new ArrayCollection();
@@ -354,6 +356,7 @@ class EventController extends Controller
     {
         $error = '';
         $event = new Event();
+        $newImage = '/img/event_placeholder.png';
         $api = $this->get('numo.apiopenagenda');
         if (!$request->request->has('enregistrer')) {
             // --- premier chargement de la page : on recupere l'evenement sur OpenAgenda
@@ -363,10 +366,11 @@ class EventController extends Controller
                 $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
             } else {
                 $event->hydrate($oaEvent);
+                // note : dans $event, image reste vide
                 // --- recuperation et initialisation des dates et heures
-                $evtDate = new EvtDate();
                 // --- dates passées
                 foreach ($oaEvent->getOldDates() as $oaDate) {
+                    $evtDate = new EvtDate();
                     $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
                     $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
                     $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
@@ -374,6 +378,7 @@ class EventController extends Controller
                 }
                 // --- dates a venir
                 foreach ($oaEvent->getNewDates() as $oaDate) {
+                    $evtDate = new EvtDate();
                     $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
                     $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
                     $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
@@ -384,39 +389,32 @@ class EventController extends Controller
         // --- recup infos supplementaires
         $em = $this->getDoctrine()->getManager();
         $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
-        $event->setImage($published->getImage());
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
-//        if ($request->request->get('image')) {
-//            $newImage = $request->request->get('image')->getFilename();
-//        }
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            // --- gestion de l'image
-//            $file = $event->getImage();
-//            if ($file) {
-//                // --- nouvelle image en remplacement de l'ancienne
-//                $fileName = uniqid().'.'.$file->guessExtension();
-//                $file->move(
-//                    $this->getParameter('upload_directory_event'),
-//                    $this->getParameter('img_event_dir') . '/' . $fileName
-//                );
-//                // --- mise a jour de $published
-//                if (file_exists($published->getImage())) {
-//                    unlink($published->getImage());
-//                }
-//                $published->setImage($this->getParameter('img_event_dir') . '/' . $fileName);
-//            } else {
-//                $event->setImage($published->getImage());
-//            }
+            // --- gestion de l'image
+            $file = $event->getImage();
+            if ($file) {
+                // --- nouvelle image (en remplacement de l'ancienne)
+                $fileName = uniqid().'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('upload_directory_event'),
+                    $fileName
+                );
+                // --- mise a jour de $published
+                if (file_exists($published->getImage())) {
+                    unlink($published->getImage());
+                }
+                $published->setImage($this->getParameter('img_event_dir') . '/' . $fileName);
+            }
             // --- on effectue les mises a jour sur OpenAgenda
             $api->updateEvent($event, $published);
             // --- on finit la mise a jour de published et on l'enregistre
             $published
                 ->setModerator($this->getUser())
                 ->setModeratorUpdateDate(new \datetime())
-                ->setTitle($event->getTitle())
-                ->setImage($event->getImage());
+                ->setTitle($event->getTitle());
             $em->flush();
 
             return $this->redirectToRoute('event_show_published', ['id' => $id]);
@@ -424,7 +422,7 @@ class EventController extends Controller
 
         return $this->render('NumoBundle:event:editPublished.html.twig', [
             'error' => $error,
-//            'newImage' => $newImage,
+            'newImage' => $newImage,
             'form' => $form->createView(),
             'published' => $published,
         ]);
@@ -439,7 +437,7 @@ class EventController extends Controller
     public function deleteAwaitAction(Request $request, Event $event)
     {
         // --- Note : les images sont gerees par des eventlisteners
-        $imgDir = $this->getParameter('img_event_dir');
+        $imgDir = $this->getParameter('img_event_dir') . '/';
         $form = $this
             ->createFormBuilder()
             ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
@@ -495,38 +493,40 @@ class EventController extends Controller
     public function deletePublishedAction(Request $request, $id)
     {
         $error = '';
-        $api = $this->get('numo.apiopenagenda');
         $form = $this
             ->createFormBuilder()
             ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
             ->getForm();
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            // --- suppression de l'évènement sur OpenAgenda
-            $result = $api->deleteEvent($id);
-            if (false === $result) {
-                $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
-            } else {
-                // --- Mise a jour des infos complementaires
-                $em = $this->getDoctrine()->getManager();
-                $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
-                if ($published) {
-                    $published->setDeleted(1);
-                    $published->setModerator($this->getUser());
-                    $published->setModeratorUpdateDate(new \DateTime);
-                    $em->flush();
-                }
-                return $this->redirectToRoute('event_list_published');
-            }
-        }
-        // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
+        $api = $this->get('numo.apiopenagenda');
+        // --- lecture de l'évènement via json sur OpenAgenda
         $oaEvent = $api->getEvent($id);
         if (false === $oaEvent) {
+            $oaEvent = null;
+            $published = null;
             $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
         } else {
             // --- lecture des infos complementaires
             $em = $this->getDoctrine()->getManager();
             $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                // --- suppression de l'évènement sur OpenAgenda
+                $result = $api->deleteEvent($published);
+                if (false === $result) {
+                    $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+                } else {
+                    // --- Mise a jour des infos complementaires
+                    $em = $this->getDoctrine()->getManager();
+                    $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+                    if ($published) {
+                        $published->setDeleted(1);
+                        $published->setModerator($this->getUser());
+                        $published->setModeratorUpdateDate(new \DateTime);
+                        $em->flush();
+                    }
+                    return $this->redirectToRoute('event_list_published');
+                }
+            }
         }
         return $this->render('NumoBundle:event:deletePublished.html.twig', [
             'agendaSlug' => $api->getAgendaSlug(),

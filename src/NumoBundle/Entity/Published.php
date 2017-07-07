@@ -79,7 +79,13 @@ class Published
     private $locationUid;
 
 
-    public function __construct(Event $event, string $uid, $moderator)
+    /**
+     * Published constructor.
+     * @param Event $event
+     * @param string $uid
+     * @param $moderator
+     */
+    public function __construct(Event $event, string $uid, string $locationUid, User $moderator)
     {
         $this
             ->setDeleted(0)
@@ -87,7 +93,10 @@ class Published
             ->setAuthor($event->getAuthor())
             ->setAuthorUpdateDate($event->getCreationDate())
             ->setModerator($moderator)
-            ->setModeratorUpdateDate(new \DateTime);
+            ->setModeratorUpdateDate(new \DateTime)
+            ->setTitle($event->getTitle())
+            ->setLocationUid($locationUid)
+            ->setImage($event->getImage());
     }
 
     /**
@@ -237,7 +246,7 @@ class Published
     /**
      * @return string
      */
-    public function getImage(): string
+    public function getImage()
     {
         return $this->image;
     }
@@ -246,9 +255,27 @@ class Published
      * @param string $image
      * @return Published
      */
-    public function setImage(string $image): Published
+    public function setImage($image)
     {
         $this->image = $image;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocationUid(): string
+    {
+        return $this->locationUid;
+    }
+
+    /**
+     * @param string $locationUid
+     * @return Published
+     */
+    public function setLocationUid(string $locationUid): Published
+    {
+        $this->locationUid = $locationUid;
         return $this;
     }
 

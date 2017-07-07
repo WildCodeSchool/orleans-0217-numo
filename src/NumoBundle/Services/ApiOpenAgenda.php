@@ -361,7 +361,6 @@ class ApiOpenAgenda
             'title' => ['fr' => $event->getTitle()],
             'description' => ['fr' => $event->getDescription()],
             'tags' => ['fr' => $event->getTags()->getName()],
-            'image' => $event->getImage(),
             'locations' => [[
                 'uid' => $location_uid,
                 'dates' => [],
@@ -383,11 +382,17 @@ class ApiOpenAgenda
                 'timeEnd' => $evtDate->getTimeEnd()->format('H:i'),
             ];
         }
+        // --- preparation des infos image --------------------------------------------------------
+        $pathFile = realpath($event->getImage());
+        $urlFile = explode('/', $event->getImage());
+        $image = new \CurlFile($pathFile, 'text/plain', end($urlFile));
+
         $this->curl->setUrl(self::APIROOTURL . 'events');
         $this->curl->setPost([
             'access_token' => $this->getToken(),
             'nonce' => $this->getRandom(),
             'data' => json_encode($eventData),
+            'image' => $image,
             'published' => false
         ]);
         $data = $this->curl->execute();
@@ -486,7 +491,6 @@ class ApiOpenAgenda
         }
 
 
-
             // ---------------------------------------------------
             // tester ici si on peut changer les infos du lieu
             // ----------------------------------------------------
@@ -499,7 +503,10 @@ class ApiOpenAgenda
 //            $eventData['locations'][0]['ticketLink'] = $event->getFreeText();
 //        }
 
-
+        // --- preparation des infos image --------------------------------------------------------
+        $pathFile = realpath($published->getImage());
+        $urlFile = explode('/', $published->getImage());
+        $image = new \CurlFile($pathFile, 'text/plain', end($urlFile));
 
         // --- creation du token pour ecriture ----------------------------------------------------
         if (false === $this->initToken()) {
@@ -512,18 +519,36 @@ class ApiOpenAgenda
             'access_token' => $this->getToken(),
             'nonce' => $this->getRandom(),
             'data' => json_encode($eventData),
-//            'image' => $event->getImage()
         ]);
+        if (empty($published->getImage())) {
+            $this->curl->setPost([
+                'access_token' => $this->getToken(),
+                'nonce' => $this->getRandom(),
+                'data' => json_encode($eventData),
+            ]);
+        } else {
+            $this->curl->setPost([
+                'access_token' => $this->getToken(),
+                'nonce' => $this->getRandom(),
+                'data' => json_encode($eventData),
+                'image' => $image,
+            ]);
+        }
         $data = $this->curl->execute();
         if (false === $data) {
             $this->setErrorCode($this->curl->getHttpCode());
             $this->setError('Erreur ecriture évènement : ' . $this->curl->getError());
 
+
+            var_dump($data);die('PAS GLOP');
+
             return false;
         }
 
-        return $data;
 
+        var_dump($data);die('OK');
+
+        return $data;
     }
 
 }

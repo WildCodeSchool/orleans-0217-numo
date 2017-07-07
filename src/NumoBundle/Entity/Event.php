@@ -148,7 +148,7 @@ class Event
         $this
             ->setRejected(0)
             ->setFreeText('')
-            ->setImage('')
+//            ->setImage('')
             ->setTicketLink('')
             ->evtDates = new ArrayCollection();
     }

@@ -49,6 +49,7 @@ class EventUploadListener
         }
     }
 
+
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -66,11 +67,13 @@ class EventUploadListener
     public function preRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-
         if ($entity instanceof Event) {
-            $filePath = $this->uploader->getTargetDir() . '/' . $entity->getImage();
-            if (file_exists($filePath)) {
-                unlink($filePath);
+            $masterRequest = $this->requestStack->getMasterRequest()->get('_route');
+            if ($masterRequest == 'event_edit_await') {
+                $filePath = $this->uploader->getTargetDir() . '/' . $entity->getImage();
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
             }
         }
     }
@@ -78,19 +81,13 @@ class EventUploadListener
     private function uploadFile($entity)
     {
         // upload only works for Product entities
-        if (!$entity instanceof Event) {
-            return;
+        if ($entity instanceof Event) {
+            $file = $entity->getImage();
+            // only upload new files
+            if ($file instanceof UploadedFile) {
+                $fileName = $this->uploader->upload($file);
+                $entity->setImage($fileName);
+            }
         }
-
-        $file = $entity->getImage();
-
-        // only upload new files
-        if (!$file instanceof UploadedFile) {
-            return;
-        }
-
-        $fileName = $this->uploader->upload($file);
-
-        $entity->setImage($fileName);
     }
 }
