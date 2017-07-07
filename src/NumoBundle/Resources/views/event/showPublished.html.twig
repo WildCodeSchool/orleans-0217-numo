@@ -14,40 +14,39 @@
 
                 {# --- titre --------------------------------------------------------------------------------#}
                 <div class="col-xs-12 text-center">
-                    <div class="separation"></div>
-                    <h1>{{ event.title }}</h1>
+                    <h1 class="title-view">{{ event.title }}</h1>
                     <a href="{{ event.link }}" class="btn btn-default" role="button" target="_blanc">Voir sur Open
                         Agenda</a>
-                    <div class="h-sep"></div>
                     <a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Retour à la
                         liste</a>
 
                     {# --- provisoire pour test --- #}
-                    <div class="h-sep"></div>
                     <a href="{{ path('event_delete_published', {'id': event.id}) }}" class="btn btn-default"
                        role="button">Supprimer</a>
                     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Contacter l'organisateur</button>
-                    <div class="modal fade" id="myModal" role="dialog">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
 
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                                    <div class="col-lg-offset-2 col-lg-8">
-                                    <h2>Laissez votre commentaire </h2>
-                                    {{ form_start(form) }}
-                                    {{ form_widget(form) }}
-                                    <input type="submit" value="Envoyer"/>
-                                    {{ form_end(form) }}
+                                        <div class="col-lg-offset-2 col-lg-8">
+                                        <h2>Laissez votre commentaire </h2>
+                                        {{ form_start(form) }}
+                                        {{ form_widget(form) }}
+                                        <input type="submit" value="Envoyer"/>
+                                        {{ form_end(form) }}
+                                        </div>
+                                    <div class="modal-footer">
                                     </div>
-                                <div class="modal-footer">
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <div class="separation barreGreen"></div>
+
                     {# ---------------------------- #}
 
-                    <div class="separation"></div>
+                    <div class="separation barreGreen"></div>
                 </div>
 
                 {# --- partie gauche (image + descriptif) -------------------------------------------------- #}
@@ -119,18 +118,18 @@
                     </table>
 
                     {# --- adresse ------------------------------------------------------------- #}
-                    <div class="separation"></div>
+                    <div class="separation barreGreen"></div>
                     <h3>Lieu</h3>
                     <p>{{ event.placename }}</p>
                     <p>{{ event.address }}</p>
 
                     {# --- map ----------------------------------------------------------------- #}
-                    <div class="separation"></div>
+                    <div class="separation barreGreen"></div>
                     <div id="closemap" class="text-center cursor-pointer" onclick="closeMap();">X</div>
                     <div id="mapzone"></div>
 
                     {# --- billetterie --- #}
-                    <div class="separation"></div>
+                    <div class="separation barreGreen"></div>
                     <h3>Billetterie / inscription</h3>
                     <p>{{ event.pricingInfo }}</p>
                     {% if event.ticketLink > '' %}
@@ -139,7 +138,7 @@
                     {% endif %}
 
                     {# --- reseaux sociaux ----------------------------------------------------- #}
-                    <div class="separation"></div>
+                    <div class="separation barreGreen"></div>
                     <h3>Partager sur</h3>
                     {# --- facebook --- #}
                     <a name="fb_share" type="box_count" href="https://www.facebook.com/sharer/sharer.php?u=example.org" share_url="{{ app.request.uri }}" target="_blanc">
@@ -151,12 +150,12 @@
                     </a>
 
                     {# --- linkedin ------------------------------------------------------------ #}
-                    <div class="separation"></div>
+                    <div class="separation barreGreen"></div>
                     <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: fr_FR</script>
                     <script type="IN/Share" data-url="http://num-o.fr/event/showpublished/{{ event.id }}" data-counter="top"></script>
                     {# --- organisateur -------------------------------------------------------- #}
 
-                    <div class="separation"></div>
+                    <div class="separation barreGreen"></div>
                     <h3>Organisé par</h3>
                     <p>
                         {% if published and published.author %}
@@ -178,7 +177,7 @@
             {% endif %}
 
             <div class="col-xs-12 text-center">
-                <div class="separation"></div>
+                <div class="separation barreGreen"></div>
                 <p><a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Retour à la
                         liste</a></p>
             </div>

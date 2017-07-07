@@ -12,7 +12,7 @@
 
     {# --- titre --------------------------------------------------------------------------------#}
             <div class="col-xs-12 text-center">
-                <h1>{{ event.title }}</h1>
+                <h1 class="title-view">{{ event.title }}</h1>
 
 {# --- provisoire pour tester les fonctions --- #}
                 <a href="{{ path('events_index') }}" class="btn btn-default btn-txt btn-sep" role="button">RETOUR A LA LISTE</a>
@@ -20,7 +20,7 @@
                 <a href="{{ path('event_delete_await', {'id': event.id}) }}" class="btn btn-default btn-txt btn-sep" role="button">SUPPRIMER</a>
                 {# ------------------ #}
 
-                <div class="separation"></div>
+                <div class="separation barreGreen"></div>
             </div>
 
     {# --- partie gauche (image + descriptif) -------------------------------------------------- #}

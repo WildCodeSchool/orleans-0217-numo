@@ -49,7 +49,7 @@ class ContactController extends DefaultController
 
             $this->addFlash(
                 'messageNoContact',
-                'une erreur est survenu lors de votre envois de mail'
+                'Une erreur est survenue lors de votre envoi de mail'
             );
         }
 
