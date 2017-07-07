@@ -57,7 +57,7 @@ class EventController extends Controller
         $options = [
             'search[passed]' => 0,
             'offset' => 0,
-            'limit' => 10,
+            'limit' => 300,
         ];
         $selector = new SelectEvent();
         $selectForm = $this->createForm(SelectEventType::class, $selector);
