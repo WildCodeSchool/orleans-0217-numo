@@ -412,38 +412,40 @@ class EventController extends Controller
     public function deletePublishedAction(Request $request, $id)
     {
         $error = '';
-        $api = $this->get('numo.apiopenagenda');
         $form = $this
             ->createFormBuilder()
             ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
             ->getForm();
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            // --- suppression de l'évènement sur OpenAgenda
-            $result = $api->deleteEvent($id);
-            if (false === $result) {
-                $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
-            } else {
-                // --- Mise a jour des infos complementaires
-                $em = $this->getDoctrine()->getManager();
-                $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
-                if ($published) {
-                    $published->setDeleted(1);
-                    $published->setModerator($this->getUser());
-                    $published->setModeratorUpdateDate(new \DateTime);
-                    $em->flush();
-                }
-                return $this->redirectToRoute('event_list_published');
-            }
-        }
-        // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
+        $api = $this->get('numo.apiopenagenda');
+        // --- lecture de l'évènement via json sur OpenAgenda
         $oaEvent = $api->getEvent($id);
         if (false === $oaEvent) {
+            $oaEvent = null;
+            $published = null;
             $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
         } else {
             // --- lecture des infos complementaires
             $em = $this->getDoctrine()->getManager();
             $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                // --- suppression de l'évènement sur OpenAgenda
+                $result = $api->deleteEvent($published);
+                if (false === $result) {
+                    $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+                } else {
+                    // --- Mise a jour des infos complementaires
+                    $em = $this->getDoctrine()->getManager();
+                    $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+                    if ($published) {
+                        $published->setDeleted(1);
+                        $published->setModerator($this->getUser());
+                        $published->setModeratorUpdateDate(new \DateTime);
+                        $em->flush();
+                    }
+                    return $this->redirectToRoute('event_list_published');
+                }
+            }
         }
         return $this->render('NumoBundle:event:deletePublished.html.twig', [
             'agendaSlug' => $api->getAgendaSlug(),
