@@ -16,11 +16,12 @@
         </div>
         <div class="collapse navbar-collapse navbar-menu  font-oswald" id="navbar-collapsed">
             <ul class="nav navbar-nav navbar-list font-lato navadmin">
-                <li><a href="/app_dev.php/company/1">GESTION DES INFORMATIONS DE L'ASSOCIATION</a></li>
-                <li><a href="{{ path('memberstatus_index') }}">GESTION DES MEMBRES</a></li>
-                <li><a href="{{ path('partner_index') }}">PARTENAIRES</a></li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li><a href="/app_dev.php/company/1">GESTION DES INFORMATIONS DE L'ASSOCIATION</a></li>
+                    <li><a href="{{ path('memberstatus_index') }}">GESTION DES MEMBRES</a></li>
+                    <li><a href="{{ path('partner_index') }}">PARTENAIRES</a></li>
+                {% endif %}
                 <li><a href="{{ path('events_index') }}">EVENEMENTS</a></li>
-
             </ul>
         </div>
     </div>

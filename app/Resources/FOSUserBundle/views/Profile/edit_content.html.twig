@@ -4,14 +4,15 @@
 
 {% block body %}
 
-    <header>
-        <div class="header-content">
-            <div class="header-content-inner">
+    <div class="container-fluid bg-3 text-center">
 
-                <h2 id="homeHeading">Modifier le profil</h2>
-                <hr>
+        <h3 class="margin"></h3>
+        <div class="row">
 
-                <div style="margin-left: 160px">
+                <h2 class="title-view">Modifier le profil</h2>
+                <div class="separation barrePurple"></div>
+
+                <div class="form-left-margin">
                 {{ form_start(form, {
                     'action': path('fos_user_profile_edit'),
                     'attr': { 'class': 'fos_user_profile_edit' }}) }}
@@ -179,9 +180,9 @@
                 </form>
                 </div>
 
-            </div>
         </div>
-    </header>
+    </div>
+
 
 {% endblock %}
 

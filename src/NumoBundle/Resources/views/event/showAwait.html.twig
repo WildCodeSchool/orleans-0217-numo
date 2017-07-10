@@ -1,4 +1,6 @@
-{% extends 'layout.html.twig' %}
+{% extends 'layoutAdmin.html.twig' %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
 
 {% block stylesheets %}
     {{ parent() }}
@@ -12,28 +14,35 @@
 
     {# --- titre --------------------------------------------------------------------------------#}
             <div class="col-xs-12 text-center">
-                <h1>{{ event.title }}</h1>
+                <h1 class="title-view">{{ event.title }}</h1>
 
 {# --- provisoire pour tester les fonctions --- #}
-<a href="{{ path('event_edit_await', {'id': event.id}) }}" class="btn btn-default btn-txt btn-sep" role="button"> edit </a>
-<a href="{{ path('event_delete_await', {'id': event.id}) }}" class="btn btn-default btn-txt" role="button"> delete </a>
-{# ------------------ #}
+                <a href="{{ path('events_index') }}" class="btn btn-default btn-txt btn-sep" role="button">RETOUR A LA LISTE</a>
+                <a href="{{ path('event_edit_await', {'id': event.id}) }}" class="btn btn-default btn-txt btn-sep" role="button">EDITER</a>
+                <button type="button" class="btn btn-default btn-txt btn-sep" data-toggle="modal" data-target="#exampleModal"
+                        data-id="{{ event.id }}" data-title="{{ event.title }}" data-email="{{ event.author.email }}">REFUSER
+                </button>
+                <a href="{{ path('event_approved', {'id' : event.id}) }}">
+                    <button type="button" class="btn btn-default btn-txt btn-sep" value="MODIFIER">PUBLIER</button>
+                </a>
 
-                <div class="separation"></div>
+                {# ------------------ #}
+
+                <div class="separation barreGreen"></div>
             </div>
 
     {# --- partie gauche (image + descriptif) -------------------------------------------------- #}
             <div class="col-xs-12 col-md-8 text-center">
-                <p>Catégorie : {{ event.tags.name }}</p>
+                <h2>Catégorie : {{ event.tags.name }}</h2>
                 <p>
                     {% if event.image is empty %}
                         <img src="{{ asset('/img/event_placeholder.png') }}" alt="" class="img-responsive center-block" />
                     {% else %}
-                        <img src="{{ asset(imgDir ~ event.image) }}" alt="image {{ event.title }}" class="img-responsive center-block" />
+                        <img src="{{ asset('uploads/users/' ~ event.image) }}" alt="image {{ event.title }}" class="img-responsive center-block" />
                     {% endif %}
                 </p>
-                <p>{{ event.description }}</p>
-                <p>{{ event.freeText }}</p>
+                <p class="content-view">{{ event.description }}</p>
+                <p class="content-view">{{ event.freeText }}</p>
 
             </div>
 
@@ -115,12 +124,55 @@
 
         </div>
     </div>
+    <div class="modal fade" id="exampleModal">
+        <div class="modal-dialog modal-sm text-center moderation-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title font-lato"></h4>
+                </div>
+                <div class="modal-body font-lato">
+                    {{ form_start(form) }}
+                    {{ form_label(form.title) }}
+                    {{ form_widget(form.title) }}
+                    {{ form_errors(form.title) }}
+                    {{ form_label(form.comment) }}
+                    {{ form_widget(form.comment) }}
+                    {{ form_errors(form.comment) }}
+                    {{ form_label(form.contactEmail) }}
+                    {{ form_widget(form.contactEmail) }}
+                    <input type="submit" class="btn btn-default btn-send"/>
+                    {{ form_end(form) }}
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/showevent.js') }}"></script>
+    <script src="{{ asset('js/published.js') }}"></script>
+    <script>
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var title = button.data('title');
+            var email = button.data('email');
+            var modal = $(this);
+            modal.find('#moderation_eventId').val(id)
+            modal.find('.modal-title').text('Refuser l\'événement ' + title);
+            modal.find('#moderation_title').val(title);
+            modal.find('.btn-send').val('Envoyer à '+ email);
+            modal.find('#moderation_contactEmail').val(email);
+
+        })
+    </script>
+
     <script>
 
         function initMap(){

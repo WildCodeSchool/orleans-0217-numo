@@ -45,7 +45,6 @@ class UserPromoteController extends Controller
             $data = $form->getData();
             $role[] = $data['Roles'];
             $id = $data['Id'];
-
             $user = $em->getRepository('NumoBundle:User')->findOneById($id);
 
             $user->setRoles($role);

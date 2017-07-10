@@ -1,4 +1,6 @@
 {% extends 'layoutAdmin.html.twig' %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
 
 {% block body %}
     <div class="container font-lato">
@@ -19,22 +21,27 @@
                 </thead>
                 <tbody>
                 {% for event in events %}
+                {% if event.rejected == 0 %}
                 <tr>
                     <td class="admin"><p class="moderate">{{ event.title }}</td>
                     <td class="admin">{{ event.creationDate|date('d/m/Y') }}</td>
                     <td class="admin">{{ event.author }}</td>
-                    <td><a href="{{ path('event_delete_published', {'id' : event.id}) }}">
+                    <td><a href="{{ path('event_show_await', {'id' : event.id}) }}">
                             <button type="button" value="MODIFIER"><span class="glyphicon glyphicon-eye-open"></span>
                             </button>
                         </a>
-                    <td><a href="{{ path('event_delete_published', {'id' : event.id}) }}">
+                    <td>
+                        <a href="{{ path('event_approved', {'id' : event.id}) }}">
                             <button type="button" value="MODIFIER">PUBLIER</button>
                         </a>
-                        <a href="{{ path('event_delete_published', {'id' : event.id}) }}">
-                            <button type="button" class="moderate" value="MODIFIER">REFUSER</button>
-                        </a></td>
+                        <button type="button" class="button-admin" data-toggle="modal" data-target="#exampleModal"
+                                data-id="{{ event.id }}" data-title="{{ event.title }}" data-email="{{ event.author.email }}">REFUSER
+                        </button>
+                    </td>
 
+                    {% endif %}
                     {% endfor %}
+                </tr>
                 </tbody>
             </table>
             <hr>
@@ -47,38 +54,91 @@
                 <hr>
                 <tr class="text-center admin">
                     <th class="text-center">NOM DE L'EVENEMENT</th>
-                    <th class="text-center">DERNIERE MODIFICATION</th>
+                    <th class="text-center">DATE DE L'EVENEMENT</th>
                     <th class="text-center">PROPOSE PAR</th>
                     <th class="text-center">STATUT</th>
                     <th class="text-center">ACTION</th>
                 </tr>
                 </thead>
                 <tbody class="list">
-                {% for publishedevent in publishedevents %}
-                <tr class="showPublished">
-                    <td class="admin"><p class="moderate">{{ publishedevent.title }}</td>
-                    <td class="admin">{{ publishedevent.moderatorUpdateDate|date('d/m/Y') }}</td>
-                    <td class="admin">{{ publishedevent.moderator }}</td>
-                    {% if publishedevent.deleted == 0 %}
-                        <td class="admin">Publié</td>
-                    {% endif %}
-                    <td><a href="{{ path('event_delete_published', {'id' : publishedevent.id}) }}">
-                            <button type="button" value="MODIFIER">MODIFIER</button>
-                        </a>
-                        <a href="{{ path('event_delete_published', {'id' : publishedevent.id}) }}">
-                            <button type="button" class="moderate" value="MODIFIER">SUPPRIMER</button>
-                        </a></td>
+                {% for event in eventlist %}
+                    <tr class="showPublished">
+                        <td class="admin"><p class="moderate">{{ event.event.title }}</p></td>
+                        <td class="admin">
+                            {% if event.event.newdates is not empty %}
+                               {{ event.event.newDates[0].evtDate|localizeddate("medium", "none", "locale", null, "cccc d LLLL yyyy") }}
+                            {% else %}
+                                Cet évènement est passé
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if event.published %}
+                                {{ event.published.author.name }}
+                                {{ event.published.author.firstname }}
+                            {% else %}
+                                Le nom n'est pas disponible
+                            {% endif %}
+                        </td>
 
-                    {% endfor %}
+                        <td class="admin">Publié</td>
+                        <td><a href="{{ path('event_delete_published', {'id' : event.event.id}) }}">
+                                <button type="button" value="MODIFIER">MODIFIER</button>
+                            </a>
+                            <a href="{{ path('event_delete_published', {'id' : event.event.id}) }}">
+                                <button type="button" class="moderate" value="MODIFIER">SUPPRIMER</button>
+                            </a></td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
-            <a id="next" class="btn btn-success btnGreen btn-lg" >Voir plus</a>
+            <a id="next" class="btn btn-success btnGreen btn-lg">Voir plus</a>
             <hr>
         </div>
 
+    </div>
+    <div class="modal fade" id="exampleModal">
+        <div class="modal-dialog modal-sm text-center moderation-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title font-lato"></h4>
+                </div>
+                <div class="modal-body font-lato">
+                    {{ form_start(form) }}
+                    {{ form_label(form.title) }}
+                    {{ form_widget(form.title) }}
+                    {{ form_errors(form.title) }}
+                    {{ form_label(form.comment) }}
+                    {{ form_widget(form.comment) }}
+                    {{ form_errors(form.comment) }}
+                    {{ form_label(form.contactEmail) }}
+                    {{ form_widget(form.contactEmail) }}
+                    <input type="submit" class="btn btn-default btn-send"/>
+                    {{ form_end(form) }}
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/published.js') }}"></script>
+    <script>
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var title = button.data('title');
+            var email = button.data('email');
+            var modal = $(this);
+            modal.find('#moderation_eventId').val(id)
+            modal.find('.modal-title').text('Refuser l\'événement ' + title);
+            modal.find('#moderation_title').val(title);
+            modal.find('.btn-send').val('Envoyer à '+ email);
+            modal.find('#moderation_contactEmail').val(email);
+
+        })
+    </script>
+
 {% endblock %}
