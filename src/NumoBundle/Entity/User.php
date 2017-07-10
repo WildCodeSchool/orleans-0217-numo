@@ -158,7 +158,7 @@ class User extends BaseUser
      *
      * @Assert\Length(
      *     min=3,
-     *     minMessage="Le numéro est trop court.",
+     *     minMessage="Le texte saisi est trop court.",
      * )
      */
     protected $facebook;
@@ -168,7 +168,7 @@ class User extends BaseUser
      *
      * @Assert\Length(
      *     min=3,
-     *     minMessage="Le numéro est trop court.",
+     *     minMessage="Le texte saisi est trop court.",
      * )
      */
     protected $twitter;
