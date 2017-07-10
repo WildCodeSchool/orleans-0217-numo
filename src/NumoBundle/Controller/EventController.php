@@ -162,8 +162,21 @@ class EventController extends Controller
                 ->setCreationDate(new \DateTime);
             if ($curentUser->getTrust() == 1) {
                 // --- si utilisateur de confiance, on publie directement
+
+                // --- gestion de l'image
+                $file = $event->getImage();
+                if ($file) {
+                    // --- nouvelle image
+                    $fileName = uniqid() . '.' . $file->guessExtension();
+                    $file->move(
+                        $this->getParameter('upload_directory_event'),
+                        $fileName
+                    );
+                    $event->setImage($fileName);
+                }
                 $api = $this->get('numo.apiopenagenda');
-                $ids = $api->publishEvent($event);
+                $ids = $api->publishEvent($event, $this->getParameter('img_event_dir'));
+
                 if (false === $ids) {
                     // gerer erreur si ecriture foireuse
                 }
@@ -260,9 +273,7 @@ class EventController extends Controller
             $em->flush();
 
             return $this-> redirectToRoute('events_index');
-
         }
-
 
         return $this->render('NumoBundle:event:showAwait.html.twig', [
             'imgDir' => $imgDir,
@@ -294,11 +305,10 @@ class EventController extends Controller
             $em = $this->getDoctrine()->getManager();
             $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
         }
+
         $contact = new Contact();
         $form = $this->createForm(ContactType::class, $contact);
-
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid()) {
 
             $this->addFlash(
@@ -434,14 +444,15 @@ class EventController extends Controller
                     $this->getParameter('upload_directory_event'),
                     $fileName
                 );
+                $event->setImage($fileName);
                 // --- mise a jour de $published
                 if (file_exists($published->getImage())) {
                     unlink($published->getImage());
                 }
-                $published->setImage($this->getParameter('img_event_dir') . '/' . $fileName);
+                $published->setImage($fileName);
             }
             // --- on effectue les mises a jour sur OpenAgenda
-            $api->updateEvent($event, $published);
+            $result = $api->updateEvent($event, $published, $this->getParameter('img_event_dir'));
             // --- on finit la mise a jour de published et on l'enregistre
             $published
                 ->setModerator($this->getUser())
@@ -548,14 +559,10 @@ class EventController extends Controller
                     $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
                 } else {
                     // --- Mise a jour des infos complementaires
-                    $em = $this->getDoctrine()->getManager();
-                    $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
-                    if ($published) {
-                        $published->setDeleted(1);
-                        $published->setModerator($this->getUser());
-                        $published->setModeratorUpdateDate(new \DateTime);
-                        $em->flush();
-                    }
+                    $published->setDeleted(1);
+                    $published->setModerator($this->getUser());
+                    $published->setModeratorUpdateDate(new \DateTime);
+                    $em->flush();
                     return $this->redirectToRoute('event_list_published');
                 }
             }

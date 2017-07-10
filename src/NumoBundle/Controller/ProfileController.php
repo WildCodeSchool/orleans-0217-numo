@@ -34,7 +34,6 @@ class ProfileController extends BaseController
         foreach ($published as $pub) {
             $uids[] = $pub->getUid();
         }
-
         $oaevents = $api->getEvents($uids);
 
         $events = $em->getRepository('NumoBundle:Event')->findBy(['author' => $user->getId()]);
