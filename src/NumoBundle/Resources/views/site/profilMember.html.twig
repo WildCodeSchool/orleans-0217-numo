@@ -67,7 +67,7 @@
                     <img src="{{ asset('/img/mail.png') }}" alt="email" class="rs-button"/>
                 </div>
                 <div class="col-lg-1">
-                    <h3>{{ user.email }}</h3>
+                    <h3>{{ user.email | replace ({'@' : '[at]'}) }}</h3>
                 </div>
             {% endif %}
 
