@@ -123,7 +123,8 @@ footer {
 
 }
 .eventtitle{
-    font-weight:900;
+    font-weight:300;
+    color: black;
 }
 .btnwhite:hover{
     background-color: #fc1e1e;
@@ -618,9 +619,6 @@ div.separation {
 }
 
 
-.zoneBlue{
-    background-color: #7fabcb ;
-}
 
 .imagePlaceholder{
     height: 231px;
