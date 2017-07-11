@@ -11,11 +11,9 @@
             <div class="col-sm-offset-3 col-sm-6 text-center">
                 <p class="content-view">{{ company.adherentContent }}</p>
                 <div class="row companyBottom">
-                    <div class="col-lg-offset-4">
                         {% if company.pdf != '' %}
-                            <a href="{{ asset('uploads/numo/' ~ company.pdf) }}" download="RIB NUMO" type="button" class="btn btn-success btn-admin ribnumo">Téléchargez le RIB de NUM'O (PDF)</a>
+                            <a href="{{ asset('uploads/numo/' ~ company.pdf) }}" download="RIB NUMO" type="button" class="btn btn-default">Téléchargez le RIB de NUM'O (PDF)</a>
                         {% endif %}
-                    </div>
                 </div>
             </div>
         </div>

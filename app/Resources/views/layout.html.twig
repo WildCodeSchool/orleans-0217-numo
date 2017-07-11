@@ -39,18 +39,18 @@
                         <ul class="nav navbar-nav navbar-right">
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             <li>
-                                <a href="{{ path('fos_user_profile_show') }}" class="glyphicon glyphicon-user connect"> {{ app.user.name }} {{ app.user.firstname }}</a>
+                                <a href="{{ path('fos_user_profile_show') }}" class="glyphicon glyphicon-user connect"><span class="font-lato connect hidden-sm"> {{ app.user.name }} {{ app.user.firstname }}</span></a>
                             </li>
                             <li>
-                                <a href="{{ path('fos_user_security_logout') }}" class="glyphicon glyphicon-log-in connect"><span class="font-lato connect"> Deconnexion</span></a>
+                                <a href="{{ path('fos_user_security_logout') }}" class="glyphicon glyphicon-log-in connect"><span class="font-lato connect hidden-sm"> Deconnexion</span></a>
                             </li>
 
                             {% else %}
                             <li>
-                                <a href="{{ path('fos_user_security_login') }}" class="glyphicon glyphicon-log-in connect"><span class="font-lato connect"> Connexion</span></a>
+                                <a href="{{ path('fos_user_security_login') }}" class="glyphicon glyphicon-log-in connect green"><span class="font-lato connect hidden-sm"> Connexion</span></a>
                             </li>
                             <li>
-                                <a href="{{ path('fos_user_registration_register') }}" class="glyphicon glyphicon-user connect"><span class="font-lato connect"> S'inscrire</span></a>
+                                <a href="{{ path('fos_user_registration_register') }}" class="glyphicon glyphicon-user connect green"><span class="font-lato connect hidden-sm"> S'inscrire</span></a>
                             </li>
                             {%endif%}
                           </ul>
