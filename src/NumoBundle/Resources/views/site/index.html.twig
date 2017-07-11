@@ -85,7 +85,7 @@
 
         <div class="container">
             <div class="row text-center partnaire">
-                {% for partner in partners %}
+                {% for partner in partners if partner.active == 1 %}
                     {% if partners|length == 1 %}
                         <div class="col-xs-12">
                             <a href="{{ partner.webUrl }}" class="thumbnail thumbnail-div">
