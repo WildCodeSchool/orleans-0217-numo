@@ -128,13 +128,18 @@ class ApiOpenAgenda
         $refDate = new \DateTime();
         foreach ($event->timings as $strDate) {
             // $strDate = 'AAAA-MM-DD HH:MM:SS' (en vrai '2017-06-01T12:00:00.000Z')
-            $curDate = new \DateTime($strDate->start);
+            // --- recuperation des dates / heures
+            $curDate = new \DateTime($strDate->start, new \DateTimeZone('UTC'));
+            $curEnd = new \DateTime($strDate->end, new \DateTimeZone('UTC'));
+            // --- conversion fuseau horaire UTC -> ici
+            $curDate->setTimezone(new \DateTimeZone('Europe/Paris'));
+            $curEnd->setTimezone(new \DateTimeZone('Europe/Paris'));
             $evtDate = [
                 'evtDate' => $curDate->format('Y-m-d'),
                 'timeStart' => $curDate->format('H:i:s'),
-                'timeEnd' => (new \DateTime($strDate->end))->format('H:i:s'),
+                'timeEnd' => $curEnd->format('H:i:s'),
             ];
-            if ($curDate < $refDate) {
+            if ($curDate->format('Y-m-d') < $refDate->format('Y-m-d')) {
                 $oldDates[] = $evtDate;
             } else {
                 $newDates[] = $evtDate;
@@ -266,7 +271,7 @@ class ApiOpenAgenda
         }
     }
 
-    public function publishEvent(Event $event)
+    public function publishEvent(Event $event, string $uploadPath)
     {
         // NOTE : en cas d'echec (return false) l'erreur (texte) est dans $this->error et le code http dans $this->errorCode
 
@@ -274,19 +279,16 @@ class ApiOpenAgenda
         if (false === $this->initToken()) {
             return false; // l'initialisation du token a echoue
         }
-
         // --- ecriture de l'adresse --------------------------------------------------------------
         $location_uid = $this->publishLocation($event);
         if (false === $location_uid) {
             return false; // l'ecriture de l'adresse a echouee
         }
-
         // --- ecriture de l'evenement ------------------------------------------------------------
         $eventData = [
             'title' => ['fr' => $event->getTitle()],
             'description' => ['fr' => $event->getDescription()],
             'tags' => ['fr' => $event->getTags()->getName()],
-            'image' => $event->getImage(),
             'locations' => [[
                 'uid' => $location_uid,
                 'dates' => [],
@@ -308,13 +310,25 @@ class ApiOpenAgenda
                 'timeEnd' => $evtDate->getTimeEnd()->format('H:i'),
             ];
         }
+        // --- preparation des infos image --------------------------------------------------------
+        $image = null;
+        if (!empty($event->getImage())) {
+            $pathFile = realpath($uploadPath . '/' . $event->getImage());
+            $urlFile = explode('/', $event->getImage());
+            $image = new \CurlFile($pathFile, 'text/plain', end($urlFile));
+        }
+
         $this->curl->setUrl(self::APIROOTURL . 'events');
-        $this->curl->setPost([
+        $postOptions = [
             'access_token' => $this->getToken(),
             'nonce' => $this->getRandom(),
             'data' => json_encode($eventData),
             'published' => false
-        ]);
+        ];
+        if ($image ) {
+            $postOptions['image'] = $image;
+        }
+        $this->curl->setPost($postOptions);
         $data = $this->curl->execute();
         if (false === $data) {
             $this->setErrorCode($this->curl->getHttpCode());
@@ -347,7 +361,6 @@ class ApiOpenAgenda
 
         $uid = $published->getUid();
         $locationUid = $published->getLocationUid();
-
         // --- creation du token pour ecriture ----------------------------------------------------
         if (false === $this->initToken()) {
             return false; // l'initialisation du token a echoue
@@ -365,23 +378,10 @@ class ApiOpenAgenda
             $this->setError('Erreur suppression évènement : ' . $this->curl->getError());
             return false;
         }
-        // --- suppression emplacement
-        $this->curl->setUrl(self::APIROOTURL . "events/$uid/locations/$locationUid");
-        $this->curl->setOpt(CURLOPT_CUSTOMREQUEST, 'DELETE');
-        $this->curl->setPost([
-            'access_token' => $this->getToken(),
-            'nonce' => $this->getRandom(),
-        ]);
-        $data = $this->curl->execute();
-        if (false === $data) {
-            $this->setErrorCode($this->curl->getHttpCode());
-            $this->setError('Erreur suppression évènement : ' . $this->curl->getError());
-            return false;
-        }
         return $data;
     }
 
-    public function updateEvent(Event $event, Published $published)
+    public function updateEvent(Event $event, Published $published, string $uploadPath)
     {
         // NOTE : en cas d'echec (return false) l'erreur (texte) est dans $this->error et le code http dans $this->errorCode
 
@@ -395,32 +395,19 @@ class ApiOpenAgenda
         if ($event->getFreeText()) {
             $eventData['freeText'] = ['fr' => $event->getFreeText()];
         }
-        
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        // cette partie ne fonctionne pas, ou pas totalement (api non fonctionnelle)
-
-        // --- preparation des infos dates -------------------------------------------------
-        $eventData['locations'] = [[
-            'uid' => $published->getLocationUid(),
-            'dates' => []
-        ]];
-        $evtDates = $event->getEvtDates();
-        foreach ($evtDates as $evtDate) {
-            $eventData['locations'][0]['dates'][] = [
-                'date' => $evtDate->getEvtDate()->format('Y-m-d'),
-                'timeStart' => $evtDate->getTimeStart()->format('H:i'),
-                'timeEnd' => $evtDate->getTimeEnd()->format('H:i'),
-            ];
+        // --- preparation des infos image --------------------------------------------------------
+        $image = null;
+        if (!empty($event->getImage())) {
+            // --- nouvelle image (en remplacement de celle dans published)
+            $image = $event->getImage();
+            $pathFile = realpath($uploadPath . '/' . $event->getImage());
+            $urlFile = explode('/', $event->getImage());
+            $image = new \CurlFile($pathFile, 'text/plain', end($urlFile));
         }
 
-        // --- preparation des infos lieu ---------------------------------------------------
-        $eventData['locations'][0]['pricingInfo'] = ['fr' => $event->getPricingInfo()->getPricing()];
-        $eventData['locations'][0]['ticketLink'] = '';
-        if ($event->getTicketLink()) {
-            $eventData['locations'][0]['ticketLink'] = $event->getFreeText();
-        }
-
-// >>>>>>>>>>>>>>>>>> FIN DE ZONE PROVISOIRE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // ------------------------------------------------------------------------------
+        // --- il faudra gérer ici les infos dates et lieu lorsque l'API le permettra ---
+        // ------------------------------------------------------------------------------
 
         // --- creation du token pour ecriture ----------------------------------------------------
         if (false === $this->initToken()) {
@@ -434,16 +421,22 @@ class ApiOpenAgenda
             'nonce' => $this->getRandom(),
             'data' => json_encode($eventData),
         ]);
+        $postOptions = [
+            'access_token' => $this->getToken(),
+            'nonce' => $this->getRandom(),
+            'data' => json_encode($eventData),
+        ];
+        if ($image) {
+            $postOptions['image'] = $image;
+        }
+        $this->curl->setPost($postOptions);
         $data = $this->curl->execute();
         if (false === $data) {
             $this->setErrorCode($this->curl->getHttpCode());
             $this->setError('Erreur ecriture évènement : ' . $this->curl->getError());
-
             return false;
         }
-
         return $data;
-
     }
 
 }

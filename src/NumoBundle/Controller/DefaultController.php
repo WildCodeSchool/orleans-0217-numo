@@ -24,7 +24,7 @@ class DefaultController extends Controller
 
 // --- lecture de la liste OpenAgenda
         $api = $this->get('numo.apiopenagenda');
-        $data = $api->getEventList($options, false);
+        $data = $api->getEventList($options);
         $events = $data['eventList'];
         if (false === $events) {
             $events = [];
@@ -44,5 +44,12 @@ class DefaultController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/error", name="error_page")
+     */
+    public function errorAction()
+    {
+        return $this->render('NumoBundle:site:error.html.twig');
+    }
 
 }
