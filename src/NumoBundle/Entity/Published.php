@@ -65,8 +65,27 @@ class Published
      */
     private $moderatorUpdateDate;
 
+    /**
+     * @var string
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     */
+    private $image;
 
-    public function __construct(Event $event, string $uid, $moderator)
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="locationUid", type="string", length=15)
+     */
+    private $locationUid;
+
+
+    /**
+     * Published constructor.
+     * @param Event $event
+     * @param string $uid
+     * @param $moderator
+     */
+    public function __construct(Event $event, string $uid, string $locationUid, User $moderator)
     {
         $this
             ->setDeleted(0)
@@ -74,9 +93,11 @@ class Published
             ->setAuthor($event->getAuthor())
             ->setAuthorUpdateDate($event->getCreationDate())
             ->setModerator($moderator)
-            ->setModeratorUpdateDate(new \DateTime);
+            ->setModeratorUpdateDate(new \DateTime)
+            ->setTitle($event->getTitle())
+            ->setLocationUid($locationUid)
+            ->setImage($event->getImage());
     }
-
 
     /**
      * Get id
@@ -219,6 +240,42 @@ class Published
     public function setModeratorUpdateDate(\DateTime $moderatorUpdateDate): Published
     {
         $this->moderatorUpdateDate = $moderatorUpdateDate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     * @return Published
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocationUid(): string
+    {
+        return $this->locationUid;
+    }
+
+    /**
+     * @param string $locationUid
+     * @return Published
+     */
+    public function setLocationUid(string $locationUid): Published
+    {
+        $this->locationUid = $locationUid;
         return $this;
     }
 

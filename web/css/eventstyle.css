@@ -4,6 +4,10 @@ h1 {
     font-size: 3.5em;
 }
 
+ul#evtdatelist li {
+    margin-bottom: 5px;
+}
+
 .grey-text {
     color: lightgrey;
 }
@@ -105,13 +109,6 @@ ul.evtdatelist {
 
 
 /* --- general --- */
-.erreur {
-    font-size: 16px;
-    font-weight: bold;
-    color: #CADB2A;
-    text-shadow: 0 0 3px #000;
-}
-
 .ecart-haut {
     margin-top: 20px;
 }
@@ -239,4 +236,14 @@ div#closemap {
 
 .btn-sep {
     margin-right: 30px;
+}
+.demi-img {
+    width: 48%;
+    float: left;
+}
+.little-img {
+    height: 100px;
+}
+.btn-img {
+    margin: 10px auto;
 }
