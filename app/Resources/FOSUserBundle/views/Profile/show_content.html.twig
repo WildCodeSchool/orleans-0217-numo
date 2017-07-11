@@ -101,75 +101,76 @@
                 <div class="separation"></div>
             </div>
 
-            <div class="text-center">
-                <h2>Mes événements</h2>
-                <div class="separation barreGreen"></div>
-            </div>
+        {% endif %}
+
+        <div class="separation barreGreen"></div>
+        <div class="text-center">
+            <h2>Mes événements</h2>
 
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <p><a href="{{ path('event_new') }}" class="btn btn-default btn-xs" role="button">Créer un nouvel
-                        évènement</a></p>
+                <p><a href="{{ path('event_new') }}" class="btn btn-default btn-xs" role="button">
+                    Créer un nouvel évènement
+                </a></p>
             {% endif %}
+        </div>
 
-            <h3 class="col-lg-offset-1">Evènements en attente</h3>
+        <h3 class="col-lg-offset-1">Evènements en attente</h3>
 
-            <table class="text-center">
-                <thead>
+        <table class="table text-center">
+            <thead>
+            <tr>
+                <th>TITRE</th>
+                <th>DESCRIPTION</th>
+                <th>ADRESSE</th>
+                <th>STATUS</th>
+                <th>MODIFIER</th>
+                <th>SUPPRIMER</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
                 <tr>
-                    <th>TITRE</th>
-                    <th>DESCRIPTION</th>
-                    <th>ADRESSE</th>
-                    <th>STATUS</th>
-                    <th>MODIFIER</th>
-                    <th>SUPPRIMER</th>
+                    <td>{{ event.title }}</td>
+                    <td>{{ event.description }}</td>
+                    <td>{{ event.address }}</td>
+                    <td>
+                        {% if event.rejected == 0 %}
+                            Attente
+                        {% else %}
+                            Refusé
+                        {% endif %}
+                    </td>
+                    <td><a href="{{ path('event_edit_await', {'id': event.id}) }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
+                    <td><a href="{{ path('event_delete_await', {'id': event.id}) }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
                 </tr>
-                </thead>
-                <tbody>
-                {% for event in events %}
-                    <tr>
-                        <td>{{ event.title }}</td>
-                        <td>{{ event.description }}</td>
-                        <td>{{ event.address }}</td>
-                        <td>
-                            {% if event.rejected == 0 %}
-                                Attente
-                            {% else %}
-                                Refusé
-                            {% endif %}
-                        </td>
-                        <td><a href="{{ path('event_edit_await') }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
-                        <td><a href="{{ path('event_delete_await') }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            {% endfor %}
+            </tbody>
+        </table>
 
-            <h3 class="col-lg-offset-1">Evènements Publiés</h3>
+        <h3 class="col-lg-offset-1">Evènements Publiés</h3>
 
-            <table class="text-center">
-                <thead>
+        <table class="table text-center">
+            <thead>
+            <tr>
+                <th>TITRE</th>
+                <th>DESCRIPTION</th>
+                <th>ADRESSE</th>
+                <th>MODIFIER</th>
+                <th>SUPPRIMER</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for oaevent in oaevents %}
                 <tr>
-                    <th>TITRE</th>
-                    <th>DESCRIPTION</th>
-                    <th>ADRESSE</th>
-                    <th>MODIFIER</th>
-                    <th>SUPPRIMER</th>
+                    <td>{{ oaevent.title }}</td>
+                    <td>{{ oaevent.description }}</td>
+                    <td>{{ oaevent.address }}</td>
+                    <td><a href="{{ path('event_edit_published') }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
+                    <td><a href="{{ path('event_delete_published') }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
                 </tr>
-                </thead>
-                <tbody>
-                {% for oaevent in oaevents %}
-                    <tr>
-                        <td>{{ oaevent.title }}</td>
-                        <td>{{ oaevent.description }}</td>
-                        <td>{{ oaevent.address }}</td>
-                        <td><a href="{{ path('event_edit_published') }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
-                        <td><a href="{{ path('event_delete_published') }}"><button type="button" class="btn btn-submit">OUI</button></a></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-
-        {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
 
     </div>
 {% endblock %}

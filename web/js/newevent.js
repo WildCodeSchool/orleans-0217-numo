@@ -20,7 +20,7 @@ function scanAddress() {
         var geoCoder="https://maps.googleapis.com/maps/api/geocode/json?address="+address; //+"&sensor=false";
         $.getJSON(geoCoder, function (data) { displayAddress(data); });
     } else {
-        $('#addrmessage').html('');
+        $('#addrmessage').html('(Adresse invalide)');
     }
 }
 // -----------------------------------------------------------

@@ -7,18 +7,18 @@
 
 {% block body %}
 
+
     <div class="container-fluid bg-form">
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h1 class="title-view">Nouvel évènement</h1>
+                <h2>Modification d'un évènement publié</h2>
                 <a href="{{ path('event_list_published') }}" class="btn btn-default btn-xs" type="button">Retour à la liste</a>
-                <div class="separation barreGreen"></div>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3">
 
-                <div class="sep barreGreen"></div>
+                <div class="sep"></div>
 
                 {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
 
@@ -55,13 +55,26 @@
                     </div>
                 </div>
 
+                 {# --- image -------------------------------------------------------------------------- #}
                 <div class="form-group">
                     <div class="col-sm-3 control-label">
-                        {{ form_label(form.image, 'Charger une image', {'label_attr': {'class': 'btn btn-default btn-xs'}}) }}
+                        {{ form_label(form.image, 'Charger nouvelle image', {'label_attr': {'class': 'btn btn-default btn-xs btn-txt btn-img'}}) }}
+                        <button id="resetimg" class="btn btn-default btn-xs btn-txt btn-img">Supprimer nouvelle image</button>
                     </div>
                     <div class="col-sm-9 text-center">
                         {{ form_widget(form.image, {'attr': {'class': 'form-control hidden', 'accept': '.jpg, .jpeg, .png'}}) }}
-                        <input type="text" id="imgname" class="form-control" value="" readonly="readonly" />
+                        <div class="demi-img text-center">
+                            {% if published.image is empty %}
+                                <img id="oldimage" class="little-img" src="{{ asset('/img/event_placeholder.png') }}" />
+                            {% else %}
+                                <img id="oldimage" class="little-img" src="{{ asset(published.image) }}" />
+                            {% endif %}
+                            <p>Image actuelle</p>
+                        </div>
+                        <div class="demi-img text-center">
+                            <img id="newimage" class="little-img" src="{{ asset(newImage) }}" />
+                            <p>Nouvelle image</p>
+                        </div>
                     </div>
                 </div>
 
@@ -87,7 +100,7 @@
                         {{ form_widget(form.longitude, {'attr': {'class': 'hidden'}}) }}
                         <input type="hidden" id="id-lng" value="{{ form.longitude.vars.id }}">
                     </div>
-                    <div><span id="addrmessage">(Adresse invalide)</span></div>
+                    <div><span id="addrmessage"></span></div>
                 </div>
                 <input type="hidden" name="longitude" id="longitude" value="">
 
@@ -134,18 +147,17 @@
 
                 <p><input type="button" class="btn btn-default" id="adddate" value="Ajoute une date" onclick="addDate();"/></p>
 
-                <div class="sep barreGreen"></div>
+                <div class="sep"></div>
 
                 <div class="row">
                     <div class="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 text-center">
-                        <button class="btn btn-default" type="submit">Créer l'évènement</button>
-                        <a href="{{ path('event_list_published') }}">
-                            <button class="btn btn-default">Abandonner</button>
-                        </a>
+                        <button class="btn btn-default right-sep" type="submit" name="enregistrer">Enregistrer les modifications</button>
+                        <a class="btn btn-default" href="{{ path('event_list_published') }}">Ne pas enregistrer</a>
                     </div>
                 </div>
 
                 {{ form_end(form) }}
+
             </div>
         </div>
 
@@ -156,6 +168,23 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script>
+        $('#numobundle_event_image').change(function(e) {
+            e.preventDefault();
+            var files = $(this)[0].files;
+            var file = files[0];
+            $('#newimage').attr('src', window.URL.createObjectURL(file));
+        });
+        $('#resetimg').click(function(e) {
+            e.preventDefault();
+            $('#{{ form.image.vars.id }}').val('');
+            $('#newimage').attr('src', '{{ asset('/img/event_placeholder.png') }}');
+        });
+
+
+    </script>
+
     <script src="{{ asset('js/newevent.js') }}"></script>
     <script>geocoder = new google.maps.Geocoder();</script>
 {% endblock %}
