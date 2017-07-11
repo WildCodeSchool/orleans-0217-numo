@@ -405,32 +405,9 @@ class ApiOpenAgenda
             $image = new \CurlFile($pathFile, 'text/plain', end($urlFile));
         }
 
-
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        // cette partie ne fonctionne pas, ou pas totalement (api non fonctionnelle)
-
-//        // --- preparation des infos dates -------------------------------------------------
-//        $eventData['locations'] = [[
-//            'uid' => $published->getLocationUid(),
-//            'dates' => []
-//        ]];
-//        $evtDates = $event->getEvtDates();
-//        foreach ($evtDates as $evtDate) {
-//            $eventData['locations'][0]['dates'][] = [
-//                'date' => $evtDate->getEvtDate()->format('Y-m-d'),
-//                'timeStart' => $evtDate->getTimeStart()->format('H:i'),
-//                'timeEnd' => $evtDate->getTimeEnd()->format('H:i'),
-//            ];
-//        }
-//
-//        // --- preparation des infos lieu ---------------------------------------------------
-//        $eventData['locations'][0]['pricingInfo'] = ['fr' => $event->getPricingInfo()->getPricing()];
-//        $eventData['locations'][0]['ticketLink'] = '';
-//        if ($event->getTicketLink()) {
-//            $eventData['locations'][0]['ticketLink'] = $event->getFreeText();
-//        }
-
-// >>>>>>>>>>>>>>>>>> FIN DE ZONE PROVISOIRE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // ------------------------------------------------------------------------------
+        // --- il faudra gérer ici les infos dates et lieu lorsque l'API le permettra ---
+        // ------------------------------------------------------------------------------
 
         // --- creation du token pour ecriture ----------------------------------------------------
         if (false === $this->initToken()) {

@@ -44,5 +44,12 @@ class DefaultController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/error", name="error_page")
+     */
+    public function errorAction()
+    {
+        return $this->render('NumoBundle:site:error.html.twig');
+    }
 
 }

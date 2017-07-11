@@ -102,8 +102,7 @@ class EventController extends Controller
         $dates = $data['eventDateList'];
         $nbEvents = $data['nbEvents'];
         if (false === $events) {
-            $events = [];
-            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+            return $this->redirectToRoute('error_page');
         }
 
         $paginator = $this->get('knp_paginator');
@@ -145,7 +144,7 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         $em = $this->getDoctrine()->getManager();
-        $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
+        $company = $em->getRepository('NumoBundle:Company')->findOneBy([]);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -178,7 +177,7 @@ class EventController extends Controller
                 $ids = $api->publishEvent($event, $this->getParameter('img_event_dir'));
 
                 if (false === $ids) {
-                    // gerer erreur si ecriture foireuse
+                    return $this->redirectToRoute('error_page');
                 }
                 // --- creation de l'enregistrement "published"
                 $uid = $ids['eventUid'];
@@ -298,13 +297,11 @@ class EventController extends Controller
         // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
         $event = $api->getEvent($id);
         if (false === $event) {
-            $event = null; // objet vide
-            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
-        } else {
-            // --- lecture des infos complementaires
-            $em = $this->getDoctrine()->getManager();
-            $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+            return $this->redirectToRoute('error_page');
         }
+        // --- lecture des infos complementaires
+        $em = $this->getDoctrine()->getManager();
+        $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
 
         $contact = new Contact();
         $form = $this->createForm(ContactType::class, $contact);
@@ -405,27 +402,26 @@ class EventController extends Controller
             // --- lecture de l'évènement via json sur OpenAgenda
             $oaEvent = $api->getEvent($id);
             if (false === $oaEvent) {
-                $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
-            } else {
-                $event->hydrate($oaEvent);
-                // note : dans $event, image reste vide
-                // --- recuperation et initialisation des dates et heures
-                // --- dates passées
-                foreach ($oaEvent->getOldDates() as $oaDate) {
-                    $evtDate = new EvtDate();
-                    $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
-                    $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
-                    $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
-                    $event->getEvtDates()->add($evtDate);
-                }
-                // --- dates a venir
-                foreach ($oaEvent->getNewDates() as $oaDate) {
-                    $evtDate = new EvtDate();
-                    $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
-                    $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
-                    $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
-                    $event->getEvtDates()->add($evtDate);
-                }
+                return $this->redirectToRoute('error_page');
+            }
+            $event->hydrate($oaEvent);
+            // note : dans $event, image reste vide
+            // --- recuperation et initialisation des dates et heures
+            // --- dates passées
+            foreach ($oaEvent->getOldDates() as $oaDate) {
+                $evtDate = new EvtDate();
+                $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
+                $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
+                $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
+                $event->getEvtDates()->add($evtDate);
+            }
+            // --- dates a venir
+            foreach ($oaEvent->getNewDates() as $oaDate) {
+                $evtDate = new EvtDate();
+                $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
+                $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
+                $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
+                $event->getEvtDates()->add($evtDate);
             }
         }
         // --- recup infos supplementaires
@@ -544,28 +540,24 @@ class EventController extends Controller
         // --- lecture de l'évènement via json sur OpenAgenda
         $oaEvent = $api->getEvent($id);
         if (false === $oaEvent) {
-            $oaEvent = null;
-            $published = null;
-            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
-        } else {
-            // --- lecture des infos complementaires
-            $em = $this->getDoctrine()->getManager();
-            $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                // --- suppression de l'évènement sur OpenAgenda
-                $result = $api->deleteEvent($published);
-                if (false === $result) {
-                    $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
-                } else {
-                    // --- Mise a jour des infos complementaires
-                    $published->setDeleted(1);
-                    $published->setModerator($this->getUser());
-                    $published->setModeratorUpdateDate(new \DateTime);
-                    $em->flush();
-                    return $this->redirectToRoute('event_list_published');
-                }
+            return $this->redirectToRoute('error_page');
+        }
+        // --- lecture des infos complementaires
+        $em = $this->getDoctrine()->getManager();
+        $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // --- suppression de l'évènement sur OpenAgenda
+            $result = $api->deleteEvent($published);
+            if (false === $result) {
+                return $this->redirectToRoute('error_page');
             }
+            // --- Mise a jour des infos complementaires
+            $published->setDeleted(1);
+            $published->setModerator($this->getUser());
+            $published->setModeratorUpdateDate(new \DateTime);
+            $em->flush();
+            return $this->redirectToRoute('event_list_published');
         }
         return $this->render('NumoBundle:event:deletePublished.html.twig', [
             'agendaSlug' => $api->getAgendaSlug(),

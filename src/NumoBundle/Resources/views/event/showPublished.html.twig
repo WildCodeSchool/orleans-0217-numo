@@ -18,18 +18,9 @@
                     <a href="{{ event.link }}" class="btn btn-default btn-txt right-sep" role="button" target="_blank">
                         Voir sur Open Agenda
                     </a>
-                    <a href="{{ path('event_list_published') }}" class="btn btn-default btn-txt right-sep" role="button">
+                    <a href="{{ path('event_list_published') }}" class="btn btn-default btn-txt" role="button">
                         Retour à la liste
                     </a>
-
-                    {# --- provisoire pour test --- #}
-                    <a href="{{ path('event_edit_published', {'id': event.id}) }}" class="btn btn-default btn-txt right-sep"
-                       role="button">Modifier</a>
-                    <a href="{{ path('event_delete_published', {'id': event.id}) }}" class="btn btn-default btn-txt"
-                       role="button">Supprimer</a>
-
-
-
                     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Contacter l'organisateur</button>
                         <div class="modal fade" id="myModal" role="dialog">
                             <div class="modal-dialog modal-lg">
@@ -50,9 +41,6 @@
                             </div>
                         </div>
                     <div class="separation barreGreen"></div>
-
-                    {# ---------------------------- #}
-
                 </div>
 
                 {# --- partie gauche (image + descriptif) -------------------------------------------------- #}

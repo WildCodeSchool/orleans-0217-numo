@@ -4,6 +4,10 @@ h1 {
     font-size: 3.5em;
 }
 
+ul#evtdatelist li {
+    margin-bottom: 5px;
+}
+
 .grey-text {
     color: lightgrey;
 }
