@@ -456,7 +456,12 @@ class EventController extends Controller
                 ->setTitle($event->getTitle());
             $em->flush();
 
-            return $this->redirectToRoute('event_show_published', ['id' => $id]);
+            if (in_array('ROLE_MODERATOR', $this->getUser()->getRoles())) {
+                return $this->redirectToRoute('events_index');
+            }
+            else {
+                return $this->redirectToRoute('event_show_published', ['id' => $id]);
+            }
         }
 
         return $this->render('NumoBundle:event:editPublished.html.twig', [
@@ -557,7 +562,7 @@ class EventController extends Controller
             $published->setModerator($this->getUser());
             $published->setModeratorUpdateDate(new \DateTime);
             $em->flush();
-            return $this->redirectToRoute('event_list_published');
+            return $this->redirectToRoute('events_index');
         }
         return $this->render('NumoBundle:event:deletePublished.html.twig', [
             'agendaSlug' => $api->getAgendaSlug(),
@@ -603,10 +608,6 @@ class EventController extends Controller
         $refusal = new ModerationRefusal();
         $form = $this->createForm(ModerationType::class, $refusal);
         $form->handleRequest($request);
-
-/*        if ($event->getImage() == null){
-            $event->setImage(' ');
-        }*/
 
         $author = $event->getAuthor();
 
