@@ -73,65 +73,109 @@ footer {
     margin-top: 7%;
     animation-name: appear;
     animation-duration: 2s;
-
 }
 
 .newsletter{
     background-color: transparent;
 }
+.banner{
+    padding-top:2%;
+}
+.banner2{
+    padding-bottom: 2%;
+}
 .btnadmin{
     margin-top: 5%;
 }
-.btn-default{
-    background-color: #4b0101;
-    color:white;
-    font-size: 1.4em;
-    border: none;
+.btndarkblue{
+    background-color: white;
+    color: #005a96;
+    border: 2px solid #005a96;
+    font-weight: 600;
+}
+.btndarkblue:hover{
+    background-color: white;
+    color: #007dac;
+    border: 2px solid #005a96;
+    font-weight: 600;
 }
 
-.btn-default:hover{
-    background-color: #fc1e1e;
-    color: white;
-    font-weight: 300;
-    border: none;
-    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.24), 0 5px 10px 0 rgba(0,0,0,0.19);
-    text-shadow: 0 0 10px #4b0101;
+.btngreen{
+    background-color: white;
+    color: #8dc63f;
+    border: 2px solid #8dc63f;
+    font-weight: 600;
+}
+.btngreen:hover{
+    background-color: white;
+    color: #cbdb2a;
+    border: 2px solid #8dc63f;
+    font-weight: 600;
 }
 
+.btnviolet{
+    background-color: white;
+    color: #a70050;
+    border: 2px solid #8dc63f;
+    font-weight: 600;
+}
+.btnviolet:hover{
+    background-color: white;
+    color: #9a258f;
+    border: 2px solid #a70050;
+    font-weight: 600;
+}
 
-.reverse{
-    background-color: #fc1e1e;
-    color: white;
-    font-weight: 300;
+.btnrouge{
+    background-color: white;
+    color: #d60000;
+    border: 2px solid #ff0606;
+    font-weight: 600;
+}
+.btnrouge:hover{
+    background-color: white;
+    color:  #ff0606;
+    border: 2px solid  #ff0606;
+    font-weight: 600;
+
+}
+
+.btnwhite2{
+    color: #005a96;
+    font-weight: 600;
+    background-color: white;
+    border: 2px solid #007dac;
     margin-top: 4%;
     margin-bottom: 4%;
 }
-.reverse:hover{
-    background-color: #4b0101;
-    text-shadow: 0 0 10px white;
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-    color:white;
+.btnwhite2:hover{
+    color: #007dac;
+    font-weight: 600;
+    background-color: white;
+    border: 2px solid #007dac;
+    margin-top: 4%;
+    margin-bottom: 4%;
 }
-
 .btnwhite{
-    color: white;
-    font-weight: 300;
-    background-color:  #4b0101;
+    color: #005a96;
+    font-weight: 600;
+    background-color: white;
+    border: 2px solid #005a96;
     margin-top: 4%;
     margin-bottom: 4%;
 
 
 }
 .eventtitle{
-    font-weight:300;
+    font-weight:400;
     color: black;
 }
 .btnwhite:hover{
-    background-color: #fc1e1e;
-    color: white;
+    background-color: white;
+    font-weight: 600;
+    color: #007dac;
+    border: 2px solid #005a96;
     text-shadow: 0 0 10px white;
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-
 }
 
 .index_list-events {
@@ -153,15 +197,22 @@ a:link{
 .title-view {
     text-transform: uppercase;
     font-size: 3.5em;
+    font-weight: 300;
 }
 
 .sub-title-view {
     font-size: 2.7em;
+    font-weight: 300;
+    color: black;
 }
 
 .content-view {
     font-size: 1.3em;
     margin-top: 3%;
+    font-weight: 300;
+    color: black;
+    line-height: 1.8;
+
 }
 
 .contact-view {
@@ -285,11 +336,18 @@ button{
 }
 /*surcharge du css de mailChimp*/
 #mc_embed_signup .button {
-    background-color: #02a46f!important;
+    background-color: white!important;
+    color: #005a96!important;
+    border :2px solid #005a96!important;
+    font-weight: 900!important;
+
 }
 #mc_embed_signup .button:hover{
-    background-color: #32b88a!important;
-    text-shadow: 0 0 2px white;
+    background-color: white!important;
+    font-weight: 900!important;
+    color: #007dac!important;
+    border: 2px solid #005a96!important;
+    box-shadow: 0 0 10px white!important;
 }
 .modifadmin{
     font-size: 1em;
@@ -511,31 +569,6 @@ div.separation {
 
 }
 
-
-.glyphicon.scrolled{
-    color: white;
-}
-.navbar-toggle{
-    margin-top: 6%;
-}
-.navbar-collapse.scrolled{
-    background-color: #4b0101;
-}
-.navbar-toggle.scrolled{
-    background-color: transparent;
-    color: #fc1e1e;
-    border: 1px solid #fc1e1e;
-}
-.navbar-toggle.scrolled:hover{
-    background-color: #fc1e1e;
-    border: none;
-    color: #4b0101;
-}
-
-.navbar-fixed-top.scrolled {
-    background-color: #4b0101;
-    transition: background-color 100ms ease-in;
-}
 .navbar-fixed-top{
     background-color: white;
 }
@@ -544,7 +577,7 @@ div.separation {
     height: 90px;
     border: none;
     text-transform: uppercase;
-    box-shadow: 0 2px 5px 0 #4b0101;
+    box-shadow: 0 1px 3px 0 grey;
 }
 .navbar-nav{
     margin-top: 1%;
@@ -556,14 +589,14 @@ div.separation {
 
 
 .btnRed {
-    background-color: #7e0303;
+    background-color: #02a46f;
 }
 .zoneRed{
-    background-color:  #fc1e1e;
+    background-color:  #005a96;
     font-size: 1.4em;
 }
 .zoneDarkRed{
-    background-color: #7e0303 ;
+    background-color: #007dac ;
     font-size: 1.4em;
     color:white;
 
@@ -573,20 +606,20 @@ div.separation {
     font-size: 4em;
     font-weight: 900;
     color: white;
-    border-bottom: 7px solid #7e0303;
+    border-bottom: 7px solid #007dac;
 
 }
 .dark{
     font-size: 4em;
     font-weight: 900;
     color: white;
-    border-bottom: 7px solid #fc1e1e;
+    border-bottom: 7px solid #005a96;
     margin-top: 2%;
 }
 .partner{
     font-size: 4em;
     font-weight: 900;
-    color: #fc1e1e;
+    color: #005a96;
     margin-top: 2%;
 
 }
@@ -600,6 +633,7 @@ div.separation {
 .desc{
     margin-top: 2%;
     color: white;
+    font-weight: 400;
 }
 @keyframes fadeInUp {
     from {
@@ -656,7 +690,7 @@ div.separation {
     margin-top: 5%;
     margin-bottom: 5%;
     background-color: rgba(255,255,255,0.3);
-    box-shadow: 0 2px 5px 0 rgba(0,167,109,.8);
+    box-shadow: 0 2px 5px 0 grey;
 }
 
 li{

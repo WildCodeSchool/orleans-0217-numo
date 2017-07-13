@@ -36,16 +36,16 @@
     <!--End mc_embed_signup-->
 
     <div class="row zoneRed text-center">
-        <div class="col-lg-offset-5 col-lg-2">
+        <div class="col-lg-offset-5 col-lg-2 banner">
             <h3 class="titreindex font-lato">Num'0</h3>
         </div>
-        <div class="col-lg-offset-3 col-lg-6">
+        <div class="col-lg-offset-3 col-lg-6 banner2">
             <p class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                 labore
                 et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
                 aliquip ex ea commodo consequat.
             </p>
-            <a href="{{ path('become_adherent') }}" class="btn btn-lg btnwhite">
+            <a href="{{ path('become_adherent') }}" class="btn btn-defaut btn-lg btnwhite2">
                 DEVENEZ ADHERENT
             </a>
         </div>
@@ -72,14 +72,14 @@
 
 
     <div class="row text-center zoneDarkRed">
-        <div class="col-lg-offset-4 col-lg-4 effet2">
+        <div class="col-lg-offset-4 col-lg-4 banner">
             <h3 class="dark font-lato">Les événements</h3>
         </div>
-        <div class="col-lg-offset-3 col-lg-6">
+        <div class="col-lg-offset-3 col-lg-6 banner2">
             <p class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                 labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
                 ut aliquip ex ea commodo consequat.
-                <a href="{{ path('event_list_published') }}" class="btn reverse btn-lg">Voir plus</a>
+                <a href="{{ path('event_list_published') }}" class="btn btnwhite btn-lg">VOIR PLUS</a>
             </p>
         </div>
     </div>
@@ -130,22 +130,4 @@
     {% block javascripts %}
         {{ parent() }}
         <script src="{{ asset('js/caroussel.js') }}"></script>
-        <script>
-            $(function () {
-                $(document).scroll(function () {
-                    var nav = $(".navbar-fixed-top");
-                    var hover = $(".hover");
-                    var connect = $(".connect");
-                    var navlist = $(".navbar-default .navbar-nav > li > a");
-                    var collapse = $(".navbar-collapse");
-                    var toggle = $(".navbar-toggle");
-                    nav.toggleClass('scrolled', $(this).scrollTop() > nav.height());
-                    hover.toggleClass('scrolled', $(this).scrollTop() > nav.height())
-                    collapse.toggleClass('scrolled', $(this).scrollTop() > nav.height())
-                    toggle.toggleClass('scrolled',$(this).scrollTop() > nav.height())
-                    navlist.toggleClass('scrolled',$(this).scrollTop() > nav.height())
-                });
-            });
-        </script>
-
     {% endblock %}
