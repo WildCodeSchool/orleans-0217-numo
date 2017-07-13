@@ -536,23 +536,6 @@ div.separation {
     background-color: #4b0101;
     transition: background-color 100ms ease-in;
 }
-/*
-.hover.scrolled {
-    color: white;
-    transition: color 100ms linear;
-}
-.hover.scrolled:hover{
-    text-shadow: 0 0 5px white;
-}
-
-.connect.scrolled{
-    color: white;
-    transition: color 100ms linear;
-}
-.connect.scrolled:hover{
-    text-shadow: 0 0 2px white;
-}
-*/
 .navbar-fixed-top{
     background-color: white;
 }
@@ -578,9 +561,6 @@ div.separation {
 .zoneRed{
     background-color:  #fc1e1e;
     font-size: 1.4em;
-    /*
-    height: 350px;
-    */
 }
 .zoneDarkRed{
     background-color: #7e0303 ;
