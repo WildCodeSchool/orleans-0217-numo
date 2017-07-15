@@ -1,0 +1,25 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <h1>Page de test</h1>
+
+    <p>
+        Il s'agit d'afficher la page normalement
+    </p>
+    <p>
+        {% if erreur is not empty %}
+            {{ erreur }}
+        {% else %}
+            {% if liste is empty %}
+                La liste est vide
+            {% else %}
+                <ul>
+                    {% for truc in liste %}
+                        <li>{{ truc }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {{ dump(data) }}
+        {% endif %}
+    </p>
+{% endblock %}

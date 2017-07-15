@@ -25,10 +25,11 @@ class DefaultController extends Controller
 // --- lecture de la liste OpenAgenda
         $api = $this->get('numo.apiopenagenda');
         $data = $api->getEventList($options);
-        $events = $data['eventList'];
-        if (false === $events) {
+        if (false === $data) {
             $events = [];
             $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+        } else {
+            $events = $data['eventList'];
         }
         $em = $this->getDoctrine()->getManager();
         $partners = $em->getRepository('NumoBundle:Partner')->findBy(['active' => 1]);

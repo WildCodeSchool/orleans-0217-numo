@@ -2,75 +2,64 @@
 
 namespace NumoBundle\Services;
 
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
 class GetFileContents
 {
-    private $url;
-    private $httpCode = 0;
-    private $error = '';
+    private $httpStatus;
+    private $httpHeaders;
 
-    public function setUrl(string $url)
+    private function setHttpStatus(int $code)
     {
-        $this->url = $url;
-        $this->setHttpCode(0);
-        $this->setError('');
+        $this->httpStatus = $code;
         return $this;
     }
 
-    private function setHttpCode($code)
+    public function getHttpStatus()
     {
-        $this->httpCode = $code;
+        return $this->httpStatus;
     }
 
-    public function getHttpCode()
+    private function setHttpHeaders(string $httpHeaders)
     {
-        return $this->httpCode;
+        $this->httpHeaders = $httpHeaders;
+        return $this;
     }
 
-    private function setError(string $error)
+    public function getHttpHeaders()
     {
-        $this->error = $error;
+        return $this->httpHeaders;
     }
 
-    public function getError()
+    public function execute(string $url, bool $api = false)
     {
-        return $this->error;
-    }
-
-    public function execute(bool $api = false)
-    {
-        if (empty($this->url)) {
-            $this->setHttpCode(404);
-            $this->setError('GetFileContents : URL non définie');
+        try {
+            $info = file_get_contents($url);
+        } catch (\HttpException $httpException) {
+            $this->setHttpStatus($httpException->getStatusCode());
+            $this->setHttpHeaders($httpException->getHeaders());
             return false;
-        } else {
-            $info = file_get_contents($this->url);
-            if (false === $info) {
-                $this->setHttpCode(999);
-                $this->setError('GetFileContents : Erreur inconnue');
+        }
+        $data = json_decode($info);
+        if ($api) {
+            // --- version api ----------
+            if (false === $data->success) {
+                $this->setHttpStatus($data->code);
+                $this->setHttpHeaders('GetFileContents : ' . $data->message);
                 return false;
             } else {
-                $data = json_decode($info);
-                if ($api) {
-                    // --- version api ----------
-                    if (false === $data->success) {
-                        $this->setHttpCode($data->code);
-                        $this->setError('GetFileContents : ' . $data->message);
-                        return false;
-                    } else {
-                        // -1 car on ne recupere pas le nombre d'evenements (2eme parametre)
-                        return ['data' => $data->data, 'nbEvents' => -1];
-                    }
-                } else {
-                    // --- version json -------
-                    if (isset($data->message)) {
-                        $this->setHttpCode(0);
-                        $this->setError('GetFileContents : ' . $data->message);
-                        return false;
-                    } else {
-                        return ['data' => $data->events, 'nbEvents' => $data->total];
-                    }
-                }
-
+                // -1 car on ne recupere pas le nombre d'evenements (2eme parametre)
+                return ['data' => $data->data, 'nbEvents' => -1];
+            }
+        } else {
+            // --- version json -------
+            if (isset($data->message)) {
+                $this->setHttpStatus(0);
+                $this->setHttpHeaders('GetFileContents : ' . $data->message);
+                return false;
+            } else {
+                return ['data' => $data->events, 'nbEvents' => $data->total];
             }
         }
     }

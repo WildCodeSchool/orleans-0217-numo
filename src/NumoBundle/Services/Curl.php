@@ -6,8 +6,45 @@ namespace NumoBundle\Services;
 class Curl
 {
     private $ch;
-    private $httpCode = 0;
-    private $error = '';
+    private $httpStatus;
+    private $httpHeaders;
+
+    /**
+     * @return mixed
+     */
+    public function getHttpStatus()
+    {
+        return $this->httpStatus;
+    }
+
+    /**
+     * @param mixed $httpStatus
+     * @return Curl
+     */
+    public function setHttpStatus($httpStatus)
+    {
+        $this->httpStatus = $httpStatus;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHttpHeaders()
+    {
+        return $this->httpHeaders;
+    }
+
+    /**
+     * @param mixed $httpHeaders
+     * @return Curl
+     */
+    public function setHttpHeaders($httpHeaders)
+    {
+        $this->httpHeaders = $httpHeaders;
+        return $this;
+    }
+
 
     public function __construct(string $url='')
     {
@@ -17,9 +54,11 @@ class Curl
             curl_reset($this->ch);
             $this->setOpt(CURLOPT_URL, $url);
         }
-        $this->setOpt(CURLOPT_RETURNTRANSFER, true);
-        $this->setOpt(CURLOPT_CUSTOMREQUEST, 'POST');
-        $this->setOpt(CURLOPT_POST, true);
+        $this
+            ->setOpt(CURLOPT_RETURNTRANSFER, true)
+            ->setOpt(CURLOPT_POST, true)
+            ->setHttpStatus(0)
+            ->setHttpHeaders('');
     }
 
     public function setOpt($option, $value)
@@ -39,45 +78,23 @@ class Curl
         return curl_getinfo($this->ch, $option);
     }
 
-    private function setHttpCode($code)
-    {
-        $this->httpCode = $code;
-    }
-
-    public function getHttpCode()
-    {
-        return $this->httpCode;
-    }
-
-    private function setError(string $error)
-    {
-        $this->error = $error;
-    }
-
-    public function getError()
-    {
-        return $this->error;
-    }
-
     public function execute()
     {
-        $data = curl_exec($this->ch);
-        $this->setHttpCode($this->getInfo(CURLINFO_HTTP_CODE));
-        if ($this->getHttpCode() == 200) {
-            $this->setError('');
-            return json_decode($data, true);
-        } else {
-            // $this->setError($data); // a tester
-            $this->setError(curl_error($this->ch));
+        try {
+            $data = curl_exec($this->ch);
+        } catch (\HttpException $httpException) {
+            $this->setHttpStatus($httpException->getStatusCode());
+            $this->setHttpHeaders($httpException->getHeaders());
             return false;
         }
+        return json_decode($data, true);
     }
 
     public function setUrl(string $url)
     {
         $this->setOpt(CURLOPT_URL, $url);
-        $this->setHttpCode(0);
-        $this->setError('');
+        $this->setHttpStatus(0);
+        $this->setHttpHeaders('');
         $this->setOpt(CURLOPT_POSTFIELDS, []);
         return $this;
     }
