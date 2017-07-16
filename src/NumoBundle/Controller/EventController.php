@@ -98,11 +98,14 @@ class EventController extends Controller
         // --- lecture de la liste OpenAgenda
         $api = $this->get('numo.apiopenagenda');
         $data = $api->getEventList($options);
-        $events = $data['eventList'];
-        $dates = $data['eventDateList'];
-        $nbEvents = $data['nbEvents'];
-        if (false === $events) {
-            return $this->redirectToRoute('error_page');
+        if (false === $data) {
+            $error = 'code : ' . $api->getErrorCode() . ', message : ' . $api->getError();
+            $events = $dates = [];
+            $nbEvents = 0;
+        } else {
+            $events = $data['eventList'];
+            $dates = $data['eventDateList'];
+            $nbEvents = $data['nbEvents'];
         }
 
         $paginator = $this->get('knp_paginator');
@@ -134,7 +137,6 @@ class EventController extends Controller
     public function newAction(Request $request)
     {
         // --- Note : les images sont gerees par des eventlisteners
-        $error = '';
         $event = new Event();
         $firstEvtDate = new EvtDate();
         $firstEvtDate->setEvtDate(new \DateTime());
@@ -148,10 +150,6 @@ class EventController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->addFlash(
-                'info',
-                'Vous avez créé un évènement'
-            );
             $userManager = $this->get('fos_user.user_manager');
             $users = $userManager->findUsers();
 
@@ -175,9 +173,8 @@ class EventController extends Controller
                 }
                 $api = $this->get('numo.apiopenagenda');
                 $ids = $api->publishEvent($event, $this->getParameter('img_event_dir'));
-
                 if (false === $ids) {
-                    return $this->redirectToRoute('error_page');
+                    return $this->redirectToRoute('error_page', ['errorCode' => $api->getErrorCode(), 'error' => $api->getError()]);
                 }
                 // --- creation de l'enregistrement "published"
                 $uid = $ids['eventUid'];
@@ -216,11 +213,14 @@ class EventController extends Controller
                 }
                 $this->get('mailer')->send($confirmation);
             }
+            $this->addFlash(
+                'info',
+                'Vous avez créé un évènement'
+            );
 
             return $this->redirectToRoute('event_list_published');
         }
         return $this->render('NumoBundle:event:new.html.twig', [
-            'error' => $error,
             'form' => $form->createView(),
         ]);
     }
@@ -239,7 +239,7 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         $em = $this->getDoctrine()->getManager();
-        $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
+        $company = $em->getRepository('NumoBundle:Company')->findOneBy([]);
 
         $imgDir = $this->getParameter('img_event_dir');
         $oldDates = $newDates = [];
@@ -297,12 +297,13 @@ class EventController extends Controller
         // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
         $event = $api->getEvent($id);
         if (false === $event) {
-            return $this->redirectToRoute('error_page');
+            $error = 'code : ' . $api->getErrorCode() . ', message : ' . $api->getError();
+            $event = null;
+        } else {
+            // --- lecture des infos complementaires
+            $em = $this->getDoctrine()->getManager();
+            $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
         }
-        // --- lecture des infos complementaires
-        $em = $this->getDoctrine()->getManager();
-        $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
-
         $contact = new Contact();
         $form = $this->createForm(ContactType::class, $contact);
         $form->handleRequest($request);
@@ -336,10 +337,8 @@ class EventController extends Controller
             'published' => $published,
             'error' => $error,
             'form'=>$form->createView(),
-            'googleMapApi' => $this->getParameter('google_map_api')
-
+            'googleMapApi' => $this->getParameter('google_map_api'),
         ]);
-
     }
 
     /**
@@ -402,31 +401,33 @@ class EventController extends Controller
             // --- lecture de l'évènement via json sur OpenAgenda
             $oaEvent = $api->getEvent($id);
             if (false === $oaEvent) {
-                return $this->redirectToRoute('error_page');
-            }
-            $event->hydrate($oaEvent);
-            // note : dans $event, image reste vide
-            // --- recuperation et initialisation des dates et heures
-            // --- dates passées
-            foreach ($oaEvent->getOldDates() as $oaDate) {
-                $evtDate = new EvtDate();
-                $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
-                $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
-                $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
-                $event->getEvtDates()->add($evtDate);
-            }
-            // --- dates a venir
-            foreach ($oaEvent->getNewDates() as $oaDate) {
-                $evtDate = new EvtDate();
-                $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
-                $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
-                $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
-                $event->getEvtDates()->add($evtDate);
+                $error = 'code : ' . $api->getErrorCode() . ', message : ' . $api->getError();
+                $oaEvent = $published = null;
+            } else {
+                $event->hydrate($oaEvent);
+                // note : dans $event, image reste vide
+                // --- recuperation et initialisation des dates et heures
+                // --- dates passées
+                foreach ($oaEvent->getOldDates() as $oaDate) {
+                    $evtDate = new EvtDate();
+                    $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
+                    $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
+                    $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
+                    $event->getEvtDates()->add($evtDate);
+                }
+                // --- dates a venir
+                foreach ($oaEvent->getNewDates() as $oaDate) {
+                    $evtDate = new EvtDate();
+                    $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
+                    $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
+                    $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
+                    $event->getEvtDates()->add($evtDate);
+                }
+                // --- recup infos supplementaires
+                $em = $this->getDoctrine()->getManager();
+                $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
             }
         }
-        // --- recup infos supplementaires
-        $em = $this->getDoctrine()->getManager();
-        $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
@@ -542,14 +543,15 @@ class EventController extends Controller
             ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
             ->getForm();
         $api = $this->get('numo.apiopenagenda');
-        // --- lecture de l'évènement via json sur OpenAgenda
         $oaEvent = $api->getEvent($id);
         if (false === $oaEvent) {
-            return $this->redirectToRoute('error_page');
+            $error = 'code : ' . $api->getErrorCode() . ', message : ' . $api->getError();
+            $oaEvent = $published = null;
+        } else {
+            // --- recup infos supplementaires
+            $em = $this->getDoctrine()->getManager();
+            $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
         }
-        // --- lecture des infos complementaires
-        $em = $this->getDoctrine()->getManager();
-        $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // --- suppression de l'évènement sur OpenAgenda
@@ -598,26 +600,23 @@ class EventController extends Controller
      * @Route("/approved/{id}", name="event_approved")
      * @Method({"GET","POST"})
      */
-    public function ApprovedAction($id, Request $request)
+    public function ApprovedAction(Request $request, Event $event)
     {
-        $em = $this->getDoctrine()->getManager();
-        $event = $em->getRepository('NumoBundle:Event')->findOneBy(['id' => $id]);
-        $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
-
+//        $em = $this->getDoctrine()->getManager();
+//        $event = $em->getRepository('NumoBundle:Event')->findOneBy(['id' => $id]);
+        $company = $em->getRepository('NumoBundle:Company')->findOneBy([]);
 
         $refusal = new ModerationRefusal();
         $form = $this->createForm(ModerationType::class, $refusal);
         $form->handleRequest($request);
-
         $author = $event->getAuthor();
-
         $api = $this->get('numo.apiopenagenda');
         $uid = $api->publishEvent($event);
-
         $eventUid = $uid['eventUid'];
+        $locationUid = $uid['locationUid'];
 
         // --- creationde l'enregistrement "published"
-        $published = new Published($event, $eventUid, $author);
+        $published = new Published($event, $eventUid, $locationUid, $this->getUser());
         $published->setTitle($event->getTitle());
         $em->persist($published);
         $em->remove($event);
@@ -627,7 +626,6 @@ class EventController extends Controller
             'search[passed]' => 0,
             'offset' => 0,
         ];
-
 
         $data = $api->getEventList($options);
         $publishedevents = $data['eventList'];
@@ -661,7 +659,6 @@ class EventController extends Controller
             return $this-> redirectToRoute('events_index');
 
         }
-
 
         $events = $em->getRepository('NumoBundle:Event') ->findAll();
         $publishedevents = $em->getRepository('NumoBundle:Published')->findBy(array(), array('authorUpdateDate'=> 'DESC'));

@@ -8,10 +8,13 @@
 {% block body %}
 
     <div class="container-fluid bg-1 text-center">
-        <p class="message"><img src="{{ asset('img/interdit.png') }}" alt="image erreur"></p>
-        <h1>Votre statut actuel ne vous permet pas d'accéder à ce contenu</h1>
-        <p class="message">Soit vous n'êtes pas authentifié (en haut à droite : Connexion), soit ce contenu est réservé aux administrateurs.</p>
-        <p class="message">
+        <p class="message"><img src="{{ asset('img/erreur.png') }}" alt="image erreur"></p>
+        <h1>Une erreur s'est produite</h1>
+        <p class="message">Nous vous prions de nous excuser pour ce désagrément.</p>
+        {% if code!=0 or error is not empty %}
+            <p>(pour les spécialistes : {{ code }}, {{ error }})</p>
+        {% endif %}
+        <p>
             <a href="{{ path('index') }}" class="btn btn-default btn-txt" type="button">Retour à l'accueil</a>
         </p>
     </div>

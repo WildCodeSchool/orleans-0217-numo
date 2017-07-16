@@ -27,7 +27,7 @@ class DefaultController extends Controller
         $data = $api->getEventList($options);
         if (false === $data) {
             $events = [];
-            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+            $error = 'code : ' . $api->getErrorCode() . ', message : ' . $api->getError();
         } else {
             $events = $data['eventList'];
         }
@@ -46,11 +46,11 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/error", name="error_page")
+     * @Route("/error/{code}/{error}", name="error_page")
      */
-    public function errorAction()
+    public function errorAction($code = 0, $error = '')
     {
-        return $this->render('NumoBundle:site:error.html.twig');
+        return $this->render('NumoBundle:site:error.html.twig', ['code' => $code, 'error' => $error]);
     }
 
 }

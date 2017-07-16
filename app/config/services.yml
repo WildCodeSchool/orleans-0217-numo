@@ -43,7 +43,7 @@ services:
             - { name: doctrine.event_listener, event: postLoad }
             - { name: doctrine.event_listener, event: preRemove }
 
-
+    NumoBundle\Security\AccessDeniedHandler:
 
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl

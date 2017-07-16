@@ -6,42 +6,42 @@ namespace NumoBundle\Services;
 class Curl
 {
     private $ch;
-    private $httpStatus;
-    private $httpHeaders;
+    private $errorCode;
+    private $error;
 
     /**
      * @return mixed
      */
-    public function getHttpStatus()
+    public function getErrorCode()
     {
-        return $this->httpStatus;
+        return $this->errorCode;
     }
 
     /**
-     * @param mixed $httpStatus
+     * @param mixed $errorCode
      * @return Curl
      */
-    public function setHttpStatus($httpStatus)
+    public function setErrorCode($errorCode)
     {
-        $this->httpStatus = $httpStatus;
+        $this->errorCode = $errorCode;
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getHttpHeaders()
+    public function getError()
     {
-        return $this->httpHeaders;
+        return $this->error;
     }
 
     /**
-     * @param mixed $httpHeaders
+     * @param mixed $error
      * @return Curl
      */
-    public function setHttpHeaders($httpHeaders)
+    public function setError($error)
     {
-        $this->httpHeaders = $httpHeaders;
+        $this->error = $error;
         return $this;
     }
 
@@ -57,8 +57,8 @@ class Curl
         $this
             ->setOpt(CURLOPT_RETURNTRANSFER, true)
             ->setOpt(CURLOPT_POST, true)
-            ->setHttpStatus(0)
-            ->setHttpHeaders('');
+            ->setErrorCode(0)
+            ->setError('');
     }
 
     public function setOpt($option, $value)
@@ -83,8 +83,12 @@ class Curl
         try {
             $data = curl_exec($this->ch);
         } catch (\HttpException $httpException) {
-            $this->setHttpStatus($httpException->getStatusCode());
-            $this->setHttpHeaders($httpException->getHeaders());
+            $this->setErrorCode($httpException->getStatusCode());
+            $this->setError($httpException->getHeaders());
+            return false;
+        } catch (\Exception $ex) {
+            $this->setErrorCode(0);
+            $this->setError($ex->getMessage());
             return false;
         }
         return json_decode($data, true);
@@ -93,8 +97,8 @@ class Curl
     public function setUrl(string $url)
     {
         $this->setOpt(CURLOPT_URL, $url);
-        $this->setHttpStatus(0);
-        $this->setHttpHeaders('');
+        $this->setErrorCode(0);
+        $this->setError('');
         $this->setOpt(CURLOPT_POSTFIELDS, []);
         return $this;
     }
