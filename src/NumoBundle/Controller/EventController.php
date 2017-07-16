@@ -241,7 +241,6 @@ class EventController extends Controller
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('NumoBundle:Company')->findOneBy([]);
 
-        $imgDir = $this->getParameter('img_event_dir');
         $oldDates = $newDates = [];
         $dateRef = new \DateTime();
         foreach ($event->getEvtDates() as $evtD) {
@@ -275,7 +274,7 @@ class EventController extends Controller
         }
 
         return $this->render('NumoBundle:event:showAwait.html.twig', [
-            'imgDir' => $imgDir,
+            'imgDir' => $this->getParameter('img_event_dir'),
             'event' => $event,
             'oldDates' => $oldDates,
             'newDates' => $newDates,
@@ -293,6 +292,7 @@ class EventController extends Controller
     {
         $error = '';
         $published = null;
+        $allowEdit = false;
         $api = $this->get('numo.apiopenagenda');
         // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
         $event = $api->getEvent($id);
@@ -303,6 +303,9 @@ class EventController extends Controller
             // --- lecture des infos complementaires
             $em = $this->getDoctrine()->getManager();
             $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+            if ($published) {
+                $allowEdit = $this->getUser() == $published->getAuthor();
+            }
         }
         $contact = new Contact();
         $form = $this->createForm(ContactType::class, $contact);
@@ -338,6 +341,8 @@ class EventController extends Controller
             'error' => $error,
             'form'=>$form->createView(),
             'googleMapApi' => $this->getParameter('google_map_api'),
+            'allowEdit' => $allowEdit,
+            'imgDir' => $this->getParameter('img_event_dir'),
         ]);
     }
 
@@ -350,7 +355,6 @@ class EventController extends Controller
     public function editAwaitAction(Request $request, Event $event)
     {
         // --- Note : les images sont gerees par des eventlisteners
-        $imgDir = $this->getParameter('img_event_dir') . '/';
         $em = $this->getDoctrine()->getManager();
         $oldImage = $event->getImage();
         $originalEvtDates = new ArrayCollection();
@@ -377,7 +381,7 @@ class EventController extends Controller
 
         return $this->render('NumoBundle:event:editAwait.html.twig', [
             'event' => $event,
-            'imgDir' => $imgDir,
+            'imgDir' => $this->getParameter('img_event_dir'),
             'eventId' => $event->getId(),
             'oldImage' => $oldImage,
             'form' => $form->createView(),
@@ -423,11 +427,11 @@ class EventController extends Controller
                     $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
                     $event->getEvtDates()->add($evtDate);
                 }
-                // --- recup infos supplementaires
-                $em = $this->getDoctrine()->getManager();
-                $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
             }
         }
+        // --- recup infos supplementaires
+        $em = $this->getDoctrine()->getManager();
+        $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
@@ -443,6 +447,13 @@ class EventController extends Controller
                 );
                 $event->setImage($fileName);
                 // --- mise a jour de $published
+
+
+
+
+
+
+
                 if (file_exists($published->getImage())) {
                     unlink($published->getImage());
                 }
@@ -470,6 +481,7 @@ class EventController extends Controller
             'newImage' => $newImage,
             'form' => $form->createView(),
             'published' => $published,
+            'imgDir' => $this->getParameter('img_event_dir'),
         ]);
     }
 
@@ -482,7 +494,6 @@ class EventController extends Controller
     public function deleteAwaitAction(Request $request, Event $event)
     {
         // --- Note : les images sont gerees par des eventlisteners
-        $imgDir = $this->getParameter('img_event_dir') . '/';
         $form = $this
             ->createFormBuilder()
             ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
@@ -520,7 +531,7 @@ class EventController extends Controller
             return $this->redirectToRoute($goBack);
         }
         return $this->render('NumoBundle:event:deleteAwait.html.twig', [
-            'imgDir' => $imgDir,
+            'imgDir' => $this->getParameter('img_event_dir'),
             'event' => $event,
             'form' => $form->createView(),
             'goBack' => $goBack,
@@ -572,6 +583,7 @@ class EventController extends Controller
             'published' => $published,
             'form' => $form->createView(),
             'error' => $error,
+            'imgDir' => $this->getParameter('img_event_dir'),
         ]);
     }
 

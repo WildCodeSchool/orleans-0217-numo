@@ -3,7 +3,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/eventStyle.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fullcalendar.min.css') }}">
 {% endblock %}
 
@@ -15,15 +15,20 @@
                 {# --- titre --------------------------------------------------------------------------------#}
                 <div class="col-xs-12 text-center">
                     <h1 class="title-view">{{ event.title }}</h1>
-                    <a href="{{ event.link }}" class="btn btn-default btn-txt" role="button" target="_blank">
-                        Voir sur Open Agenda
-                    </a>
                     <a href="{{ path('event_list_published') }}" class="btn btn-default btn-txt" role="button">
                         Retour à la liste
                     </a>
-                    <button type="button" class="btn btn-default btn-txt" data-toggle="modal" data-target="#myModal">
-                        Contacter l'organisateur
-                    </button>
+                    <a href="{{ event.link }}" class="btn btn-default btn-txt" role="button" target="_blank">
+                        Voir sur Open Agenda
+                    </a>
+                    {% if allowEdit %}
+                        <a href="{{ path('event_edit_published', {'id': published.uid}) }}" class="btn btn-default btn-txt" role="button">
+                            Modifier
+                        </a>
+                    {% else %}
+                        <button type="button" class="btn btn-default btn-txt" data-toggle="modal" data-target="#myModal">
+                            Contacter l'organisateur
+                        </button>
                         <div class="modal fade" id="myModal" role="dialog">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
@@ -42,6 +47,7 @@
                                 </div>
                             </div>
                         </div>
+                    {% endif %}
                     <div class="separation barreGreen"></div>
                 </div>
 
