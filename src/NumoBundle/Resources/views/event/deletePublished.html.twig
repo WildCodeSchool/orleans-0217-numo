@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/eventStyle.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -13,17 +13,28 @@
             <div class="col-xs-12 text-center">
                 <h1 class="title-view">Suppression d'un évènement</h1>
                 <div class="separation barreRed"></div>
-                {{ form_start(form) }}
-                {{ form_widget(form.delete, {'attr': {'class': 'btn btn-default btn-sep'}}) }}
-                <a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Ne pas supprimer</a>
-                {{ form_end(form) }}
+                {% if error is empty %}
+                    {{ form_start(form) }}
+                    {{ form_widget(form.delete, {'attr': {'class': 'btn btn-default btn-txt'}}) }}
+                    <a href="{{ path('event_list_published') }}" class="btn btn-default btn-txt" role="button">Ne pas supprimer</a>
+                    {{ form_end(form) }}
+                {% else %}
+                    <a href="{{ path('event_list_published') }}" class="btn btn-default btn-txt" role="button">Retour à la liste</a>
+                {% endif %}
                 <div class="separation barreRed"></div>
             </div>
         </div>
 
         <div class="row">
 
-            {% if error == '' %}
+            {% if error  %}
+
+                <div class="col-xs-12 text-center">
+                    <p><img src="{{ asset('img/erreur.png') }}" /></p>
+                    <h3>L'évènement n'a pas pu être lu.</h3>
+                </div>
+
+            {% else %}
 
     {# --- partie gauche (image + descriptif) -------------------------------------------------- #}
                 <div class="col-xs-12 col-md-8">
@@ -96,18 +107,13 @@
                     <h3>Organisé par</h3>
                     <p>
                         {% if published and published.author %}
-                            <img class="little-img" src="{{ published.author.imageUrl }}" alt="image organisateur {{ published.author.name }}" />
+                            <img class="min-img" src="{{ asset('uploads/users/' ~ published.author.imageUrl) }}"
+                                 alt="image organisateur {{ published.author.name }}" />
                             {{ published.author.name }} {{ published.author.firstname }}
                         {% else %}
                             Information non disponible.
                         {% endif %}
                     </p>
-                </div>
-
-            {% else %}
-
-                <div class="col-xs-12 erreur text-center">
-                    {{ error }}
                 </div>
 
             {% endif %}

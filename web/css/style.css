@@ -458,26 +458,27 @@ thead{
 .barreRed{
     background-color: #FC0606;
 }
-
-.separation.barrePurple{
+.barrePurple{
     background-color: #97258D;
 }
-
 .barreGreen{
     background-color: #8CC63C;
 }
-
 .barreBlue{
     background-color: #005897 ;
 }
-
 .barreYellow{
     background-color: #CADB2A;
 }
 
-div.separation {
+div.separation, div.sep {
     margin: 20px 0px;
     width: 100%;
+}
+div.separation {
+    height: 2px;
+}
+div.sep {
     height: 1px;
 }
 

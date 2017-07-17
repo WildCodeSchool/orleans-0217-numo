@@ -3,25 +3,39 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/eventStyle.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/eventstyle.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fullcalendar.min.css') }}">
 {% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="row">
-            {% if error == '' %}
+            {% if error %}
+
+                <div class="col-xs-12 text-center">
+                    <p><img src="{{ asset('img/erreur.png') }}" /></p>
+                    <h3>L'évènement n'a pas pu être lu.</h3>
+                </div>
+
+            {% else %}
 
                 {# --- titre --------------------------------------------------------------------------------#}
                 <div class="col-xs-12 text-center">
                     <h1 class="title-view">{{ event.title }}</h1>
-                    <a href="{{ event.link }}" class="btn btn-default btn-txt right-sep" role="button" target="_blank">
-                        Voir sur Open Agenda
-                    </a>
                     <a href="{{ path('event_list_published') }}" class="btn btn-default btn-txt" role="button">
                         Retour à la liste
                     </a>
-                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Contacter l'organisateur</button>
+                    <a href="{{ event.link }}" class="btn btn-default btn-txt" role="button" target="_blank">
+                        Voir sur Open Agenda
+                    </a>
+                    {% if allowEdit %}
+                        <a href="{{ path('event_edit_published', {'id': published.uid}) }}" class="btn btn-default btn-txt" role="button">
+                            Modifier
+                        </a>
+                    {% else %}
+                        <button type="button" class="btn btn-default btn-txt" data-toggle="modal" data-target="#myModal">
+                            Contacter l'organisateur
+                        </button>
                         <div class="modal fade" id="myModal" role="dialog">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
@@ -40,6 +54,7 @@
                                 </div>
                             </div>
                         </div>
+                    {% endif %}
                     <div class="separation barreGreen"></div>
                 </div>
 
@@ -127,24 +142,25 @@
                     <h3>Billetterie / inscription</h3>
                     <p>{{ event.pricingInfo }}</p>
                     {% if event.ticketLink > '' %}
-                        <p><a href="{{ event.ticketLink }}" class="btn btn-default" role="button" target="_blanc">Accéder
-                                à la billetterie</a></p>
+                        <p><a href="{{ event.ticketLink }}" class="btn btn-default btn-txt" role="button" target="_blanc">
+                            Accéder à la billetterie
+                        </a></p>
                     {% endif %}
 
                     {# --- reseaux sociaux ----------------------------------------------------- #}
                     <div class="separation barreGreen"></div>
                     <h3>Partager sur</h3>
                     {# --- facebook --- #}
-                    <a name="fb_share" type="box_count" href="https://www.facebook.com/sharer/sharer.php?u=example.org" share_url="{{ app.request.uri }}" target="_blanc">
+                    <a name="fb_share" type="box_count"
+                        href="https://www.facebook.com/sharer/sharer.php?u=example.org"
+                        share_url="{{ app.request.uri }}" target="_blank">
                         <img src="{{ asset('/img/rs-facebook.png') }}" alt="partager facebook" class="rs-button"/>
                     </a>
                     {# --- twitter --- #}
-                    <a href="https://twitter.com/share" target="_blanc">
+                    <a href="https://twitter.com/share" target="_blank">
                         <img src="{{ asset('/img/rs-twitter.png') }}" alt="partager twitter" class="rs-button"/>
                     </a>
-
-                    {# --- linkedin ------------------------------------------------------------ #}
-                    <div class="separation barreGreen"></div>
+                    {# --- linkedin --- #}
                     <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: fr_FR</script>
                     <script type="IN/Share" data-url="http://num-o.fr/event/showpublished/{{ event.id }}" data-counter="top"></script>
                     {# --- organisateur -------------------------------------------------------- #}
@@ -153,8 +169,8 @@
                     <h3>Organisé par</h3>
                     <p>
                         {% if published and published.author %}
-                            <img class="little-img" src="{{ published.author.imageUrl }}"
-                                 alt="image organisateur {{ published.author.name }}"/>
+                            <img class="min-img" src="{{ asset('uploads/users/' ~ published.author.imageUrl) }}"
+                                 alt="image organisateur {{ published.author.name }}" />
                             {{ published.author.name }} {{ published.author.firstname }}
                         {% else %}
                             Information non disponible.
@@ -162,18 +178,13 @@
                     </p>
                 </div>
 
-            {% else %}
-
-                <div class="col-xs-12 erreur text-center">
-                    {{ error }}
-                </div>
-
             {% endif %}
 
             <div class="col-xs-12 text-center">
                 <div class="separation barreGreen"></div>
-                <p><a href="{{ path('event_list_published') }}" class="btn btn-default btn-txt" role="button">Retour à la
-                        liste</a></p>
+                <p><a href="{{ path('event_list_published') }}" class="btn btn-default btn-txt" role="button">
+                    Retour à la liste
+                </a></p>
             </div>
 
         </div>
@@ -183,27 +194,29 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/showevent.js') }}"></script>
-    <script>
+    {% if not error %}
+        <script src="{{ asset('js/showevent.js') }}"></script>
+        <script>
 
-        function initMap() {
-            var centerMap = new google.maps.LatLng('{{ event.latitude }}', '{{ event.longitude }}');
-            var optionsMap = {
-                zoom: 14,
-                center: centerMap,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+            function initMap() {
+                var centerMap = new google.maps.LatLng('{{ event.latitude }}', '{{ event.longitude }}');
+                var optionsMap = {
+                    zoom: 14,
+                    center: centerMap,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
+                var myMap = new google.maps.Map(document.getElementById("mapzone"), optionsMap);
+                var optionsMarqueur = {
+                    position: centerMap,
+                    map: myMap,
+                    title: "{{ event.placename }}"
+                }
+                var marqueur = new google.maps.Marker(optionsMarqueur);
             }
-            var myMap = new google.maps.Map(document.getElementById("mapzone"), optionsMap);
-            var optionsMarqueur = {
-                position: centerMap,
-                map: myMap,
-                title: "{{ event.placename }}"
-            }
-            var marqueur = new google.maps.Marker(optionsMarqueur);
-        }
 
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ googleMapApi }}=initMap"
-            async defer></script>
-    <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ googleMapApi }}=initMap"
+                async defer></script>
+        <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
+    {% endif %}
 {% endblock %}

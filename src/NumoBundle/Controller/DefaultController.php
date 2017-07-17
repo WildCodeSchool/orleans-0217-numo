@@ -25,10 +25,11 @@ class DefaultController extends Controller
 // --- lecture de la liste OpenAgenda
         $api = $this->get('numo.apiopenagenda');
         $data = $api->getEventList($options);
-        $events = $data['eventList'];
-        if (false === $events) {
+        if (false === $data) {
             $events = [];
-            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+            $error = 'code : ' . $api->getErrorCode() . ', message : ' . $api->getError();
+        } else {
+            $events = $data['eventList'];
         }
         $em = $this->getDoctrine()->getManager();
         $partners = $em->getRepository('NumoBundle:Partner')->findBy(['active' => 1]);
@@ -45,11 +46,11 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/error", name="error_page")
+     * @Route("/error/{code}/{error}", name="error_page")
      */
-    public function errorAction()
+    public function errorAction($code = 0, $error = '')
     {
-        return $this->render('NumoBundle:site:error.html.twig');
+        return $this->render('NumoBundle:site:error.html.twig', ['code' => $code, 'error' => $error]);
     }
 
 }

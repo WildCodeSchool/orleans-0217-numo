@@ -15,12 +15,10 @@ class ApiOpenAgenda
     private $curl;
     private $getFileContents;
     private $agendaSlug;
-    private $aUid;
+    private $agendaUid;
     private $publicKey;
     private $secretKey;
     private $token;
-    private $errorCode = 0;
-    private $error = '';
 
     public function __construct($curl, $getFileContents, $agendaSlug, $publicKey, $secretKey)
     {
@@ -30,26 +28,6 @@ class ApiOpenAgenda
         $this->publicKey = $publicKey;
         $this->secretKey = $secretKey;
         $this->getAgendaUid();
-    }
-
-    public function getErrorCode()
-    {
-        return $this->errorCode;
-    }
-
-    private function setErrorCode(int $code)
-    {
-        $this->errorCode = $code;
-    }
-
-    public function getError()
-    {
-        return $this->error;
-    }
-
-    private function setError(string $error)
-    {
-        $this->error = $error;
     }
 
     public function getAgendaSlug()
@@ -74,24 +52,16 @@ class ApiOpenAgenda
 
     public function getAgendaUid()
     {
-        if (!isset($this->aUid)) {
+        if (!isset($this->agendaUid)) {
             $url = self::APIROOTURL . 'agendas/uid/' . $this->getAgendaSlug() . '?key=' . $this->getPublicKey();
-            $this->getFileContents->setUrl($url);
-            $data = $this->getFileContents->execute(true);
+            $data = $this->getFileContents->execute($url, true);
             if (false === $data) {
-                $this->setErrorCode($this->getFileContents->getHttpCode());
-                $this->setError('Lecture agenda : Erreur inconnue');
                 return false;
             } else {
-                $this->setAgendaUid($data['data']->uid);
+                $this->agendaUid = $data['data']->uid;
             }
         }
-        return $this->aUid;
-    }
-
-    private function setAgendaUid($aUid)
-    {
-        $this->aUid = $aUid;
+        return $this->agendaUid;
     }
 
     private function convertJson($event)
@@ -150,26 +120,17 @@ class ApiOpenAgenda
         return $newEvent;
     }
 
-    public function getEventList(array $options = []): array
+    public function getEventList(array $options = [])
     {
-        // --- version avec le ---------------------------------------------
         $url = self::WEBROOTURL . 'agendas/' . $this->getAgendaUid() . '/events.json';
-        if (count($options) > 0) {
-            $url .= '?';
-        }
-        $i = 0;
+        $first = true;
         foreach ($options as $opt => $val) {
+            $url .= ($first) ? '?' : '&';
             $url .= "$opt=$val";
-            $i++;
-            if ($i < count($options)) {
-                $url .= '&';
-            }
+            $first = false;
         }
-        $this->getFileContents->setUrl($url);
-        $data = $this->getFileContents->execute();
+        $data = $this->getFileContents->execute($url);
         if (false === $data) {
-            $this->setErrorCode($this->getFileContents->getHttpCode());
-            $this->setError('Lecture agenda : erreur inconnue');
             return false;
         } else {
             // --- mise au bon format des donnees recuperees
@@ -191,13 +152,9 @@ class ApiOpenAgenda
 
     public function getEvent(int $uid)
     {
-        // --- version avec le json -----------------------------------
         $url = self::WEBROOTURL . 'agendas/' . $this->getAgendaUid() . "/events.json?oaq[uids][]=$uid";
-        $this->getFileContents->setUrl($url);
-        $data = $this->getFileContents->execute();
+        $data = $this->getFileContents->execute($url);
         if (false === $data) {
-            $this->setErrorCode($this->getFileContents->getHttpCode());
-            $this->setError('Lecture agenda : (' . $uid . ') ' . $this->getFileContents->getError());
             return false;
         } else {
             return $this->convertJson($data['data'][0]);
@@ -209,7 +166,6 @@ class ApiOpenAgenda
         $eventList = [];
         // il faut autant de requetes que d'evenements a recuperer
         foreach ($uids as $uid) {
-            // --- version avec le json ------------------------------------------
             $event = $this->getEvent($uid);
             if ($event) {
                 $eventList[] = $event;
@@ -220,19 +176,19 @@ class ApiOpenAgenda
 
     private function initToken()
     {
+        $url = self::APIROOTURL . 'requestAccessToken';
         $this->curl
-            ->seturl(self::APIROOTURL . 'requestAccessToken')
+            ->seturl($url)
+            ->setOpt(CURLOPT_CUSTOMREQUEST, 'POST')
             ->setPost([
                 'grant_type' => 'authorization_code',
                 'code' => $this->getSecretKey(),
             ]);
         $data = $this->curl->execute();
         if (false === $data) {
-            $this->setErrorCode($this->curl->getHttpCode());
-            $this->setError('curl/token : ' . $this->curl->getError());
             return false;
         } else {
-            $this->setToken($data['access_token']);
+            $this->token = $data['access_token'];
             return true;
         }
     }
@@ -242,15 +198,12 @@ class ApiOpenAgenda
         return $this->token;
     }
 
-    private function setToken($token)
-    {
-        $this->token = $token;
-    }
-
     public function publishLocation($event)
     {
+        $url = self::APIROOTURL . 'locations';
         $this->curl
-            ->setUrl(self::APIROOTURL . 'locations')
+            ->setUrl($url)
+            ->setOpt(CURLOPT_CUSTOMREQUEST, 'POST')
             ->setPost([
                 'access_token' => $this->getToken(),
                 'nonce' => $this->getRandom(),
@@ -263,8 +216,6 @@ class ApiOpenAgenda
             ]);
         $data = $this->curl->execute();
         if (false === $data) {
-            $this->setErrorCode($this->curl->getHttpCode());
-            $this->setError($this->curl->getError());
             return false;
         } else {
             return $data['uid'];
@@ -273,8 +224,6 @@ class ApiOpenAgenda
 
     public function publishEvent(Event $event, string $uploadPath)
     {
-        // NOTE : en cas d'echec (return false) l'erreur (texte) est dans $this->error et le code http dans $this->errorCode
-
         // --- creation du token pour ecriture ----------------------------------------------------
         if (false === $this->initToken()) {
             return false; // l'initialisation du token a echoue
@@ -284,7 +233,7 @@ class ApiOpenAgenda
         if (false === $location_uid) {
             return false; // l'ecriture de l'adresse a echouee
         }
-        // --- ecriture de l'evenement ------------------------------------------------------------
+        // --- preparation ecriture de l'evenement ------------------------------------------------
         $eventData = [
             'title' => ['fr' => $event->getTitle()],
             'description' => ['fr' => $event->getDescription()],
@@ -318,7 +267,11 @@ class ApiOpenAgenda
             $image = new \CurlFile($pathFile, 'text/plain', end($urlFile));
         }
 
-        $this->curl->setUrl(self::APIROOTURL . 'events');
+        // --- ecriture de l'evenement ------------------------------------------------------------
+        $url = self::APIROOTURL . 'events';
+        $this->curl
+            ->setUrl($url)
+            ->setOpt(CURLOPT_CUSTOMREQUEST, 'POST');
         $postOptions = [
             'access_token' => $this->getToken(),
             'nonce' => $this->getRandom(),
@@ -331,8 +284,6 @@ class ApiOpenAgenda
         $this->curl->setPost($postOptions);
         $data = $this->curl->execute();
         if (false === $data) {
-            $this->setErrorCode($this->curl->getHttpCode());
-            $this->setError('Erreur ecriture évènement : ' . $this->curl->getError());
             return false;
         }
         $event_uid = $data['uid'];
@@ -340,16 +291,20 @@ class ApiOpenAgenda
         $refData = [
             'event_uid' => $event_uid,
         ];
-        $this->curl->setUrl(self::APIROOTURL . 'agendas/' . $this->getAgendaUid() . '/events');
-        $this->curl->setPost([
-            'access_token' => $this->getToken(),
-            'nonce' => $this->getRandom(),
-            'data' => json_encode($refData)
-        ]);
+        $url = self::APIROOTURL . 'agendas/' . $this->getAgendaUid() . '/events';
+        $this->curl
+            ->setUrl($url)
+            ->setOpt(CURLOPT_CUSTOMREQUEST, 'POST')
+            ->setPost([
+                'access_token' => $this->getToken(),
+                'nonce' => $this->getRandom(),
+                'data' => json_encode($refData)
+            ]);
         $data = $this->curl->execute();
         if (false === $data) {
-            $this->setErrorCode($this->curl->getHttpCode());
-            $this->setError('Erreur référencement évènement : ' . $this->curl->getError());
+            return false;
+        }
+        if (null === $event_uid || null === $location_uid) {
             return false;
         }
         return ['eventUid' => $event_uid, 'locationUid' => $location_uid];
@@ -357,25 +312,23 @@ class ApiOpenAgenda
 
     public function deleteEvent(Published $published)
     {
-        // NOTE : en cas d'echec (return false) l'erreur (texte) est dans $this->error et le code http dans $this->errorCode
 
-        $uid = $published->getUid();
         $locationUid = $published->getLocationUid();
         // --- creation du token pour ecriture ----------------------------------------------------
         if (false === $this->initToken()) {
             return false; // l'initialisation du token a echoue
         }
         // --- suppression evenement
-        $this->curl->setUrl(self::APIROOTURL . "events/$uid");
-        $this->curl->setOpt(CURLOPT_CUSTOMREQUEST, 'DELETE');
-        $this->curl->setPost([
-            'access_token' => $this->getToken(),
-            'nonce' => $this->getRandom(),
-        ]);
+        $url = self::APIROOTURL . 'events/' . $published->getUid();
+        $this->curl
+            ->setUrl($url)
+            ->setOpt(CURLOPT_CUSTOMREQUEST, 'DELETE')
+            ->setPost([
+                'access_token' => $this->getToken(),
+                'nonce' => $this->getRandom(),
+            ]);
         $data = $this->curl->execute();
         if (false === $data) {
-            $this->setErrorCode($this->curl->getHttpCode());
-            $this->setError('Erreur suppression évènement : ' . $this->curl->getError());
             return false;
         }
         return $data;
@@ -383,8 +336,6 @@ class ApiOpenAgenda
 
     public function updateEvent(Event $event, Published $published, string $uploadPath)
     {
-        // NOTE : en cas d'echec (return false) l'erreur (texte) est dans $this->error et le code http dans $this->errorCode
-
         // --- preparation des infos "evenement" ---------------------------------------------------
         $eventData = [
             'title' => ['fr' => $event->getTitle()],
@@ -413,14 +364,16 @@ class ApiOpenAgenda
         if (false === $this->initToken()) {
             return false; // l'initialisation du token a echoue
         }
-
-        // --- ecriture de la mise a jour ----------------------------------------------------------
-        $this->curl->setUrl(self::APIROOTURL . 'events/' . $published->getuid());
-        $this->curl->setPost([
-            'access_token' => $this->getToken(),
-            'nonce' => $this->getRandom(),
-            'data' => json_encode($eventData),
-        ]);
+        // --- ecriture de la mise a jour ---------------------------------------------------------
+        $url = self::APIROOTURL . 'events/' . $published->getuid();
+        $this->curl
+            ->setUrl($url)
+            ->setOpt(CURLOPT_CUSTOMREQUEST, 'POST')
+            ->setPost([
+                'access_token' => $this->getToken(),
+                'nonce' => $this->getRandom(),
+                'data' => json_encode($eventData),
+            ]);
         $postOptions = [
             'access_token' => $this->getToken(),
             'nonce' => $this->getRandom(),
@@ -432,8 +385,6 @@ class ApiOpenAgenda
         $this->curl->setPost($postOptions);
         $data = $this->curl->execute();
         if (false === $data) {
-            $this->setErrorCode($this->curl->getHttpCode());
-            $this->setError('Erreur ecriture évènement : ' . $this->curl->getError());
             return false;
         }
         return $data;
