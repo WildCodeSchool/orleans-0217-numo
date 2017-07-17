@@ -15,8 +15,9 @@
                 <h1 class="title-view">Agenda</h1>
                 {# --- bouton "créer nouvel évènement --- #}
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <p><a href="{{ path('event_new') }}" class="btn btn-default btn-txt" role="button">Créer un nouvel
-                            évènement</a></p>
+                    <p><a href="{{ path('event_new') }}" class="btn btn-default btn-txt" role="button">
+                            Créer un nouvel évènement
+                    </a></p>
                 {% endif %}
                 <div class="separation barrePurple"></div>
             </div>
@@ -37,8 +38,8 @@
                     {{ form_label(selectForm.category, 'Catégorie : ', {'label_attr': {'class': 'in-line'}}) }}
                     {{ form_widget(selectForm.category, {'attr': {'class': 'in-line tagfield'}}) }}
 
-                    <button  class="btn btn-default" id="submitForm" type="submit" name="select">Appliquer</button>
-                    <a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Effacer</a>
+                    <button  class="btn btn-default btnviolet" id="submitForm" type="submit" name="select">APPLIQUER</button>
+                    <a href="{{ path('event_list_published') }}" class="btn btn-default btnviolet" role="button">EFFACER</a>
 
 
                     <p class="red-error">
@@ -102,7 +103,6 @@
                     <div id="map"></div>
                         <div id="calendar"></div>
                 </div>
-
 
             {% else %}
 

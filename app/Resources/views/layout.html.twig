@@ -19,38 +19,38 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a class="page-scroll hoverAssociation" href="{{ path('association') }}"><span class="front-lato"> Association</span></a>
+                            <a class="page-scroll  hover hoverAssociation" href="{{ path('association') }}">Association</a>
 
                         </li>
                         <li>
-                            <a class="page-scroll hoverAgenda" href="{{ path('event_list_published') }}"><span class="front-lato">Agenda</span> </a>
+                            <a class="page-scroll hover hoverAgenda" href="{{ path('event_list_published') }}">Agenda</a>
                         </li>
                         <li>
-                            <a class="page-scroll hoverMembres" href="{{ path('members') }}" ><span class="front-lato"> Membres</span> </a>
+                            <a class="page-scroll hover hoverMembres" href="{{ path('members') }}" >Membres</a>
                         </li>
                         <li>
-                            <a class="page-scroll hoverAdherer" href="{{ path('become_adherent') }}" ><span class="front-lato"> Devenez Adhérent</span> </a>
+                            <a class="page-scroll hover hoverAdherer" href="{{ path('become_adherent') }}" >Devenez Adhérent</a>
                         </li>
                         <li>
-                            <a class="page-scroll hoverContact" href="{{ path('contact') }}"><span class="front-lato"> Contact </span> </a>
+                            <a class="page-scroll hover hoverContact" href="{{ path('contact') }}">Contact</a>
                         </li>
 
                     </ul>
                         <ul class="nav navbar-nav navbar-right">
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             <li>
-                                <a href="{{ path('fos_user_profile_show') }}" class="glyphicon glyphicon-user"><span class="front-lato"> {{ app.user.name }} {{ app.user.firstname }}</span></a>
+                                <a href="{{ path('fos_user_profile_show') }}" class="glyphicon glyphicon-user connect"><span class="font-lato connect hidden-sm"> {{ app.user.name }} {{ app.user.firstname }}</span></a>
                             </li>
                             <li>
-                                <a href="{{ path('fos_user_security_logout') }}" class="glyphicon glyphicon-log-in"><span class="font-lato"> Deconnexion</span></a>
+                                <a href="{{ path('fos_user_security_logout') }}" class="glyphicon glyphicon-log-in connect"><span class="font-lato connect hidden-sm"> Deconnexion</span></a>
                             </li>
 
                             {% else %}
                             <li>
-                                <a href="{{ path('fos_user_security_login') }}" class="glyphicon glyphicon-log-in"><span class="font-lato"> Connexion</span></a>
+                                <a href="{{ path('fos_user_security_login') }}" class="glyphicon glyphicon-log-in connect green"><span class="font-lato connect hidden-sm"> Connexion</span></a>
                             </li>
                             <li>
-                                <a href="{{ path('fos_user_registration_register') }}" class="glyphicon glyphicon-user"><span class="font-lato"> S'inscrire</span></a>
+                                <a href="{{ path('fos_user_registration_register') }}" class="glyphicon glyphicon-user connect green"><span class="font-lato connect hidden-sm"> S'inscrire</span></a>
                             </li>
                             {%endif%}
                           </ul>
