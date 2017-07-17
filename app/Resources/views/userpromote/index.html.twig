@@ -25,7 +25,7 @@
                     <th class="text-center">NOM</th>
                     <th class="text-center">PRENOM</th>
                     <th class="text-center">MEMBRE DE CONFIANCE</th>
-                    <th class="text-center">STATUT</th>
+                    <th class="text-center">ROLE</th>
                     <th class="text-center">ACTION</th>
                     <th class="text-center">DESACTIVÉ</th>
                 </tr>
@@ -33,8 +33,8 @@
                 <tbody>
                 {% for user in users %}
                     <tr class="showMember">
-                        <td class="admin memberName">{{ user.name }}</td>
-                        <td class="admin">{{ user.firstname }}</td>
+                        <td class="admin memberName">{{ user.name | upper }}</td>
+                        <td class="admin">{{ user.firstname |capitalize }}</td>
                         <td class="admin">
                            <a href="{{ path('member_trust', {'id': user.id}) }}">
                                 <button class="onoff {{ user.trust == 0 ? 'grey' : 'green' }}">
@@ -45,7 +45,7 @@
                         <td class="admin">
                             <button type="button" class="button-admin" data-toggle="modal" data-target="#exampleModal"
                                     data-id="{{ user.id }}" data-name="{{ user.name }}"
-                                    data-firstname="{{ user.firstname }}">PROMOUVOIR</button>
+                                    data-firstname="{{ user.firstname }}">MODIFIER</button>
                         </td>
                         <td class="admin">
                             <a href="{{ path('member_enabled', {'id': user.id}) }}">
@@ -94,7 +94,7 @@
             var name = button.data('name');
             var firstname = button.data('firstname');
             var modal = $(this);
-            modal.find('.modal-title').text('Promouvoir  ' + name + ' ' + firstname);
+            modal.find('.modal-title').text('Modifier le role de  ' + name + ' ' + firstname);
             modal.find('#numobundle_promote_Id').val(id)
         })
     </script>

@@ -362,6 +362,11 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->addFlash(
+                'info',
+                'Vous évènement a bien été modifié'
+            );
             // --- adaptation de la liste des dates
             foreach ($originalEvtDates as $evtDate){
                 if (false === $event->getEvtDates()->contains($evtDate)) {
@@ -431,6 +436,11 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->addFlash(
+                'info',
+                'Vous évènement a bien été modifié, vous pourrez voir ces modifications dans quelques secondes'
+            );
             // --- gestion de l'image
             $file = $event->getImage();
             if ($file) {
