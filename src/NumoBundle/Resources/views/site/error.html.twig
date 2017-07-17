@@ -11,9 +11,6 @@
         <p class="message"><img src="{{ asset('img/erreur.png') }}" alt="image erreur"></p>
         <h1>Une erreur s'est produite</h1>
         <p class="message">Nous vous prions de nous excuser pour ce désagrément.</p>
-        {% if code!=0 or error is not empty %}
-            <p>(pour les spécialistes : {{ code }}, {{ error }})</p>
-        {% endif %}
         <p>
             <a href="{{ path('index') }}" class="btn btn-default btn-txt" type="button">Retour à l'accueil</a>
         </p>
