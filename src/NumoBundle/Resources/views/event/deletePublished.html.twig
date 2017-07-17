@@ -27,7 +27,14 @@
 
         <div class="row">
 
-            {% if error is empty %}
+            {% if error  %}
+
+                <div class="col-xs-12 text-center">
+                    <p><img src="{{ asset('img/erreur.png') }}" /></p>
+                    <h3>L'évènement n'a pas pu être lu.</h3>
+                </div>
+
+            {% else %}
 
     {# --- partie gauche (image + descriptif) -------------------------------------------------- #}
                 <div class="col-xs-12 col-md-8">
@@ -107,13 +114,6 @@
                             Information non disponible.
                         {% endif %}
                     </p>
-                </div>
-
-            {% else %}
-
-                <div class="col-xs-12 text-center">
-                    <p><img src="{{ asset('img/erreur.png') }}" /></p>
-                    <h3>L'évènement n'a pas pu être lu.</h3>
                 </div>
 
             {% endif %}

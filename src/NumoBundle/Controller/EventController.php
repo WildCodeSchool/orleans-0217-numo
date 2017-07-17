@@ -55,7 +55,7 @@ class EventController extends Controller
 
     {
 
-        $error = '';
+        $error = false;
         // --- initialisation des parametres de lecture par defaut de la liste des evenements
         $options = [
             'search[passed]' => 0,
@@ -99,7 +99,7 @@ class EventController extends Controller
         $api = $this->get('numo.apiopenagenda');
         $data = $api->getEventList($options);
         if (false === $data) {
-            $error = 'code : ' . $api->getErrorCode() . ', message : ' . $api->getError();
+            $error = true;
             $events = $dates = [];
             $nbEvents = 0;
         } else {
@@ -174,7 +174,7 @@ class EventController extends Controller
                 $api = $this->get('numo.apiopenagenda');
                 $ids = $api->publishEvent($event, $this->getParameter('img_event_dir'));
                 if (false === $ids) {
-                    return $this->redirectToRoute('error_page', ['errorCode' => $api->getErrorCode(), 'error' => $api->getError()]);
+                    return $this->redirectToRoute('error_page');
                 }
                 // --- creation de l'enregistrement "published"
                 $uid = $ids['eventUid'];
@@ -290,14 +290,14 @@ class EventController extends Controller
      */
     public function showPublishedAction(Request $request, $id)
     {
-        $error = '';
+        $error = false;
         $published = null;
         $allowEdit = false;
         $api = $this->get('numo.apiopenagenda');
         // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
         $event = $api->getEvent($id);
         if (false === $event) {
-            $error = 'code : ' . $api->getErrorCode() . ', message : ' . $api->getError();
+            $error = true;
             $event = null;
         } else {
             // --- lecture des infos complementaires
@@ -396,7 +396,7 @@ class EventController extends Controller
      */
     public function editPublishedAction(Request $request, $id)
     {
-        $error = '';
+        $error = false;
         $event = new Event();
         $newImage = '/img/event_placeholder.png';
         $api = $this->get('numo.apiopenagenda');
@@ -405,7 +405,7 @@ class EventController extends Controller
             // --- lecture de l'évènement via json sur OpenAgenda
             $oaEvent = $api->getEvent($id);
             if (false === $oaEvent) {
-                $error = 'code : ' . $api->getErrorCode() . ', message : ' . $api->getError();
+                $error = true;
                 $oaEvent = $published = null;
             } else {
                 $event->hydrate($oaEvent);
@@ -447,13 +447,6 @@ class EventController extends Controller
                 );
                 $event->setImage($fileName);
                 // --- mise a jour de $published
-
-
-
-
-
-
-
                 if (file_exists($published->getImage())) {
                     unlink($published->getImage());
                 }
@@ -548,7 +541,7 @@ class EventController extends Controller
      */
     public function deletePublishedAction(Request $request, $id)
     {
-        $error = '';
+        $error = false;
         $form = $this
             ->createFormBuilder()
             ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
@@ -556,7 +549,7 @@ class EventController extends Controller
         $api = $this->get('numo.apiopenagenda');
         $oaEvent = $api->getEvent($id);
         if (false === $oaEvent) {
-            $error = 'code : ' . $api->getErrorCode() . ', message : ' . $api->getError();
+            $error = true;
             $oaEvent = $published = null;
         } else {
             // --- recup infos supplementaires

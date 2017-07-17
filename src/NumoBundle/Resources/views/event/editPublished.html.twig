@@ -17,7 +17,13 @@
         </div>
         <div class="row">
 
-            {% if error is empty %}
+            {% if error %}
+                <div class="col-xs-12 text-center">
+                    <p><img src="{{ asset('img/erreur.png') }}" /></p>
+                    <h3>L'évènement n'a pas pu être lu.</h3>
+                    <a class="btn btn-default btn-txt" href="{{ path('event_list_published') }}">Retour à la liste</a>
+                </div>
+            {% else %}
                 <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3">
 
                     <div class="separation barrePurple"></div>
@@ -161,12 +167,6 @@
 
                     {{ form_end(form) }}
 
-                </div>
-            {% else %}
-                <div class="col-xs-12 text-center">
-                    <p><img src="{{ asset('img/erreur.png') }}" /></p>
-                    <h3>L'évènement n'a pas pu être lu.</h3>
-                    <a class="btn btn-default btn-txt" href="{{ path('event_list_published') }}">Retour à la liste</a>
                 </div>
             {% endif %}
 

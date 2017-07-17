@@ -6,44 +6,6 @@ namespace NumoBundle\Services;
 class Curl
 {
     private $ch;
-    private $errorCode;
-    private $error;
-
-    /**
-     * @return mixed
-     */
-    public function getErrorCode()
-    {
-        return $this->errorCode;
-    }
-
-    /**
-     * @param mixed $errorCode
-     * @return Curl
-     */
-    public function setErrorCode($errorCode)
-    {
-        $this->errorCode = $errorCode;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getError()
-    {
-        return $this->error;
-    }
-
-    /**
-     * @param mixed $error
-     * @return Curl
-     */
-    public function setError($error)
-    {
-        $this->error = $error;
-        return $this;
-    }
 
 
     public function __construct(string $url='')
@@ -56,9 +18,7 @@ class Curl
         }
         $this
             ->setOpt(CURLOPT_RETURNTRANSFER, true)
-            ->setOpt(CURLOPT_POST, true)
-            ->setErrorCode(0)
-            ->setError('');
+            ->setOpt(CURLOPT_POST, true);
     }
 
     public function setOpt($option, $value)
@@ -83,12 +43,8 @@ class Curl
         try {
             $data = curl_exec($this->ch);
         } catch (\HttpException $httpException) {
-            $this->setErrorCode($httpException->getStatusCode());
-            $this->setError($httpException->getHeaders());
             return false;
         } catch (\Exception $ex) {
-            $this->setErrorCode(0);
-            $this->setError($ex->getMessage());
             return false;
         }
         return json_decode($data, true);
@@ -97,8 +53,6 @@ class Curl
     public function setUrl(string $url)
     {
         $this->setOpt(CURLOPT_URL, $url);
-        $this->setErrorCode(0);
-        $this->setError('');
         $this->setOpt(CURLOPT_POSTFIELDS, []);
         return $this;
     }

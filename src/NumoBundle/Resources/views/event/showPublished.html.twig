@@ -10,7 +10,14 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            {% if error is empty %}
+            {% if error %}
+
+                <div class="col-xs-12 text-center">
+                    <p><img src="{{ asset('img/erreur.png') }}" /></p>
+                    <h3>L'évènement n'a pas pu être lu.</h3>
+                </div>
+
+            {% else %}
 
                 {# --- titre --------------------------------------------------------------------------------#}
                 <div class="col-xs-12 text-center">
@@ -171,11 +178,6 @@
                     </p>
                 </div>
 
-            {% else %}
-                <div class="col-xs-12 text-center">
-                    <p><img src="{{ asset('img/erreur.png') }}" /></p>
-                    <h3>L'évènement n'a pas pu être lu.</h3>
-                </div>
             {% endif %}
 
             <div class="col-xs-12 text-center">
@@ -192,7 +194,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% if error is empty %}
+    {% if not error %}
         <script src="{{ asset('js/showevent.js') }}"></script>
         <script>
 

@@ -56,7 +56,15 @@
         {# --- contenu de page --- #}
 
         <div class="row">
-            {% if error == '' %}
+            {% if error %}
+
+                <div class="col-xs-12 text-center">
+                    <p><img src="{{ asset('img/erreur.png') }}" /></p>
+                    <h3>La liste n'a pas pu être lue.</h3>
+                    <p><a href="{{ path('event_list_published') }}" class="btn btn-default btn-txt" role="button">Recharger la page</a></p>
+                </div>
+
+            {% else %}
 
                 <div class="col-xs-12 col-md-7 col-lg-5 col-lg-offset-2 text-center textA">
 
@@ -102,14 +110,6 @@
                     <div id="closemap" class="text-center" onclick="closeMap1();">X</div>
                     <div id="map"></div>
                         <div id="calendar"></div>
-                </div>
-
-            {% else %}
-
-                <div class="col-xs-12 text-center">
-                    <p><img src="{{ asset('img/erreur.png') }}" /></p>
-                    <h3>La liste n'a pas pu être lue.</h3>
-                    <p><a href="{{ path('event_list_published') }}" class="btn btn-default btn-txt" role="button">Recharger la page</a></p>
                 </div>
 
             {% endif %}
@@ -217,10 +217,7 @@
                 newView.name = 'agendaView';
                 $calendar.fullCalendar('changeView', 'agendaView');
             }
-
-
         }
-
             $('.fc-event-inner').on('click', function(e) {
                 dateval = $(this).children('.fc-event-title').text();
                 $('#numobundle_select_event_startDate').val(dateval);
@@ -228,11 +225,6 @@
                 $("form").submit();
 
             });
-
-
-
-
-
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key={{ googleMapApi }}=initMap"

@@ -19,8 +19,6 @@ class ApiOpenAgenda
     private $publicKey;
     private $secretKey;
     private $token;
-    private $errorCode = 0;
-    private $error = '';
 
     public function __construct($curl, $getFileContents, $agendaSlug, $publicKey, $secretKey)
     {
@@ -30,28 +28,6 @@ class ApiOpenAgenda
         $this->publicKey = $publicKey;
         $this->secretKey = $secretKey;
         $this->getAgendaUid();
-    }
-
-    public function getErrorCode()
-    {
-        return $this->errorCode;
-    }
-
-    private function setErrorCode(int $code)
-    {
-        $this->errorCode = $code;
-        return $this;
-    }
-
-    public function getError()
-    {
-        return $this->error;
-    }
-
-    private function setError(string $error)
-    {
-        $this->error = $error;
-        return $this;
     }
 
     public function getAgendaSlug()
@@ -80,8 +56,6 @@ class ApiOpenAgenda
             $url = self::APIROOTURL . 'agendas/uid/' . $this->getAgendaSlug() . '?key=' . $this->getPublicKey();
             $data = $this->getFileContents->execute($url, true);
             if (false === $data) {
-                $this->setErrorCode($this->getFileContents->getErrorCode());
-                $this->setError('Lecture agenda : ' . $this->getFileContents->getError());
                 return false;
             } else {
                 $this->agendaUid = $data['data']->uid;
@@ -157,8 +131,6 @@ class ApiOpenAgenda
         }
         $data = $this->getFileContents->execute($url);
         if (false === $data) {
-            $this->setErrorCode($this->getFileContents->getErrorCode());
-            $this->setError('Lecture agenda : ' . $this->getFileContents->getError());
             return false;
         } else {
             // --- mise au bon format des donnees recuperees
@@ -183,8 +155,6 @@ class ApiOpenAgenda
         $url = self::WEBROOTURL . 'agendas/' . $this->getAgendaUid() . "/events.json?oaq[uids][]=$uid";
         $data = $this->getFileContents->execute($url);
         if (false === $data) {
-            $this->setErrorCode($this->getFileContents->getErrorCode());
-            $this->setError('Lecture agenda : (' . $uid . ') ' . $this->getFileContents->getError());
             return false;
         } else {
             return $this->convertJson($data['data'][0]);
@@ -216,8 +186,6 @@ class ApiOpenAgenda
             ]);
         $data = $this->curl->execute();
         if (false === $data) {
-            $this->setErrorCode($this->curl->getErrorCode());
-            $this->setError('curl/token : ' . $this->curl->getError());
             return false;
         } else {
             $this->token = $data['access_token'];
@@ -248,8 +216,6 @@ class ApiOpenAgenda
             ]);
         $data = $this->curl->execute();
         if (false === $data) {
-            $this->setErrorCode($this->curl->getErrorCode());
-            $this->setError($this->curl->getError());
             return false;
         } else {
             return $data['uid'];
@@ -258,8 +224,6 @@ class ApiOpenAgenda
 
     public function publishEvent(Event $event, string $uploadPath)
     {
-        // NOTE : en cas d'echec (return false) l'erreur (texte) est dans $this->error et le code http dans $this->errorCode
-
         // --- creation du token pour ecriture ----------------------------------------------------
         if (false === $this->initToken()) {
             return false; // l'initialisation du token a echoue
@@ -320,8 +284,6 @@ class ApiOpenAgenda
         $this->curl->setPost($postOptions);
         $data = $this->curl->execute();
         if (false === $data) {
-            $this->setErrorCode($this->curl->getErrorCode());
-            $this->setError('Erreur ecriture évènement : ' . $this->curl->getError());
             return false;
         }
         $event_uid = $data['uid'];
@@ -340,13 +302,9 @@ class ApiOpenAgenda
             ]);
         $data = $this->curl->execute();
         if (false === $data) {
-            $this->setErrorCode($this->curl->getErrorCode());
-            $this->setError('Erreur référencement évènement : ' . $this->curl->getError());
             return false;
         }
         if (null === $event_uid || null === $location_uid) {
-            $this->setErrorCode(0);
-            $this->setError('Erreur ecriture évènement : Non définie');
             return false;
         }
         return ['eventUid' => $event_uid, 'locationUid' => $location_uid];
@@ -354,7 +312,6 @@ class ApiOpenAgenda
 
     public function deleteEvent(Published $published)
     {
-        // NOTE : en cas d'echec (return false) l'erreur (texte) est dans $this->error et le code http dans $this->errorCode
 
         $locationUid = $published->getLocationUid();
         // --- creation du token pour ecriture ----------------------------------------------------
@@ -372,8 +329,6 @@ class ApiOpenAgenda
             ]);
         $data = $this->curl->execute();
         if (false === $data) {
-            $this->setErrorCode($this->curl->getErrorCode());
-            $this->setError('Erreur suppression évènement : ' . $this->curl->getError());
             return false;
         }
         return $data;
@@ -381,8 +336,6 @@ class ApiOpenAgenda
 
     public function updateEvent(Event $event, Published $published, string $uploadPath)
     {
-        // NOTE : en cas d'echec (return false) l'erreur (texte) est dans $this->error et le code http dans $this->errorCode
-
         // --- preparation des infos "evenement" ---------------------------------------------------
         $eventData = [
             'title' => ['fr' => $event->getTitle()],
@@ -432,8 +385,6 @@ class ApiOpenAgenda
         $this->curl->setPost($postOptions);
         $data = $this->curl->execute();
         if (false === $data) {
-            $this->setErrorCode($this->curl->getErrorCode());
-            $this->setError('Erreur ecriture évènement : ' . $this->curl->getError());
             return false;
         }
         return $data;
