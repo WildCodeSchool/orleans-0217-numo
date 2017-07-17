@@ -614,8 +614,7 @@ class EventController extends Controller
      */
     public function ApprovedAction(Request $request, Event $event)
     {
-//        $em = $this->getDoctrine()->getManager();
-//        $event = $em->getRepository('NumoBundle:Event')->findOneBy(['id' => $id]);
+        $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('NumoBundle:Company')->findOneBy([]);
 
         $refusal = new ModerationRefusal();
@@ -623,11 +622,11 @@ class EventController extends Controller
         $form->handleRequest($request);
         $author = $event->getAuthor();
         $api = $this->get('numo.apiopenagenda');
-        $uid = $api->publishEvent($event);
+        $uid = $api->publishEvent($event, $this->getParameter('img_event_dir'));
         $eventUid = $uid['eventUid'];
         $locationUid = $uid['locationUid'];
 
-        // --- creationde l'enregistrement "published"
+        // --- creation de l'enregistrement "published"
         $published = new Published($event, $eventUid, $locationUid, $this->getUser());
         $published->setTitle($event->getTitle());
         $em->persist($published);
