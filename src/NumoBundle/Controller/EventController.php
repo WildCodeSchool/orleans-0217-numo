@@ -578,7 +578,11 @@ class EventController extends Controller
             $published->setModerator($this->getUser());
             $published->setModeratorUpdateDate(new \DateTime);
             $em->flush();
-            return $this->redirectToRoute('events_index');
+            if (in_array('ROLE_MODERATOR', $this->getUser()->getRoles())) {
+                return $this->redirectToRoute('events_index');
+            } else {
+                return $this->redirectToRoute('fos_user_profile_show');
+            }
         }
         return $this->render('NumoBundle:event:deletePublished.html.twig', [
             'agendaSlug' => $api->getAgendaSlug(),
