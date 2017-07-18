@@ -30,7 +30,7 @@
                     {% if event.image is empty %}
                         <img src="{{ asset('/img/event_placeholder.png') }}" alt="" class="img-responsive center-block" />
                     {% else %}
-                        <img src="{{ asset(imgDir ~ event.image) }}" alt="image {{ event.title }}" class="img-responsive center-block" />
+                        <img src="{{ asset('uploads/users/' ~ event.image) }}" alt="image {{ event.title }}" class="img-responsive center-block" />
                     {% endif %}
                 </p>
                 <p>{{ event.description }}</p>
@@ -93,7 +93,7 @@
                 <h3>Organisé par</h3>
                 <p>
                     {% if event.author.imageUrl is not empty %}
-                        <img class="little-img" src="{{ event.author.imageUrl }}" alt="image organisateur {{ event.author.name }}" />
+                        <img class="little-img" src="{{ asset('uploads/users/' ~ event.author.imageUrl) }}" alt="image organisateur {{ event.author.name }}" />
                     {% endif %}
                     {{ event.author.name }} {{ event.author.firstname }}
                 </p>

@@ -164,7 +164,7 @@ class EventController extends Controller
                     // --- nouvelle image
                     $fileName = uniqid() . '.' . $file->guessExtension();
                     $file->move(
-                        $this->getParameter('upload_directory_event'),
+                        $this->getParameter('upload_directory'),
                         $fileName
                     );
                     $event->setImage($fileName);
@@ -312,11 +312,18 @@ class EventController extends Controller
             }
             $event
                 ->setAuthor($this->getUser())
-                ->setCreationDate(new \datetime());
-            $event->setRejected(0);
+                ->setCreationDate(new \datetime())
+                ->setRejected(0);
+
             $em->flush();
 
-            return $this->redirectToRoute('event_show_await', ['id' => $event->getId()]);
+            if ($this->isGranted('ROLE_MODERATOR')) {
+                // --- Si moderateur ou admin -> retour sur page admin
+                return $this->redirectToRoute('events_index');
+            } else {
+                // --- Sinon retour sur page profil de l'utilisateur
+                return $this->redirectToRoute('fos_user_profile_show');
+            }
         }
 
         return $this->render('NumoBundle:event:editAwait.html.twig', [
@@ -387,7 +394,7 @@ class EventController extends Controller
                 // --- nouvelle image (en remplacement de l'ancienne)
                 $fileName = uniqid().'.'.$file->guessExtension();
                 $file->move(
-                    $this->getParameter('upload_directory_event'),
+                    $this->getParameter('upload_directory'),
                     $fileName
                 );
                 $event->setImage($fileName);

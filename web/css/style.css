@@ -33,6 +33,8 @@ body {
     margin-top: 5%;
     font-family: 'Lato', sans-serif;
     font-size: 1.3em;
+    min-height: 100vh;
+    height: 100%;
 }
 @media only screen and (max-width: 1300px) {
     .font-lato .connect{
@@ -92,7 +94,7 @@ body {
 
 footer {
     height: 100px;
-    margin-top: 5%;
+    /*margin-top: 5%;*/
     padding-top: 30px;
     padding-bottom: 20px;
     background-color: whitesmoke; /* Black Gray */
@@ -338,6 +340,12 @@ td{
     width: 12%;
     text-align: center;
 }
+td .admin{
+    margin-top: 5%;
+}
+.action{
+    width: 20%;
+}
 .note-btn-group{
     width: 17%;
 }
@@ -395,7 +403,7 @@ table{
     margin-bottom: 10%;
 }
 .moderate{
-    margin-top: 10%;
+    margin-top: 5%;
 }
 thead{
     height: 100px;
@@ -543,17 +551,23 @@ div.sep {
     margin-top: 8px;
 }
 
-.forgot-password a{
-    color: #8CC63C;
-    font-weight: bold;
+.btn-login {
+    margin-bottom: 45px;
 }
 
 .forgot-password {
-    margin-top: 15px;
+    color: #8CC63C;
+    font-weight: bold;
+    margin-left: 15px;
 }
 
 .form-left-margin {
     margin-left: 200px;
+}
+
+.form-left-margin-reset {
+    margin-left: 300px;
+
 }
 
 @media only screen and (max-width: 768px) {
@@ -605,7 +619,7 @@ div.sep {
 .navbar{
     height: 90px;
     border: none;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     box-shadow: 0 1px 3px 0 grey;
 }
 .navbar-nav{

@@ -93,7 +93,7 @@ NumoBundle\Entity\User:
         phone:
             - Length:
                 min: 3
-                max: 5550
+                max: 50
                 minMessage: "Le numéro est trop court"
                 maxMessage: "Le numéro est trop long"
                 groups: [ "UserRegistration", "NumoProfile" ]
