@@ -152,6 +152,22 @@ class Event
             ->evtDates = new ArrayCollection();
     }
 
+    public function hydrate(OaEvent $oaEvent)
+    {
+        $this
+            ->setRejected(0)
+            ->setTitle($oaEvent->getTitle())
+            ->setDescription($oaEvent->getDescription())
+            ->setFreeText($oaEvent->getFreeText())
+            ->setTags($oaEvent->getTags())
+            ->setPlacename($oaEvent->getPlacename())
+            ->setAddress($oaEvent->getAddress())
+            ->setLatitude($oaEvent->getLatitude())
+            ->setLongitude($oaEvent->getLongitude())
+            ->setTicketLink($oaEvent->getTicketLink())
+            ->setPricingInfo($oaEvent->getPricingInfo());
+    }
+
     /**
      * Get id
      *

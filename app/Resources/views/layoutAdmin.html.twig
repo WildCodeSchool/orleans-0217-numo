@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block header %}
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navWhite font-lato">
+        <div class="container-fluid">
         <div class="navbar-header text-center">
-            <a href="{{ path('admin_accueil') }}">
-                <img src="{{ asset('img/NUMOsmall.png') }}" class="navbar-brand">
+            <a class="navbar-brand page-scroll" href="{{ path('admin_accueil') }}">
+                <img src="{{ asset('img/NUMOsmall.png') }}" class="img-responsive navbar-logo" alt="numo logo">
             </a>
             <button type="button" class="navbar-toggle collapsed navbar-burger" data-toggle="collapse" data-target="#navbar-collapsed" aria-expanded="false">
                 <span class="sr-only">Menu</span>
@@ -17,11 +17,11 @@
         <div class="collapse navbar-collapse navbar-menu  font-oswald" id="navbar-collapsed">
             <ul class="nav navbar-nav navbar-list font-lato navadmin">
                 {% if is_granted('ROLE_ADMIN') %}
-                    <li><a href="/app_dev.php/company/1">GESTION DES INFORMATIONS DE L'ASSOCIATION</a></li>
-                    <li><a href="{{ path('memberstatus_index') }}">GESTION DES MEMBRES</a></li>
-                    <li><a href="{{ path('partner_index') }}">PARTENAIRES</a></li>
+                    <li><a class="hoverAssociation" href="{{ path('company_show', { 'id': 1 }) }}">GESTION DES INFORMATIONS DE L'ASSOCIATION</a></li>
+                    <li><a class="hoverMembres" href="{{ path('memberstatus_index') }}">GESTION DES MEMBRES</a></li>
+                    <li><a class="hoverAdherer" href="{{ path('partner_index') }}">PARTENAIRES</a></li>
                 {% endif %}
-                <li><a href="{{ path('events_index') }}">EVENEMENTS</a></li>
+                <li><a class="hoverAgenda" href="{{ path('events_index') }}">EVENEMENTS</a></li>
             </ul>
         </div>
     </div>

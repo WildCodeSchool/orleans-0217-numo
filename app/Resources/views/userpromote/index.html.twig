@@ -1,7 +1,7 @@
 {% extends 'layoutAdmin.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/styleonoffbutton.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styleOnOffButton.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -18,45 +18,47 @@
             </nav>
         </div>
 
-        <table>
-            <thead>
-            <tr class="text-center admin">
-                <th class="text-center">NOM</th>
-                <th class="text-center">PRENOM</th>
-                <th class="text-center">MEMBRE DE CONFIANCE</th>
-                <th class="text-center">STATUT</th>
-                <th class="text-center">ACTION</th>
-                <th class="text-center">DESACTIVER</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for user in users %}
-                <tr class="showMember">
-                    <td class="admin memberName">{{ user.name }}</td>
-                    <td class="admin">{{ user.firstname }}</td>
-                    <td class="admin">
-                       <a href="{{ path('member_trust', {'id': user.id}) }}">
-                            <button class="onoff {{ user.trust == 0 ? 'grey' : 'green' }}">
-                                {{ user.trust == 0 ? 'NON' : 'OUI' }}
-                            </button></a>
-                    </td>
-                    <td class="admin">{{ user.roles.0 }}</td>
-                    <td class="admin">
-                        <button type="button" class="button-admin" data-toggle="modal" data-target="#exampleModal"
-                                data-id="{{ user.id }}" data-name="{{ user.name }}"
-                                data-firstname="{{ user.firstname }}">PROMOUVOIR</button>
-                    </td>
-                    <td class="admin">
-                        <a href="{{ path('member_enabled', {'id': user.id}) }}">
-                            <button class="onoff {{ user.enabled == false ? 'green' : 'grey' }}">
-                                {{ user.enabled == false ? 'OUI' : 'NON' }}
-                            </button></a>
-                    </td>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                <tr class="text-center admin">
+                    <th class="text-center">NOM</th>
+                    <th class="text-center">PRENOM</th>
+                    <th class="text-center">MEMBRE DE CONFIANCE</th>
+                    <th class="text-center">ROLE</th>
+                    <th class="text-center">ACTION</th>
+                    <th class="text-center">DESACTIVÉ</th>
                 </tr>
-            {% endfor %}
-            <hr>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr class="showMember">
+                        <td class="admin memberName">{{ user.name | upper }}</td>
+                        <td class="admin">{{ user.firstname |capitalize }}</td>
+                        <td class="admin">
+                           <a href="{{ path('member_trust', {'id': user.id}) }}">
+                                <button class="onoff {{ user.trust == 0 ? 'grey' : 'green' }}">
+                                    {{ user.trust == 0 ? 'NON' : 'OUI' }}
+                                </button></a>
+                        </td>
+                        <td class="admin">{{ user.roles.0 }}</td>
+                        <td class="admin">
+                            <button type="button" class="button-admin" data-toggle="modal" data-target="#exampleModal"
+                                    data-id="{{ user.id }}" data-name="{{ user.name }}"
+                                    data-firstname="{{ user.firstname }}">MODIFIER</button>
+                        </td>
+                        <td class="admin">
+                            <a href="{{ path('member_enabled', {'id': user.id}) }}">
+                                <button class="onoff {{ user.enabled == false ? 'green' : 'grey' }}">
+                                    {{ user.enabled == false ? 'OUI' : 'NON' }}
+                                </button></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <hr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="modal fade" id="exampleModal">
@@ -92,7 +94,7 @@
             var name = button.data('name');
             var firstname = button.data('firstname');
             var modal = $(this);
-            modal.find('.modal-title').text('Promouvoir  ' + name + ' ' + firstname);
+            modal.find('.modal-title').text('Modifier le role de  ' + name + ' ' + firstname);
             modal.find('#numobundle_promote_Id').val(id)
         })
     </script>

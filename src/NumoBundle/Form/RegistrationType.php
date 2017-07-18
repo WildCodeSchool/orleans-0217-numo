@@ -19,16 +19,20 @@ class RegistrationType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom',
+                'validation_groups' => ['Registration', 'Profile'],
             ])
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom',
+                'validation_groups' => ['Registration', 'Profile'],
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
+                'validation_groups' => ['Registration', 'Profile'],
                 'required' => false,
             ])
             ->add('imageUrl',FileType::class, [
                 'label' => 'Image',
+                'validation_groups' => ['Registration', 'Profile'],
                 'required' => false,
             ])
             ->add('trust', HiddenType::class)

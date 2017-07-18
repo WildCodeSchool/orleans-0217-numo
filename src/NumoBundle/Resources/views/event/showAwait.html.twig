@@ -17,13 +17,13 @@
                 <h1 class="title-view">{{ event.title }}</h1>
 
 {# --- provisoire pour tester les fonctions --- #}
-                <a href="{{ path('events_index') }}" class="btn btn-default btn-txt btn-sep" role="button">RETOUR A LA LISTE</a>
-                <a href="{{ path('event_edit_await', {'id': event.id}) }}" class="btn btn-default btn-txt btn-sep" role="button">EDITER</a>
-                <button type="button" class="btn btn-default btn-txt btn-sep" data-toggle="modal" data-target="#exampleModal"
+                <a href="{{ path('events_index') }}" class="btn btn-default btn-txt" role="button">RETOUR A LA LISTE</a>
+                <a href="{{ path('event_edit_await', {'id': event.id}) }}" class="btn btn-default btn-txt" role="button">EDITER</a>
+                <button type="button" class="btn btn-default btn-txt" data-toggle="modal" data-target="#exampleModal"
                         data-id="{{ event.id }}" data-title="{{ event.title }}" data-email="{{ event.author.email }}">REFUSER
                 </button>
                 <a href="{{ path('event_approved', {'id' : event.id}) }}">
-                    <button type="button" class="btn btn-default btn-txt btn-sep" value="MODIFIER">PUBLIER</button>
+                    <button type="button" class="btn btn-default btn-txt" value="MODIFIER">PUBLIER</button>
                 </a>
 
                 {# ------------------ #}
@@ -108,7 +108,7 @@
                 <h3>Billetterie / inscription</h3>
                 <p>{{ event.pricinginfo.pricing }}</p>
                 {% if event.ticketLink > '' %}
-                    <p><a href="{{ event.ticketLink }}" class="btn btn-default" role="button" target="_blanc">Accéder à la billetterie</a></p>
+                    <p><a href="{{ event.ticketLink }}" class="btn btn-default btn-txt" role="button" target="_blanc">Accéder à la billetterie</a></p>
                 {% endif %}
 
                 {# --- organisateur -------------------------------------------------------- #}
@@ -116,7 +116,7 @@
                 <h3>Organisé par</h3>
                 <p>
                     {% if event.author.imageUrl is not empty %}
-                       <img class="little-img" src="{{ event.author.imageUrl }}" alt="image organisateur {{ event.author.name }}" />
+                       <img class="min-img" src="{{ asset('uploads/users/' ~ event.author.imageUrl) }}" alt="image organisateur {{ event.author.name }}" />
                     {% endif %}
                     {{ event.author.name }} {{ event.author.firstname }}
                 </p>
@@ -141,7 +141,7 @@
                     {{ form_errors(form.comment) }}
                     {{ form_label(form.contactEmail) }}
                     {{ form_widget(form.contactEmail) }}
-                    <input type="submit" class="btn btn-default btn-send"/>
+                    <input type="submit" class="btn btn-default btn-txt btn-send"/>
                     {{ form_end(form) }}
                 </div>
                 <div class="modal-footer">

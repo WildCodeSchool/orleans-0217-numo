@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use NumoBundle\Form\EventType;
 use NumoBundle\Entity\Contact;
@@ -54,7 +55,7 @@ class EventController extends Controller
 
     {
 
-        $error = '';
+        $error = false;
         // --- initialisation des parametres de lecture par defaut de la liste des evenements
         $options = [
             'search[passed]' => 0,
@@ -97,12 +98,14 @@ class EventController extends Controller
         // --- lecture de la liste OpenAgenda
         $api = $this->get('numo.apiopenagenda');
         $data = $api->getEventList($options);
-        $events = $data['eventList'];
-        $dates = $data['eventDateList'];
-        $nbEvents = $data['nbEvents'];
-        if (false === $events) {
-            $events = [];
-            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+        if (false === $data) {
+            $error = true;
+            $events = $dates = [];
+            $nbEvents = 0;
+        } else {
+            $events = $data['eventList'];
+            $dates = $data['eventDateList'];
+            $nbEvents = $data['nbEvents'];
         }
 
         $paginator = $this->get('knp_paginator');
@@ -134,7 +137,6 @@ class EventController extends Controller
     public function newAction(Request $request)
     {
         // --- Note : les images sont gerees par des eventlisteners
-        $error = '';
         $event = new Event();
         $firstEvtDate = new EvtDate();
         $firstEvtDate->setEvtDate(new \DateTime());
@@ -142,19 +144,13 @@ class EventController extends Controller
         $event->getEvtDates()->add($firstEvtDate);
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
-        $em = $this->getDoctrine()->getManager();
-        $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
 
+        $em = $this->getDoctrine()->getManager();
+        $company = $em->getRepository('NumoBundle:Company')->findOneBy([]);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $this->addFlash(
-                'info',
-                'Vous avez créé un évènement'
-            );
             $userManager = $this->get('fos_user.user_manager');
             $users = $userManager->findUsers();
-
             $curentUser = $this->getUser();
             $event
                 ->setAuthor($curentUser)
@@ -162,114 +158,63 @@ class EventController extends Controller
             if ($curentUser->getTrust() == 1) {
                 // --- si utilisateur de confiance, on publie directement
 
-                $confirmation = \Swift_Message::newInstance()
-                    ->setSubject('Un membre de confiance à posté un événement')
-                    ->setBody('Bonjour, 
-                            Un membre de confiance à posté un événement, vous pouvez aller sur www.num-o.fr pour le voir.')
-                    ->setFrom($company->getContactEmail());
-                foreach ($users as $user) {
-                    if (in_array('ROLE_MODERATOR', $user->getRoles())) {
-                        $confirmation->setTo($user->getEmail());
-                    }
+                // --- gestion de l'image
+                $file = $event->getImage();
+                if ($file) {
+                    // --- nouvelle image
+                    $fileName = uniqid() . '.' . $file->guessExtension();
+                    $file->move(
+                        $this->getParameter('upload_directory'),
+                        $fileName
+                    );
+                    $event->setImage($fileName);
                 }
-
-                $this->get('mailer')->send($confirmation);
-
                 $api = $this->get('numo.apiopenagenda');
-                $uid = $api->publishEvent($event);
-                if (false === $uid) {
-                    // gerer erreur si ecriture foireuse
+                $ids = $api->publishEvent($event, $this->getParameter('img_event_dir'));
+                if (false === $ids) {
+                    return $this->redirectToRoute('error_page');
                 }
-                // --- creationde l'enregistrement "published"
-                $published = new Published($event, $uid, $curentUser);
+                // --- creation de l'enregistrement "published"
+                $uid = $ids['eventUid'];
+                $locationUid = $ids['locationUid'];
+                $published = new Published($event, $uid, $locationUid, $curentUser);
                 $published->setTitle($event->getTitle());
                 $em->persist($published);
                 $em->flush();
+                $textSubject = 'Un membre de confiance à posté un événement';
+                $textMail = 'Un membre de confiance à posté un événement, vous pouvez aller sur www.num-o.fr pour le voir.';
             } else {
                 // --- sinon enregistrement de l'evenement dans la database
                 $em->persist($event);
                 $em->flush();
-
-                $confirmation = \Swift_Message::newInstance()
-                    ->setSubject('Un membre à posté un événement')
-                    ->setBody('Bonjour, 
-                            Un membre à posté un événement, vous pouvez aller sur www.num-o.fr pour le moderer.')
-                    ->setFrom($company->getContactEmail());
-                foreach ($users as $user) {
-                    if (in_array('ROLE_MODERATOR', $user->getRoles())) {
-                        $confirmation->setTo($user->getEmail());
-                    }
-                }
-                $this->get('mailer')->send($confirmation);
+                $textSubject = 'Un membre à posté un événement';
+                $textMail = 'Un membre à posté un événement, vous pouvez aller sur www.num-o.fr pour le moderer.';
             }
+            // --- envoi de la notification
+            $confirmation = \Swift_Message::newInstance()
+                ->setSubject($textSubject)
+                ->setBody('Bonjour, ' . $textMail)
+                ->setFrom($company->getContactEmail());
+            foreach ($users as $user) {
+                if ($user->isGranted('ROLE_MODERATOR') || $user->isGranted('ROLE_ADMIN')) {
+                    $confirmation->setTo($user->getEmail());
+                }
+            }
+            $this->get('mailer')->send($confirmation);
+
+            $this->addFlash(
+                'info',
+                'Vous avez créé un évènement'
+            );
 
             return $this->redirectToRoute('event_list_published');
         }
         return $this->render('NumoBundle:event:new.html.twig', [
-            'error' => $error,
             'form' => $form->createView(),
         ]);
     }
 
 
-    /**
-     * Displays an awaiting event.
-     *
-     * @Route("/show-await/{id}", name="event_show_await")
-     * @Method({"POST","GET"})
-     */
-    public function showAwaitAction(Request $request, Event $event)
-    {
-        $refusal = new ModerationRefusal();
-        $form = $this->createForm(ModerationType::class, $refusal);
-        $form->handleRequest($request);
-
-        $em = $this->getDoctrine()->getManager();
-        $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
-
-        $imgDir = $this->getParameter('img_event_dir');
-        $oldDates = $newDates = [];
-        $dateRef = new \DateTime();
-        foreach ($event->getEvtDates() as $evtD) {
-            $evtDate = [
-                'evtDate' => $evtD->getEvtDate()->format('Y-m-d'),
-                'timeStart' => $evtD->getTimeStart()->format('H:i'),
-                'timeEnd' => $evtD->getTimeEnd()->format('H:i')
-            ];
-            if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
-                $oldDates[] = $evtDate;
-            } else {
-                $newDates[] = $evtDate;
-            }
-        }
-
-        if ($form->isValid() && $form->isSubmitted()) {
-            $comment = \Swift_Message::newInstance()
-                ->setSubject($refusal->getTitle(). 'a été refusé')
-                ->setTo($refusal->getContactEmail())
-                ->setFrom($company ->getContactEmail())
-                ->setBody($refusal->getComment());
-
-            $id = $refusal->getEventId();
-            $this->get('mailer')->send($comment);
-
-            $event = $em->getRepository('NumoBundle:Event')->findOneBy(['id'=>$id]);
-            $event->setRejected(1);
-            $em->flush();
-
-            return $this-> redirectToRoute('events_index');
-
-        }
-
-
-        return $this->render('NumoBundle:event:showAwait.html.twig', [
-            'imgDir' => $imgDir,
-            'event' => $event,
-            'oldDates' => $oldDates,
-            'newDates' => $newDates,
-            'form' => $form->createView()
-        ]);
-    }
 
     /**
      * displays a published event.
@@ -279,24 +224,26 @@ class EventController extends Controller
      */
     public function showPublishedAction(Request $request, $id)
     {
-        $error = '';
+        $error = false;
         $published = null;
+        $allowEdit = false;
         $api = $this->get('numo.apiopenagenda');
         // --- lecture de l'évènement via json sur OpenAgenda (2ème paramètre getEvent omis)
         $event = $api->getEvent($id);
         if (false === $event) {
-            $event = null; // objet vide
-            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+            $error = true;
+            $event = null;
         } else {
             // --- lecture des infos complementaires
             $em = $this->getDoctrine()->getManager();
             $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+            if ($published) {
+                $allowEdit = $this->getUser() == $published->getAuthor();
+            }
         }
         $contact = new Contact();
         $form = $this->createForm(ContactType::class, $contact);
-
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid()) {
 
             $this->addFlash(
@@ -327,10 +274,10 @@ class EventController extends Controller
             'published' => $published,
             'error' => $error,
             'form'=>$form->createView(),
-            'googleMapApi' => $this->getParameter('google_map_api')
-
+            'googleMapApi' => $this->getParameter('google_map_api'),
+            'allowEdit' => $allowEdit,
+            'imgDir' => $this->getParameter('img_event_dir'),
         ]);
-
     }
 
     /**
@@ -342,7 +289,6 @@ class EventController extends Controller
     public function editAwaitAction(Request $request, Event $event)
     {
         // --- Note : les images sont gerees par des eventlisteners
-        $imgDir = $this->getParameter('img_event_dir');
         $em = $this->getDoctrine()->getManager();
         $oldImage = $event->getImage();
         $originalEvtDates = new ArrayCollection();
@@ -353,6 +299,11 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->addFlash(
+                'info',
+                'Vous évènement a bien été modifié'
+            );
             // --- adaptation de la liste des dates
             foreach ($originalEvtDates as $evtDate){
                 if (false === $event->getEvtDates()->contains($evtDate)) {
@@ -361,23 +312,124 @@ class EventController extends Controller
             }
             $event
                 ->setAuthor($this->getUser())
-                ->setCreationDate(new \datetime());
+                ->setCreationDate(new \datetime())
+                ->setRejected(0);
+
             $em->flush();
 
-            return $this->redirectToRoute('event_show_await', ['id' => $event->getId()]);
+            if ($this->isGranted('ROLE_MODERATOR')) {
+                // --- Si moderateur ou admin -> retour sur page admin
+                return $this->redirectToRoute('events_index');
+            } else {
+                // --- Sinon retour sur page profil de l'utilisateur
+                return $this->redirectToRoute('fos_user_profile_show');
+            }
         }
 
         return $this->render('NumoBundle:event:editAwait.html.twig', [
             'event' => $event,
-            'imgDir' => $imgDir,
+            'imgDir' => $this->getParameter('img_event_dir'),
             'eventId' => $event->getId(),
             'oldImage' => $oldImage,
             'form' => $form->createView(),
         ]);
-
     }
 
     /**
+     * Edit a published event.
+     *
+     * @Route("/edit-published/{id}", name="event_edit_published")
+     * @Method({"GET", "POST"})
+     */
+    public function editPublishedAction(Request $request, $id)
+    {
+        $error = false;
+        $event = new Event();
+        $newImage = '/img/event_placeholder.png';
+        $api = $this->get('numo.apiopenagenda');
+        if (!$request->request->has('enregistrer')) {
+            // --- premier chargement de la page : on recupere l'evenement sur OpenAgenda
+            // --- lecture de l'évènement via json sur OpenAgenda
+            $oaEvent = $api->getEvent($id);
+            if (false === $oaEvent) {
+                $error = true;
+                $oaEvent = $published = null;
+            } else {
+                $event->hydrate($oaEvent);
+                // note : dans $event, image reste vide
+                // --- recuperation et initialisation des dates et heures
+                // --- dates passées
+                foreach ($oaEvent->getOldDates() as $oaDate) {
+                    $evtDate = new EvtDate();
+                    $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
+                    $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
+                    $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
+                    $event->getEvtDates()->add($evtDate);
+                }
+                // --- dates a venir
+                foreach ($oaEvent->getNewDates() as $oaDate) {
+                    $evtDate = new EvtDate();
+                    $evtDate->setEvtDate(new \DateTime($oaDate['evtDate']));
+                    $evtDate->setTimeStart(\DateTime::createFromFormat('H:i:s', $oaDate['timeStart']));
+                    $evtDate->setTimeEnd(\DateTime::createFromFormat('H:i:s', $oaDate['timeEnd']));
+                    $event->getEvtDates()->add($evtDate);
+                }
+            }
+        }
+        // --- recup infos supplementaires
+        $em = $this->getDoctrine()->getManager();
+        $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
+        $form = $this->createForm(EventType::class, $event);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->addFlash(
+                'info',
+                'Vous évènement a bien été modifié, vous pourrez voir ces modifications dans quelques secondes'
+            );
+            // --- gestion de l'image
+            $file = $event->getImage();
+            if ($file) {
+                // --- nouvelle image (en remplacement de l'ancienne)
+                $fileName = uniqid().'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('upload_directory'),
+                    $fileName
+                );
+                $event->setImage($fileName);
+                // --- mise a jour de $published
+                if (file_exists($published->getImage())) {
+                    unlink($published->getImage());
+                }
+                $published->setImage($fileName);
+            }
+            // --- on effectue les mises a jour sur OpenAgenda
+            $result = $api->updateEvent($event, $published, $this->getParameter('img_event_dir'));
+            // --- on finit la mise a jour de published et on l'enregistre
+            $published
+                ->setModerator($this->getUser())
+                ->setModeratorUpdateDate(new \datetime())
+                ->setTitle($event->getTitle());
+            $em->flush();
+            if ($this->isGranted('ROLE_MODERATOR')) {
+                return $this->redirectToRoute('events_index');
+            }
+            else {
+                return $this->redirectToRoute('event_show_published', ['id' => $id]);
+            }
+        }
+
+        return $this->render('NumoBundle:event:editPublished.html.twig', [
+            'error' => $error,
+            'newImage' => $newImage,
+            'form' => $form->createView(),
+            'published' => $published,
+            'imgDir' => $this->getParameter('img_event_dir'),
+        ]);
+    }
+
+        /**
      * Deletes an awaiting event.
      *
      * @Route("/delete-await/{id}", name="event_delete_await")
@@ -386,7 +438,6 @@ class EventController extends Controller
     public function deleteAwaitAction(Request $request, Event $event)
     {
         // --- Note : les images sont gerees par des eventlisteners
-        $imgDir = $this->getParameter('img_event_dir');
         $form = $this
             ->createFormBuilder()
             ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
@@ -408,7 +459,7 @@ class EventController extends Controller
             }
         }
         // --- definition de la route de retour
-        if (in_array('ROLE_MODERATOR', $this->getUser()->getRoles())) {
+        if ($this->isGranted('ROLE_MODERATOR')) {
             // --- Si moderateur ou admin -> retour sur page admin
             $goBack = 'events_index';
         } else {
@@ -424,7 +475,7 @@ class EventController extends Controller
             return $this->redirectToRoute($goBack);
         }
         return $this->render('NumoBundle:event:deleteAwait.html.twig', [
-            'imgDir' => $imgDir,
+            'imgDir' => $this->getParameter('img_event_dir'),
             'event' => $event,
             'form' => $form->createView(),
             'goBack' => $goBack,
@@ -441,41 +492,34 @@ class EventController extends Controller
      */
     public function deletePublishedAction(Request $request, $id)
     {
-        $error = '';
+        $error = false;
         $form = $this
             ->createFormBuilder()
             ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
             ->getForm();
         $api = $this->get('numo.apiopenagenda');
-        // --- lecture de l'évènement via json sur OpenAgenda
         $oaEvent = $api->getEvent($id);
         if (false === $oaEvent) {
-            $oaEvent = null;
-            $published = null;
-            $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
+            $error = true;
+            $oaEvent = $published = null;
         } else {
-            // --- lecture des infos complementaires
+            // --- recup infos supplementaires
             $em = $this->getDoctrine()->getManager();
             $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                // --- suppression de l'évènement sur OpenAgenda
-                $result = $api->deleteEvent($published);
-                if (false === $result) {
-                    $error = '(' . $api->getErrorCode() . ') ' . $api->getError();
-                } else {
-                    // --- Mise a jour des infos complementaires
-                    $em = $this->getDoctrine()->getManager();
-                    $published = $em->getRepository('NumoBundle:Published')->findOneByUid($id);
-                    if ($published) {
-                        $published->setDeleted(1);
-                        $published->setModerator($this->getUser());
-                        $published->setModeratorUpdateDate(new \DateTime);
-                        $em->flush();
-                    }
-                    return $this->redirectToRoute('event_list_published');
-                }
+        }
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // --- suppression de l'évènement sur OpenAgenda
+            $result = $api->deleteEvent($published);
+            if (false === $result) {
+                return $this->redirectToRoute('error_page');
             }
+            // --- Mise a jour des infos complementaires
+            $published->setDeleted(1);
+            $published->setModerator($this->getUser());
+            $published->setModeratorUpdateDate(new \DateTime);
+            $em->flush();
+            return $this->redirectToRoute('events_index');
         }
         return $this->render('NumoBundle:event:deletePublished.html.twig', [
             'agendaSlug' => $api->getAgendaSlug(),
@@ -483,6 +527,7 @@ class EventController extends Controller
             'published' => $published,
             'form' => $form->createView(),
             'error' => $error,
+            'imgDir' => $this->getParameter('img_event_dir'),
         ]);
     }
 
@@ -511,30 +556,26 @@ class EventController extends Controller
      * @Route("/approved/{id}", name="event_approved")
      * @Method({"GET","POST"})
      */
-    public function ApprovedAction($id, Request $request)
+    public function ApprovedAction(Request $request, Event $event)
     {
         $em = $this->getDoctrine()->getManager();
-        $event = $em->getRepository('NumoBundle:Event')->findOneBy(['id' => $id]);
-        $company = $em->getRepository('NumoBundle:Company')->findAll()[0];
-
+        $company = $em->getRepository('NumoBundle:Company')->findOneBy([]);
 
         $refusal = new ModerationRefusal();
         $form = $this->createForm(ModerationType::class, $refusal);
-        $form->handleRequest($request);
 
-/*        if ($event->getImage() == null){
-            $event->setImage(' ');
-        }*/
+        $form->handleRequest($request);
 
         $author = $event->getAuthor();
 
         $api = $this->get('numo.apiopenagenda');
-        $uid = $api->publishEvent($event);
+        $uid = $api->publishEvent($event, $this->getParameter('img_event_dir'));
 
         $eventUid = $uid['eventUid'];
+        $locationUid = $uid['locationUid'];
 
-        // --- creationde l'enregistrement "published"
-        $published = new Published($event, $eventUid, $author);
+        // --- creation de l'enregistrement "published"
+        $published = new Published($event, $eventUid, $locationUid, $this->getUser());
         $published->setTitle($event->getTitle());
         $em->persist($published);
         $em->remove($event);
@@ -544,7 +585,6 @@ class EventController extends Controller
             'search[passed]' => 0,
             'offset' => 0,
         ];
-
 
         $data = $api->getEventList($options);
         $publishedevents = $data['eventList'];
@@ -578,7 +618,6 @@ class EventController extends Controller
             return $this-> redirectToRoute('events_index');
 
         }
-
 
         $events = $em->getRepository('NumoBundle:Event') ->findAll();
         $publishedevents = $em->getRepository('NumoBundle:Published')->findBy(array(), array('authorUpdateDate'=> 'DESC'));

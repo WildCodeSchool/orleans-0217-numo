@@ -15,8 +15,9 @@
                 <h1 class="title-view">Agenda</h1>
                 {# --- bouton "créer nouvel évènement --- #}
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <p><a href="{{ path('event_new') }}" class="btn btn-default btn-xs" role="button">Créer un nouvel
-                            évènement</a></p>
+                    <p><a href="{{ path('event_new') }}" class="btn btn-default btn-txt" role="button">
+                            Créer un nouvel évènement
+                    </a></p>
                 {% endif %}
                 <div class="separation barrePurple"></div>
             </div>
@@ -37,8 +38,8 @@
                     {{ form_label(selectForm.category, 'Catégorie : ', {'label_attr': {'class': 'in-line'}}) }}
                     {{ form_widget(selectForm.category, {'attr': {'class': 'in-line tagfield'}}) }}
 
-                    <button class="btn btn-default" type="submit" name="select">Appliquer</button>
-                    <a href="{{ path('event_list_published') }}" class="btn btn-default" role="button">Effacer</a>
+                    <button  class="btn btn-default btnviolet" id="submitForm" type="submit" name="select">APPLIQUER</button>
+                    <a href="{{ path('event_list_published') }}" class="btn btn-default btnviolet" role="button">EFFACER</a>
 
 
                     <p class="red-error">
@@ -55,7 +56,15 @@
         {# --- contenu de page --- #}
 
         <div class="row">
-            {% if error == '' %}
+            {% if error %}
+
+                <div class="col-xs-12 text-center">
+                    <p><img src="{{ asset('img/erreur.png') }}" /></p>
+                    <h3>La liste n'a pas pu être lue.</h3>
+                    <p><a href="{{ path('event_list_published') }}" class="btn btn-default btn-txt" role="button">Recharger la page</a></p>
+                </div>
+
+            {% else %}
 
                 <div class="col-xs-12 col-md-7 col-lg-5 col-lg-offset-2 text-center textA">
 
@@ -94,20 +103,12 @@
                             </a>
                         {% endfor %}
                     {% endif %}
-
                 </div>
 
                 <div class="col-xs-12 col-md-5 col-lg-3">
-                    <div id="closemap" class="text-center" onclick="closeMap1();">X</div>
+                    <div id="closemap1" class="text-center" onclick="closeMap1();">X</div>
                     <div id="map"></div>
                         <div id="calendar"></div>
-                </div>
-
-
-            {% else %}
-
-                <div class="col-xs-12 erreur text-center">
-                    {{ erreur }}
                 </div>
 
             {% endif %}
@@ -171,104 +172,58 @@
                         $calendar.data("view", '');
                     }
                 });
-
                 if ($calendar.data("view") != 'agendaView') {
                     header.find(".fc-button-agendaView").removeClass('fc-state-active active');
                     $("#agendaView").remove();
-
                 } else {
                     renderAgendaView();
                 }
-
-
             },
             eventRender: function (event, e) {
-
                 currentView = $('#calendar').fullCalendar('getView').name;
             }, dayClick: function (date, jsEvent, view) {
-
-
             },
             eventClick: function (calEvent, jsEvent, view) {
-//                console.log("===== eventClick =====");
-//                console.log(calEvent);
-
-
+                console.log("");
+                console.log(calEvent);
             }
         });
-
         var headerRight = $calendar.find(".fc-header").find(".fc-header-right");
-
         var agendaBtn = headerRight.find(".fc-corner-right").removeClass('fc-corner-right')
             .clone().addClass('fc-corner-right fc-button-agendaView').removeClass('fc-button-agendaDay').text("agenda");
-
         agendaBtn.on('click', function () {
             renderAgendaView();
         });
-
         headerRight.find(".fc-header-space").before(agendaBtn);
-
         // test event data
-        {% if dates >  0 %}
+        {% for date in dates %}
+        year = {{ date.2 }};
+        month = {{ date.1 }};
+        day = {{ date.0 }};
         var newEvent = {
-            title: ' ',
-            start: new Date(),
-            end: new Date(),
+            title: `${day}/${month}/${year}`,
+            start: new Date({{ date.2 }}, {{ date.1 }}-1, {{ date.0 }}),
+            end: new Date({{ date.2 }}, {{ date.1 }}-1, {{ date.0 }}),
             editable: true
         };
-
         // add event to calendar
         var event = $('#calendar').fullCalendar('renderEvent', newEvent, 'stick');
-        {% endif %}
+        {% endfor %}
         function renderAgendaView() {
-
             if ($calendar.fullCalendar('getView') != 'agendaView') {
                 $calendar.fullCalendar('changeView', 'month');
                 var newView = $calendar.fullCalendar('getView');
                 newView.name = 'agendaView';
-
                 $calendar.fullCalendar('changeView', 'agendaView');
             }
-
-            // get current events in memory
-            var events = $calendar.fullCalendar('clientEvents');
-
-            // get current date
-            var currentDate = $calendar.fullCalendar('getDate');
-
-            $calendar.find(".fc-header").find(".fc-button-agendaView").siblings().removeClass('fc-state-active').end().addClass('fc-state-active');
-
-            $calendar.data("view", 'agendaView');
-            var agendaViewHtml = document.createElement('div');
-            agendaViewHtml.setAttribute("id", "agendaView");
-            var contents = "<table>" +
-                "<thead><tr>" +
-                "<th class='fc-widget-header fc-agendaView-event-start'>DateStart</th>" +
-                "<th class='fc-widget-header fc-agendaView-event-end'>DateEnd</th>" +
-                "<th class='fc-widget-header fc-agendaView-event-title'>Event</th>" +
-                "</tr></thead>" +
-                "<tbody>";
-
-            for (key in events) {
-                //  detect month range
-                var monthRange = moment().range(moment(currentDate).startOf('month'), moment(currentDate).endOf('month'));
-                var eventStart = moment(events[key].start).format("YYYY/MM/DD-H:mm:ss");
-                var eventEnd = moment(events[key].end).format("YYYY/MM/DD-H:mm:ss");
-                if (monthRange.contains(events[key].start) && monthRange.contains(events[key].end)) {
-                    var eventTitle = events[key].title;
-                    contents += '<tr>' +
-                        '<td class="fc-widget-content">' + eventStart + '</td>' +
-                        '<td class="fc-widget-content">' + eventEnd + '</td>' +
-                        '<td class="fc-widget-content">' + eventTitle + '</td>' +
-                        '</tr>';
-
-                }
-            }
-            contents += "</tbody></table>";
-            agendaViewHtml.innerHTML = contents;
-            $calendar.find(".fc-content").html(agendaViewHtml);
-
         }
+            $('.fc-event-inner').on('click', function(e) {
+                dateval = $(this).children('.fc-event-title').text();
+                $('#numobundle_select_event_startDate').val(dateval);
+                $('#numobundle_select_event_endDate').val(dateval);
+                $("form").submit();
+
+            });
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key={{ googleMapApi }}=initMap"

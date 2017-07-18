@@ -54,7 +54,6 @@
                 </div>
 
                 {# --- image -------------------------------------------------------------------------- #}
-
                 <div class="form-group">
                     {% if event.image.filename is defined %}
                         <p><img class="img-thumbnail little-img" src="{{ asset(imgDir ~ event.image.filename ) }}" ></p>
@@ -137,14 +136,14 @@
                     {% endfor %}
                 </ul>
 
-                <p><input type="button" class="btn btn-default" id="adddate" value="Ajoute une date" onclick="addDate();"/></p>
+                <p><input type="button" class="btn btn-default btn-xs btn-txt" id="adddate" value="Ajoute une date" onclick="addDate();"/></p>
 
-                <div class="sep"></div>
+                <div class="sep barreBlue"></div>
 
                 <div class="row">
-                    <div class="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 text-center">
-                        <button class="btn btn-default right-sep" type="submit" name="enregistrer">Enregistrer les modifications</button>
-                        <a class="btn btn-default" href="{{ path('event_show_await', {'id': eventId}) }}">Ne pas enregistrer</a>
+                    <div class="col-xs-12 text-center">
+                        <button class="btn btn-default btn-txt" type="submit" name="enregistrer">Enregistrer les modifications</button>
+                        <a class="btn btn-default btn-txt" href="{{ path('event_show_await', {'id': eventId}) }}">Ne pas enregistrer</a>
                     </div>
                 </div>
 

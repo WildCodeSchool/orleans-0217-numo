@@ -1,68 +1,226 @@
 /* HEADER */
+html{
+    height: 100%;
+    min-height: 100%;
+}
+
+.bg-1{
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -o-box-orient: vertical;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-height: 100%;
+}
+.connection {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
 
 body {
-    padding-top: 50px;
-    font-size: 1.4em;
+    height: 100%;
+    min-height: 100%;
+    margin-top: 5%;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.3em;
+    min-height: 100vh;
+    height: 100%;
+}
+@media only screen and (max-width: 1300px) {
+    .font-lato .connect{
+        font-size: 0.8em;
+    }
+    .hover{
+        font-size: 0.8em;
+    }
+}
+@media only screen and (max-width: 1200px) {
+    .font-lato .connect{
+        font-size: 0.7em;
+    }
+    .hover{
+        font-size: 0.7em;
+    }
+}
+@media only screen and (max-width: 1034px) {
+    .font-lato .connect{
+        font-size: 0.6em;
+        font-weight: 900;
+    }
+    .hover{
+        font-size: 0.6em;
+        font-weight: 900;
+    }
+}
+@media only screen and (max-width: 766px) {
+    .navbar-collapse{
+        background-color:white;
+    }
+}
+
+@media only screen and (max-width: 930px) {
+    body {
+        margin-top: 20%;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    body {
+        margin-top: 25%;
+    }
+    .font-lato .dark{
+        font-size: 3em;
+    }
+    .font-lato .titreindex{
+        font-size: 3em;
+    }
+
 }
 
 .navbar-logo {
     width: 100px;
+    margin-top: 15%;
 }
 
 footer {
     height: 100px;
+    /*margin-top: 5%;*/
     padding-top: 30px;
     padding-bottom: 20px;
     background-color: whitesmoke; /* Black Gray */
 }
 
+
 .imgHeader{
-    background-image: url("../img/NUMOmedium.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 200px;
-    padding-top: 300px;
+    margin-top: 7%;
+    animation-name: appear;
+    animation-duration: 2s;
 }
 
-.bg-1 {
-    height: 530px;
-    background-repeat: no-repeat;
-    background-position: center;
+.newsletter{
+    background-color: transparent;
 }
-
-.btnOrange {
-    background-color:#FC0606 ;
-    border-color:#FC0606 ;
-    color: #FFFFFF ;
+.banner{
+    padding-top:2%;
 }
-
-.bg-2 {
-    background-color: #FC0606;
-    color: white;
-    height: 250px;
-    padding-top: 30px;
+.banner2{
+    padding-bottom: 2%;
 }
-
-.bg-3 {
-    height: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
+.btnadmin{
+    margin-top: 5%;
 }
-
-.btnwhite{
-    color: #FC0606;
+.btndarkblue{
     background-color: white;
-    border-color: #FC0606 ;
+    color: #005a96;
+    border: 2px solid #005a96;
+    font-weight: 600;
+}
+.btndarkblue:hover{
+    background-color: white;
+    color: #007dac;
+    border: 2px solid #005a96;
+    font-weight: 600;
+}
+
+.btngreen{
+    background-color: white;
+    color: #8dc63f;
+    border: 2px solid #8dc63f;
+    font-weight: 600;
+}
+.btngreen:hover{
+    background-color: white;
+    color: #cbdb2a;
+    border: 2px solid #8dc63f;
+    font-weight: 600;
+}
+
+.btnviolet{
+    background-color: white;
+    color: #a70050;
+    border: 2px solid #a70050;
+    font-weight: 600;
+}
+.btnviolet:hover{
+    background-color: white;
+    color: #9a258f;
+    border: 2px solid #a70050;
+    font-weight: 600;
+}
+
+.btnrouge{
+    background-color: white;
+    color: #d60000;
+    border: 2px solid #ff0606;
+    font-weight: 600;
+}
+.btnrouge:hover{
+    background-color: white;
+    color:  #ff0606;
+    border: 2px solid  #ff0606;
+    font-weight: 600;
+
+}
+
+.btnwhite2{
+    color: #005a96;
+    font-weight: 600;
+    background-color: white;
+    border: 2px solid #007dac;
+    margin-top: 4%;
+    margin-bottom: 4%;
+}
+.btnwhite2:hover{
+    color: #007dac;
+    font-weight: 600;
+    background-color: white;
+    border: 2px solid #007dac;
+    margin-top: 4%;
+    margin-bottom: 4%;
+}
+.btnwhite{
+    color: #005a96;
+    font-weight: 600;
+    background-color: white;
+    border: 2px solid #005a96;
+    margin-top: 4%;
+    margin-bottom: 4%;
+
+
+}
+.eventtitle{
+    font-weight:400;
+    color: black;
+}
+.btnwhite:hover{
+    background-color: white;
+    font-weight: 600;
+    color: #007dac;
+    border: 2px solid #005a96;
+    text-shadow: 0 0 10px white;
 }
 
 .index_list-events {
     margin-top: 20px;
 }
-
-.imageEvents{
-    width: 700px;
-    height: 400px;
+.thumbnail{
+    border: none;
+    margin-top: 5%;
 }
+a:link{
+    text-decoration: none;
+}
+
 
 .thumbnail > img {
     height: 250px;
@@ -71,15 +229,22 @@ footer {
 .title-view {
     text-transform: uppercase;
     font-size: 3.5em;
+    font-weight: 300;
 }
 
 .sub-title-view {
     font-size: 2.7em;
+    font-weight: 300;
+    color: black;
 }
 
 .content-view {
     font-size: 1.3em;
     margin-top: 3%;
+    font-weight: 300;
+    color: black;
+    line-height: 1.8;
+
 }
 
 .contact-view {
@@ -96,12 +261,12 @@ footer {
 
 .lineRed{
     height: 1px;
-    background-color: #FC0606;
+    background-color: #c90404;
 }
 
 .partnaireImg{
-    height: 165px !important;
-    width: 250px !important;
+    height: 165px;
+    width: 250px;
 }
 
 .partnaire{
@@ -120,7 +285,7 @@ footer {
 }
 
 .orange{
-    border-color: #FC0606;
+    border-color: #c90404;
 }
 
 
@@ -175,6 +340,12 @@ td{
     width: 12%;
     text-align: center;
 }
+td .admin{
+    margin-top: 5%;
+}
+.action{
+    width: 20%;
+}
 .note-btn-group{
     width: 17%;
 }
@@ -201,7 +372,21 @@ td{
 button{
     margin-left: 2%;
 }
+/*surcharge du css de mailChimp*/
+#mc_embed_signup .button {
+    background-color: white!important;
+    color: #005a96!important;
+    border :2px solid #005a96!important;
+    font-weight: 900!important;
 
+}
+#mc_embed_signup .button:hover{
+    background-color: white!important;
+    font-weight: 900!important;
+    color: #007dac!important;
+    border: 2px solid #005a96!important;
+    box-shadow: 0 0 10px white!important;
+}
 .modifadmin{
     font-size: 1em;
     margin-top: 3%;
@@ -216,10 +401,9 @@ table{
 }
 .admin{
     margin-bottom: 10%;
-    vertical-align: 5%;
 }
 .moderate{
-    margin-top: 10%;
+    margin-top: 5%;
 }
 thead{
     height: 100px;
@@ -244,8 +428,6 @@ thead{
 
 /*    COMPANY   */
 .company{
-    padding-bottom: 150px;
-    padding-top: 50px;
 }
 
 .companyBottom{
@@ -267,8 +449,8 @@ thead{
 
 .imgMember{
     padding-top: 20px;
-    height:231px !important;
-    /*width:210px !important;*/
+    height:231px;
+    width:210px;
 }
 
 .logo-sn-memberlist {
@@ -312,26 +494,27 @@ thead{
 .barreRed{
     background-color: #FC0606;
 }
-
-.separation.barrePurple{
+.barrePurple{
     background-color: #97258D;
 }
-
 .barreGreen{
     background-color: #8CC63C;
 }
-
 .barreBlue{
     background-color: #005897 ;
 }
-
 .barreYellow{
     background-color: #CADB2A;
 }
 
-div.separation {
+div.separation, div.sep {
     margin: 20px 0px;
     width: 100%;
+}
+div.separation {
+    height: 2px;
+}
+div.sep {
     height: 1px;
 }
 
@@ -368,17 +551,38 @@ div.separation {
     margin-top: 8px;
 }
 
-.forgot-password a{
-    color: #8CC63C;
-    font-weight: bold;
+.btn-login {
+    margin-bottom: 45px;
 }
 
 .forgot-password {
-    margin-top: 15px;
+    color: #8CC63C;
+    font-weight: bold;
+    margin-left: 15px;
 }
 
 .form-left-margin {
     margin-left: 200px;
+}
+
+.form-left-margin-reset {
+    margin-left: 300px;
+
+}
+
+@media only screen and (max-width: 768px) {
+    .form-left-margin {
+        margin-left: 7px;
+        margin-right: 7px;
+
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .form-left-margin {
+        margin-left: 7px;
+        margin-right: 7px;
+    }
 }
 
 /*------------nav bar in hover------------*/
@@ -391,40 +595,102 @@ div.separation {
 .navbar-default .navbar-nav a.hoverContact:hover {color: #CADB2A ;}
 
 
- .navWhite{
+.connect {
+    font-size: 1em;
+    font-weight:500;
+}
+
+
+.navbar-default .navbar-nav > li > a.scrolled{
+    color: white;
+    transition: color 100ms linear;
+
+}
+.navbar-default .navbar-nav > li > a.scrolled:hover{
+    color: white;
+    text-shadow: 0 0 2px white;
+
+}
+
+.navbar-fixed-top{
     background-color: white;
-     font-weight: bold;
-     text-transform: uppercase;
 }
 
-.nav .navbar-nav .navbar-right li a {
-    font-size: 1.2em;
-    font-weight: normal;
+.navbar{
+    height: 90px;
+    border: none;
+    /*text-transform: uppercase;*/
+    box-shadow: 0 1px 3px 0 grey;
 }
-
+.navbar-nav{
+    margin-top: 1%;
+    font-size: larger;
+    font-weight: 500;
+}
 
 /*---------- index color-----------*/
 
 
-.btnGreen{
-    background-color:  #8CC63C !important;
+.btnRed {
+    background-color: #02a46f;
 }
-.btnRed{
-    background-color: #FC0606 ;
-}
-
 .zoneRed{
-    background-color:  #FC0606 ;
+    background-color:  #005a96;
     font-size: 1.4em;
 }
-.textRed{
-    color:  #FC0606 ;
+.zoneDarkRed{
+    background-color: #007dac ;
+    font-size: 1.4em;
+    color:white;
 
 }
 
-.zoneBlue{
-    background-color: #005897 ;
+.titreindex{
+    font-size: 4em;
+    font-weight: 900;
+    color: white;
+    border-bottom: 7px solid #007dac;
+
 }
+.dark{
+    font-size: 4em;
+    font-weight: 900;
+    color: white;
+    border-bottom: 7px solid #005a96;
+    margin-top: 2%;
+}
+.partner{
+    font-size: 4em;
+    font-weight: 900;
+    color: #005a96;
+    margin-top: 2%;
+
+}
+
+.asso{
+    animation-name: fadeInUp;
+    animation-iteration-count: 1;
+    animation-duration: 1.3s;
+}
+
+.desc{
+    margin-top: 2%;
+    color: white;
+    font-weight: 400;
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 100%, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+
 
 .imagePlaceholder{
     height: 231px;
@@ -449,18 +715,25 @@ div.separation {
 
 /*---------- MAILCHIMP-----------*/
 
-#mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; width:100%;}
+#mc_embed_signup{
+    background:#fff;
+    clear:left;
+    font:14px 'Lato',sans-serif;
+    width:100%;
+}
 
 .mailChimpStyle{
     position: absolute; left: -5000px;
 }
 
 .mailChimp{
-    height: 150px;
+    height: 30%;
     padding-top: 30px;
     padding-bottom: 20px;
-    background-color: #fff;
-    border-top: solid #FC0606 2px;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    background-color: rgba(255,255,255,0.3);
+    box-shadow: 0 2px 5px 0 grey;
 }
 
 li{
@@ -473,4 +746,8 @@ li{
     padding-top: 20px;
     Font-Weight: Bold;
 }
+
+
+/*---------- PRESENTATION NUM'O-----------*/
+
 

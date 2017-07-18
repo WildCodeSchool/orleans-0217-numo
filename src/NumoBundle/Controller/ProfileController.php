@@ -30,19 +30,18 @@ class ProfileController extends BaseController
         $api = $this->get('numo.apiopenagenda');
         $em = $this->getDoctrine()->getManager();
         $published = $em->getRepository('NumoBundle:Published')->findBy(['author' => $user->getId(), 'deleted' => 0]);
-        $uids = [];
+        $oaEvents = [];
         foreach ($published as $pub) {
-            $uids[] = $pub->getUid();
+            $oaEvent = $api->getEvent($pub->getUid());
+            if ($oaEvent) {
+                $oaEvents[] = $oaEvent;
+            }
         }
-
-        $oaevents = $api->getEvents($uids);
-
         $events = $em->getRepository('NumoBundle:Event')->findBy(['author' => $user->getId()]);
 
         return $this->render('@FOSUser/Profile/show.html.twig', array(
             'user' => $user,
-            'uids' => $uids,
-            'oaevents' => $oaevents,
+            'oaevents' => $oaEvents,
             'events' => $events,
         ));
     }

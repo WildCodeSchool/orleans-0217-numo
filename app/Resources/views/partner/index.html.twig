@@ -1,37 +1,46 @@
 {% extends 'layoutAdmin.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styleOnOffButton.css') }}">
+{% endblock %}
+
 {% block body %}
 <div class="container font-lato">
     <h1 class="titreadmin font-lato">PARTENAIRES</h1>
-    <table>
-        <thead>
-        <tr class="text-center">
-            <th class="text-center">PARTENAIRES</th>
-            <th class="text-center">SITE WEB</th>
-            <th class="text-center">LOGO</th>
-            <th class="text-center">ACTIF</th>
-            <th class="text-center">ACTIONS</th>
-        </tr>
-        </thead>
-    </table>
-    <table>
-        <tbody>
-        {% for partner in partners %}
-            <tr>
-                <td>{{ partner.name }}</td>
-                <td>{{ partner.webUrl }}</td>
-                <td><img class="img-thumbnail imageadmin" src="{{ asset('uploads/users/' ~ partner.imageUrl ) }}"></td>
-                <td>{{ partner.active }}</td>
-                <td>
-                    <a href="{{ path('partner_show', { 'id': partner.id }) }}"><button type="button" value="VOIR L\'ARTICLE">VOIR DETAILS</button></a><br/><br/>
 
-                    <a href="{{ path('partner_edit', { 'id': partner.id }) }}"><button type="button" value="MODIFIER">MODIFIER</button></a>
-                </td>
+    <div class="table-responsive">
+        <table>
+            <thead>
+            <tr class="text-center">
+                <th class="text-center">PARTENAIRES</th>
+                <th class="text-center">SITE WEB</th>
+                <th class="text-center">LOGO</th>
+                <th class="text-center">ACTIF</th>
+                <th class="text-center">ACTIONS</th>
             </tr>
-        {% endfor %}
-        <hr>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for partner in partners %}
+                <tr>
+                    <td class="admin">{{ partner.name }}</td>
+                    <td class="admin">{{ partner.webUrl }}</td>
+                    <td class="admin"><img class="img-thumbnail img-responsive imageadmin" src="{{ asset('uploads/users/' ~ partner.imageUrl ) }}"></td>
+                    <td>
+                        <a href="{{ path('partner_active', {'id': partner.id}) }}">
+                            <button class="onoff {{ partner.active == 0 ? 'grey' : 'green' }}">
+                                {{ partner.active == 0 ? 'NON' : 'OUI' }}
+                            </button></a>
+                    </td>
+                    <td class="admin">
+                        <a href="{{ path('partner_edit', { 'id': partner.id }) }}"><button type="button" value="MODIFIER">MODIFIER</button></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            <hr>
+            </tbody>
+        </table>
+    </div>
 
     <br/>
     <a href="{{ path('partner_new') }}"><button type="button" value="CREATION DE CONTENU">+</button></a>

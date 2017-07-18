@@ -13,7 +13,7 @@ use NumoBundle\Services\UserUploader;
 /**
  * Partner controller.
  *
- * @Route("partner")
+ * @Route("admin/partner")
  */
 class PartnerController extends Controller
 {
@@ -152,5 +152,23 @@ class PartnerController extends Controller
             ->setAction($this->generateUrl('partner_delete', ['id' => $partner->getId()]))
             ->setMethod('DELETE')
             ->getForm();
+    }
+
+    /**
+     * @param Partner $partner
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/active/{id}", name="partner_active")
+     */
+    public function ActiveAction(Partner $partner)
+    {
+        if ($partner->getActive() === 0){
+            $partner->setActive(1);
+        } else {
+            $partner->setActive(0);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return $this->redirectToRoute('partner_index');
     }
 }
