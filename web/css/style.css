@@ -592,7 +592,7 @@ div.sep {
 .navbar{
     height: 90px;
     border: none;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     box-shadow: 0 1px 3px 0 grey;
 }
 .navbar-nav{
