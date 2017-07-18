@@ -191,7 +191,7 @@ class EventController extends Controller
                             Un membre de confiance à posté un événement, vous pouvez aller sur www.num-o.fr pour le voir.')
                     ->setFrom($company->getContactEmail());
                 foreach ($users as $user) {
-                    if (in_array('ROLE_MODERATOR', $user->getRoles())) {
+                    if (in_array('ROLE_MODERATOR', $user->getRoles()) || in_array('ROLE_ADMIN', $user->getRoles())) {
                         $confirmation->setTo($user->getEmail());
                     }
                 }
@@ -207,7 +207,7 @@ class EventController extends Controller
                             Un membre à posté un événement, vous pouvez aller sur www.num-o.fr pour le moderer.')
                     ->setFrom($company->getContactEmail());
                 foreach ($users as $user) {
-                    if (in_array('ROLE_MODERATOR', $user->getRoles())) {
+                    if (in_array('ROLE_MODERATOR', $user->getRoles()) || in_array('ROLE_ADMIN', $user->getRoles())) {
                         $confirmation->setTo($user->getEmail());
                     }
                 }
@@ -470,8 +470,7 @@ class EventController extends Controller
                 ->setModeratorUpdateDate(new \datetime())
                 ->setTitle($event->getTitle());
             $em->flush();
-
-            if (in_array('ROLE_MODERATOR', $this->getUser()->getRoles())) {
+            if (in_array('ROLE_MODERATOR', $this->getUser()->getRoles()) || in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
                 return $this->redirectToRoute('events_index');
             }
             else {
@@ -518,7 +517,7 @@ class EventController extends Controller
             }
         }
         // --- definition de la route de retour
-        if (in_array('ROLE_MODERATOR', $this->getUser()->getRoles())) {
+        if (in_array('ROLE_MODERATOR', $this->getUser()->getRoles()) || in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
             // --- Si moderateur ou admin -> retour sur page admin
             $goBack = 'events_index';
         } else {
