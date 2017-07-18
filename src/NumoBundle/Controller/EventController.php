@@ -313,6 +313,7 @@ class EventController extends Controller
             $event
                 ->setAuthor($this->getUser())
                 ->setCreationDate(new \datetime());
+            $event->setRejected(0);
             $em->flush();
 
             return $this->redirectToRoute('event_show_await', ['id' => $event->getId()]);
