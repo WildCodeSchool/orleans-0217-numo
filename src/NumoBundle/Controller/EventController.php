@@ -149,10 +149,8 @@ class EventController extends Controller
         $company = $em->getRepository('NumoBundle:Company')->findOneBy([]);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $userManager = $this->get('fos_user.user_manager');
             $users = $userManager->findUsers();
-
             $curentUser = $this->getUser();
             $event
                 ->setAuthor($curentUser)
@@ -183,36 +181,27 @@ class EventController extends Controller
                 $published->setTitle($event->getTitle());
                 $em->persist($published);
                 $em->flush();
-
-                // --- envoi de la notification
-                $confirmation = \Swift_Message::newInstance()
-                    ->setSubject('Un membre de confiance à posté un événement')
-                    ->setBody('Bonjour, 
-                            Un membre de confiance à posté un événement, vous pouvez aller sur www.num-o.fr pour le voir.')
-                    ->setFrom($company->getContactEmail());
-                foreach ($users as $user) {
-                    if (in_array('ROLE_MODERATOR', $user->getRoles()) || in_array('ROLE_ADMIN', $user->getRoles())) {
-                        $confirmation->setTo($user->getEmail());
-                    }
-                }
-                $this->get('mailer')->send($confirmation);
+                $textSubject = 'Un membre de confiance à posté un événement';
+                $textMail = 'Un membre de confiance à posté un événement, vous pouvez aller sur www.num-o.fr pour le voir.';
             } else {
                 // --- sinon enregistrement de l'evenement dans la database
                 $em->persist($event);
                 $em->flush();
-
-                $confirmation = \Swift_Message::newInstance()
-                    ->setSubject('Un membre à posté un événement')
-                    ->setBody('Bonjour, 
-                            Un membre à posté un événement, vous pouvez aller sur www.num-o.fr pour le moderer.')
-                    ->setFrom($company->getContactEmail());
-                foreach ($users as $user) {
-                    if (in_array('ROLE_MODERATOR', $user->getRoles()) || in_array('ROLE_ADMIN', $user->getRoles())) {
-                        $confirmation->setTo($user->getEmail());
-                    }
-                }
-                $this->get('mailer')->send($confirmation);
+                $textSubject = 'Un membre à posté un événement';
+                $textMail = 'Un membre à posté un événement, vous pouvez aller sur www.num-o.fr pour le moderer.';
             }
+            // --- envoi de la notification
+            $confirmation = \Swift_Message::newInstance()
+                ->setSubject($textSubject)
+                ->setBody('Bonjour, ' . $textMail)
+                ->setFrom($company->getContactEmail());
+            foreach ($users as $user) {
+                if ($user->isGranted('ROLE_MODERATOR') || $user->isGranted('ROLE_ADMIN')) {
+                    $confirmation->setTo($user->getEmail());
+                }
+            }
+            $this->get('mailer')->send($confirmation);
+
             $this->addFlash(
                 'info',
                 'Vous avez créé un évènement'
@@ -470,7 +459,7 @@ class EventController extends Controller
                 ->setModeratorUpdateDate(new \datetime())
                 ->setTitle($event->getTitle());
             $em->flush();
-            if (in_array('ROLE_MODERATOR', $this->getUser()->getRoles()) || in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            if ($this->isGranted('ROLE_MODERATOR')) {
                 return $this->redirectToRoute('events_index');
             }
             else {
@@ -517,7 +506,7 @@ class EventController extends Controller
             }
         }
         // --- definition de la route de retour
-        if (in_array('ROLE_MODERATOR', $this->getUser()->getRoles()) || in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+        if ($this->isGranted('ROLE_MODERATOR')) {
             // --- Si moderateur ou admin -> retour sur page admin
             $goBack = 'events_index';
         } else {
