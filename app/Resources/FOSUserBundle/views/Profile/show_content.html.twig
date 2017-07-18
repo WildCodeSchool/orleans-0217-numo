@@ -12,10 +12,9 @@
         <div class="row">
             <div class="col-lg-offset-1 col-lg-2">
                 {% if user.imageUrl == null %}
-                    <img src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" class="placeholder-show-profile">
+                    <img class="imagePlaceholder" src="{{ asset('img/person_placeholder.png') }}" alt="placeholder" class="placeholder-show-profile">
                 {% else %}
-                    <img src="{{ asset('uploads/users/' ~ user.imageUrl) }}" alt="{{ user.name }}"
-                         style="height: 70px">
+                    <img class="imageProfileMember" src="{{ asset('uploads/users/' ~ user.imageUrl) }}" alt="{{ user.name }}">
                 {% endif %}
             </div>
 
@@ -83,7 +82,7 @@
                     <div class="col-lg-offset-1 col-lg-1">
                         <img src="{{ asset('/img/tel.png') }}" alt="telephone" class="rs-button"/>
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-1">
                         <h3>{{ user.phone }}</h3>
                     </div>
                 {% endif %}
@@ -91,7 +90,7 @@
                     <div class="col-lg-offset-1 col-lg-1">
                         <img src="{{ asset('/img/internet.png') }}" alt="site web" class="rs-button"/>
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-1">
                         <h3>{{ user.webSite }}</h3>
                     </div>
                 {% endif %}

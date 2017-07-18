@@ -11,7 +11,7 @@
             <h2 class="title-view">Modifier le mot de passe</h2>
             <div class="separation barreYellow"></div>
 
-            <div class="form-left-margin">
+            <div class="form-left-margin-reset">
                 {{ form_start(form, {
                     'action': path('fos_user_resetting_reset', {'token': token}),
                     'attr': { 'class': 'fos_user_resetting_reset' } }) }}

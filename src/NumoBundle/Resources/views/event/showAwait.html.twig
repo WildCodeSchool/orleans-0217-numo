@@ -116,7 +116,7 @@
                 <h3>Organisé par</h3>
                 <p>
                     {% if event.author.imageUrl is not empty %}
-                       <img class="little-img" src="{{ asset('uploads/users/' ~ event.author.imageUrl) }}" alt="image organisateur {{ event.author.name }}" />
+                       <img class="min-img" src="{{ asset('uploads/users/' ~ event.author.imageUrl) }}" alt="image organisateur {{ event.author.name }}" />
                     {% endif %}
                     {{ event.author.name }} {{ event.author.firstname }}
                 </p>
