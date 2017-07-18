@@ -230,9 +230,11 @@ class ApiOpenAgenda
         }
         // --- ecriture de l'adresse --------------------------------------------------------------
         $location_uid = $this->publishLocation($event);
+
         if (false === $location_uid) {
             return false; // l'ecriture de l'adresse a echouee
         }
+
         // --- preparation ecriture de l'evenement ------------------------------------------------
         $eventData = [
             'title' => ['fr' => $event->getTitle()],
@@ -245,12 +247,15 @@ class ApiOpenAgenda
             ]],
             'thirdParties' => [],
         ];
+
+
         if ($event->getFreeText()) {
             $eventData['freeText'] = ['fr' => $event->getFreeText()];
         }
         if ($event->getTicketLink()) {
             $eventData['locations'][0]['ticketLink'] = $event->getTicketLink();
         }
+
         $evtDates = $event->getEvtDates();
         foreach ($evtDates as $evtDate) {
             $eventData['locations'][0]['dates'][] = [
@@ -259,6 +264,8 @@ class ApiOpenAgenda
                 'timeEnd' => $evtDate->getTimeEnd()->format('H:i'),
             ];
         }
+
+
         // --- preparation des infos image --------------------------------------------------------
         $image = null;
         if (!empty($event->getImage())) {
@@ -278,19 +285,25 @@ class ApiOpenAgenda
             'data' => json_encode($eventData),
             'published' => false
         ];
+
         if ($image ) {
             $postOptions['image'] = $image;
         }
+
         $this->curl->setPost($postOptions);
         $data = $this->curl->execute();
+
         if (false === $data) {
             return false;
         }
+
         $event_uid = $data['uid'];
         // --- Referencement del'evenement dans l'agenda ------------------------------------------
         $refData = [
             'event_uid' => $event_uid,
         ];
+
+
         $url = self::APIROOTURL . 'agendas/' . $this->getAgendaUid() . '/events';
         $this->curl
             ->setUrl($url)
@@ -307,6 +320,9 @@ class ApiOpenAgenda
         if (null === $event_uid || null === $location_uid) {
             return false;
         }
+
+
+
         return ['eventUid' => $event_uid, 'locationUid' => $location_uid];
     }
 

@@ -20,7 +20,7 @@ use NumoBundle\Repository\UserRepository;
 /**
  * User Promote controller.
  *
- * @Route("/memberstatus")
+ * @Route("admin/memberstatus")
  */
 
 class UserPromoteController extends Controller

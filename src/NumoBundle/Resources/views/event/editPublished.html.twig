@@ -72,7 +72,7 @@
                         <div class="col-sm-9 text-center">
                             {{ form_widget(form.image, {'attr': {'class': 'form-control hidden', 'accept': '.jpg, .jpeg, .png'}}) }}
                             <div class="demi-img text-center">
-                                {% if published.image is empty %}
+                                {% if published.image is not defined %}
                                     <img id="oldimage" class="little-img" src="{{ asset('/img/event_placeholder.png') }}" />
                                 {% else %}
                                     <img id="oldimage" class="little-img" src="{{ asset(imgDir ~ '/' ~ published.image) }}" />

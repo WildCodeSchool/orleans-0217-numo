@@ -13,7 +13,7 @@ use NumoBundle\Services\UserUploader;
 /**
  * Partner controller.
  *
- * @Route("partner")
+ * @Route("admin/partner")
  */
 class PartnerController extends Controller
 {

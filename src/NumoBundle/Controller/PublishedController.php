@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 /**
  * Published controller.
  *
- * @Route("published")
+ * @Route("admin/published")
  */
 class PublishedController extends Controller
 {
@@ -38,6 +38,8 @@ class PublishedController extends Controller
             'publisheds' => $publisheds,
         ));
     }
+
+
     /**
      * List of all events in admin available for edition and moderation by the moderator.
      *
@@ -101,6 +103,66 @@ class PublishedController extends Controller
         ]);
 
     }
+
+
+    /**
+     * Displays an awaiting event.
+     *
+     * @Route("/show-await/{id}", name="event_show_await")
+     * @Method({"POST","GET"})
+     */
+    public function showAwaitAction(Request $request, Event $event)
+    {
+        $refusal = new ModerationRefusal();
+        $form = $this->createForm(ModerationType::class, $refusal);
+        $form->handleRequest($request);
+
+        $em = $this->getDoctrine()->getManager();
+        $company = $em->getRepository('NumoBundle:Company')->findOneBy([]);
+
+        $oldDates = $newDates = [];
+        $dateRef = new \DateTime();
+        foreach ($event->getEvtDates() as $evtD) {
+            $evtDate = [
+                'evtDate' => $evtD->getEvtDate()->format('Y-m-d'),
+                'timeStart' => $evtD->getTimeStart()->format('H:i'),
+                'timeEnd' => $evtD->getTimeEnd()->format('H:i')
+            ];
+            if ($evtDate['evtDate'] < $dateRef->format('Y-m-d')) {
+                $oldDates[] = $evtDate;
+            } else {
+                $newDates[] = $evtDate;
+            }
+        }
+
+        if ($form->isValid() && $form->isSubmitted()) {
+            $comment = \Swift_Message::newInstance()
+                ->setSubject($refusal->getTitle(). 'a été refusé')
+                ->setTo($refusal->getContactEmail())
+                ->setFrom($company ->getContactEmail())
+                ->setBody($refusal->getComment());
+
+            $id = $refusal->getEventId();
+            $this->get('mailer')->send($comment);
+
+            $event = $em->getRepository('NumoBundle:Event')->findOneBy(['id'=>$id]);
+            $event->setRejected(1);
+            $em->flush();
+
+            return $this-> redirectToRoute('events_index');
+        }
+
+        return $this->render('NumoBundle:event:showAwait.html.twig', [
+            'imgDir' => $this->getParameter('img_event_dir'),
+            'event' => $event,
+            'oldDates' => $oldDates,
+            'newDates' => $newDates,
+            'form' => $form->createView()
+        ]);
+    }
+
+
+
     /**
      * Creates a new published entity.
      *
