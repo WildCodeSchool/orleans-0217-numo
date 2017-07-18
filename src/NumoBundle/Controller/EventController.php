@@ -314,6 +314,7 @@ class EventController extends Controller
                 ->setAuthor($this->getUser())
                 ->setCreationDate(new \datetime())
                 ->setRejected(0);
+
             $em->flush();
 
             if ($this->isGranted('ROLE_MODERATOR')) {
