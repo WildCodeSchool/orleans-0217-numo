@@ -4,9 +4,21 @@
 
 {% block body %}
     {% block fos_user_content %}
-        <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
-        {% if targetUrl %}
-            <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
-        {% endif %}
+
+        <div class="container-fluid bg-1 text-center">
+
+            <h3 class="margin"></h3>
+            <div class="row ">
+                <h2 class="title-view">Activation du compte</h2>
+                <div class="separation barreGreen"></div>
+
+
+                <p class="font-lato">{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
+                {% if targetUrl %}
+                    <p class="font-lato"><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
+                {% endif %}
+            </div>
+        </div>
+
     {% endblock fos_user_content %}
 {% endblock %}

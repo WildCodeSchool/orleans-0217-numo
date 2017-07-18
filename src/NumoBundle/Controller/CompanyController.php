@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\File\File;
 /**
  * Company controller.
  *
- * @Route("company")
+ * @Route("admin/company")
  */
 class CompanyController extends Controller
 {

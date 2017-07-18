@@ -17,7 +17,7 @@
         <div class="collapse navbar-collapse navbar-menu  font-oswald" id="navbar-collapsed">
             <ul class="nav navbar-nav navbar-list font-lato navadmin">
                 {% if is_granted('ROLE_ADMIN') %}
-                    <li><a class="hoverAssociation" href="/app_dev.php/company/1">GESTION DES INFORMATIONS DE L'ASSOCIATION</a></li>
+                    <li><a class="hoverAssociation" href="{{ path('company_show', { 'id': 1 }) }}">GESTION DES INFORMATIONS DE L'ASSOCIATION</a></li>
                     <li><a class="hoverMembres" href="{{ path('memberstatus_index') }}">GESTION DES MEMBRES</a></li>
                     <li><a class="hoverAdherer" href="{{ path('partner_index') }}">PARTENAIRES</a></li>
                 {% endif %}
