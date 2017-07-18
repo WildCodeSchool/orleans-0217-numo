@@ -54,7 +54,7 @@
     </table>
     {{ form_start(delete_form) }}
 
-    <a href="{{ path('company_edit', { 'id': 1 }) }}"><button type="button" value="MODIFIER">MODIFIER</button></a>
+    <a href="{{ path('company_edit', { 'id': company.id }) }}"><button type="button" value="MODIFIER">MODIFIER</button></a>
 
             {{ form_start(delete_form) }}
                 <input type="submit" value="SUPPRIMER">
