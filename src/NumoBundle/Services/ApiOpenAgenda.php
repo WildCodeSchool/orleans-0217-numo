@@ -154,11 +154,10 @@ class ApiOpenAgenda
     {
         $url = self::WEBROOTURL . 'agendas/' . $this->getAgendaUid() . "/events.json?oaq[uids][]=$uid";
         $data = $this->getFileContents->execute($url);
-        if (false === $data) {
+        if (false === $data || $data['nbEvents'] == 0) {
             return false;
-        } else {
-            return $this->convertJson($data['data'][0]);
         }
+        return $this->convertJson($data['data'][0]);
     }
 
     public function getEvents(array $uids)
