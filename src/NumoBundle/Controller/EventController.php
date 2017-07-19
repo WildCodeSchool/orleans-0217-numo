@@ -204,7 +204,7 @@ class EventController extends Controller
 
             $this->addFlash(
                 'info',
-                'Vous avez créé un évènement'
+                'Votre évènement sera publié dès qu\'un modérateur l\'aura validé.'
             );
 
             return $this->redirectToRoute('event_list_published');
@@ -566,8 +566,6 @@ class EventController extends Controller
 
         $form->handleRequest($request);
 
-        $author = $event->getAuthor();
-
         $api = $this->get('numo.apiopenagenda');
         $uid = $api->publishEvent($event, $this->getParameter('img_event_dir'));
 
@@ -599,7 +597,6 @@ class EventController extends Controller
                 ];
             }
         }
-
 
         if ($form->isValid() && $form->isSubmitted()) {
             $comment = \Swift_Message::newInstance()
