@@ -62,7 +62,7 @@
                                     <img class="imageEvents" src="{{ event.image }}" alt="{{ event.title }}">
                                     <div class="caption">
                                         <h3>{{ event.title }}</h3>
-                                        <h4>{{ event.newDates[0].evtDate|localizeddate("medium", "none", "locale", null, "cccc d LLLL yyyy") }}</h4>
+                                        <h4>{{ event.newDates[0].evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}</h4>
                                         <p>{{ event.description }}</p>
                                         <p>{{ event.address }}</p>
                                     </div>
