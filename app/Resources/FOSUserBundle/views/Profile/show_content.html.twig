@@ -25,7 +25,7 @@
                     <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-default">Editer</a>
                     <a href="{{ path('fos_user_change_password') }}" class="btn btn-default">Modifier le mot de passe</a>
                     {% if not is_granted('ROLE_ADHERENT') %}
-                        <a href="" class="btn btn-default">Devenir Adhérent</a>
+                        <a href="{{ path('become_adherent') }}" class="btn btn-default">Devenir Adhérent</a>
                     {% endif %}
                 </div>
             </div>
@@ -107,7 +107,7 @@
             <h2>Mes événements</h2>
 
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <p><a href="{{ path('event_new') }}" class="btn btn-default btn-xs" role="button">
+                <p><a href="{{ path('event_new') }}" class="btn btn-default" role="button">
                     Créer un nouvel évènement
                 </a></p>
             {% endif %}
