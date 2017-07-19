@@ -93,7 +93,7 @@
                                             {% if event.newDates|length == 0 %}
                                                 Cet évènement est passé.
                                             {% else %}
-                                                {{ event.newDates[0].evtDate|localizeddate("medium", "none", "locale", null, "cccc d LLLL yyyy") }}
+                                                {{ event.newDates[0].evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}
                                             {% endif %}
                                         </p>
                                         <h4>{{ event.description }}</h4>
