@@ -502,6 +502,10 @@ thead{
 .barreGreen{
     background-color: #8CC63C;
 }
+.strongGreen {
+    color: #8CC63C;
+    font-weight: bold;
+}
 .barreBlue{
     background-color: #005897 ;
 }
