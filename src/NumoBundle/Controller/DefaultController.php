@@ -27,7 +27,6 @@ class DefaultController extends Controller
         $data = $api->getEventList($options);
         if (false === $data) {
             $events = [];
-            $error = 'code : ' . $api->getErrorCode() . ', message : ' . $api->getError();
         } else {
             $events = $data['eventList'];
         }
