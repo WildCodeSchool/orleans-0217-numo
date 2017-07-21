@@ -302,7 +302,7 @@ class EventController extends Controller
 
             $this->addFlash(
                 'info',
-                'Vous évènement a bien été modifié'
+                'Votre évènement a bien été modifié'
             );
             // --- adaptation de la liste des dates
             foreach ($originalEvtDates as $evtDate){
@@ -386,7 +386,7 @@ class EventController extends Controller
 
             $this->addFlash(
                 'info',
-                'Vous évènement a bien été modifié, vous pourrez voir ces modifications dans quelques secondes'
+                'Votre évènement a bien été modifié, vous pourrez voir ces modifications dans quelques secondes'
             );
             // --- gestion de l'image
             $file = $event->getImage();
@@ -472,6 +472,12 @@ class EventController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($event);
             $em->flush();
+
+            $this->addFlash(
+                'info',
+                'Votre évènement a bien été supprimé'
+            );
+
             return $this->redirectToRoute($goBack);
         }
         return $this->render('NumoBundle:event:deleteAwait.html.twig', [
@@ -519,7 +525,20 @@ class EventController extends Controller
             $published->setModerator($this->getUser());
             $published->setModeratorUpdateDate(new \DateTime);
             $em->flush();
-            return $this->redirectToRoute('events_index');
+
+            $this->addFlash(
+                'info',
+                'Votre évènement a bien été supprimé'
+            );
+
+            if ($this->isGranted('ROLE_MODERATOR')) {
+                // --- Si moderateur ou admin -> retour sur page admin
+                return $this->redirectToRoute('events_index');
+            } else {
+                // --- Sinon retour sur page profil de l'utilisateur
+                return $this->redirectToRoute('fos_user_profile_show');
+            }
+
         }
         return $this->render('NumoBundle:event:deletePublished.html.twig', [
             'agendaSlug' => $api->getAgendaSlug(),

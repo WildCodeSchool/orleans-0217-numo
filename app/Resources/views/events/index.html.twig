@@ -69,7 +69,7 @@
                             <td class="admin"><p class="moderate">{{ event.event.title }}</p></td>
                             <td class="admin">
                                 {% if event.event.newdates is not empty %}
-                                   {{ event.event.newDates[0].evtDate|localizeddate("medium", "none", "locale", null, "cccc d LLLL yyyy") }}
+                                   {{ event.event.newDates[0].evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}
                                 {% else %}
                                     Cet évènement est passé
                                 {% endif %}
