@@ -108,10 +108,10 @@
                         {# --- Prochaines dates ------------------------------------------------ #}
                         {% for evtDate in event.newDates|slice(0, 4) %}
                             <tr>
-                                <td class="text-left {% if loop.index == 1 %} strong-text {% endif %}">
+                                <td class="text-left {% if loop.index == 1 %} strongGreen {% endif %}">
                                     {{ evtDate.evtDate|localizeddate("medium", "none", null, null, "cccc d LLLL yyyy") }}
                                 </td>
-                                <td class="text-right {% if loop.index == 1 %} strong-text {% endif %}">
+                                <td class="text-right {% if loop.index == 1 %} strongGreen {% endif %}">
                                     {{ evtDate.timeStart|localizeddate("medium", "none", null, null, "HH'h'mm") }}
                                     à {{ evtDate.timeEnd|localizeddate("medium", "none", null, null, "HH'h'mm") }}
                                 </td>
@@ -163,14 +163,20 @@
                     {# --- linkedin --- #}
                     <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: fr_FR</script>
                     <script type="IN/Share" data-url="http://num-o.fr/event/showpublished/{{ event.id }}" data-counter="top"></script>
-                    {# --- organisateur -------------------------------------------------------- #}
 
                     <div class="separation barreGreen"></div>
+
+                    {# --- organisateur -------------------------------------------------------- #}
                     <h3>Organisé par</h3>
                     <p>
                         {% if published and published.author %}
-                            <img class="min-img" src="{{ asset('uploads/users/' ~ published.author.imageUrl) }}"
-                                 alt="image organisateur {{ published.author.name }}" />
+                            {% if published.author.imageUrl %}
+                                <img class="min-img" src="{{ asset('uploads/users/' ~ published.author.imageUrl) }}"
+                                     alt="image organisateur {{ published.author.name }}" />
+                            {% else %}
+                                <img class="min-img" src="{{ asset('img/person_placeholder.png') }}"
+                                     alt="image organisateur" />
+                            {% endif %}
                             {{ published.author.name }} {{ published.author.firstname }}
                         {% else %}
                             Information non disponible.
