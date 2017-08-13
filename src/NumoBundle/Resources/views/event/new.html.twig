@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-6 col-lg-offset-3">
+            <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
 
 
 
@@ -31,7 +31,7 @@
                 <h3>Description de l'évènement</h3>
 
                 <div class="form-group">
-                    <span class="erreur"> {{ form_errors(form.title)|striptags }} </span>
+                    <div class="erreur text-center"> {{ form_errors(form.title)|striptags }} </div>
                     {{ form_label(form.title, '* Nom', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
                     <div class="col-sm-9">
                         {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="form-group">
-                    <span class="erreur"> {{ form_errors(form.description)|striptags }} </span>
+                    <div class="erreur text-center"> {{ form_errors(form.description)|striptags }} </div>
                     {{ form_label(form.description, '* Description succincte', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
                     <div class="col-sm-9">
                         {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
@@ -60,13 +60,18 @@
                     </div>
                 </div>
 
+                {# --- image -------------------------------------------------------------------------- #}
                 <div class="form-group">
                     <div class="col-sm-3 control-label">
-                        {{ form_label(form.image, 'Charger une image', {'label_attr': {'class': 'btn btn-default btn-xs'}}) }}
+                        {{ form_label(form.image, 'Charger une image', {'label_attr': {'class': 'btn btn-default btn-xs btn-img'}}) }}
+                        <button id="resetimg" class="btn btn-default btn-xs btn-img">Supprimer nouvelle image</button>
                     </div>
                     <div class="col-sm-9 text-center">
                         {{ form_widget(form.image, {'attr': {'class': 'form-control hidden', 'accept': '.jpg, .jpeg, .png'}}) }}
-                        <input type="text" id="imgname" class="form-control" value="" readonly="readonly" />
+                        <div class="demi-img text-center">
+                            <img id="newimage" class="little-img" src="{{ asset('/img/event_placeholder.png') }}" />
+                            <p>Nouvelle image</p>
+                        </div>
                     </div>
                 </div>
 
@@ -74,7 +79,7 @@
                 <hr><h3>Description du lieu</h3>
 
                 <div class="form-group">
-                    <span class="erreur"> {{ form_errors(form.placename)|striptags }} </span>
+                    <div class="erreur text-center"> {{ form_errors(form.placename)|striptags }} </div>
                     {{ form_label(form.placename, '* Nom du lieu', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
                     <div class="col-sm-9">
                         {{ form_widget(form.placename, {'attr': {'class': 'form-control'}}) }}
@@ -82,8 +87,11 @@
                 </div>
 
                 <div class="form-group">
-                    <span class="erreur"> {{ form_errors(form.address)|striptags }} </span>
-                    {{ form_label(form.address, '* Adresse complète', {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                    <div class="erreur text-center"> {{ form_errors(form.address)|striptags }} </div>
+                    <div class="col-sm-3 text-right">
+                        {{ form_label(form.address, '* Adresse complète', {'label_attr': {'class': 'control-label'}}) }}
+                        <br />(rue, code postal, ville)
+                    </div>
                     <div class="col-sm-9">
                         {{ form_widget(form.address, {'attr': {'class': 'form-control', 'onfocusout': 'scanAddress();'}}) }}
                         <input type="hidden" id="id-addr" value="{{ form.address.vars.id }}">
@@ -159,6 +167,20 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        $('#numobundle_event_image').change(function(e) {
+            e.preventDefault();
+            var files = $(this)[0].files;
+            var file = files[0];
+            $('#newimage').attr('src', window.URL.createObjectURL(file));
+        });
+        $('#resetimg').click(function(e) {
+            e.preventDefault();
+            $('#{{ form.image.vars.id }}').val('');
+            $('#newimage').attr('src', '{{ asset('/img/event_placeholder.png') }}');
+        });
+    </script>
+
     <script src="{{ asset('js/newevent.js') }}"></script>
     <script>geocoder = new google.maps.Geocoder();</script>
 {% endblock %}
