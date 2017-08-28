@@ -28,6 +28,7 @@
                     <th class="text-center">ROLE</th>
                     <th class="text-center">ACTION</th>
                     <th class="text-center">DESACTIVÉ</th>
+                    <th class="text-center">MOT DE PASSE</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -51,6 +52,12 @@
                             <a href="{{ path('member_enabled', {'id': user.id}) }}">
                                 <button class="onoff {{ user.enabled == false ? 'green' : 'grey' }}">
                                     {{ user.enabled == false ? 'OUI' : 'NON' }}
+                                </button></a>
+                        </td>
+                        <td class="admin">
+                            <a href="">
+                                <button type="button" class="button-admin">
+                                    REINITIALISER
                                 </button></a>
                         </td>
                     </tr>
