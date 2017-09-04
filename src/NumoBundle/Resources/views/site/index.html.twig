@@ -103,28 +103,28 @@
                         <div class="col-xs-12">
                             <a target="_blank" href="{{ partner.webUrl }}" class="thumbnail thumbnail-div">
                                 <img src="{{ asset('uploads/users/' ~ partner.imageUrl ) }}"
-                                     class="img-responsive partnaireImg" alt="{{ partner.name }}">
+                                     class="img-responsive" alt="{{ partner.name }}">
                             </a>
                         </div>
                     {% elseif partners|length == 2 %}
                         <div class="col-md-6 col-xs-6">
                             <a target="_blank" href="{{ partner.webUrl }}" class="thumbnail thumbnail-div">
                                 <img src="{{ asset('uploads/users/' ~ partner.imageUrl ) }}"
-                                     class="img-responsive partnaireImg" alt="{{ partner.name }}">
+                                     class="img-responsive" alt="{{ partner.name }}">
                             </a>
                         </div>
                     {% elseif (partners|length == 3) or (partners|length == 5) or (partners|length == 6) %}
                         <div class="col-md-4 col-xs-4">
                             <a target="_blank" href="{{ partner.webUrl }}" class="thumbnail thumbnail-div">
                                 <img src="{{ asset('uploads/users/' ~ partner.imageUrl ) }}"
-                                     class="img-responsive partnaireImg" alt="{{ partner.name }}">
+                                     class="img-responsive" alt="{{ partner.name }}">
                             </a>
                         </div>
                     {% elseif (partners|length == 4) or (partners|length == 7) or (partners|length == 8) %}
                         <div class="col-md-3 col-xs-3">
                             <a target="_blank" href="{{ partner.webUrl }}" class="thumbnail thumbnail-div">
                                 <img src="{{ asset('uploads/users/' ~ partner.imageUrl ) }}"
-                                     class="img-responsive partnaireImg" alt="{{ partner.name }}">
+                                     class="img-responsive" alt="{{ partner.name }}">
                             </a>
                         </div>
                     {% endif %}
