@@ -28,6 +28,7 @@
                     <th class="text-center">ROLE</th>
                     <th class="text-center">ACTION</th>
                     <th class="text-center">DESACTIVÉ</th>
+                    <th class="text-center">MOT DE PASSE</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,9 +42,9 @@
                                     {{ user.trust == 0 ? 'NON' : 'OUI' }}
                                 </button></a>
                         </td>
-                        <td class="admin">{{ user.roles.0 }}</td>
+                        <td class="admin">{{ txtRoles[user.roles.0] }}</td>
                         <td class="admin">
-                            <button type="button" class="button-admin" data-toggle="modal" data-target="#exampleModal"
+                            <button type="button" class="button-admin" data-toggle="modal" data-target="#roleModal"
                                     data-id="{{ user.id }}" data-name="{{ user.name }}"
                                     data-firstname="{{ user.firstname }}">MODIFIER</button>
                         </td>
@@ -51,6 +52,12 @@
                             <a href="{{ path('member_enabled', {'id': user.id}) }}">
                                 <button class="onoff {{ user.enabled == false ? 'green' : 'grey' }}">
                                     {{ user.enabled == false ? 'OUI' : 'NON' }}
+                                </button></a>
+                        </td>
+                        <td class="admin">
+                            <a href="">
+                                <button type="button" class="button-admin">
+                                    REINITIALISER
                                 </button></a>
                         </td>
                     </tr>
@@ -61,7 +68,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModal">
+    <div class="modal fade" id="roleModal">
         <div class="modal-dialog modal-sm text-center">
             <div class="modal-content">
                 <div class="modal-header">

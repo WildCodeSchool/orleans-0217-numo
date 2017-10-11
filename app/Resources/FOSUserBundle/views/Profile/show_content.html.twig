@@ -130,7 +130,9 @@
                 <tbody>
                 {% for event in events %}
                     <tr>
+                        <a href="{{ path('event_show_published', {'id': oaevent.id}) }}">
                         <td>{{ event.title }}</td>
+                        </a>
                         <td>{{ event.description }}</td>
                         <td>{{ event.address }}</td>
                         <td>

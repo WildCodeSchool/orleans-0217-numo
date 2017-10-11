@@ -264,12 +264,6 @@ a:link{
     background-color: #c90404;
 }
 
-.partnaireImg{
-    height: 40%;
-    max-height: 180px;
-    max-width: 220px;
-    width: 32%;
-}
 
 .partnaire{
     padding-top: 30px;
@@ -310,7 +304,6 @@ a:link{
 .logo-title{
     margin-top: 10%;
     margin-bottom: 10%;
-
 }
 
 .navadmin{
@@ -501,6 +494,10 @@ thead{
 }
 .barreGreen{
     background-color: #8CC63C;
+}
+.strongGreen {
+    color: #8CC63C;
+    font-weight: bold;
 }
 .barreBlue{
     background-color: #005897 ;

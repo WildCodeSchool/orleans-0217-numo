@@ -51,10 +51,17 @@ class UserPromoteController extends Controller
             $em->flush();
 
         }
+        $txtRoles = [
+            'ROLE_ADMIN' => 'Administrateur',
+            'ROLE_MODERATOR' => 'Modérateur',
+            'ROLE_ADHERENT' => 'Adhérent',
+            'ROLE_USER' => 'Membre',
+        ];
 
         return $this->render('userpromote/index.html.twig', [
             'users' => $users,
             'form' => $form->createView(),
+            'txtRoles' => $txtRoles,
         ]);
 
     }

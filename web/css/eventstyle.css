@@ -9,7 +9,7 @@ ul#evtdatelist li {
 }
 
 .grey-text {
-    color: lightgrey;
+    color: #8c8c8c;
 }
 
 .strong-text {
@@ -87,10 +87,11 @@ ul.evtdatelist {
 .erreur, .red-error {
     font-size: 16px;
     font-weight: bold;
+    width: 100%;
 }
 
 .erreur {
-    color: #CADB2A;
+    color: #8CC63C;
 }
 
 .red-error {
