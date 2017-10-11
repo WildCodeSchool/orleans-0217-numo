@@ -77,13 +77,14 @@
                             <a href="{{ path('event_show_published', {'id': event.id}) }}">
                                 <div class="row event-zone">
                                     <div class="col-xs-4">
-                                            <div class="event-img">
-                                                {% if event.image is not empty %}
-                                                    <img src="{{ event.image }}" alt="image {{ event.title }}" class="img-responsive center-block" />
-                                                {% else %}
-                                                    <img src="{{ asset('img/event_placeholder.png') }}" alt="image {{ event.title }}" class="img-responsive center-block" />
-                                                {% endif %}
-                                            </div>
+                                        <div class="event-img"></div>
+                                        <p>
+                                            {% if event.image is not empty %}
+                                                <img src="{{ event.image }}" alt="image {{ event.title }}" class="img-responsive center-block" />
+                                            {% else %}
+                                                <img src="{{ asset('img/event_placeholder.png') }}" alt="image {{ event.title }}" class="img-responsive center-block" />
+                                            {% endif %}
+                                        </p>
                                     </div>
                                     <div class="col-xs-8 text-left">
                                         <h3 class="event-title">{{ event.title }}</h3>
