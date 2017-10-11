@@ -9,7 +9,7 @@
 
         <div class="row">
             <div class="col-sm-offset-3 col-sm-6 text-center">
-                <p class="content-view">{{ company.adherentContent }}</p>
+                <p class="content-view">{{ company.adherentContent|raw }}</p>
                 <div class="row companyBottom">
                         {% if company.pdf != '' %}
                             <a href="{{ asset('uploads/users/' ~ company.pdf) }}" download="RIB NUMO" type="button" class="btn btn-default btndarkblue">TELECHARGER LE RIB DE NUM'O (RIB)</a>

@@ -1,0 +1,249 @@
+/* --- Formulaires --- */
+h1 {
+    text-transform: uppercase;
+    font-size: 3.5em;
+}
+
+ul#evtdatelist li {
+    margin-bottom: 5px;
+}
+
+.grey-text {
+    color: lightgrey;
+}
+
+.strong-text {
+    font-weight: bold;
+    color: #0000F0;
+}
+
+.textA a {
+    text-decoration: none !important;
+    color: black !important;
+    z-index: 10;
+}
+
+a:link, a:visited, a:active {
+}
+
+a:hover {
+}
+
+.bg-form {
+    background-size: cover;
+    background-position: center;
+    /*background-image: url('../img/header.jpg');*/
+    text-align: center;
+    color: black;
+    padding: 40px 15px 60px;
+}
+
+.bg-img {
+    text-shadow: 0 0 8px #000000;
+}
+
+.sep {
+    width: 100%;
+    height: 3px;
+    margin: 20px 0px;
+}
+
+.h-sep {
+    width: 30px;
+    height: 10px;
+    display: inline-block;
+}
+
+.in-line {
+    display: inline;
+}
+
+.right-sep {
+    margin-right: 30px;
+}
+
+
+/* ------------------------------------- */
+.btn {
+    text-transform: none;
+}
+
+
+/* ------------------------------------- */
+.dark-text {
+    color: #444444;
+}
+
+ul.evtdatelist {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.showtrash {
+    visibility: hidden;
+}
+
+.erreur, .red-error {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.erreur {
+    color: #CADB2A;
+}
+
+.red-error {
+    color: #FC0606;
+}
+
+.date-field {
+    width: 100px;
+    margin: 0 10px;
+}
+
+.category-field {
+    width: 300px;
+    margin: 0 30px 0 10px;
+}
+
+
+/* --- general --- */
+.ecart-haut {
+    margin-top: 20px;
+}
+
+.ecart-bas {
+    margin-bottom: 10px;
+}
+
+/*div.separation {*/
+    /*margin: 20px 0px;*/
+    /*width: 100%;*/
+    /*height: 1px;*/
+    /*background-color: #e5e5e5;*/
+/*}*/
+
+.emphase {
+    font-weight: bold;
+    color: blue;
+}
+
+div#mapzone {
+    z-index: 0;
+    width: 300px;
+    height: 300px;
+    margin: -20px auto 0 auto;
+}
+
+div#closemap {
+    position: relative;
+    margin-left: 260px;
+    width: 40px;
+    height:20px;
+    z-index: 100;
+    color: white;
+    font-weight: bold;
+    background-color: red;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+div#map {
+    z-index: 0;
+    width: 100%;
+    height: 400px;
+    margin: -20px auto 0 auto;
+}
+
+div#closemap {
+    position: relative;
+    margin-left: 260px;
+    width: 40px;
+    height:20px;
+    z-index: 100;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    background-color: red;
+}
+
+.little-img {
+    border: 1px solid #CCCCCC;
+    height: 40px;
+
+}
+
+.mid-img {
+    max-height: 400px;
+    max-width: 300px;
+    border: 2px solid #FFFFFF;
+}
+
+.rs-button {
+    margin: 0 20px;
+    height: 30px;
+}
+
+.twigerror ul li {
+    display: inline;
+    color: red;
+}
+
+#calendar {
+    width: 100%;
+    padding-top: 30px;
+    padding-right: 20px;
+}
+
+.event-imgsize {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+}
+
+.event-imgdiv{
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+}
+
+.event-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.event-title {
+    font-size: 24px;
+    font-weight: bold;
+    padding-top:16px;
+}
+
+.empty-list {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 30px 0;
+}
+
+.btn-txt {
+    width: 200px;
+}
+
+.btn-sep {
+    margin-right: 30px;
+}
+.demi-img {
+    width: 48%;
+    float: left;
+}
+.little-img {
+    height: 100px;
+}
+.btn-img {
+    margin: 10px auto;
+}
