@@ -221,9 +221,21 @@ a:link{
     text-decoration: none;
 }
 
-
 .thumbnail > img {
     height: 250px;
+}
+
+
+@media only screen and (max-width: 766px) {
+    .partner-responsive > img {
+        height: 120px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .partner-responsive > img {
+        height: 70px;
+    }
 }
 
 .title-view {

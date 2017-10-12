@@ -20,9 +20,9 @@
 
         <div class="col-lg-offset-1 col-lg-2 contact-view">
             <h2 class="sub-title-view">Coordonnées <hr></h2>
-            <p>{{ company.phone }}</p>
-            <p>{{ company.city }} {{ company.postalCode }}</p>
             <p>{{ company.address }}</p>
+            <p>{{ company.postalCode }} {{ company.city }} </p>
+            <p>{{ company.phone }}</p>
             <p>{{ company.contactEmail }}</p>
             <a href="{{ path('association') }}">Mieux nous connaitre</a>
             <img src="{{ asset('img/NUMOsmall.png') }}" class="img-responsive imageNumoLogo" alt="numo logo">
